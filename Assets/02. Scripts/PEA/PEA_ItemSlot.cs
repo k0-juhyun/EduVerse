@@ -30,8 +30,7 @@ public class PEA_ItemSlot : MonoBehaviour
     {
         Idle,
         Down,
-        Action, 
-        Up
+        Action
     }
 
     private SlotState slotState = SlotState.Idle;
@@ -41,6 +40,8 @@ public class PEA_ItemSlot : MonoBehaviour
     private GameObject newItem;
     public GameObject imageItem;
     public Item item;
+    public PEA_Market market;
+    public Transform canvas;
 
     void Start()
     {
@@ -54,13 +55,14 @@ public class PEA_ItemSlot : MonoBehaviour
             clickTime += Time.deltaTime;
             if(clickTime >= longClickTime)
             {
-                GetItem();
+                newItem = GetItem();
                 slotState = SlotState.Action;
             }
         }
         else if( slotState == SlotState.Action)
         {
-
+            print("action");
+            newItem.transform.position = Input.mousePosition;
         }
     }
 
@@ -72,7 +74,7 @@ public class PEA_ItemSlot : MonoBehaviour
 
     public void OnButtonUp()
     {
-        slotState = SlotState.Up;
+        slotState = SlotState.Idle;
         clickTime = 0f;
         print("up");
     }
@@ -80,6 +82,7 @@ public class PEA_ItemSlot : MonoBehaviour
     public GameObject GetItem()
     {
         GameObject getItem = Instantiate(imageItem);
+        getItem.transform.parent = canvas;
         getItem.GetComponent<Image>().sprite  = item.itemSprite;
         getItem.GetComponent<Image>().preserveAspect = true;
 
