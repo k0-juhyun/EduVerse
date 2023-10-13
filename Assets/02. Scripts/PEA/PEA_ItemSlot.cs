@@ -34,12 +34,19 @@ public class PEA_ItemSlot : MonoBehaviour
     }
 
     private SlotState slotState = SlotState.Idle;
+
     private float clickTime = 0f;
-    private float longClickTime = 1f;
+    private float longClickTime = 0.5f;
 
     private GameObject newItem;
-    public GameObject imageItem;
-    public Item item;
+
+    private Item item;
+
+    public GameObject[] itemPrefabs;
+    //public GameObject imageItem;
+    //public GameObject videoItem;
+    //public GameObject objectItem;
+
     public PEA_Market market;
     public Transform canvas;
 
@@ -61,30 +68,45 @@ public class PEA_ItemSlot : MonoBehaviour
         }
         else if( slotState == SlotState.Action)
         {
-            print("action");
-            newItem.transform.position = Input.mousePosition;
+            if(newItem != null)
+            {
+                newItem.transform.position = Input.mousePosition;
+            }
         }
+    }
+
+    public void SetItemInfo(Item item)
+    {
+        this.item = item;
     }
 
     public void OnButtonDown()
     {
         slotState = SlotState.Down;
-        print("down");
     }
 
     public void OnButtonUp()
     {
         slotState = SlotState.Idle;
         clickTime = 0f;
-        print("up");
+        newItem = null;
     }
 
     public GameObject GetItem()
     {
-        GameObject getItem = Instantiate(imageItem);
+        GameObject getItem = Instantiate(itemPrefabs[(int)item.itemType]);
         getItem.transform.parent = canvas;
-        getItem.GetComponent<Image>().sprite  = item.itemSprite;
-        getItem.GetComponent<Image>().preserveAspect = true;
+
+        switch (item.itemType)
+        {
+            case Item.ItemType.Image:
+                getItem.GetComponent<PEA_ImageItem>().SetImage(item.itemSprite);
+                break;
+            case Item.ItemType.Video:
+                break;
+            case Item.ItemType.Object:
+                break;
+        }
 
         return getItem;
     }

@@ -16,7 +16,6 @@ public class PEA_Market : MonoBehaviour
 
     public GameObject itemSlot;
     public Transform content;
-    public GameObject imageItem;
 
     void Start()
     {
@@ -38,7 +37,7 @@ public class PEA_Market : MonoBehaviour
                 for (int i = 0; i < itemSprites.Length; i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
-                    slot.GetComponent<PEA_ItemSlot>().item = new Item(Item.ItemType.Image, itemSprites[i].name, itemSprites[i]);
+                    slot.GetComponent<PEA_ItemSlot>().SetItemInfo(new Item(Item.ItemType.Image, itemSprites[i].name, itemSprites[i]));
                     slot.GetComponent<PEA_ItemSlot>().market = this;
                     slot.GetComponent<PEA_ItemSlot>().canvas = transform.parent;
                     slot.GetComponentInChildren<RawImage>().texture = itemSprites[i].texture;
@@ -49,15 +48,5 @@ public class PEA_Market : MonoBehaviour
             case MarketType.Object:
                 break;
         }
-    }
-
-    public GameObject GetItem(Item item)
-    {
-        GameObject getItem = Instantiate(imageItem);
-        getItem.GetComponent<Image>().sprite = item.itemSprite;
-        getItem.GetComponent<Image>().preserveAspect = true;
-
-
-        return getItem;
     }
 }
