@@ -575,15 +575,6 @@ namespace CharacterCustomizationSystem
             EditorGUI.indentLevel -= 2;
             GUILayout.EndVertical();
 
-
-
-
-
-
-
-
-
-
             GUILayout.BeginVertical(CardStyle);
             GUILayout.Label("Accessories", TitleStyle);
             GUILayout.Space(spacebetween);
