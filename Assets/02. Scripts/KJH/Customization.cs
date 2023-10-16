@@ -9,14 +9,14 @@ public class Customization : MonoBehaviour
     public GameObject FrontHair;
     private SkinnedMeshRenderer curHairRenderer;
 
-    public Mesh[] allFrontHairMeshes;
+    [Header("앞머리")]
+    public Mesh[] frontHairMeshes;
     private int curFrontHairIdx;
 
     private void Awake()
     {
         curHairRenderer = FrontHair.GetComponent<SkinnedMeshRenderer>();
         curFrontHairIdx = 0;
-        UpdateHairMesh();
     }
     
     private void Customize(ref int curIdx, Mesh[] allIdx,ref SkinnedMeshRenderer curRenderer)
@@ -38,15 +38,6 @@ public class Customization : MonoBehaviour
 
     public void SwitchRight()
     {
-        Customize(ref curFrontHairIdx, allFrontHairMeshes, ref curHairRenderer);
-    }
-
-    // 헤어 바꾸기
-    private void UpdateHairMesh()
-    {
-        if (curHairRenderer != null && curFrontHairIdx >= 0 && curFrontHairIdx < allFrontHairMeshes.Length)
-        {
-            curHairRenderer.sharedMesh = allFrontHairMeshes[curFrontHairIdx];
-        }
+        Customize(ref curFrontHairIdx, frontHairMeshes, ref curHairRenderer);
     }
 }
