@@ -2343,59 +2343,77 @@ namespace Paroxe.PdfRenderer
 
             int validTouchCount = 0;
 
-            // 터치로 페이지 내리기
-            //if (Input.touchCount >= 1)
-            //{
-            //    foreach (Touch touch in Input.touches)
-            //    {
-            //        if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-            //        {
-            //            PointerEventData ped = new PointerEventData(null);
-            //            ped.position = touch.position;
-            //            List<RaycastResult> results = new List<RaycastResult>();
-            //            m_GraphicRaycaster.Raycast(ped, results);
+            // 터치 입력이 발생하면 처리합니다.
+            if (Input.touchCount >= 1)
+            {
+                // 모든 터치 이벤트에 대해 반복합니다.
+                foreach (Touch touch in Input.touches)
+                {
+                    // 현재 터치가 Unity UI 요소 위에 있는지 확인합니다.
+                    if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                    {
+                        // UI 이벤트 데이터를 생성하고 터치 위치를 설정합니다.
+                        PointerEventData ped = new PointerEventData(null);
+                        ped.position = touch.position;
 
-            //            foreach (RaycastResult result in results)
-            //            {
-            //                if (result.gameObject.GetComponentInParent<PDFViewer>() == this)
-            //                {
-            //                    ++validTouchCount;
+                        // UI 요소와의 교차 여부를 검사하고 결과를 리스트에 저장합니다.
+                        List<RaycastResult> results = new List<RaycastResult>();
+                        m_GraphicRaycaster.Raycast(ped, results);
 
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                        // 검사 결과를 반복하여 처리합니다.
+                        foreach (RaycastResult result in results)
+                        {
+                            // 현재 PDFViewer 스크립트가 속한 객체인지 확인합니다.
+                            if (result.gameObject.GetComponentInParent<PDFViewer>() == this)
+                            {
+                                // 유효한 터치의 개수를 증가시킵니다.
+                                ++validTouchCount;
+
+                                // 현재 PDFViewer 스크립트가 속한 객체임이 확인되면 더 이상 검사하지 않습니다.
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
             if (validTouchCount >= 2)
             {
+                // 이전 터치의 개수가 2개 미만이었다면 실행됩니다.
                 if (m_PreviousTouchCount < 2)
                 {
+                    // 핀치 줌 시작 시 현재 줌 팩터를 저장합니다.
                     m_PinchZoomStartZoomFactor = ZoomFactor;
 
+                    // 스크롤 기능을 잠금 상태로 설정하고, 관성 스크롤을 비활성화합니다.
                     ScrollRect scrollRect = m_Internal.Viewport.GetComponent<ScrollRect>();
-
                     scrollRect.inertia = false;
                     scrollRect.horizontal = false;
                     scrollRect.vertical = false;
 
+                    // 스크롤 기능 잠금을 해제하는 코루틴을 중지합니다.
                     StopCoroutine(DelayedUnlockScrollRect());
                 }
 
+                // 첫 번째와 두 번째 터치의 위치 차이를 계산합니다.
                 Touch touchZero = Input.GetTouch(0);
                 Touch touchOne = Input.GetTouch(1);
-
                 float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
 
+                // 이전 터치의 개수가 2개 미만이었다면 실행됩니다.
                 if (m_PreviousTouchCount < 2)
                     m_PinchZoomStartDeltaMag = touchDeltaMag;
                 else
+                    // 핀치 줌 중에 현재 줌 팩터를 업데이트합니다.
                     ZoomFactor = m_PinchZoomStartZoomFactor / (m_PinchZoomStartDeltaMag / touchDeltaMag);
             }
             else if (m_PreviousTouchCount >= 2)
+            {
+                // 터치의 개수가 2개 이상에서 2개 미만으로 감소한 경우 실행됩니다.
                 StartCoroutine(DelayedUnlockScrollRect());
+            }
 
+            // 현재 터치의 개수를 저장합니다.
             m_PreviousTouchCount = validTouchCount;
         }
 
