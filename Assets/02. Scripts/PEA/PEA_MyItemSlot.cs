@@ -14,17 +14,17 @@ public class Item
 
     public ItemType itemType;
     public string itemName;
-    public Sprite itemSprite;
+    public Texture2D itemTexture;
 
-    public Item(ItemType itemType , string itemName, Sprite itemSprite)
+    public Item(ItemType itemType , string itemName, Texture2D itemSprite)
     {
         this.itemType = itemType;
         this.itemName = itemName;
-        this.itemSprite = itemSprite;
+        this.itemTexture = itemSprite;
     }
 }
 
-public class PEA_ItemSlot : MonoBehaviour
+public class PEA_MyItemSlot : MonoBehaviour
 {
     public enum SlotState
     {
@@ -47,7 +47,6 @@ public class PEA_ItemSlot : MonoBehaviour
     //public GameObject videoItem;
     //public GameObject objectItem;
 
-    public PEA_Market market;
     public Transform canvas;
 
     void Start()
@@ -62,7 +61,7 @@ public class PEA_ItemSlot : MonoBehaviour
             clickTime += Time.deltaTime;
             if(clickTime >= longClickTime)
             {
-                newItem = GetItem();
+                newItem = UseItem();
                 slotState = SlotState.Action;
             }
         }
@@ -92,15 +91,15 @@ public class PEA_ItemSlot : MonoBehaviour
         newItem = null;
     }
 
-    public GameObject GetItem()
+    public GameObject UseItem()
     {
-        GameObject getItem = Instantiate(itemPrefabs[(int)item.itemType]);
-        getItem.transform.parent = canvas;
+        GameObject useItem = Instantiate(itemPrefabs[(int)item.itemType]);
+        useItem.transform.parent = canvas;
 
         switch (item.itemType)
         {
             case Item.ItemType.Image:
-                getItem.GetComponent<PEA_ImageItem>().SetImage(item.itemSprite);
+                useItem.GetComponent<PEA_ImageItem>().SetImage(item.itemTexture);
                 break;
             case Item.ItemType.Video:
                 break;
@@ -108,6 +107,6 @@ public class PEA_ItemSlot : MonoBehaviour
                 break;
         }
 
-        return getItem;
+        return useItem;
     }
 }

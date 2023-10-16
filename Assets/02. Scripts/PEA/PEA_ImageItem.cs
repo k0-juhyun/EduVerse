@@ -31,17 +31,20 @@ public class PEA_ImageItem : MonoBehaviour
         }
     }
 
-    public void SetImage(Sprite sprite)
+    public void SetImage(Texture2D texture)
     {
         Image image = transform.GetChild(0).GetComponent<Image>();
-        image.sprite = sprite;
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         image.preserveAspect = true;
         image.SetNativeSize();
         image.transform.localScale = Vector3.one * 0.1f;
 
+        RectTransform imageRectTransform = image.GetComponent<RectTransform>();
         RectTransform rectTransform = GetComponent<RectTransform>();
-        Vector2 size = (image.GetComponent<RectTransform>().sizeDelta) / 10 + Vector2.one * 15f;
+        Vector2 size = (imageRectTransform.sizeDelta) / 10 + Vector2.one * 15f;
         rectTransform.sizeDelta = size;
+
+        imageRectTransform.anchoredPosition = new Vector2(imageRectTransform.rect.width / 10f, imageRectTransform.rect.height / 10f);
     }
 
     public void MovePivot()
