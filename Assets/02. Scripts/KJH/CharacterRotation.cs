@@ -11,7 +11,6 @@ public class CharacterRotation : MonoBehaviour
     public Vector3 rotationVector;
     public Vector2 mouseAxis;
 
-    [Min(1)]
     public Vector3 stepAngle;
     private void OnMouseDown()
     {
