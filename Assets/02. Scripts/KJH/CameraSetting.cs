@@ -13,6 +13,7 @@ public class CameraSetting : MonoBehaviour
     public float scrollSpeed;
     public float dragSpeed;
     private float xRotate, yRotate;
+    private float originFieldOfView;
 
     private bool isRotating = false;
     private bool isDragging = false;
@@ -23,6 +24,7 @@ public class CameraSetting : MonoBehaviour
     private void Awake()
     {
         originTransform = transform;
+        originFieldOfView = Camera.main.fieldOfView;
         // 화면의 특정 부분을 터치 영역으로 지정합니다. (예시로 화면의 중앙 200x200 영역)
         touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 200, 200);
     }
@@ -130,11 +132,16 @@ public class CameraSetting : MonoBehaviour
     }
 
     // 카메라 확대 및 축소
+    //private void ZoomCamera(float increment)
+    //{
+    //    Vector3 pos = cameraTransform.localPosition;
+    //    pos.z += increment * scrollSpeed;
+    //    pos.z = Mathf.Clamp(pos.z, -5, -1);
+    //    cameraTransform.localPosition = pos;
+    //}
+
     private void ZoomCamera(float increment)
     {
-        Vector3 pos = cameraTransform.localPosition;
-        pos.z += increment * scrollSpeed;
-        pos.z = Mathf.Clamp(pos.z, -5, -1);
-        cameraTransform.localPosition = pos;
+        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView - increment * scrollSpeed, 30, 90);
     }
 }
