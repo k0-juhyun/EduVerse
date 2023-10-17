@@ -27,6 +27,7 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     {
         // 손 떼면 조이스틱 초기화
         rectJoyStick.localPosition = Vector3.zero;
+        movePos = Vector3.zero;
 
         isTouch = false;
     }
@@ -43,7 +44,7 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
         value = value.normalized;
 
-        //Vector2 dis = 
+        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
         // 조이스틱 방향으로 움직임
         movePos = new Vector3(value.x * moveSpeed * Time.deltaTime, 0, value.y * moveSpeed * Time.deltaTime);
