@@ -2087,8 +2087,8 @@ namespace Paroxe.PdfRenderer
         // 페이지 컨테이너의 위치를 조정
         private void EnsureValidPageContainerPosition()
         {
-            // 만약 페이지 크기(m_PageSizes)가 아직 초기화되지 않았거나,
-            // 문서의 전체 너비가 화면 뷰포트의 너비보다 작거나 같다면:
+            //// 만약 페이지 크기(m_PageSizes)가 아직 초기화되지 않았거나,
+            //// 문서의 전체 너비가 화면 뷰포트의 너비보다 작거나 같다면:
             if (m_PageSizes == null || GetDocumentSize().x <= m_Internal.Viewport.rect.size.x)
             {
                 // 페이지 컨테이너의 가로 위치를 0으로 설정합니다.

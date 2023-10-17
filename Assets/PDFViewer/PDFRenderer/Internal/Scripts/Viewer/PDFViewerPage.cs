@@ -19,19 +19,31 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         , IPointerEnterHandler, IPointerExitHandler
 #endif
     {
+		// 손 모양 커서 이미지
         [SerializeField]
         private Texture2D m_HandCursor;
 
+		// PDF 뷰어 참조
         private PDFViewer m_Viewer;
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
+		// 포인터가 내부에 있는지 여부
         private bool m_PointerInside;
+		// 손 모양 커서가 현재 설정되어있는지 여부
         private bool m_HandCursorSettedByMe;
 #endif
+		// 캔버스 카메라 캐시 여부
         private bool m_CanvasCameraCached;
+		
+		// 캔버스 카메라
         private Camera m_CanvasCamera;
+
+		// 페이지 인덱스
         private int? m_PageIndex;
+
+		// PDF 페이지
         private PDFPage m_Page;
 
+		// 페이지 인덱스 프로퍼티
         public int PageIndex
         {
 	        get
@@ -43,6 +55,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 	        }
         }
         
+		// 캐시 초기화 함수
         public void ClearCache()
         {
 	        m_PageIndex = null;
@@ -56,14 +69,17 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
+			// 포인터 클릭 시 실행
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
 	        if (!m_PointerInside)
 		        return;
 #endif
 
+			// 뷰어 없으면 가져옴
             if (m_Viewer == null)
                 m_Viewer = GetComponentInParent<PDFViewer>();
 
+			// 뷰어, 문서, 링크 액션 핸들러 없으면 종료
             if (m_Viewer == null || m_Viewer.Document == null || m_Viewer.LinksActionHandler == null)
 	            return;
 
@@ -78,8 +94,10 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 				unloadPage = true;
 			}
 			
+			// 페이지가 없으면 현재 페이지를 가져오고 나중에 
 			try
 			{
+
 				PDFLink link = GetLinkAtPoint(page, eventData.pressPosition, eventData.pressEventCamera);
 
 				if (link != null)
