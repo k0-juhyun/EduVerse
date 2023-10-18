@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,16 +9,20 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     public RectTransform rectBackground;
     public RectTransform rectJoyStick;
 
+    [Space]
     public Transform cameraPivotTransform;
 
-    private float radius;
-    public float moveSpeed;
-
+    [Space]
     public GameObject Character;
+
+    public float moveSpeed;
+    private float radius;
 
     private bool isTouch = false;
 
     private Vector3 movePos;
+
+    public Animator animator;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -40,22 +45,6 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
     {
-        //Vector2 value = eventData.position - (Vector2)rectBackground.position;
-
-        //value = Vector2.ClampMagnitude(value, radius);
-
-        //rectJoyStick.localPosition = value;
-
-        //value = value.normalized;
-
-        //float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
-
-        //// 조이스틱 방향으로 움직임
-        //movePos = new Vector3(value.x * moveSpeed * Time.deltaTime, 0,
-        //    value.y * moveSpeed * Time.deltaTime);
-
-        //// 움직이는 방향 바라봄
-
         Vector2 value = eventData.position - (Vector2)rectBackground.position;
         value = Vector2.ClampMagnitude(value, radius);
         rectJoyStick.localPosition = value;
@@ -74,6 +63,9 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     private void Awake()
     {
         radius = rectBackground.rect.width * 0.5f;
+
+        // 애니메이터 컴포넌트 가져오기
+        animator = Character.GetComponent<Animator>();
     }
 
     private void FixedUpdate()

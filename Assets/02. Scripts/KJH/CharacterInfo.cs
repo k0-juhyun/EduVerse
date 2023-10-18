@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 캐릭터 커스터마이징 정보 저장
 public class CharacterInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CustomizeInfo
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
