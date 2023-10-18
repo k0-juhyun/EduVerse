@@ -4,25 +4,31 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+// 캐릭터 움직임
+// 조이스틱 값 받아서 캐릭터가 움직임
+public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public RectTransform rectBackground;
     public RectTransform rectJoyStick;
 
-    [Space]
-    public Transform cameraPivotTransform;
+    [Space] public Transform cameraPivotTransform;
 
-    [Space]
-    public GameObject Character;
+    [Space] [Header("캐릭터")] public GameObject Character;
 
-    public float moveSpeed;
+    private float moveSpeed = 2;
     private float radius;
+    private float animParameters;
+
+    [Space]
+    [Header("이동속도")]
+    public float minSpeed;
+    public float maxSpeed;
 
     private bool isTouch = false;
 
     private Vector3 movePos;
 
-    public Animator animator;
+    private Animator animator;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -39,6 +45,8 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
         // 손을 뗐을 때 이동 방향은 카메라 정면방향
 
         isTouch = false;
+        animator.SetFloat("moveSpeed", 0);
+        animator.SetTrigger("Idle");
     }
 
     // 드래그중
@@ -58,6 +66,15 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
         movePos = cameraPivotTransform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
 
         Character.transform.forward = movePos;
+
+        // 조이스틱 입력에 따른 블렌드 값 계산
+        float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+        animParameters = distance / radius; // 0부터 1 사이의 값
+
+        // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+        animator.SetFloat("moveSpeed", animParameters);
+
+        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
     }
 
     private void Awake()

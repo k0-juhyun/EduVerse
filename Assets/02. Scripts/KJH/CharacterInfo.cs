@@ -7,6 +7,7 @@ public class CharacterInfo : MonoBehaviour
 {
     public class CustomizeInfo
     {
-
+        public string partName;
+        public GameObject partObj;
     }
 }
