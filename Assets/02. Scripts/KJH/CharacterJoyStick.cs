@@ -8,6 +8,8 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     public RectTransform rectBackground;
     public RectTransform rectJoyStick;
 
+    public Transform cameraPivotTransform;
+
     private float radius;
     public float moveSpeed;
 
@@ -29,6 +31,8 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
         rectJoyStick.localPosition = Vector3.zero;
         movePos = Vector3.zero;
 
+        // 손을 뗐을 때 이동 방향은 카메라 정면방향
+
         isTouch = false;
     }
 
@@ -36,10 +40,24 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
     {
+        //Vector2 value = eventData.position - (Vector2)rectBackground.position;
+
+        //value = Vector2.ClampMagnitude(value, radius);
+
+        //rectJoyStick.localPosition = value;
+
+        //value = value.normalized;
+
+        //float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+
+        //// 조이스틱 방향으로 움직임
+        //movePos = new Vector3(value.x * moveSpeed * Time.deltaTime, 0,
+        //    value.y * moveSpeed * Time.deltaTime);
+
+        //// 움직이는 방향 바라봄
+
         Vector2 value = eventData.position - (Vector2)rectBackground.position;
-
         value = Vector2.ClampMagnitude(value, radius);
-
         rectJoyStick.localPosition = value;
 
         value = value.normalized;
@@ -47,9 +65,9 @@ public class CharacterJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpH
         float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
         // 조이스틱 방향으로 움직임
-        movePos = new Vector3(value.x * moveSpeed * Time.deltaTime, 0, value.y * moveSpeed * Time.deltaTime);
+        Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+        movePos = cameraPivotTransform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
 
-        // 움직이는 방향 바라봄
         Character.transform.forward = movePos;
     }
 

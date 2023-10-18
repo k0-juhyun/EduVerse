@@ -12,7 +12,7 @@ public class CameraSetting : MonoBehaviour
     public float rotSpeed;
     public float scrollSpeed;
     public float dragSpeed;
-    private float xRotate, yRotate;
+    private float xRotate;
     private float originFieldOfView;
 
     private bool isRotating = false;
@@ -61,12 +61,11 @@ public class CameraSetting : MonoBehaviour
                     {
                         Vector2 delta = (Vector2)Input.mousePosition - previousMousePosition;
                         xRotate += delta.x * rotSpeed;
-                        yRotate -= delta.y * rotSpeed;
 
                         // x값 제한
                         xRotate = Mathf.Clamp(xRotate, -20f, 0f);
 
-                        cameraPivotTransform.localEulerAngles = new Vector3(Mathf.Clamp(yRotate, 0f, 360f), Mathf.Clamp(xRotate, -20f, 0f), 0);
+                        cameraPivotTransform.localEulerAngles = new Vector3(Mathf.Clamp(0f, 0f, 360f), Mathf.Clamp(xRotate, -20f, 0f), 0);
                         previousMousePosition = (Vector2)Input.mousePosition;
                     }
                 }
@@ -112,6 +111,8 @@ public class CameraSetting : MonoBehaviour
                 previousMousePosition = Input.mousePosition;
             }
         }
+        
+        // 카메라 드래그 후 손을 뗐을 때
         else if (Input.GetMouseButtonUp(0))
         {
             isDragging = false;
@@ -121,8 +122,7 @@ public class CameraSetting : MonoBehaviour
         {
             Vector2 delta = (Vector2)Input.mousePosition - previousMousePosition;
             xRotate += delta.x * rotSpeed;
-            yRotate -= delta.y * rotSpeed;
-            cameraPivotTransform.localEulerAngles = new Vector3(yRotate, xRotate, 0);
+            cameraPivotTransform.localEulerAngles = new Vector3(0, xRotate, 0);
             previousMousePosition = (Vector2)Input.mousePosition;
         }
 
