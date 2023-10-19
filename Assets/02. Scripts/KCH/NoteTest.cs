@@ -1,50 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class NoteTest : MonoBehaviour
 {
-    public GameObject linePrefab; // 선을 그릴 때마다 생성할 프리팹
+    public RenderTexture renderTexture;
+    private Material brushMaterial;
 
-    private GameObject currentLine;
-    private LineRenderer lineRenderer;
+    void Start()
+    {
+        brushMaterial = new Material(Shader.Find("Unlit/Texture"));
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            CreateNewLine();
-            AddPointToLine();
-        }
-
         if (Input.GetMouseButton(0))
         {
-            AddPointToLine();
+            Draw();
         }
     }
 
-    void CreateNewLine()
+    void Draw()
     {
-        currentLine = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
-        lineRenderer = currentLine.GetComponent<LineRenderer>();
-        lineRenderer.positionCount = 1;
-        lineRenderer.SetPosition(0, GetMouseWorldPosition());
-    }
-
-    void AddPointToLine()
-    {
-        if (lineRenderer != null)
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
         {
-            int currentPositionCount = lineRenderer.positionCount;
-            lineRenderer.positionCount = currentPositionCount + 1;
-            lineRenderer.SetPosition(currentPositionCount, GetMouseWorldPosition());
-        }
-    }
+            Renderer rend = hit.transform.GetComponent<Renderer>();
+            MeshCollider meshCollider = hit.collider as MeshCollider;
 
-    Vector3 GetMouseWorldPosition()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 10; // 카메라와의 거리 조절
-        return Camera.main.ScreenToWorldPoint(mousePos);
+            if (rend == null || rend.sharedMaterial == null || rend.sharedMaterial.mainTexture == null || meshCollider == null)
+                return;
+
+            Vector2 pixelUV = hit.textureCoord;
+            pixelUV.x *= renderTexture.width;
+            pixelUV.y *= renderTexture.height;
+
+            RenderTexture.active = renderTexture;
+            GL.PushMatrix();
+            GL.LoadPixelMatrix(0, renderTexture.width, renderTexture.height, 0);
+            brushMaterial.SetTexture("_MainTex", rend.sharedMaterial.mainTexture);
+            brushMaterial.SetPass(0);
+
+            GL.Begin(GL.QUADS);
+            GL.TexCoord2(0, 0);
+            GL.Vertex3(pixelUV.x, pixelUV.y, 0);
+
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(pixelUV.x + 1, pixelUV.y, 0);
+
+            GL.TexCoord2(1, 1);
+            GL.Vertex3(pixelUV.x + 1, pixelUV.y + 1, 0);
+
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(pixelUV.x, pixelUV.y + 1, 0);
+            GL.End();
+
+            GL.PopMatrix();
+            RenderTexture.active = null;
+        }
     }
 }
