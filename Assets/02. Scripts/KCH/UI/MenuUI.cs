@@ -25,7 +25,7 @@ public class MenuUI : MonoBehaviour
         // ´ÝÇôÀÖÀ¸¸é
         if (!bool_open_menu)
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 200, 0.5f);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 200, 0.5f).SetEase(Ease.OutBack);
             bool_open_menu = !bool_open_menu;
         }
         else
@@ -41,12 +41,12 @@ public class MenuUI : MonoBehaviour
         Debug.Log("item");
         if (!bool_item_menu)
         {
-            ItemMenu.DOMoveY(-150f, 1);
+            ItemMenu.DOLocalMoveY(750, 0.5f);
             bool_item_menu = !bool_item_menu;
         }
         else
         {
-            ItemMenu.DOMoveY(100, 1);
+            ItemMenu.DOLocalMoveY(1000, 0.5f);
             bool_item_menu = !bool_item_menu;
         }
     }
