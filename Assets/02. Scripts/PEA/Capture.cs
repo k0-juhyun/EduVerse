@@ -40,6 +40,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        Debug.Log(eventData.position);
         isCapturing = true;
         startMousePosition = Input.mousePosition;
     }
