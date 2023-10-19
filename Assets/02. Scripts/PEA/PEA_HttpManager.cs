@@ -34,6 +34,9 @@ public class PEA_HttpManager : MonoBehaviour
 {
     public static PEA_HttpManager instance = null;
 
+
+    public Texture2D texture;
+
     private void Awake()
     {
         if(instance == null)
@@ -54,6 +57,40 @@ public class PEA_HttpManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // 이미지 보내기 (되는지 모르겠다)
+    public void PostTexture(HttpInfo httpInfo,Texture2D texture)
+    {
+        StartCoroutine(IPostTexure(httpInfo, texture));
+    }
+
+    IEnumerator IPostTexure(HttpInfo httpInfo, Texture2D texture)
+    {
+        UnityWebRequest req = null;
+
+        req = UnityWebRequest.Post(httpInfo.url, httpInfo.body);
+        req.uploadHandler = new UploadHandlerRaw(texture.EncodeToJPG());
+
+        // 서버에 요청을 보내고 응답이 올때까지 기다림
+        yield return req.SendWebRequest();
+
+        // 만약 응답이 성공했으면 
+        if (req.result == UnityWebRequest.Result.Success)
+        {
+            //print("네트워크 응답 : " + req.downloadHandler.text);
+
+            if (httpInfo.onReceive != null)
+            {
+                httpInfo.onReceive(req.downloadHandler);
+            }
+        }
+
+        // 통신 실패
+        else
+        {
+            print("네트워크 에러 : " + req.error);
+        }
     }
 
     public void SendRequest(HttpInfo httpInfo)
