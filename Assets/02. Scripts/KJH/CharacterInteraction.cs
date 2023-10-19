@@ -11,7 +11,6 @@ using UnityEngine.UI;
 // - 앉기 버튼을 누르면 앉게 한다.
 // - 다른 사람이 앉아있는 의자는 앉지 못한다.
 
-
 public class CharacterInteraction : MonoBehaviour
 {
     public GameObject Character;
@@ -19,16 +18,14 @@ public class CharacterInteraction : MonoBehaviour
     public Button Btn_Sit;
     private Animator anim;
 
-    public GameObject[] chairArray;
+    private bool _isSit;
 
     private void Awake()
     {
         anim = Character.GetComponent<Animator>();
-
-        chairArray = GameObject.FindGameObjectsWithTag("Chair");
     }
 
-    private void Start()
+    private void OnTriggerEnter(Collider other)
     {
         
     }
