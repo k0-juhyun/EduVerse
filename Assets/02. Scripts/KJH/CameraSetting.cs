@@ -38,9 +38,10 @@ public class CameraSetting : MonoBehaviour
     // 카메라가 target 오브젝트를 따라다님
     private void FollowCamera()
     {
-        Vector3 targetPos = Vector3.SmoothDamp(originTransform.position, targetTransform.position,
-            ref cameraFollowVelo, Time.deltaTime / 0.1f);
+        //Vector3 targetPos = Vector3.SmoothDamp(originTransform.position, targetTransform.position,
+        //    ref cameraFollowVelo, Time.deltaTime / 0.1f);
 
+        Vector3 targetPos = Vector3.Lerp(originTransform.position, targetTransform.position, Time.deltaTime / 0.2f);
         originTransform.position = targetPos;
     }
 
