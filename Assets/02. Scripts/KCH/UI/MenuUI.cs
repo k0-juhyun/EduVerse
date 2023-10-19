@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEditor.Build;
 
 public class MenuUI : MonoBehaviour
 {
     public HorizontalLayoutGroup horizontalgroup;
     public RectTransform ItemMenu;
+    public RectTransform ChatBotMenu;
+
     bool bool_open_menu;
     bool bool_item_menu;
+    bool bool_chatbot_menu;
 
     private void Start()
     {
@@ -25,12 +29,12 @@ public class MenuUI : MonoBehaviour
         // ´ÝÇôÀÖÀ¸¸é
         if (!bool_open_menu)
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 200, 0.5f).SetEase(Ease.OutBack);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 200, 0.2f).SetEase(Ease.OutBack);
             bool_open_menu = !bool_open_menu;
         }
         else
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -100, 0.5f);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -100, 0.2f);
             bool_open_menu = !bool_open_menu;
         }
     }
@@ -51,5 +55,19 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
+    // Ãª º¿ ¿­±â
+    public void ChatBotMeny()
+    {
+        Debug.Log("item");
+        if (!bool_item_menu)
+        {
+            ChatBotMenu.DOLocalMoveY(750, 0.5f);
+            bool_item_menu = !bool_item_menu;
+        }
+        else
+        {
+            ChatBotMenu.DOLocalMoveY(1000, 0.5f);
+            bool_item_menu = !bool_item_menu;
+        }
+    }
 }

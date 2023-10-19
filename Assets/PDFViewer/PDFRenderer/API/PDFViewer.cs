@@ -1169,7 +1169,7 @@ namespace Paroxe.PdfRenderer
             //            m_ZoomToGo = viewportHeight / firstPageHeight;
 
             //            break;
-            //        }
+            //        }f
             //    case PageFittingType.WholePage:
             //        {
             //            float firstPageWidth = referencePageSize.x;
