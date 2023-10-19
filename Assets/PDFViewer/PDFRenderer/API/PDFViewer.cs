@@ -304,8 +304,9 @@ namespace Paroxe.PdfRenderer
 
         // 단락을 감지하는데 사용하는 임계값
         [SerializeField]
-        private float m_ParagraphDetectionThreshold = 12.0f;
-        private float m_PageGap = 10f;
+        private float m_ParagraphDetectionThreshold = 12.0f;     
+
+
         #endregion
 
         #region 델리게이트 & 이벤트
