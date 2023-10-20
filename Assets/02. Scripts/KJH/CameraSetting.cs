@@ -15,7 +15,7 @@ public class CameraSetting : MonoBehaviour
     private float xRotate;
     private float originFieldOfView;
 
-    private bool isRotating = false;
+    //private bool isRotating = false;
     private bool isDragging = false;
     private Vector2 previousMousePosition;
 
