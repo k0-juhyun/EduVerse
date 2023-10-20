@@ -15,16 +15,26 @@ using DG.Tweening;
 
 public class CharacterInteraction : MonoBehaviour
 {
+    [Header("캐릭터")]
     public GameObject Character;
     [Space]
+    [Header("버튼")]
     public Button Btn_Sit;
+    public Button Btn_Camera;
+
     private Animator anim;
 
+    private CharacterMovement characterMovement;
+
     private bool isSit;
+    [HideInInspector] public bool isTPSCam = true;
 
     private void Awake()
     {
         anim = Character.GetComponent<Animator>();
+        characterMovement = GetComponent<CharacterMovement>();
+
+        Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
     }
 
     private void OnTriggerStay(Collider other)
@@ -49,13 +59,28 @@ public class CharacterInteraction : MonoBehaviour
                     Character.transform.position =
                         new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
                     Character.transform.forward = -other.transform.right;
+
+                    // 사람 앉았다.
+                    chairInfo.isFull = true;
                 }
             }
+
+            // 자리에서 일어났다.
             else
             {
-                Character.transform.position = new Vector3
+                if (characterMovement.moveSpeed != 0)
+                {
+                    Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
+                    chairInfo.isFull = false;
+                }
             }
         }
+    }
+
+    // TPS랑 FPS 카메라 전환
+    public void OnCameraButtonClick()
+    {
+        isTPSCam = !isTPSCam;
     }
 }
