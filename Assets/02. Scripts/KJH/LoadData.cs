@@ -29,7 +29,6 @@ public class LoadData : MonoBehaviour
     private void Start()
     {
         LoadCharacterInfo();
-        ApplyCustomData();
     }
 
     private void LoadCharacterInfo()
@@ -56,13 +55,16 @@ public class LoadData : MonoBehaviour
         {
             Debug.Log("File not found at path: " + filePath);
         }
+
+        ApplyCustomData();
     }
 
     private void ApplyCustomData()
     {
         customParts.Clear(); // 기존 요소를 지움
 
-        for (int i = 0; i < myInfo.Length; i++)
+        #region 머리
+        for (int i = 0; i < 2; i++)
         {
             CustomPart customPart = new CustomPart(); // 새 CustomPart 인스턴스 생성
 
@@ -71,7 +73,7 @@ public class LoadData : MonoBehaviour
             customPart.partList = myInfo[i].partList;
             customPart.currentIdx = myInfo[i].meshIndex;
 
-            Transform characterChild = Character.transform.Find(myInfo[i].objName);
+            Transform characterChild = Character.transform.GetChild(i).GetChild(0);
 
             if (characterChild != null)
             {
@@ -82,5 +84,30 @@ public class LoadData : MonoBehaviour
 
             customParts.Add(customPart); // 리스트에 추가
         }
+
+        #endregion
+
+        #region 머리제외
+        for (int i = 2; i < myInfo.Length; i++)
+        {
+            CustomPart customPart = new CustomPart(); // 새 CustomPart 인스턴스 생성
+
+            customPart.partName = myInfo[i].partName;
+            customPart.objName = myInfo[i].objName;
+            customPart.partList = myInfo[i].partList;
+            customPart.currentIdx = myInfo[i].meshIndex;
+
+            Transform characterChild = Character.transform.Find(myInfo[i].objName);
+            
+            if (characterChild != null)
+            {
+                customPart.partObj = characterChild.gameObject;
+                customPart.customRenderer = characterChild.gameObject.GetComponent<SkinnedMeshRenderer>();
+                customPart.customRenderer.sharedMesh = customPart.partList[customPart.currentIdx];
+            }
+
+            customParts.Add(customPart); // 리스트에 추가
+        }
+        #endregion
     }
 }
