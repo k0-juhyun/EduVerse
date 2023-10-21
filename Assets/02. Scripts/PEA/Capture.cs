@@ -96,7 +96,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         File.WriteAllBytes("Assets/Resources/" + filePath +".png", captureTexture.EncodeToPNG());
 
         Destroy(captureTexture);
-        AssetDatabase.Refresh();
+        // 임시 주석 kch
+        //AssetDatabase.Refresh();
 
         Texture2D texture = Resources.Load<Texture2D>(filePath);
 
