@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
-// 접속 -> 교사 / 확인
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -17,7 +16,6 @@ public class GameManager : MonoBehaviour
     [Header("버튼")]
     public Button Btn_Save;
 
-    public List<CharacterInfo> savedCharacterInfoList = new List<CharacterInfo>();
 
     [System.Serializable]
     public class CharacterInfo
@@ -28,6 +26,11 @@ public class GameManager : MonoBehaviour
         public int meshIndex; // 각 부위의 메시 인덱스
     }
 
+    // 내정보
+    public CharacterInfo characterInfo;
+
+    // 여러 정보
+    public List<CharacterInfo> savedCharacterInfoList = new List<CharacterInfo>();
     private void Awake()
     {
         Instance = this;
