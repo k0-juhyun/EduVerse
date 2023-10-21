@@ -2096,7 +2096,6 @@ namespace Paroxe.PdfRenderer
                 // 이렇게 함으로써 페이지 컨테이너는 뷰포트의 왼쪽 끝에 정렬됩니다.
                 m_Internal.PageContainer.anchoredPosition = new Vector2(0.0f,
                     m_Internal.PageContainer.anchoredPosition.y);
-                Debug.Log("1");
             }
 
             // 만약 페이지 컨테이너의 상단 부분이 뷰포트의 하단을 넘어가면
@@ -2111,8 +2110,6 @@ namespace Paroxe.PdfRenderer
                     m_Internal.PageContainer.anchoredPosition.x,
                     m_Internal.PageContainer.sizeDelta.y - m_Internal.Viewport.rect.size.y);
 
-                Debug.Log("2");
-
             }
             // 만약 페이지 컨테이너의 하단 부분이 화면 위로 넘어가면:
             if (m_Internal.PageContainer.anchoredPosition.y < 0.0f)
@@ -2121,9 +2118,6 @@ namespace Paroxe.PdfRenderer
                 // 이렇게 함으로써 페이지 컨테이너는 화면 상단에 정렬됩니다.
                 m_Internal.PageContainer.anchoredPosition = new Vector2(
                     m_Internal.PageContainer.anchoredPosition.x, 0.0f);
-
-                Debug.Log("3");
-
             }
         }
 
