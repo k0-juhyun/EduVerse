@@ -1,9 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 
+[System.Serializable]
+public class CharacterInfo
+{
+    public string partName; // 각 부위 이름
+    public string objName;
+    public Mesh[] partList;
+    public int meshIndex; // 각 부위의 메시 인덱스
+}
+
+[System.Serializable]
+public class FriendInfo
+{
+    public List<CharacterInfo> data;
+}
+
+// 접속 -> 교사 / 확인
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -16,21 +33,15 @@ public class GameManager : MonoBehaviour
     [Header("버튼")]
     public Button Btn_Save;
 
+    // 나의 정보
+    public CharacterInfo myInfo;
 
-    [System.Serializable]
-    public class CharacterInfo
-    {
-        public string partName; // 각 부위 이름
-        public string objName;
-        public Mesh[] partList;
-        public int meshIndex; // 각 부위의 메시 인덱스
-    }
+    // 유저 정보를 여러개 가지고 있는 리스트
+    public List<CharacterInfo> friendList = new List<CharacterInfo>();
 
-    // 내정보
-    public CharacterInfo characterInfo;
+    // 유저 리스트의 key 값을 만들어 주기 위한 구조체
+    FriendInfo info = new FriendInfo();
 
-    // 여러 정보
-    public List<CharacterInfo> savedCharacterInfoList = new List<CharacterInfo>();
     private void Awake()
     {
         Instance = this;
@@ -46,25 +57,34 @@ public class GameManager : MonoBehaviour
     private void SaveCharacterInfo()
     {
         // 저장할 데이터 구조
-        List<CharacterInfo> savedInfoList = new List<CharacterInfo>();
-
-        savedCharacterInfoList.Clear();
+        friendList.Clear();
 
         foreach (var part in customization.customParts)
         {
-            CharacterInfo savedInfo = new CharacterInfo();
-            savedInfo.partName = part.partName; // 부위 이름 저장
-            savedInfo.objName = part.objName;
-            savedInfo.partList = part.partList;
-            savedInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
-            savedInfoList.Add(savedInfo);
+            myInfo = new CharacterInfo();
+
+            myInfo.partName = part.partName; // 부위 이름 저장
+            myInfo.objName = part.objName;
+            myInfo.partList = part.partList;
+            myInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
+
+            friendList.Add(myInfo);
         }
 
-        // JSON 파일로 저장
-        string json = JsonUtility.ToJson(savedInfoList);
-        File.WriteAllText(Application.persistentDataPath + "/characterInfo.json", json);
+        info.data = friendList;
 
-        // 저장된 정보를 리스트에 추가
-        savedCharacterInfoList.AddRange(savedInfoList);
+        string jsonData = JsonUtility.ToJson(info, true);
+        print(jsonData);
+
+        // jsonData를 파일로 저장
+        FileStream file = new FileStream(Application.dataPath + "/myInfo.txt", FileMode.Create);
+
+        // json string 데이터를 byte 배열로 만든다.
+        byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
+        
+        // byteData를 file에 쓰자
+        file.Write(byteData, 0, byteData.Length);
+
+        file.Close();
     }
 }
