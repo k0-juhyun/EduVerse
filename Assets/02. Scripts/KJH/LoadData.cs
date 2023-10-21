@@ -7,7 +7,8 @@ using System.Text;
 
 public class LoadData : MonoBehaviour
 {
-    #region 파츠클래스
+    public GameObject Character;
+
     [System.Serializable]
     public class CustomPart
     {
@@ -19,73 +20,67 @@ public class LoadData : MonoBehaviour
         public SkinnedMeshRenderer customRenderer;
     }
 
-    public CustomPart[] customParts;
+    [Space]
+    public List<CustomPart> customParts = new List<CustomPart>(); // 리스트로 변경
 
-    //private void Start()
-    //{
-    //    LoadCharacterInfo();
-    //}
-
-    //private void LoadCharacterInfo()
-    //{
-    //    string filePath = Application.dataPath + "/myInfo.txt";
-    //    if (File.Exists(filePath))
-    //    {
-    //        byte[] byteData = File.ReadAllBytes(filePath);
-    //        string jsonData = Encoding.UTF8.GetString(byteData);
-    //        GameManager.FriendInfo loadedInfo = new GameManager.FriendInfo();
-    //        loadedInfo.data = JsonUtility.FromJson<List<GameManager.CharacterInfo>>(jsonData);
-
-    //        foreach (var savedInfo in loadedInfo.data)
-    //        {
-    //            foreach (var part in customParts)
-    //            {
-    //                if (part.objName == savedInfo.objName)
-    //                {
-    //                    part.currentIdx = savedInfo.meshIndex;
-    //                    part.customRenderer.sharedMesh = part.partList[part.currentIdx];
-    //                    Debug.Log("1");
-    //                }
-    //                Debug.Log("2");
-    //            }
-    //            Debug.Log("3");
-    //        }
-    //        Debug.Log("4");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("No saved character info available.");
-    //    }
-    //}
-    #endregion
-
-    public CharacterInfo myInfo;
+    [Space]
+    public CharacterInfo[] myInfo = new CharacterInfo[0]; // 배열 초기화
 
     private void Start()
     {
         LoadCharacterInfo();
+        ApplyCustomData();
     }
+
     private void LoadCharacterInfo()
     {
-        // myInfo.txt를 읽어오고
-        FileStream file = new FileStream(Application.dataPath + "/myInfo.txt", FileMode.Open);
+        // myInfo.txt를 읽어옴
+        string filePath = Application.dataPath + "/myInfo.txt";
 
-        // file의 크기만큼 byte 배열을 할당한다
-        byte[] byteData = new byte[file.Length];
+        if (File.Exists(filePath))
+        {
+            string jsonData;
 
-        // byteData 에 file의 내용을 읽어온다.
-        file.Read(byteData, 0 ,byteData.Length);
+            using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8)) // UTF-8 형식으로 명시적 지정
+            {
+                jsonData = streamReader.ReadToEnd();
+            }
 
-        // 파일을 닫아주자
-        file.Close();
+            FriendInfo loadedData = JsonUtility.FromJson<FriendInfo>(jsonData); // 역직렬화 구조 수정
 
-        // byteData를 문자열로 바꾸자
-        string jsonData = Encoding.UTF8.GetString(byteData);
+            myInfo = loadedData.data.ToArray();
 
-        // 문자열로 되어있는 jsonData를 myInfo에 parsing한다.
+            Debug.Log("Data loaded: " + jsonData);
+        }
+        else
+        {
+            Debug.Log("File not found at path: " + filePath);
+        }
+    }
 
-        myInfo = JsonUtility.FromJson<CharacterInfo>(jsonData);
+    private void ApplyCustomData()
+    {
+        customParts.Clear(); // 기존 요소를 지움
 
-        print(jsonData);
+        for (int i = 0; i < myInfo.Length; i++)
+        {
+            CustomPart customPart = new CustomPart(); // 새 CustomPart 인스턴스 생성
+
+            customPart.partName = myInfo[i].partName;
+            customPart.objName = myInfo[i].objName;
+            customPart.partList = myInfo[i].partList;
+            customPart.currentIdx = myInfo[i].meshIndex;
+
+            Transform characterChild = Character.transform.Find(myInfo[i].objName);
+
+            if (characterChild != null)
+            {
+                customPart.partObj = characterChild.gameObject;
+                customPart.customRenderer = characterChild.gameObject.GetComponent<SkinnedMeshRenderer>();
+                customPart.customRenderer.sharedMesh = customPart.partList[customPart.currentIdx];
+            }
+
+            customParts.Add(customPart); // 리스트에 추가
+        }
     }
 }
