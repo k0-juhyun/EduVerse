@@ -22,6 +22,11 @@ public class PEA_MarketItemSlot : MonoBehaviour
         this.item = item;
     }
 
+    public void ItemPreview() 
+    {
+        Market.instance.Preview(item);
+    }
+
     public void OnClickAddMyItem()
     {
         StartCoroutine(IOnClickAddMyItem());
@@ -35,7 +40,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
         Texture2D texture = new Texture2D(t.width, t.height);
         texture.SetPixels(0, 0, t.width, t.height, t.GetPixels());
         byte[] bytes = texture.EncodeToJPG();
-        File.WriteAllBytes("Assets/Resources/MyItems_Sprites/" + item.itemName + ".jpg", bytes);
+        File.WriteAllBytes(Application.persistentDataPath + "/MyItems_Sprites/" + item.itemName + ".jpg", bytes);
         DestroyImmediate(texture);
     }
 }

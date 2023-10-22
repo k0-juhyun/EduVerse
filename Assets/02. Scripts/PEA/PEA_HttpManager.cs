@@ -11,7 +11,8 @@ public enum RequestType
     POST,       // 정보 저장
     PUT,        // 정보 업데이트
     DELETE,     // 정보 삭제
-    TEXTURE
+    GETTEXTURE,
+    POSTTEXTURE
 }
 
 public class HttpInfo
@@ -24,7 +25,7 @@ public class HttpInfo
     public void Set(RequestType type, string url, Action<DownloadHandler> callback, bool useDefaultUrl = true)
     {
         requestType = type;
-        if (useDefaultUrl) this.url = "http://192.168.1.97:5000";
+        if (useDefaultUrl) this.url = "http://221.163.19.218:5051/chat/senda";
         this.url = url;
         onReceive = callback;
     }
@@ -51,7 +52,9 @@ public class PEA_HttpManager : MonoBehaviour
 
     void Start()
     {
-        
+        HttpInfo httpInfo = new HttpInfo();
+        httpInfo.Set(RequestType.GET, "", null, true);
+        SendRequest(httpInfo);
     }
 
     void Update()
@@ -122,9 +125,9 @@ public class PEA_HttpManager : MonoBehaviour
             case RequestType.DELETE:
                 req = UnityWebRequest.Delete(httpInfo.url);
                 break;
-            case RequestType.TEXTURE:
-                req = UnityWebRequestTexture.GetTexture(httpInfo.url);
-                break;
+            //case RequestType.TEXTURE:
+            //    req = UnityWebRequestTexture.GetTexture(httpInfo.url);
+            //    break;
         }
 
 
@@ -134,7 +137,7 @@ public class PEA_HttpManager : MonoBehaviour
         // 만약 응답이 성공했으면 
         if (req.result == UnityWebRequest.Result.Success)
         {
-            //print("네트워크 응답 : " + req.downloadHandler.text);
+            print("네트워크 응답 : " + req.downloadHandler.text);
 
             if (httpInfo.onReceive != null)
             {

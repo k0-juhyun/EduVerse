@@ -21,7 +21,8 @@ public class PEA_ItemLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        AssetDatabase.Refresh();
+        // 임시 주석
+        //AssetDatabase.Refresh();
     }
 
     void Start()
