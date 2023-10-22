@@ -1,26 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 커스텀할 파츠 클래스
+// 단일 쌍 파츠
+[System.Serializable]
+public class CustomPart
+{
+    public string partName; // 커스텀할 파츠 이름
+    public GameObject partObj; // 커스텀할 파츠 오브젝트
+    public string objName;
+    public Mesh[] partList; // 교체 메쉬들
+    [HideInInspector]
+    public int currentIdx; // 현재 인덱스
+    public SkinnedMeshRenderer customRenderer;
+    public Button rightBtn;
+    public Button leftBtn;
+}
 // 캐릭터 커스터마이징
 // 버튼 누르면 각 커스터마이징 부위가 변경됨
+
 public class Customization : MonoBehaviour
 {
-    [System.Serializable]
-    // 커스텀할 파츠 클래스
-    // 단일 쌍 파츠
-    public class CustomPart
-    {
-        public string partName; // 커스텀할 파츠 이름
-        public GameObject partObj; // 커스텀할 파츠 오브젝트
-        public Mesh[] partList; // 교체 메쉬들
-        [HideInInspector]
-        public int currentIdx; // 현재 인덱스
-        [HideInInspector]
-        public SkinnedMeshRenderer customRenderer;
-        public Button rightBtn;
-        public Button leftBtn;
-    }
-
     [Header("목록")]
     public CustomPart[] customParts;
 
@@ -29,10 +29,14 @@ public class Customization : MonoBehaviour
         // 컴포넌트 할당
         foreach (var part in customParts)
         {
+            part.objName = part.partObj.gameObject.name;
             part.customRenderer = part.partObj.GetComponent<SkinnedMeshRenderer>();
             part.currentIdx = 0;
-            part.rightBtn.onClick.AddListener(() => OnClickRight(part));
-            part.leftBtn.onClick.AddListener(() => OnClickLeft(part));
+            if(part.rightBtn != null && part.leftBtn != null)
+            {
+                part.rightBtn.onClick.AddListener(() => OnClickRight(part));
+                part.leftBtn.onClick.AddListener(() => OnClickLeft(part));
+            }
         }
     }
 

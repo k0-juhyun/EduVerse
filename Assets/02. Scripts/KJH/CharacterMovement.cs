@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 // 조이스틱 값 받아서 캐릭터가 움직임
 public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    [Header("조이스틱")]
     public RectTransform rectBackground;
     public RectTransform rectJoyStick;
 
@@ -15,7 +16,7 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     [Space] [Header("캐릭터")] public GameObject Character;
 
-    private float moveSpeed = 2;
+    [HideInInspector] public float moveSpeed = 2;
     private float radius;
     private float animParameters;
 
@@ -41,6 +42,7 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
         // 손 떼면 조이스틱 초기화
         rectJoyStick.localPosition = Vector3.zero;
         movePos = Vector3.zero;
+        moveSpeed = 0;
 
         // 손을 뗐을 때 이동 방향은 카메라 정면방향
 
