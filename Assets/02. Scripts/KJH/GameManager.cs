@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 [System.Serializable]
 public class CharacterInfo
@@ -21,7 +22,7 @@ public class FriendInfo
 }
 
 // 접속 -> 교사 / 확인
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun
 {
     public static GameManager Instance;
 
@@ -56,35 +57,38 @@ public class GameManager : MonoBehaviour
 
     private void SaveCharacterInfo()
     {
-        // 저장할 데이터 구조
-        friendList.Clear();
-
-        foreach (var part in customization.customParts)
+        if (photonView.IsMine)
         {
-            myInfo = new CharacterInfo();
+            // 저장할 데이터 구조
+            friendList.Clear();
 
-            myInfo.partName = part.partName; // 부위 이름 저장
-            myInfo.objName = part.objName;
-            myInfo.partList = part.partList;
-            myInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
+            foreach (var part in customization.customParts)
+            {
+                myInfo = new CharacterInfo();
 
-            friendList.Add(myInfo);
+                myInfo.partName = part.partName; // 부위 이름 저장
+                myInfo.objName = part.objName;
+                myInfo.partList = part.partList;
+                myInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
+
+                friendList.Add(myInfo);
+            }
+
+            info.data = friendList;
+
+            string jsonData = JsonUtility.ToJson(info, true);
+            print(jsonData);
+
+            // jsonData를 파일로 저장
+            FileStream file = new FileStream(Application.dataPath + "/myInfo.txt", FileMode.Create);
+
+            // json string 데이터를 byte 배열로 만든다.
+            byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
+
+            // byteData를 file에 쓰자
+            file.Write(byteData, 0, byteData.Length);
+
+            file.Close();
         }
-
-        info.data = friendList;
-
-        string jsonData = JsonUtility.ToJson(info, true);
-        print(jsonData);
-
-        // jsonData를 파일로 저장
-        FileStream file = new FileStream(Application.dataPath + "/myInfo.txt", FileMode.Create);
-
-        // json string 데이터를 byte 배열로 만든다.
-        byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
-        
-        // byteData를 file에 쓰자
-        file.Write(byteData, 0, byteData.Length);
-
-        file.Close();
     }
 }
