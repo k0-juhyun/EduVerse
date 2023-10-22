@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -31,6 +32,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public VideoCreator videoCreator;
 
+    // page raycast target 설정.
+    public GameObject pagecontainer;
+
+    // pagecontainer 자식 설정
+    RawImage[] pagecontainer_Children;
+
     private void Start()
     {
         col = GetComponent<Collider>();
@@ -48,11 +55,11 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
             {
-                print(hit.transform.name);
+
             }
             else
             {
-                print("none");
+
             }
         }
     }
@@ -67,6 +74,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnDrag(PointerEventData eventData)
     {
+            Debug.Log("드래그");
         if (isCapturing)
         {
             endMousePosition = Input.mousePosition;
@@ -97,6 +105,18 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnCaptureBtnClick()
     {
+        pagecontainer_Children = pagecontainer.GetComponentsInChildren<RawImage>();
+
+        foreach (RawImage child in pagecontainer_Children)
+        {
+            // 자기 자신의 경우엔 무시 
+            // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
+            if (child.name == transform.name)
+                return;
+
+            child.raycastTarget = false;
+        }
+
         col.enabled = true;
         captureAreaImage.SetActive(true);
     }
@@ -118,7 +138,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     void CaptureScreen()
     {
-        print(Application.persistentDataPath);
+        print(Application.persistentDataPath);       
         StartCoroutine(IScreenCapture(width, height, startX, startY));
     }
 
@@ -149,5 +169,14 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         captureResult.SetActive(true);
         captureResultImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         captureResultImage.preserveAspect = true;
+
+        // raycast target 다시 설정.
+        foreach (RawImage child in pagecontainer_Children)
+        {
+            // 자기 자신의 경우엔 무시 
+            // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
+            child.raycastTarget = true;
+        }
+
     }
 }
