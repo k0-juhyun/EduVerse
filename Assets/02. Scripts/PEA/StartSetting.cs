@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class StartSetting : MonoBehaviour
 {
@@ -22,7 +23,11 @@ public class StartSetting : MonoBehaviour
     {
         if(nameInput.text.Length > 0)
         {
-           PlayerManager.instance.SetMyInfo( new User(nameInput.text, isTeacherTpggle.isOn));
+            PlayerManager.instance.SetMyInfo( new User(nameInput.text, isTeacherTpggle.isOn));
+            if(PhotonNetwork.IsConnectedAndReady)
+            {
+                PhotonNetwork.LoadLevel(1);
+            }
         }
     }
 }

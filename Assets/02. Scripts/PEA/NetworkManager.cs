@@ -55,8 +55,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
 
         print("Joined Room");
-
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
     }
-
 }

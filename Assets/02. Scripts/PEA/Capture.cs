@@ -118,6 +118,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     void CaptureScreen()
     {
+        print(Application.persistentDataPath);
         StartCoroutine(IScreenCapture(width, height, startX, startY));
     }
 
@@ -128,8 +129,14 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         Texture2D captureTexture = new Texture2D(width, height);
         captureTexture.ReadPixels(new Rect(startX, startY, width, height), 0, 0);
 
-        string filePath = "/Capture/" + Time.time;
-        captureResultDataPath = Application.persistentDataPath + filePath + ".png";
+        string filePath = "/Capture/" + Time.time + ".png";
+        captureResultDataPath = Application.persistentDataPath + filePath ;
+
+        if(!Directory.Exists(Application.persistentDataPath + "/Capture/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/Capture/");
+        }
+
         File.WriteAllBytes(captureResultDataPath, captureTexture.EncodeToPNG());
 
         Texture2D texture = new Texture2D(captureTexture.width, captureTexture.height);
