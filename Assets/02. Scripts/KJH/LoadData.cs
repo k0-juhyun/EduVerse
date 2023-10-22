@@ -5,16 +5,12 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 using System.Text;
+using Unity.VisualScripting;
 
 public class LoadData : MonoBehaviourPun
 {
     [Header("캐릭터")]
     public GameObject Character;
-
-    [Space]
-    [Header("캔버스 및 카메라")]
-    public GameObject Pivot;
-    public GameObject Canvas;
 
     [System.Serializable]
     public class CustomPart
@@ -37,12 +33,7 @@ public class LoadData : MonoBehaviourPun
 
     private void Start()
     {
-        if(photonView.IsMine)
-        {
-            Pivot.gameObject.SetActive(true);
-            Canvas.gameObject.SetActive(true);
-            LoadCharacterInfo();
-        }
+        LoadCharacterInfo();
     }
 
     private void LoadCharacterInfo()
@@ -112,7 +103,7 @@ public class LoadData : MonoBehaviourPun
             customPart.currentIdx = myInfo[i].meshIndex;
 
             Transform characterChild = Character.transform.Find(myInfo[i].objName);
-            
+
             if (characterChild != null)
             {
                 customPart.partObj = characterChild.gameObject;
