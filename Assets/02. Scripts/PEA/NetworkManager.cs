@@ -20,6 +20,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
         }
+
+        PhotonNetwork.SerializationRate = 60;
     }
 
     void Start()

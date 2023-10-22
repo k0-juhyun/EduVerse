@@ -29,6 +29,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public float minSpeed;
     public float maxSpeed;
 
+    public GameObject body;
+
     #region º¯¼öµé
     private bool isTouch = false;
 
@@ -119,23 +121,25 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         else
         {
-            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            //body.transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            //body.transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            //print(transform.position);
         }
 
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-        }
-        else
-        {
-            receivePos = (Vector3)stream.ReceiveNext();
-            receiveRot = (Quaternion)stream.ReceiveNext();
-        }
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(body.transform.position);
+        //    stream.SendNext(body.transform.rotation);
+        //    print(transform.position);
+        //}
+        //else
+        //{
+        //    receivePos = (Vector3)stream.ReceiveNext();
+        //    receiveRot = (Quaternion)stream.ReceiveNext();
+        //}
     }
 }
