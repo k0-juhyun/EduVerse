@@ -74,8 +74,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             width = Mathf.Abs(Mathf.RoundToInt(endMousePosition.x - startMousePosition.x));
             height = Mathf.Abs(Mathf.RoundToInt(endMousePosition.y - startMousePosition.y));
 
-            startX = (int)Mathf.Min(startMousePosition.x, endMousePosition.x);
-            startY = (int)Mathf.Min(startMousePosition.y, endMousePosition.y);
+            startX = (int)((Mathf.Min(startMousePosition.x, endMousePosition.x) / rtCanvas.localScale.x));
+            startY = (int)((Mathf.Min(startMousePosition.y, endMousePosition.y) / rtCanvas.localScale.y));
 
             rtCaptureArea.sizeDelta = new Vector2(width, height);
 
@@ -92,12 +92,15 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             CaptureScreen();
             col.enabled = false;
             captureAreaImage.SetActive(false);
+            captureAreaImage.transform.SetParent(null);
         }
     }
 
     public void OnCaptureBtnClick()
     {
         col.enabled = true;
+        captureAreaImage.transform.localScale = Vector3.one;
+        captureAreaImage.transform.SetParent(rtCanvas);
         captureAreaImage.SetActive(true);
     }
 
