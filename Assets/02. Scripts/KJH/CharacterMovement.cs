@@ -121,25 +121,25 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         else
         {
-            body.transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            body.transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-            print(transform.position);
+            //body.transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            //body.transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            //print(transform.position);
         }
 
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(body.transform.position);
-            stream.SendNext(body.transform.rotation);
-            print(transform.position);
-        }
-        else
-        {
-            receivePos = (Vector3)stream.ReceiveNext();
-            receiveRot = (Quaternion)stream.ReceiveNext();
-        }
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(body.transform.position);
+        //    stream.SendNext(body.transform.rotation);
+        //    print(transform.position);
+        //}
+        //else
+        //{
+        //    receivePos = (Vector3)stream.ReceiveNext();
+        //    receiveRot = (Quaternion)stream.ReceiveNext();
+        //}
     }
 }
