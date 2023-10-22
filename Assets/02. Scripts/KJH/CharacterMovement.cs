@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject Camera;
     public GameObject Canvas;
@@ -29,19 +29,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public float minSpeed;
     public float maxSpeed;
 
-    public GameObject body;
-
-    #region 변수들
     private bool isTouch = false;
 
     private Vector3 movePos;
 
     private Animator animator;
-
-    private Vector3 receivePos;
-    private Quaternion receiveRot = Quaternion.identity;
-    private float lerpSpeed = 50;
-    #endregion
 
     #region 캐릭터 움직임 (조이스틱)
     public void OnPointerDown(PointerEventData eventData)
@@ -118,28 +110,5 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 Character.transform.position += movePos;
             }
         }
-
-        else
-        {
-            //body.transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            //body.transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-            //print(transform.position);
-        }
-
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        //if (stream.IsWriting)
-        //{
-        //    stream.SendNext(body.transform.position);
-        //    stream.SendNext(body.transform.rotation);
-        //    print(transform.position);
-        //}
-        //else
-        //{
-        //    receivePos = (Vector3)stream.ReceiveNext();
-        //    receiveRot = (Quaternion)stream.ReceiveNext();
-        //}
     }
 }
