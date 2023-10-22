@@ -1169,7 +1169,7 @@ namespace Paroxe.PdfRenderer
             //            m_ZoomToGo = viewportHeight / firstPageHeight;
 
             //            break;
-            //        }
+            //        }f
             //    case PageFittingType.WholePage:
             //        {
             //            float firstPageWidth = referencePageSize.x;
@@ -2109,6 +2109,7 @@ namespace Paroxe.PdfRenderer
                 m_Internal.PageContainer.anchoredPosition = new Vector2(
                     m_Internal.PageContainer.anchoredPosition.x,
                     m_Internal.PageContainer.sizeDelta.y - m_Internal.Viewport.rect.size.y);
+
             }
             // 만약 페이지 컨테이너의 하단 부분이 화면 위로 넘어가면:
             if (m_Internal.PageContainer.anchoredPosition.y < 0.0f)
@@ -2309,6 +2310,12 @@ namespace Paroxe.PdfRenderer
 
         private void Update()
         {
+            if(Input.GetKeyDown(KeyCode.U))
+            {
+                m_Internal.PageContainer.sizeDelta = new Vector2(m_Internal.PageContainer.sizeDelta.x * 2, m_Internal.PageContainer.sizeDelta.y);
+                Debug.Log("ff");
+            }
+
             if (m_DelayedOnEnable)
             {
                 m_DelayedOnEnable = false;
@@ -2472,6 +2479,9 @@ namespace Paroxe.PdfRenderer
 
             m_ThumbnailsViewer.OnDocumentLoaded(document);
             m_BookmarksViewer.OnDocumentLoaded(document);
+
+            // 임시 테스트용.
+            m_Internal.PageContainer.sizeDelta = new Vector2(m_Internal.PageContainer.sizeDelta.x * 2, m_Internal.PageContainer.sizeDelta.y);
         }
 
         // 문서 로드가 실패했음을 알림.
