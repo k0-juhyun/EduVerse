@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 using System.IO;
 using System.Text;
 
-public class LoadData : MonoBehaviour
+public class LoadData : MonoBehaviourPun
 {
+    [Header("캐릭터")]
     public GameObject Character;
+
+    [Space]
+    [Header("캔버스 및 카메라")]
+    public GameObject Pivot;
+    public GameObject Canvas;
 
     [System.Serializable]
     public class CustomPart
@@ -21,14 +28,21 @@ public class LoadData : MonoBehaviour
     }
 
     [Space]
+    [HideInInspector]
     public List<CustomPart> customParts = new List<CustomPart>(); // 리스트로 변경
 
     [Space]
+    [HideInInspector]
     public CharacterInfo[] myInfo = new CharacterInfo[0]; // 배열 초기화
 
     private void Start()
     {
-        LoadCharacterInfo();
+        if(photonView.IsMine)
+        {
+            Pivot.gameObject.SetActive(true);
+            Canvas.gameObject.SetActive(true);
+            LoadCharacterInfo();
+        }
     }
 
     private void LoadCharacterInfo()

@@ -16,6 +16,6 @@ public class SceneMgr : MonoBehaviour
 
     private void OnLoadNextSceneClick()
     {
-        SceneManager.LoadScene("ClassRoomScene");
+        NetworkManager.instance.JoinRoom();
     }
 }

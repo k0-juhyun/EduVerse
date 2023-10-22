@@ -53,6 +53,6 @@ public class PlayerManager : MonoBehaviour
     public void SetMyInfo(User user)
     {
         myInfo = user;
-        NetworkManager.instance.JoinRoom();
+        //NetworkManager.instance.JoinRoom();
     }
 }
