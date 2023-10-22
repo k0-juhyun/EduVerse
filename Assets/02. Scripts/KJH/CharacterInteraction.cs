@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 // 1. 의자에 앉기
@@ -21,6 +22,7 @@ public class CharacterInteraction : MonoBehaviour
     [Header("버튼")]
     public Button Btn_Sit;
     public Button Btn_Camera;
+    public Button Btn_Custom;
 
     private Animator anim;
 
@@ -35,8 +37,10 @@ public class CharacterInteraction : MonoBehaviour
         characterMovement = GetComponent<CharacterMovement>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
+        Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
     }
 
+    #region 의자 앉기 기능
     private void OnTriggerStay(Collider other)
     {
         // 의자 근처에 있고
@@ -77,10 +81,20 @@ public class CharacterInteraction : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 카메라 전환 기능
     // TPS랑 FPS 카메라 전환
     public void OnCameraButtonClick()
     {
         isTPSCam = !isTPSCam;
     }
+    #endregion
+
+    #region 의상 변경 기능
+    private void OnCustomButtonClick()
+    {
+        SceneManager.LoadScene("CustomizeScene");
+    }
+    #endregion
 }
