@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -6,7 +7,7 @@ using UnityEngine.EventSystems;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
     [Header("조이스틱")]
     public RectTransform rectBackground;
@@ -14,7 +15,7 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     [Space] public Transform cameraPivotTransform;
 
-    [Space] [Header("캐릭터")] public GameObject Character;
+    [Space][Header("캐릭터")] public GameObject Character;
 
     [HideInInspector] public float moveSpeed = 2;
     private float radius;
@@ -31,6 +32,11 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     private Animator animator;
 
+    private Vector3 receivePos;
+    private Quaternion receiveRot = Quaternion.identity;
+    private float lerpSpeed = 50;
+
+    #region 캐릭터 움직임 (조이스틱)
     public void OnPointerDown(PointerEventData eventData)
     {
         isTouch = true;
@@ -79,6 +85,8 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
         moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
     }
 
+    #endregion
+
     private void Awake()
     {
         radius = rectBackground.rect.width * 0.5f;
@@ -89,10 +97,34 @@ public class CharacterMovement : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     private void FixedUpdate()
     {
-        // 터치할때만 움직이도록
-        if (isTouch)
+        if (photonView.IsMine)
         {
-            Character.transform.position += movePos;
+            // 터치할때만 움직이도록
+            if (isTouch)
+            {
+                Character.transform.position += movePos;
+            }
+        }
+
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+        }
+
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }
