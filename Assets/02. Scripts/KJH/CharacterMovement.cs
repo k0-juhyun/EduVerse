@@ -9,6 +9,9 @@ using UnityEngine.EventSystems;
 // 조이스틱 값 받아서 캐릭터가 움직임
 public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
+    public GameObject Camera;
+    public GameObject Canvas;
+
     [Header("조이스틱")]
     public RectTransform rectBackground;
     public RectTransform rectJoyStick;
@@ -26,6 +29,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public float minSpeed;
     public float maxSpeed;
 
+    #region 변수들
     private bool isTouch = false;
 
     private Vector3 movePos;
@@ -35,6 +39,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private Vector3 receivePos;
     private Quaternion receiveRot = Quaternion.identity;
     private float lerpSpeed = 50;
+    #endregion
 
     #region 캐릭터 움직임 (조이스틱)
     public void OnPointerDown(PointerEventData eventData)
@@ -93,6 +98,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
+
+        if(photonView.IsMine)
+        {
+            Camera.gameObject.SetActive(true);
+            Canvas.gameObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
