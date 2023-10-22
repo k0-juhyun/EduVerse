@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -7,7 +8,7 @@ using UnityEngine.EventSystems;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
     public GameObject Camera;
     public GameObject Canvas;
@@ -34,6 +35,15 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private Vector3 movePos;
 
     private Animator animator;
+
+    #region 포톤 값
+    [HideInInspector]
+    public Vector3 receivePos;
+    [HideInInspector]
+    public Quaternion receiveRot = Quaternion.identity;
+    [HideInInspector]
+    public float lerpSpeed = 50;
+    #endregion
 
     #region 캐릭터 움직임 (조이스틱)
     public void OnPointerDown(PointerEventData eventData)
@@ -93,7 +103,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
 
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             Camera.gameObject.SetActive(true);
             Canvas.gameObject.SetActive(true);
@@ -109,6 +119,25 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             {
                 Character.transform.position += movePos;
             }
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }
