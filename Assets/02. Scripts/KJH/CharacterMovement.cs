@@ -62,7 +62,10 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         // 손을 뗐을 때 이동 방향은 카메라 정면방향
 
         isTouch = false;
-        animator.SetFloat("moveSpeed", 0);
+        animator.SetFloat("moveSpeed", 0f);
+
+        photonView.RPC("UpdateAnimation", RpcTarget.All, 0f);
+
         animator.SetTrigger("Idle");
     }
 
@@ -91,9 +94,10 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
         animator.SetFloat("moveSpeed", animParameters);
 
+        photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+
         moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
     }
-
     #endregion
 
     private void Awake()
@@ -139,5 +143,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             receivePos = (Vector3)stream.ReceiveNext();
             receiveRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    private void UpdateAnimation(float animParameter)
+    {
+        animator.SetFloat("moveSpeed", animParameter);
     }
 }

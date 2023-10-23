@@ -15,7 +15,7 @@ using Photon.Pun;
 // - 앉기 버튼을 누르면 앉게 한다.
 // - 다른 사람이 앉아있는 의자는 앉지 못한다.
 
-public class CharacterInteraction : MonoBehaviour
+public class CharacterInteraction : MonoBehaviourPun
 {
     [Header("캐릭터")]
     public GameObject Character;
@@ -60,6 +60,8 @@ public class CharacterInteraction : MonoBehaviour
                     // 앉는 애니메이션실행하고
                     anim.Play("Sit");
 
+                    photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
+
                     // 위치를 의자 위치로
                     Character.transform.position =
                         new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
@@ -67,6 +69,9 @@ public class CharacterInteraction : MonoBehaviour
 
                     // 사람 앉았다.
                     chairInfo.isFull = true;
+
+                    //photonView.RPC(nameof(SetChairIsFull), RpcTarget.All, other.gameObject.GetPhotonView().ViewID, true);
+                    //photonView.RPC(nameof(chairInfo.SetIsFull), RpcTarget.All, true);
                 }
             }
 
@@ -78,10 +83,26 @@ public class CharacterInteraction : MonoBehaviour
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
                     chairInfo.isFull = false;
+
+                    //photonView.RPC(nameof(SetChairIsFull), RpcTarget.All, other.gameObject.GetPhotonView().ViewID, false);
+                    //photonView.RPC(nameof(chairInfo.SetIsFull), RpcTarget.All, false);
                 }
             }
         }
     }
+
+    [PunRPC]
+    private void SetChairIsFull(int viewID, bool isFull)
+    {
+        PhotonView.Find(viewID).GetComponent<ChairInfo>().SetIsFull(isFull);
+    }
+
+    [PunRPC]
+    private void animPlayRPC(string animation)
+    {
+        anim.Play(animation);
+    }
+
     #endregion
 
     #region 카메라 전환 기능

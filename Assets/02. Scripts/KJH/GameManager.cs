@@ -35,10 +35,10 @@ public class GameManager : MonoBehaviourPun
     public Button Btn_Save;
 
     // 나의 정보
-    public CharacterInfo myInfo;
+    public List<CharacterInfo> myInfo = new List<CharacterInfo>();
 
     // 유저 정보를 여러개 가지고 있는 리스트
-    public List<CharacterInfo> friendList = new List<CharacterInfo>();
+    //public List<CharacterInfo> friendList = new List<CharacterInfo>();
 
     // 유저 리스트의 key 값을 만들어 주기 위한 구조체
     FriendInfo info = new FriendInfo();
@@ -60,28 +60,28 @@ public class GameManager : MonoBehaviourPun
         if (photonView.IsMine)
         {
             // 저장할 데이터 구조
-            friendList.Clear();
+            myInfo.Clear();
 
             foreach (var part in customization.customParts)
             {
-                myInfo = new CharacterInfo();
+                CharacterInfo partInfo = new CharacterInfo();
 
-                myInfo.partName = part.partName; // 부위 이름 저장
-                myInfo.objName = part.objName;
-                myInfo.partList = part.partList;
-                myInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
+                partInfo.partName = part.partName; // 부위 이름 저장
+                partInfo.objName = part.objName;
+                partInfo.partList = part.partList;
+                partInfo.meshIndex = part.currentIdx; // 메시 인덱스 저장
 
-                friendList.Add(myInfo);
+                myInfo.Add(partInfo);
             }
 
-            info.data = friendList;
+            info.data = myInfo;
 
             string jsonData = JsonUtility.ToJson(info, true);
-            print(jsonData);
 
             // jsonData를 파일로 저장
-            FileStream file = new FileStream(Application.dataPath + "/myInfo.txt", FileMode.Create);
+            FileStream file = new FileStream(Application.streamingAssetsPath + "/myInfo.txt", FileMode.Create);
 
+            print(jsonData);
             // json string 데이터를 byte 배열로 만든다.
             byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
 

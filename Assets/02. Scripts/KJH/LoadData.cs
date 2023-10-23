@@ -23,23 +23,26 @@ public class LoadData : MonoBehaviourPun
         public SkinnedMeshRenderer customRenderer;
     }
 
+    public CustomPart customPart;
     [Space]
-    [HideInInspector]
+    //[HideInInspector]
     public List<CustomPart> customParts = new List<CustomPart>(); // 리스트로 변경
 
     [Space]
-    [HideInInspector]
     public CharacterInfo[] myInfo = new CharacterInfo[0]; // 배열 초기화
 
     private void Start()
     {
-        LoadCharacterInfo();
+        if (photonView.IsMine)
+        {
+            LoadCharacterInfo();
+        }
     }
 
     private void LoadCharacterInfo()
     {
         // myInfo.txt를 읽어옴
-        string filePath = Application.dataPath + "/myInfo.txt";
+        string filePath = Application.streamingAssetsPath + "/myInfo.txt";
 
         if (File.Exists(filePath))
         {
@@ -54,7 +57,7 @@ public class LoadData : MonoBehaviourPun
 
             myInfo = loadedData.data.ToArray();
 
-            Debug.Log("Data loaded: " + jsonData);
+            Debug.Log("Data loaded: 박은아 공주" + jsonData);
         }
         else
         {
@@ -68,51 +71,37 @@ public class LoadData : MonoBehaviourPun
     {
         customParts.Clear(); // 기존 요소를 지움
 
-        #region 머리
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < myInfo.Length; i++)
         {
-            CustomPart customPart = new CustomPart(); // 새 CustomPart 인스턴스 생성
+            print("ApplyCustomData");
 
             customPart.partName = myInfo[i].partName;
             customPart.objName = myInfo[i].objName;
             customPart.partList = myInfo[i].partList;
             customPart.currentIdx = myInfo[i].meshIndex;
 
-            Transform characterChild = Character.transform.GetChild(i).GetChild(0);
+            Transform characterChild;
+
+            characterChild = (i < 2 ? Character.transform.GetChild(i).GetChild(0) : Character.transform.Find(myInfo[i].objName));
 
             if (characterChild != null)
             {
                 customPart.partObj = characterChild.gameObject;
                 customPart.customRenderer = characterChild.gameObject.GetComponent<SkinnedMeshRenderer>();
                 customPart.customRenderer.sharedMesh = customPart.partList[customPart.currentIdx];
+                photonView.RPC("ApplyMesh", RpcTarget.Others ,customPart.currentIdx);
             }
 
             customParts.Add(customPart); // 리스트에 추가
         }
 
-        #endregion
+    }
 
-        #region 머리제외
-        for (int i = 2; i < myInfo.Length; i++)
-        {
-            CustomPart customPart = new CustomPart(); // 새 CustomPart 인스턴스 생성
-
-            customPart.partName = myInfo[i].partName;
-            customPart.objName = myInfo[i].objName;
-            customPart.partList = myInfo[i].partList;
-            customPart.currentIdx = myInfo[i].meshIndex;
-
-            Transform characterChild = Character.transform.Find(myInfo[i].objName);
-
-            if (characterChild != null)
-            {
-                customPart.partObj = characterChild.gameObject;
-                customPart.customRenderer = characterChild.gameObject.GetComponent<SkinnedMeshRenderer>();
-                customPart.customRenderer.sharedMesh = customPart.partList[customPart.currentIdx];
-            }
-
-            customParts.Add(customPart); // 리스트에 추가
-        }
-        #endregion
+    [PunRPC]
+    void ApplyMesh(int curIndex)
+    {
+        print("------ " + curIndex);
+        customPart.customRenderer.sharedMesh = customPart.partList[curIndex];
     }
 }
+
