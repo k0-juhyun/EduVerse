@@ -13,8 +13,22 @@ public class CustomPartDB
 [System.Serializable]
 public class CharacterData
 {
-    public List<CharacterInfo> myInfo;
+    public List<CharacterInfo> myData;
 }
+
+[System.Serializable]
+public class FriendInfo
+{
+    public List<CharacterInfo> data;
+}
+// 접속 -> 교사 / 확인
+[System.Serializable]
+public class CharacterInfo
+{
+    public List<string> meshObjName;
+    public List<int> meshIndex; // 각 부위의 메시 인덱스
+}
+
 
 public class DataBase : MonoBehaviour
 {
@@ -28,5 +42,13 @@ public class DataBase : MonoBehaviour
     }
 
     public CustomPartDB[] db;
+
     public CharacterData characterData;
+
+    public CharacterInfo myInfo;
+
+    public List<CharacterInfo> friendList = new List<CharacterInfo>();
+    
+    public FriendInfo info = new FriendInfo();
+
 }

@@ -6,21 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-
-// 접속 -> 교사 / 확인
-[System.Serializable]
-public class CharacterInfo
-{
-    public List<string> meshObjName;
-    public List<int> meshIndex; // 각 부위의 메시 인덱스
-}
-
-[System.Serializable]
-public class FriendInfo
-{
-    public List<CharacterInfo> data;
-}
-
 public class GameManager : MonoBehaviourPun
 {
     public static GameManager Instance;
@@ -34,12 +19,12 @@ public class GameManager : MonoBehaviourPun
     public Button Btn_Save;
 
     // 나의 커스텀 정보
-    public CharacterInfo myInfo;
+    //public CharacterInfo myInfo;
 
     // 커스텀 정보 리스트
-    public List<CharacterInfo> friendList = new List<CharacterInfo>();
+    //public List<CharacterInfo> friendList = new List<CharacterInfo>();
 
-    FriendInfo info = new FriendInfo();
+    //FriendInfo info = new FriendInfo();
 
     private void Awake()
     {
@@ -57,12 +42,12 @@ public class GameManager : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            friendList.Add(myInfo);
+            DataBase.instance.friendList.Add(DataBase.instance.myInfo);
 
-            info.data = friendList;
+            DataBase.instance.info.data = DataBase.instance.friendList;
 
             // myInfo 를 json 형태로
-            string jsonData = JsonUtility.ToJson(info, true);
+            string jsonData = JsonUtility.ToJson(DataBase.instance.info, true);
             print(jsonData);
 
             // json Data를 파일로 저장

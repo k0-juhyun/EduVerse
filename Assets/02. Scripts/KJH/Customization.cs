@@ -44,8 +44,8 @@ public class Customization : MonoBehaviour
         // 리스트에 처음에 모든 메쉬들의 인덱스를 넣어두고
         for (int i = 0; i < customParts.Length; i++)
         {
-            GameManager.Instance.myInfo.meshObjName.Add(customParts[i].objName);
-            GameManager.Instance.myInfo.meshIndex.Add(customParts[i].currentIdx); // 요소 추가
+            DataBase.instance.myInfo.meshObjName.Add(customParts[i].objName);
+            DataBase.instance.myInfo.meshIndex.Add(customParts[i].currentIdx); // 요소 추가
         }
     }
 
@@ -68,7 +68,7 @@ public class Customization : MonoBehaviour
         if (curRenderer != null && curIdx >= 0 && curIdx < allIdx.Length)
         {
             curRenderer.sharedMesh = allIdx[curIdx];
-            GameManager.Instance.myInfo.meshIndex[index] = curIdx;
+            DataBase.instance.myInfo.meshIndex[index] = curIdx;
         }
     }
 

@@ -19,11 +19,11 @@ public class LoadData : MonoBehaviourPun
     {
         DataBase.instance.characterData = new CharacterData();
 
-        for (int i = 0; i < GameManager.Instance.myInfo.meshObjName.Count; i++)
+        for (int i = 0; i < DataBase.instance.myInfo.meshObjName.Count; i++)
         {
             GameObject currentObject = i < 3
                 ? Character.transform.GetChild(i).GetChild(0).gameObject
-                : Character.transform.Find(GameManager.Instance.myInfo.meshObjName[i])?.gameObject;
+                : Character.transform.Find(DataBase.instance.myInfo.meshObjName[i])?.gameObject;
 
             if (currentObject != null)
             {
@@ -52,7 +52,7 @@ public class LoadData : MonoBehaviourPun
 
             FriendInfo loadedData = JsonUtility.FromJson<FriendInfo>(jsonData); // 역직렬화 구조 수정
 
-            DataBase.instance.characterData.myInfo = loadedData.data;
+            DataBase.instance.characterData.myData = loadedData.data;
 
             Debug.Log("Data loaded: 박은아 공주" + jsonData);
         }
@@ -66,7 +66,7 @@ public class LoadData : MonoBehaviourPun
         {
             print(i + "dd");
             SkinnedMeshRenderer skinnedMeshRenderer = partObj[i].GetComponent<SkinnedMeshRenderer>();
-            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myInfo[0].meshIndex[i]]; 
+            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myData[0].meshIndex[i]]; 
         }
     }
 
