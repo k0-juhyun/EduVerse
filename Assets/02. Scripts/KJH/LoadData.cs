@@ -6,33 +6,31 @@ using Photon.Pun;
 using System.IO;
 using System.Text;
 using Unity.VisualScripting;
+using UnityEngine.XR;
+
 
 public class LoadData : MonoBehaviourPun
 {
     [Header("캐릭터")]
     public GameObject Character;
 
-    [System.Serializable]
-    public class CustomPart
-    {
-        public string partName;
-        public GameObject partObj;
-        public string objName;
-        public Mesh[] partList;
-        public int currentIdx;
-        public SkinnedMeshRenderer customRenderer;
-    }
-
-    public CustomPart customPart;
-    [Space]
-    //[HideInInspector]
-    public List<CustomPart> customParts = new List<CustomPart>(); // 리스트로 변경
-
-    [Space]
-    public CharacterInfo[] myInfo = new CharacterInfo[0]; // 배열 초기화
-
+    public List<GameObject> partObj;
     private void Start()
     {
+        DataBase.instance.characterData = new CharacterData();
+
+        for (int i = 0; i < GameManager.Instance.myInfo.meshObjName.Count; i++)
+        {
+            GameObject currentObject = i < 3
+                ? Character.transform.GetChild(i).GetChild(0).gameObject
+                : Character.transform.Find(GameManager.Instance.myInfo.meshObjName[i])?.gameObject;
+
+            if (currentObject != null)
+            {
+                partObj.Add(currentObject);
+            }
+        }
+
         if (photonView.IsMine)
         {
             LoadCharacterInfo();
@@ -41,7 +39,6 @@ public class LoadData : MonoBehaviourPun
 
     private void LoadCharacterInfo()
     {
-        // myInfo.txt를 읽어옴
         string filePath = Application.streamingAssetsPath + "/myInfo.txt";
 
         if (File.Exists(filePath))
@@ -55,53 +52,27 @@ public class LoadData : MonoBehaviourPun
 
             FriendInfo loadedData = JsonUtility.FromJson<FriendInfo>(jsonData); // 역직렬화 구조 수정
 
-            myInfo = loadedData.data.ToArray();
+            DataBase.instance.characterData.myInfo = loadedData.data;
 
             Debug.Log("Data loaded: 박은아 공주" + jsonData);
         }
-        else
-        {
-            Debug.Log("File not found at path: " + filePath);
-        }
 
-        ApplyCustomData();
+        ApplyCharacterInfo();
     }
 
-    private void ApplyCustomData()
+    private void ApplyCharacterInfo()
     {
-        customParts.Clear(); // 기존 요소를 지움
-
-        for (int i = 0; i < myInfo.Length; i++)
+        for (int i = 0; i < partObj.Count; i++)
         {
-            print("ApplyCustomData");
-
-            customPart.partName = myInfo[i].partName;
-            customPart.objName = myInfo[i].objName;
-            customPart.partList = myInfo[i].partList;
-            customPart.currentIdx = myInfo[i].meshIndex;
-
-            Transform characterChild;
-
-            characterChild = (i < 2 ? Character.transform.GetChild(i).GetChild(0) : Character.transform.Find(myInfo[i].objName));
-
-            if (characterChild != null)
-            {
-                customPart.partObj = characterChild.gameObject;
-                customPart.customRenderer = characterChild.gameObject.GetComponent<SkinnedMeshRenderer>();
-                customPart.customRenderer.sharedMesh = customPart.partList[customPart.currentIdx];
-                photonView.RPC("ApplyMesh", RpcTarget.Others ,customPart.currentIdx);
-            }
-
-            customParts.Add(customPart); // 리스트에 추가
+            print(i + "dd");
+            SkinnedMeshRenderer skinnedMeshRenderer = partObj[i].GetComponent<SkinnedMeshRenderer>();
+            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myInfo[0].meshIndex[i]]; 
         }
-
     }
 
     [PunRPC]
-    void ApplyMesh(int curIndex)
+    private void ApplyCharacterInfoRPC()
     {
-        print("------ " + curIndex);
-        customPart.customRenderer.sharedMesh = customPart.partList[curIndex];
+
     }
 }
-

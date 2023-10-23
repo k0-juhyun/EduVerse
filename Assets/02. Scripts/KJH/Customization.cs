@@ -1,3 +1,5 @@
+using DG.Tweening.Plugins;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,12 +40,19 @@ public class Customization : MonoBehaviour
                 part.leftBtn.onClick.AddListener(() => OnClickLeft(part));
             }
         }
+
+        // 리스트에 처음에 모든 메쉬들의 인덱스를 넣어두고
+        for (int i = 0; i < customParts.Length; i++)
+        {
+            GameManager.Instance.myInfo.meshObjName.Add(customParts[i].objName);
+            GameManager.Instance.myInfo.meshIndex.Add(customParts[i].currentIdx); // 요소 추가
+        }
     }
 
     // 캐릭터 커스터마이징
     // 좌클릭, 우클릭으로 메쉬 변경
     private void Customize(ref int curIdx, Mesh[] allIdx, 
-        ref SkinnedMeshRenderer curRenderer, bool isRight)
+        ref SkinnedMeshRenderer curRenderer, bool isRight, int index)
     {
         // 좌클릭, 우클릭으로 인덱스 변경
         if (isRight)
@@ -59,6 +68,7 @@ public class Customization : MonoBehaviour
         if (curRenderer != null && curIdx >= 0 && curIdx < allIdx.Length)
         {
             curRenderer.sharedMesh = allIdx[curIdx];
+            GameManager.Instance.myInfo.meshIndex[index] = curIdx;
         }
     }
 
@@ -67,12 +77,14 @@ public class Customization : MonoBehaviour
     // 우클릭
     public void OnClickRight(CustomPart part)
     {
-        Customize(ref part.currentIdx, part.partList, ref part.customRenderer, true);
+        int index = System.Array.IndexOf(customParts, part);
+        Customize(ref part.currentIdx, part.partList, ref part.customRenderer, true, index);
     }
     // 좌클릭
     public void OnClickLeft(CustomPart part)
     {
-        Customize(ref part.currentIdx, part.partList, ref part.customRenderer, false);
+        int index = System.Array.IndexOf(customParts, part);
+        Customize(ref part.currentIdx, part.partList, ref part.customRenderer, false, index);
     }
     #endregion
 }
