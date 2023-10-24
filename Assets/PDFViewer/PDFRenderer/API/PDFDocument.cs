@@ -253,6 +253,10 @@ namespace Paroxe.PdfRenderer
 
             NativeMethods.FPDF_GetPageSizeByIndex(m_NativePointer, pageIndex, out width, out height);
 
+            // 임시 수정 -100
+            // height 아예 800으로 값 수정.
+
+            height = 600;
             return (int)height;
         }
 #endif

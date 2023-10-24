@@ -435,9 +435,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1592035730}
-        m_TargetAssemblyTypeName: GameMgr, Assembly-CSharp
-        m_MethodName: OnClickShare
+      - m_Target: {fileID: 1855170295}
+        m_TargetAssemblyTypeName: ScreenTransition, Assembly-CSharp
+        m_MethodName: ChangeCamera
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2739,6 +2739,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: class room
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c22af4e272c51f2448d84dd1ca0b6c6d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1191460813084441844, guid: c22af4e272c51f2448d84dd1ca0b6c6d, type: 3}
       propertyPath: m_TagString
       value: Chair
@@ -4000,79 +4004,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456275462}
-  m_CullTransparentMesh: 1
---- !u!1 &460106685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 460106686}
-  - component: {fileID: 460106688}
-  - component: {fileID: 460106687}
-  m_Layer: 5
-  m_Name: RawImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &460106686
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460106685}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1337319686}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &460106687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460106685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 2b076dc1f5ea7b3408eba40bb4b4a6b1, type: 2}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &460106688
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460106685}
   m_CullTransparentMesh: 1
 --- !u!1 &463925464
 GameObject:
@@ -7961,6 +7892,50 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.2, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &992940128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 992940130}
+  - component: {fileID: 992940129}
+  m_Layer: 0
+  m_Name: PermissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &992940129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992940128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c8e41cad34d854d94131d1c8c19c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &992940130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992940128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.475567, y: 4.0731635, z: -11.235946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &997559563
 GameObject:
   m_ObjectHideFlags: 0
@@ -10210,8 +10185,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 460106686}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -14540,7 +14514,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -14867,20 +14841,20 @@ MonoBehaviour:
   m_BytesSupplierFunctionName: 
   m_FileName: 
   m_FilePath: 
-  m_FileSource: 6
+  m_FileSource: 0
   m_FileURL: http://paroxe.com/media/1076/documentationen.pdf
   m_Folder: 
   m_LoadOnEnable: 1
   m_MaxZoomFactor: 8
   m_MaxZoomFactorTextureQuality: 4
-  m_MinZoomFactor: 0.5
+  m_MinZoomFactor: 2
   m_PageFitting: 0
   m_Password: 
-  m_PDFAsset: {fileID: 11400000, guid: 1913dec715965eb43993b42d4698a133, type: 2}
+  m_PDFAsset: {fileID: 11400000, guid: 486cc9297fbba88488cf04e6e256de63, type: 2}
   m_ZoomFactor: 1
   m_ZoomStep: 0.25
   m_ZoomToGo: 1
-  m_VerticalMarginBetweenPages: 100
+  m_VerticalMarginBetweenPages: 0
   m_UnloadOnDisable: 1
   m_ShowVerticalScrollBar: 0
   m_ShowBookmarksViewer: 0
@@ -18458,6 +18432,10 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
+    - target: {fileID: 7970471731454884147, guid: 6c556eb5f0fd74a40a23244fab5f4c0c, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1855170296}
     - target: {fileID: 7970471731454884147, guid: 6c556eb5f0fd74a40a23244fab5f4c0c, type: 3}
       propertyPath: m_RenderMode
       value: 2

@@ -103,8 +103,9 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         if(photonView.IsMine)
         {
+            // 임시 주석
             Camera.gameObject.SetActive(true);
-            Canvas.gameObject.SetActive(true);
+            //Canvas.gameObject.SetActive(true);
         }
     }
 

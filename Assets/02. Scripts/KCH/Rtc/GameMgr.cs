@@ -68,7 +68,7 @@ public class GameMgr : MonoBehaviour
     public void CreateMyWebCamView(Texture texture)
     {
         // Canvas 를 찾아서 RawImage 하나 만들고 자식으로 설정 
-        Transform trCanvas = GameObject.Find("Canvas").transform;
+        Transform trCanvas = GameObject.Find("BlackBoard").transform;
         myWebCamView = Instantiate(camViewerFactory, trCanvas);
 
         // 위치를 화면의 왼쪽 상단으로 설정 
@@ -83,7 +83,7 @@ public class GameMgr : MonoBehaviour
     public RawImage AddScreen()
     {
         //공유 받은 화면을 그릴 RawIamge 만들자
-        Transform trCanvas = GameObject.Find("Canvas").transform;
+        Transform trCanvas = GameObject.Find("BlackBoard").transform;
         GameObject goScreen = Instantiate(camViewerFactory, trCanvas);
         RawImage screen = goScreen.GetComponent<RawImage>();
         senderWebCamView.Add(screen);
@@ -95,9 +95,10 @@ public class GameMgr : MonoBehaviour
         int hCount = Screen.width / 300;
         
         //x 값
-        pos.x = (senderWebCamView.Count % hCount) * 300;
+        pos.x = (senderWebCamView.Count % hCount) * 10;
+
         //y 값
-        pos.y = -(senderWebCamView.Count / hCount) * 300;
+        pos.y = -(senderWebCamView.Count / hCount) * 10;
 
         //계산된 값으로 위치시키자 
         RectTransform rt = goScreen.GetComponent<RectTransform>();

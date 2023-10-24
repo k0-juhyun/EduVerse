@@ -81,7 +81,7 @@ public class RtcSender : MonoBehaviour
         //VideoStreamTrack trackCam = new VideoStreamTrack(webCamTexture);
 
         // 카메라가 보고있는 화면을 mediaStream 에 등록할 track 으로 만들기
-        VideoStreamTrack track = shareCam.CaptureStreamTrack(720, 720);
+        VideoStreamTrack track = shareCam.CaptureStreamTrack(1920, 1080);
 
         // track 을 mediaStream 에 추가한다.
         //mediaStream.AddTrack(trackCam);
