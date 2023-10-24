@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using Photon.Pun;
 
 // 1. 의자에 앉기
 // - 히어라키창에 있는 의자 오브젝트를 태그를 이용해서 찾아서
@@ -94,7 +95,7 @@ public class CharacterInteraction : MonoBehaviour
     #region 의상 변경 기능
     private void OnCustomButtonClick()
     {
-        SceneManager.LoadScene("CustomizeScene");
+        PhotonNetwork.LoadLevel(1);
     }
     #endregion
 }
