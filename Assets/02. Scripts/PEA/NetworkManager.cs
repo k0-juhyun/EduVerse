@@ -4,11 +4,13 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Photon.Pun.UtilityScripts;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager instance = null;
-
+    public Text photontext;
     private void Awake()
     {
         if (instance == null)
@@ -31,9 +33,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-
+        //if (PhotonNetwork.IsConnectedAndReady)
+        //{
+        //    NetworkManager.instance.photontext.text = "준비완료";
+        //}
     }
-
     public void JoinRoom()
     {
         PhotonNetwork.JoinOrCreateRoom("roomName", new RoomOptions(), TypedLobby.Default);
@@ -41,6 +45,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        photontext.text = "OnConnectedToMaster";
+        print("OnConnectedToMaster");
+
         base.OnConnectedToMaster();
 
         PhotonNetwork.JoinLobby();
@@ -50,14 +57,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
 
+        photontext.text = "Joined Lobby";
         print("Joined Lobby");
+       
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
 
+        photontext.text = "Joined Room";
+
         print("Joined Room");
+        
         PhotonNetwork.LoadLevel(2);
     }
 }

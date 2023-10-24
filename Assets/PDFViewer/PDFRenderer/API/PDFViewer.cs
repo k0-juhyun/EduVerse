@@ -1122,7 +1122,7 @@ namespace Paroxe.PdfRenderer
                     {
                         float firstPageWidth = referencePageSize.x;
                         float viewportWidth = m_Internal.Viewport.rect.size.x;
-                        m_ZoomToGo = viewportWidth / firstPageWidth / 2;
+                        m_ZoomToGo = viewportWidth / (firstPageWidth*2) ;
 
                         break;
                     }
