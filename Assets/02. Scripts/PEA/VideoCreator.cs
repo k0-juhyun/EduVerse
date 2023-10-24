@@ -5,7 +5,7 @@ using System.Collections;
 
 public class VideoCreator : MonoBehaviour
 {
-    public string serverURL = "http://221.163.19.218:5051/image_to_video/send";
+    private string serverURL = "http://221.163.19.218:5052/text_2_video/sendvideo";
 
     private void Start()
     {
@@ -37,24 +37,23 @@ public class VideoCreator : MonoBehaviour
                 //string videoPath = Application.dataPath + "/Resources/a.mp4";  // 저장할 동영상 파일 경로
                 //File.WriteAllBytes(videoPath, videoData);
                 //Debug.Log("동영상 다운로드 성공");
-
                 //이미지 업로드 성공 후 동영상 다운로드
-                string videoURL = "http://221.163.19.218:5051/image_to_video/getvideo";
-                using (UnityWebRequest videoDownloadRequest = UnityWebRequest.Get(videoURL))
-                {
-                    yield return videoDownloadRequest.SendWebRequest();
-                    if (videoDownloadRequest.result == UnityWebRequest.Result.Success)
-                    {
-                        byte[] videoData = videoDownloadRequest.downloadHandler.data;
-                        string videoPath = Application.dataPath + "/Resources/MyItems_Videos/" + Time.time + ".mp4";  // 저장할 동영상 파일 경로
-                        File.WriteAllBytes(videoPath, videoData);
-                        Debug.Log("동영상 다운로드 성공");
-                    }
-                    else
-                    {
-                        Debug.Log(videoDownloadRequest.error);
-                    }
-                }
+                //string videoURL = "http://221.163.19.218:5052/image_to_video/getvideo";
+                //using (UnityWebRequest videoDownloadRequest = UnityWebRequest.Get(videoURL))
+                //{
+                //    yield return videoDownloadRequest.SendWebRequest();
+                //    if (videoDownloadRequest.result == UnityWebRequest.Result.Success)
+                //    {
+                //    }
+                //    else
+                //    {
+                //        Debug.Log(videoDownloadRequest.error);
+                //    }
+                //}
+                byte[] videoData = imageUploadRequest.downloadHandler.data;
+                string videoPath = Application.persistentDataPath + Time.time + ".gif";  // 저장할 동영상 파일 경로
+                File.WriteAllBytes(videoPath, videoData);
+                Debug.Log("동영상 다운로드 성공");
             }
             else
             {

@@ -43,6 +43,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         col = GetComponent<Collider>();
         col.enabled = false;
         captureAreaImage.SetActive(false);
+        captureAreaImage.transform.SetParent(null);
         rtCaptureArea = captureAreaImage.GetComponent<RectTransform>();
 
         captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
@@ -74,7 +75,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnDrag(PointerEventData eventData)
     {
-            Debug.Log("드래그");
+        Debug.Log("드래그");
         if (isCapturing)
         {
             endMousePosition = Input.mousePosition;
@@ -82,13 +83,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             width = Mathf.Abs(Mathf.RoundToInt(endMousePosition.x - startMousePosition.x));
             height = Mathf.Abs(Mathf.RoundToInt(endMousePosition.y - startMousePosition.y));
 
-            startX = (int)((Mathf.Min(startMousePosition.x, endMousePosition.x) / rtCanvas.localScale.x));
-            startY = (int)((Mathf.Min(startMousePosition.y, endMousePosition.y) / rtCanvas.localScale.y));
+            startX = (int)(Mathf.Min(startMousePosition.x, endMousePosition.x));
+            startY = (int)(Mathf.Min(startMousePosition.y, endMousePosition.y));
 
             rtCaptureArea.sizeDelta = new Vector2(width, height);
 
-            rtCaptureArea.anchoredPosition = new Vector2(startX, startY);
-            //print(Input.mousePosition + ", " + rtCaptureArea.anchoredPosition);
+            rtCaptureArea.anchoredPosition = new Vector2(startX / rtCanvas.localScale.x, startY / rtCanvas.localScale.y);
         }
     }
 
@@ -106,17 +106,17 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnCaptureBtnClick()
     {
-        pagecontainer_Children = pagecontainer.GetComponentsInChildren<RawImage>();
+        //pagecontainer_Children = pagecontainer.GetComponentsInChildren<RawImage>();
 
-        foreach (RawImage child in pagecontainer_Children)
-        {
-            // 자기 자신의 경우엔 무시 
-            // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
-            if (child.name == transform.name)
-                return;
+        //foreach (RawImage child in pagecontainer_Children)
+        //{
+        //    // 자기 자신의 경우엔 무시 
+        //    // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
+        //    if (child.name == transform.name)
+        //        return;
 
-            child.raycastTarget = false;
-        }
+        //    child.raycastTarget = false;
+        //}
 
         col.enabled = true;
         captureAreaImage.transform.localScale = Vector3.one;
@@ -173,13 +173,13 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         captureResultImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         captureResultImage.preserveAspect = true;
 
-        // raycast target 다시 설정.
-        foreach (RawImage child in pagecontainer_Children)
-        {
-            // 자기 자신의 경우엔 무시 
-            // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
-            child.raycastTarget = true;
-        }
+        //// raycast target 다시 설정.
+        //foreach (RawImage child in pagecontainer_Children)
+        //{
+        //    // 자기 자신의 경우엔 무시 
+        //    // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
+        //    child.raycastTarget = true;
+        //}
 
     }
 }
