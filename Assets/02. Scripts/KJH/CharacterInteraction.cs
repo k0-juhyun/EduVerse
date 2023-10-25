@@ -116,6 +116,11 @@ public class CharacterInteraction : MonoBehaviourPun
     #region 의상 변경 기능
     private void OnCustomButtonClick()
     {
+        if (photonView.IsMine) // 현재 오브젝트의 소유권이 있는지 확인
+        {
+            PhotonNetwork.Destroy(Character); // Character 오브젝트를 파괴
+        }
+
         PhotonNetwork.LoadLevel(1);
     }
     #endregion

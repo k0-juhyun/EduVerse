@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            DataBase.instance.friendList.Clear();
+
             DataBase.instance.friendList.Add(DataBase.instance.myInfo);
 
             DataBase.instance.info.data = DataBase.instance.friendList;

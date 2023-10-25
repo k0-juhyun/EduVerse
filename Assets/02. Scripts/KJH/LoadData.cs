@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine.XR;
+using UnityEditor.SceneManagement;
 
 
 public class LoadData : MonoBehaviourPun
@@ -66,7 +67,7 @@ public class LoadData : MonoBehaviourPun
         {
             print(i + "dd");
             SkinnedMeshRenderer skinnedMeshRenderer = partObj[i].GetComponent<SkinnedMeshRenderer>();
-            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myData[0].meshIndex[i]]; 
+            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myData[0].meshIndex[i]];
         }
     }
 

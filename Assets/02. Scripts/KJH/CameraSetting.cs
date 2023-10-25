@@ -13,6 +13,8 @@ public class CameraSetting : MonoBehaviour
 
     private Vector3 cameraFollowVelo = Vector3.zero;
 
+    private GameObject Character;
+
     [Space(10)]
     [Header("¼Óµµ °ª")]
     public float rotSpeed;

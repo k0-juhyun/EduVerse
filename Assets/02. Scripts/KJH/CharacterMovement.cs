@@ -102,16 +102,16 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     private void Awake()
     {
-        radius = rectBackground.rect.width * 0.5f;
-
-        // 애니메이터 컴포넌트 가져오기
-        animator = Character.GetComponent<Animator>();
-
         if (photonView.IsMine)
         {
             Camera.gameObject.SetActive(true);
             Canvas.gameObject.SetActive(true);
         }
+
+        radius = rectBackground.rect.width * 0.5f;
+
+        // 애니메이터 컴포넌트 가져오기
+        animator = Character.GetComponent<Animator>();
     }
 
     private void FixedUpdate()
