@@ -88,21 +88,24 @@ public class GameMgr : MonoBehaviour
         RawImage screen = goScreen.GetComponent<RawImage>();
         senderWebCamView.Add(screen);
 
-        //공유 하는 사람들의 인원수에 맞춰서 화면을 배치하자 
-        Vector2 pos = Vector2.zero;
-
-        //RawImage 가 현재 화면에 들어갈 수 있는 가로 갯수 
-        int hCount = Screen.width / 300;
-        
-        //x 값
-        pos.x = (senderWebCamView.Count % hCount) * 10;
-
-        //y 값
-        pos.y = -(senderWebCamView.Count / hCount) * 10;
-
-        //계산된 값으로 위치시키자 
         RectTransform rt = goScreen.GetComponent<RectTransform>();
-        rt.anchoredPosition = pos;
+        rt.anchoredPosition = Vector2.zero;
+
+        //공유 하는 사람들의 인원수에 맞춰서 화면을 배치하자 
+        //Vector2 pos = Vector2.zero;
+
+        ////RawImage 가 현재 화면에 들어갈 수 있는 가로 갯수 
+        //int hCount = Screen.width / 300;
+
+        ////x 값
+        //pos.x = (senderWebCamView.Count % hCount) * 10;
+
+        ////y 값
+        //pos.y = -(senderWebCamView.Count / hCount) * 10;
+
+        ////계산된 값으로 위치시키자 
+        //RectTransform rt = goScreen.GetComponent<RectTransform>();
+        //rt.anchoredPosition = pos;
 
         return screen;
     }
