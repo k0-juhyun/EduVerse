@@ -43,6 +43,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         col = GetComponent<Collider>();
         col.enabled = false;
         captureAreaImage.SetActive(false);
+        captureAreaImage.transform.SetParent(null);
         rtCaptureArea = captureAreaImage.GetComponent<RectTransform>();
 
         captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
@@ -82,12 +83,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             width = Mathf.Abs(Mathf.RoundToInt(endMousePosition.x - startMousePosition.x));
             height = Mathf.Abs(Mathf.RoundToInt(endMousePosition.y - startMousePosition.y));
 
-            startX = (int)((Mathf.Min(startMousePosition.x, endMousePosition.x) / rtCanvas.localScale.x));
-            startY = (int)((Mathf.Min(startMousePosition.y, endMousePosition.y) / rtCanvas.localScale.y));
+            startX = (int)((Mathf.Min(startMousePosition.x, endMousePosition.x) ));
+            startY = (int)((Mathf.Min(startMousePosition.y, endMousePosition.y) ));
 
             rtCaptureArea.sizeDelta = new Vector2(width, height);
 
-            rtCaptureArea.anchoredPosition = new Vector2(startX, startY);
+            rtCaptureArea.anchoredPosition = new Vector2(startX / rtCanvas.localScale.x, startY / rtCanvas.localScale.y);
             //print(Input.mousePosition + ", " + rtCaptureArea.anchoredPosition);
         }
     }
