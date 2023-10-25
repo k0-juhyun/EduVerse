@@ -14,53 +14,36 @@ public class GameManager : MonoBehaviourPun
     public GameObject Character;
     private Customization customization;
 
-    [Space]
-    [Header("버튼")]
-    public Button Btn_Save;
-
-    // 나의 커스텀 정보
-    //public CharacterInfo myInfo;
-
-    // 커스텀 정보 리스트
-    //public List<CharacterInfo> friendList = new List<CharacterInfo>();
-
-    //FriendInfo info = new FriendInfo();
-
     private void Awake()
     {
         Instance = this;
-
         DontDestroyOnLoad(this.gameObject);
 
         if (Character != null)
             customization = Character.GetComponent<Customization>();
-
-        Btn_Save.onClick.AddListener(() => SaveCharacterInfo());
     }
 
-    private void SaveCharacterInfo()
+    public void SaveCharacterInfo()
     {
         if (photonView.IsMine)
         {
-            DataBase.instance.friendList.Clear();
+            DataBase.instance.savedData.myData.Clear();
+            DataBase.instance.savedData.myData.Add(DataBase.instance.myInfo);
 
-            DataBase.instance.friendList.Add(DataBase.instance.myInfo);
+            SaveToJson(DataBase.instance.savedData, "/myInfo.txt");
+        }
+    }
 
-            DataBase.instance.info.data = DataBase.instance.friendList;
+    private void SaveToJson(object obj, string filePath)
+    {
+        string jsonData = JsonUtility.ToJson(obj, true);
+        byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
 
-            // myInfo 를 json 형태로
-            string jsonData = JsonUtility.ToJson(DataBase.instance.info, true);
-            print(jsonData);
+        string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";//Application.streamingAssetsPath + filePath;
 
-            // json Data를 파일로 저장
-            FileStream file = new FileStream(Application.streamingAssetsPath + "/myInfo.txt", FileMode.Create);
-
-            // json string 데이터를 byte 배열로 만든다.
-            byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
-
+        using (FileStream file = new FileStream(path, FileMode.Create))
+        {
             file.Write(byteData, 0, byteData.Length);
-
-            file.Close();
         }
     }
 }

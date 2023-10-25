@@ -71,4 +71,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             SceneManager.sceneLoaded -= OnSceneLoaded; // 메서드를 이벤트에서 제거 (중복 호출 방지)
         }
     }
+
+    public override void OnLeftRoom()
+    {
+        // 방을 나온 후 로비로 돌아가거나 다른 작업 수행
+        PhotonNetwork.LoadLevel(1);
+    }
 }

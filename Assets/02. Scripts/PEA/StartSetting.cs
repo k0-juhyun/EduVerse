@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using static System.Net.Mime.MediaTypeNames;
 
 public class StartSetting : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class StartSetting : MonoBehaviour
 
     void Start()
     {
-        
     }
 
     void Update()
@@ -26,6 +26,7 @@ public class StartSetting : MonoBehaviour
             PlayerManager.instance.SetMyInfo( new User(nameInput.text, isTeacherTpggle.isOn));
             if(PhotonNetwork.IsConnectedAndReady)
             {
+                PhotonNetwork.NickName = nameInput.text;
                 PhotonNetwork.LoadLevel(1);
             }
         }

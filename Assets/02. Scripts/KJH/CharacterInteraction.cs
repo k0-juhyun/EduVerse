@@ -69,9 +69,6 @@ public class CharacterInteraction : MonoBehaviourPun
 
                     // 사람 앉았다.
                     chairInfo.isFull = true;
-
-                    //photonView.RPC(nameof(SetChairIsFull), RpcTarget.All, other.gameObject.GetPhotonView().ViewID, true);
-                    //photonView.RPC(nameof(chairInfo.SetIsFull), RpcTarget.All, true);
                 }
             }
 
@@ -83,18 +80,9 @@ public class CharacterInteraction : MonoBehaviourPun
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
                     chairInfo.isFull = false;
-
-                    //photonView.RPC(nameof(SetChairIsFull), RpcTarget.All, other.gameObject.GetPhotonView().ViewID, false);
-                    //photonView.RPC(nameof(chairInfo.SetIsFull), RpcTarget.All, false);
                 }
             }
         }
-    }
-
-    [PunRPC]
-    private void SetChairIsFull(int viewID, bool isFull)
-    {
-        PhotonView.Find(viewID).GetComponent<ChairInfo>().SetIsFull(isFull);
     }
 
     [PunRPC]
@@ -118,10 +106,8 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (photonView.IsMine) // 현재 오브젝트의 소유권이 있는지 확인
         {
-            PhotonNetwork.Destroy(Character); // Character 오브젝트를 파괴
+            PhotonNetwork.LeaveRoom();
         }
-
-        PhotonNetwork.LoadLevel(1);
     }
     #endregion
 }

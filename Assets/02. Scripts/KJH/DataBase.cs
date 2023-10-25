@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -17,38 +18,38 @@ public class SavedCustomData
 }
 
 [System.Serializable]
-public class FriendInfo
-{
-    public List<CharacterInfo> data;
-}
-// 접속 -> 교사 / 확인
-[System.Serializable]
 public class CharacterInfo
 {
     public List<string> meshObjName;
     public List<int> meshIndex; // 각 부위의 메시 인덱스
 }
 
+[System.Serializable]
+public class UserDataList
+{
+    public PhotonView userPhotonView;
+    public SavedCustomData userCustomData;
+}
+
 
 public class DataBase : MonoBehaviour
 {
-
     public static DataBase instance;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
-
         instance = this;
     }
 
     public CustomPartDB[] db;
-
-    public SavedCustomData savedCustomData;
-
     public CharacterInfo myInfo;
+    public SavedCustomData savedData = new SavedCustomData();
+    public List<UserDataList> userDataList = new List<UserDataList>();
 
-    public List<CharacterInfo> friendList = new List<CharacterInfo>();
-    
-    public FriendInfo info = new FriendInfo();
-
+    public void AddUserData(PhotonView view, SavedCustomData customData)
+    {
+        UserDataList newUser = new UserDataList { userPhotonView = view, userCustomData = customData };
+        userDataList.Add(newUser);
+    }
 }
