@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DrawingTool : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class DrawingTool : MonoBehaviour
 	public int currentMaterialIndex = 0;	// 현재 사용 중인 브러쉬 색상
 	public List<Color> brushColours = new List<Color>(); // 브러쉬 색상 리스트
 	private List<Material> brushMaterals = new List<Material>(); // 브러쉬 material 리스트
+
+	public Image img;
 
 	private void Start() {
 		// 브러쉬 색상 테스트
@@ -176,7 +179,9 @@ public class DrawingTool : MonoBehaviour
 			Debug.LogWarning("Trying to find colour index of " + newColour + " which is not possible...");
 		} else {
 			currentMaterialIndex = newColour;
-		}
+			// 이미지 업데이트
+			img.color = brushColours[newColour];
+        }
 	}
 
 	// 캔버스를 초기화.
