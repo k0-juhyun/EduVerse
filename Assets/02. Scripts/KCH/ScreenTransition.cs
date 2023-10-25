@@ -6,7 +6,7 @@ public class ScreenTransition : MonoBehaviour
 {
     Camera maincam;
     Camera ShareCam;
-
+    public GameObject canvas;
     bool camera;
 
     private void Start()
@@ -34,6 +34,7 @@ public class ScreenTransition : MonoBehaviour
     {
         if (!camera)
         {
+            canvas.SetActive(true);
             maincam.depth = -1;
             maincam.gameObject.tag = "Untagged";
             ShareCam.gameObject.tag = "MainCamera";
@@ -41,6 +42,7 @@ public class ScreenTransition : MonoBehaviour
         }
         else
         {
+            canvas.SetActive(false);
             maincam.depth = 1;
             maincam.gameObject.tag = "MainCamera";
             ShareCam.gameObject.tag = "Untagged";

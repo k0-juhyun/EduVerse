@@ -31,12 +31,12 @@ public class GameMgr : MonoBehaviour
 
     void Start()
     {
-        
+
     }
-    
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             OnClickShare();
         }
@@ -87,7 +87,7 @@ public class GameMgr : MonoBehaviour
         GameObject goScreen = Instantiate(camViewerFactory, trCanvas);
         RawImage screen = goScreen.GetComponent<RawImage>();
         senderWebCamView.Add(screen);
-
+        
         RectTransform rt = goScreen.GetComponent<RectTransform>();
         rt.anchoredPosition = Vector2.zero;
 

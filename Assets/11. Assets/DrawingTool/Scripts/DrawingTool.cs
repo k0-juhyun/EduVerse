@@ -34,7 +34,7 @@ public class DrawingTool : MonoBehaviour
 	
 	// 브러쉬 설정들
 	[Header("Brush Settings")]
-	[Range(0.05f, 1f)]public float brushSize = 0.3f;	// 브러쉬 크기
+	[Range(0.01f, 0.5f)]public float brushSize = 0.5f;	// 브러쉬 크기
 	public int currentMaterialIndex = 0;	// 현재 사용 중인 브러쉬 색상
 	public List<Color> brushColours = new List<Color>(); // 브러쉬 색상 리스트
 	private List<Material> brushMaterals = new List<Material>(); // 브러쉬 material 리스트
