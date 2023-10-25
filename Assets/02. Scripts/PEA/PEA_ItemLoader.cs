@@ -23,7 +23,7 @@ public class PEA_ItemLoader : MonoBehaviour
         Object
     }
 
-    private string myItemsJsonPath;
+    //private string myItemsJsonPath;
     private MyItems myItems;
 
     private List<Texture2D> itemTextures = new List<Texture2D>();
@@ -40,7 +40,7 @@ public class PEA_ItemLoader : MonoBehaviour
 
     void Start()
     {
-        myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
+        //myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
     }
 
     void Update()
@@ -61,6 +61,9 @@ public class PEA_ItemLoader : MonoBehaviour
             case SearchType.Image:
                 itemTextures.Clear();
 
+                MyItems imageItems = new MyItems();
+                imageItems.data = new List<Item>();
+
                 if (isMarket)
                 {
                     itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
@@ -71,12 +74,16 @@ public class PEA_ItemLoader : MonoBehaviour
                     {
                         byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
                         string json = Encoding.UTF8.GetString(bytes.ToArray());
-                        myItems = JsonUtility.FromJson<MyItems>(json);
-                        print(json);
+                        myItems = JsonUtility.FromJson<MyItems>(json);                        
 
                         foreach (Item item in myItems.data)
                         {
-                            itemTextures.Add(item.itemTexture);
+                            print(item.itemName + " : " + item.itemType);
+                            if(item.itemType == Item.ItemType.Image)
+                            {
+                                print(item.itemName + " 은 이미지");
+                                imageItems.data.Add(item);
+                            }
                         }
                     }
                     else
@@ -85,23 +92,72 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                for (int i = 0; i < (isMarket?  itemTextures.Count : myItems.data.Count); i++)
+                for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name));
                     }
                     else
                     {
                         PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
-                        myItemSlot.SetItemInfo(myItems.data[i]);
+                        myItemSlot.SetItemInfo(imageItems.data[i]);
                         myItemSlot.canvas = transform.parent;
                     }
                 }
                 break;
             case SearchType.Video:
+                itemTextures.Clear();
+
+                MyItems videoItems = new MyItems();
+                videoItems.data = new List<Item>();
+
+                if (isMarket)
+                {
+                    //itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                }
+                else
+                {
+                    if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+                    {
+                        byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+                        string json = Encoding.UTF8.GetString(bytes.ToArray());
+                        myItems = JsonUtility.FromJson<MyItems>(json);
+
+                        foreach (Item item in myItems.data)
+                        {
+                            print(item.itemName + " : " + item.itemType);
+                            if (item.itemType == Item.ItemType.Video)
+                            {
+                                print(item.itemName + " 은 gif");
+                                videoItems.data.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        print("else");
+                    }
+                }
+
+                for (int i = 0; i < (isMarket ? itemTextures.Count : videoItems.data.Count); i++)
+                {
+                    GameObject slot = Instantiate(itemSlot, content);
+                    if (isMarket)
+                    {
+                        PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name));
+                    }
+                    else
+                    {
+                        PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
+                        myItemSlot.SetItemInfo(videoItems.data[i]);
+                        myItemSlot.canvas = transform.parent;
+                    }
+                }
+
                 break;
             case SearchType.Object:
                 break;

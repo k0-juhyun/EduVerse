@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.IO;
+using System.Text;
 using System.Collections;
 
 public class VideoCreator : MonoBehaviour
@@ -30,30 +31,26 @@ public class VideoCreator : MonoBehaviour
             yield return imageUploadRequest.SendWebRequest();
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("이미지 업로드 성공");
-
-                //print(imageUploadRequest.downloadHandler.data);
-                //byte[] videoData = imageUploadRequest.downloadHandler.data;
-                //string videoPath = Application.dataPath + "/Resources/a.mp4";  // 저장할 동영상 파일 경로
-                //File.WriteAllBytes(videoPath, videoData);
-                //Debug.Log("동영상 다운로드 성공");
-                //이미지 업로드 성공 후 동영상 다운로드
-                //string videoURL = "http://221.163.19.218:5052/image_to_video/getvideo";
-                //using (UnityWebRequest videoDownloadRequest = UnityWebRequest.Get(videoURL))
-                //{
-                //    yield return videoDownloadRequest.SendWebRequest();
-                //    if (videoDownloadRequest.result == UnityWebRequest.Result.Success)
-                //    {
-                //    }
-                //    else
-                //    {
-                //        Debug.Log(videoDownloadRequest.error);
-                //    }
-                //}
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
                 string videoPath = Application.persistentDataPath + Time.time + ".gif";  // 저장할 동영상 파일 경로
+
                 File.WriteAllBytes(videoPath, videoData);
-                Debug.Log("동영상 다운로드 성공");
+
+                // 아이템 정보 저장
+                Item item = new Item(Item.ItemType.Video, Time.time.ToString(), videoPath);
+                string json = "";
+                MyItems myItems = new MyItems();
+
+                if(File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+                {
+                    byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+                    json = Encoding.UTF8.GetString(jsonBytes);
+                    myItems = JsonUtility.FromJson<MyItems>(json);
+                }
+                            
+                myItems.data.Add(item);
+                json = JsonUtility.ToJson(myItems);
+                File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
             }
             else
             {

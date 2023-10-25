@@ -177,7 +177,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         // raycast target 다시 설정.
         foreach (RawImage child in pagecontainer_Children)
         {
-            // 자기 자신의 경우엔 무시 
+            // 자기 자신의 경우엔 무시
             // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
             child.raycastTarget = true;
         }

@@ -9,7 +9,8 @@ public class ChatBot : MonoBehaviour
     private Color answerChatColor = new Color(1f, 1f, 0.8f, 0.5f);
 
     public InputField questionInput;
-    public GameObject chatItem;
+    public GameObject answerChatItem;
+    public GameObject questionChatItem;
     public Button sendBtn;
 
     public Transform content;
@@ -58,14 +59,7 @@ public class ChatBot : MonoBehaviour
 
     public void AddChatText(bool isQuestion, string textContent)
     {
-        GameObject chat = Instantiate(chatItem, content);
-        Text chatText = chat.GetComponentInChildren<Text>();
-        chatText.text = (isQuestion ? "³ª : " : "Ãªº¿ : ") + textContent;
-       // chatText.color = isQuestion ? Color.black : Color.blue;
-        chatText.fontStyle = isQuestion ? FontStyle.Normal : FontStyle.Bold;
-        if (!isQuestion)
-        {
-            chat.GetComponent<Image>().color = answerChatColor;
-        }
+        GameObject chat = Instantiate(isQuestion ? questionChatItem : answerChatItem, content);
+        chat.GetComponent<ChatItem>().SetText(textContent);
     }
 }

@@ -8,9 +8,6 @@ public class TextSender : MonoBehaviour
     // FastAPI 서버 엔드포인트 URL
     private string serverUrl = "http://221.163.19.218:5051/chat/send"; // 서버 주소 및 엔드포인트를 적절히 변경하세요.
 
-    // 보낼 텍스트 데이터
-    private string textToSend = "박정희는 어떤 일을 했어?";
-
 
     private void Start()
     {
@@ -27,18 +24,16 @@ public class TextSender : MonoBehaviour
         {
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
+            if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.LogError(www.error);
-            }
-            else
-            {
-                Debug.Log("Server response: " + www.downloadHandler.text);
-
                 if(callback != null)
                 {
                     callback(www.downloadHandler);
                 }
+            }
+            else
+            {
+                Debug.LogError(www.error);
             }
         }
     }

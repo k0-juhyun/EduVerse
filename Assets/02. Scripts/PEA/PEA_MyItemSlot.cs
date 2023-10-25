@@ -24,11 +24,11 @@ public class Item
     public bool showInClassroom = false;
     public Texture2D itemTexture;
 
-    public Item(ItemType itemType , string itemName, Texture2D itemSprite)
+    public Item(ItemType itemType , string itemName, string itemPath ="")
     {
         this.itemType = itemType;
         this.itemName = itemName;
-        this.itemTexture = itemSprite;
+        this.itemPath = itemPath;
     }
 }
 
@@ -53,6 +53,7 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     private GameObject newItem;
 
+    [SerializeField]
     private Item item;
 
     public GameObject[] itemPrefabs;
@@ -110,6 +111,7 @@ public class PEA_MyItemSlot : MonoBehaviour
         switch (item.itemType)
         {
             case Item.ItemType.Image:
+            case Item.ItemType.Video:
                 Texture2D texture = new Texture2D(2, 2);
                 texture.LoadImage(File.ReadAllBytes(item.itemPath));
                 texture.Apply();
