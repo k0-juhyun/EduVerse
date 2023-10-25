@@ -98,7 +98,7 @@ public class PEA_ItemLoader : MonoBehaviour
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name));
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
                     }
                     else
                     {

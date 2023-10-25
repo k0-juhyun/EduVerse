@@ -8,13 +8,14 @@ using UnityEngine.UI;
 public class GifLoad : MonoBehaviour
 {
     private string gifPath = "";
+    private bool isShowing = false;
 
     float delayTime;
     float currTime;
     public int idx;
 
     Gif gif;
-    Sprite [] sprite;
+    public Sprite [] sprite;
     Image image;
 
     void Start()
@@ -24,24 +25,19 @@ public class GifLoad : MonoBehaviour
 
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    idx++;
-        //    idx %= sprite.Length;
-
-        //    image.sprite = sprite[idx];
-        //}
-
-        if (Input.GetMouseButtonDown(0))
+        if (isShowing)
         {
-            Debug.Log("kjj");
+            ShowGif();
+        }
+    }
 
-            image = GetComponent<Image>();
+    public Sprite[] GetSpritesByFrame(string gifPath)
+    {
+        //image = GetComponent<Image>();
 
-            if (File.Exists(gifPath))
-            {
-                print("yyy");
-            }
+        if (File.Exists(gifPath))
+        {
+            print("yyy");
 
             byte[] data = File.ReadAllBytes(gifPath);
 
@@ -77,10 +73,22 @@ public class GifLoad : MonoBehaviour
                 sprite[i] = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
             }
 
-            image.sprite = sprite[0];
+            //image.sprite = sprite[0];
         }
+        print(sprite.Length);
+        return sprite;
+    }
 
-        if(sprite != null)
+     public void Show(Image image, Sprite[] sprites)
+    {
+        isShowing = true;
+        this.image = image;
+        this.sprite = sprites;
+    }
+
+    private void ShowGif()
+    {
+        if (sprite != null)
         {
             currTime += Time.deltaTime;
             if (currTime > delayTime)

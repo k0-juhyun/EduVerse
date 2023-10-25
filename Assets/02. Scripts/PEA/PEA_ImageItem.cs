@@ -84,4 +84,9 @@ public class PEA_ImageItem : MonoBehaviour
     {
         isScaling = false;
     }
+
+    public void OnClickDeleteBtn()
+    {
+        Destroy(gameObject);
+    }
 }

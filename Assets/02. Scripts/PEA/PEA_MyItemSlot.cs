@@ -30,6 +30,13 @@ public class Item
         this.itemName = itemName;
         this.itemPath = itemPath;
     }
+
+    public Item(ItemType itemType, string itemName, Texture2D itemTexture)
+    {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.itemTexture = itemTexture;
+    }
 }
 
 public class PEA_MyItemSlot : MonoBehaviour
@@ -107,15 +114,17 @@ public class PEA_MyItemSlot : MonoBehaviour
     public void SetItemInfo(Item item)
     {
         this.item = item;
-
+        print("dd");
         switch (item.itemType)
         {
             case Item.ItemType.Image:
-            case Item.ItemType.Video:
                 Texture2D texture = new Texture2D(2, 2);
                 texture.LoadImage(File.ReadAllBytes(item.itemPath));
                 texture.Apply();
                 GetComponentInChildren<RawImage>().texture = texture;
+                break;
+            case Item.ItemType.Video:
+                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;
                 break;
         }
 
@@ -172,15 +181,22 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     public GameObject UseItem()
     {
-        GameObject useItem = Instantiate(itemPrefabs[(int)item.itemType]);
+        //GameObject useItem = Instantiate(itemPrefabs[(int)item.itemType]);
+        GameObject useItem = Instantiate(itemPrefabs[0]);
         useItem.transform.parent = canvas;
 
         switch (item.itemType)
         {
             case Item.ItemType.Image:
-                useItem.GetComponent<PEA_ImageItem>().SetImage(item.itemTexture);
+                byte[] bytes =  File.ReadAllBytes(item.itemPath);
+
+                Texture2D texture = new Texture2D(2,2);
+                texture.LoadImage(bytes);
+                texture.Apply();
+                useItem.GetComponent<PEA_ImageItem>().SetImage(texture);
                 break;
             case Item.ItemType.Video:
+                useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
                 break;
             case Item.ItemType.Object:
                 break;
