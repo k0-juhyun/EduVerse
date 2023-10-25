@@ -25,8 +25,8 @@ public class HttpInfo
     public void Set(RequestType type, string url, Action<DownloadHandler> callback, bool useDefaultUrl = true)
     {
         requestType = type;
-        if (useDefaultUrl) this.url = "http://221.163.19.218:5051/chat/senda";
-        this.url = url;
+        this.url = "http://221.163.19.218:5051/chat/send";
+        //this.url = url;
         onReceive = callback;
     }
 }
@@ -52,48 +52,12 @@ public class PEA_HttpManager : MonoBehaviour
 
     void Start()
     {
-        HttpInfo httpInfo = new HttpInfo();
-        httpInfo.Set(RequestType.GET, "", null, true);
-        SendRequest(httpInfo);
+
     }
 
     void Update()
     {
         
-    }
-
-    // 이미지 보내기 (되는지 모르겠다)
-    public void PostTexture(HttpInfo httpInfo,Texture2D texture)
-    {
-        StartCoroutine(IPostTexure(httpInfo, texture));
-    }
-
-    IEnumerator IPostTexure(HttpInfo httpInfo, Texture2D texture)
-    {
-        UnityWebRequest req = null;
-
-        req = UnityWebRequest.Post(httpInfo.url, httpInfo.body);
-        req.uploadHandler = new UploadHandlerRaw(texture.EncodeToJPG());
-
-        // 서버에 요청을 보내고 응답이 올때까지 기다림
-        yield return req.SendWebRequest();
-
-        // 만약 응답이 성공했으면 
-        if (req.result == UnityWebRequest.Result.Success)
-        {
-            //print("네트워크 응답 : " + req.downloadHandler.text);
-
-            if (httpInfo.onReceive != null)
-            {
-                httpInfo.onReceive(req.downloadHandler);
-            }
-        }
-
-        // 통신 실패
-        else
-        {
-            print("네트워크 에러 : " + req.error);
-        }
     }
 
     public void SendRequest(HttpInfo httpInfo)
@@ -112,9 +76,11 @@ public class PEA_HttpManager : MonoBehaviour
                 req = UnityWebRequest.Get(httpInfo.url);
                 break;
             case RequestType.POST:
+                print(httpInfo.body.GetType()) ;
                 req = UnityWebRequest.Post(httpInfo.url, httpInfo.body);
                 byte[] byteBody = Encoding.UTF8.GetBytes(httpInfo.body);
                 req.uploadHandler = new UploadHandlerRaw(byteBody);
+                //print(byteBody.GetType());
 
                 //헤더 추가
                 //req.SetRequestHeader("Content-Type", "application/json");
@@ -150,5 +116,7 @@ public class PEA_HttpManager : MonoBehaviour
         {
             print("네트워크 에러 : " + req.error);
         }
+
+        req.Dispose();
     }
 }

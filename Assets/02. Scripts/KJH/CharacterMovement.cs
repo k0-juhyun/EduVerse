@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -29,18 +30,19 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public float minSpeed;
     public float maxSpeed;
 
-    public GameObject body;
-
-    #region 변수들
     private bool isTouch = false;
 
     private Vector3 movePos;
 
     private Animator animator;
 
-    private Vector3 receivePos;
-    private Quaternion receiveRot = Quaternion.identity;
-    private float lerpSpeed = 50;
+    #region 포톤 값
+    [HideInInspector]
+    public Vector3 receivePos;
+    [HideInInspector]
+    public Quaternion receiveRot = Quaternion.identity;
+    [HideInInspector]
+    public float lerpSpeed = 50;
     #endregion
 
     #region 캐릭터 움직임 (조이스틱)
@@ -101,7 +103,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
 
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             // 임시 주석
             Camera.gameObject.SetActive(true);
@@ -119,28 +121,24 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 Character.transform.position += movePos;
             }
         }
-
         else
         {
-            //body.transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            //body.transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-            //print(transform.position);
+            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
         }
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        //if (stream.IsWriting)
-        //{
-        //    stream.SendNext(body.transform.position);
-        //    stream.SendNext(body.transform.rotation);
-        //    print(transform.position);
-        //}
-        //else
-        //{
-        //    receivePos = (Vector3)stream.ReceiveNext();
-        //    receiveRot = (Quaternion)stream.ReceiveNext();
-        //}
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

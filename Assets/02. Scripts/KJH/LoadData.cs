@@ -33,7 +33,8 @@ public class LoadData : MonoBehaviourPun
 
     private void Start()
     {
-        LoadCharacterInfo();
+        if (photonView.IsMine)
+            LoadCharacterInfo();
     }
 
     private void LoadCharacterInfo()

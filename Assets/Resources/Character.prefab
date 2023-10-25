@@ -3503,9 +3503,8 @@ GameObject:
   - component: {fileID: 1218324696208131445}
   - component: {fileID: 1218324696208131447}
   - component: {fileID: 1218324696208131446}
-  - component: {fileID: 6668483666543224576}
-  - component: {fileID: 6949879580431822200}
-  - component: {fileID: 2969634271697328680}
+  - component: {fileID: 6512456114440504131}
+  - component: {fileID: 567684630460518170}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -3552,7 +3551,9 @@ MonoBehaviour:
   moveSpeed: 2
   minSpeed: 0
   maxSpeed: 4
-  body: {fileID: 1218324696457186562}
+  receivePos: {x: 0, y: 0, z: 0}
+  receiveRot: {x: 0, y: 0, z: 0, w: 1}
+  lerpSpeed: 50
 --- !u!114 &1218324696208131445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3593,7 +3594,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218324696208131451}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d68b7f6c4a052cc41add30585c70e741, type: 3}
   m_Name: 
@@ -3601,7 +3602,7 @@ MonoBehaviour:
   Character: {fileID: 1218324696457186562}
   customParts: []
   myInfo: []
---- !u!114 &6668483666543224576
+--- !u!114 &6512456114440504131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3621,11 +3622,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1218324696208131444}
-  - {fileID: 6949879580431822200}
+  - {fileID: 567684630460518170}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &6949879580431822200
+--- !u!114 &567684630460518170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3641,18 +3642,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &2969634271697328680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218324696208131451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2983fcea0678c6c48af87d2bd507e14d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1218324696208225513
 GameObject:
   m_ObjectHideFlags: 0
@@ -5284,8 +5273,8 @@ GameObject:
   - component: {fileID: 1218324696457186585}
   - component: {fileID: 1218324696457186591}
   - component: {fileID: 1218324696457186589}
-  - component: {fileID: 5943307614106539664}
-  - component: {fileID: 450557034960778023}
+  - component: {fileID: 600238069001184140}
+  - component: {fileID: 1704887466494247307}
   m_Layer: 0
   m_Name: Base-Idle_1
   m_TagString: Player
@@ -5379,23 +5368,7 @@ CapsuleCollider:
   m_Height: 4.772778
   m_Direction: 1
   m_Center: {x: 0, y: 1.886389, z: 0}
---- !u!114 &5943307614106539664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218324696457186562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &450557034960778023
+--- !u!114 &600238069001184140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5414,10 +5387,26 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5943307614106539664}
+  - {fileID: 1704887466494247307}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1704887466494247307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218324696457186562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &1218324696468958394
 GameObject:
   m_ObjectHideFlags: 0
@@ -6126,7 +6115,7 @@ Camera:
   field of view: 100
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
