@@ -9,6 +9,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager instance = null;
 
+    private Vector3 spawnPos = new Vector3(-4, 0, 6);
+    private Quaternion spawnRot = Quaternion.identity;
+
     private void Awake()
     {
         if (instance == null)
@@ -56,8 +59,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-
-        print("Joined Room");
+        SceneManager.sceneLoaded += OnSceneLoaded; // 이벤트에 메서드 추가
         PhotonNetwork.LoadLevel(2);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 2 && PhotonNetwork.IsConnected) // 2번 씬이 로드되고 포톤이 연결되었을 때
+        {
+            PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
+            SceneManager.sceneLoaded -= OnSceneLoaded; // 메서드를 이벤트에서 제거 (중복 호출 방지)
+        }
     }
 }

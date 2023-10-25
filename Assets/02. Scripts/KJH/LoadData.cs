@@ -7,8 +7,8 @@ using System.IO;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine.XR;
-using UnityEditor.SceneManagement;
-
+using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
 
 public class LoadData : MonoBehaviourPun
 {
@@ -18,7 +18,7 @@ public class LoadData : MonoBehaviourPun
     public List<GameObject> partObj;
     private void Start()
     {
-        DataBase.instance.characterData = new CharacterData();
+        DataBase.instance.savedCustomData = new SavedCustomData();
 
         for (int i = 0; i < DataBase.instance.myInfo.meshObjName.Count; i++)
         {
@@ -31,11 +31,8 @@ public class LoadData : MonoBehaviourPun
                 partObj.Add(currentObject);
             }
         }
-
-        if (photonView.IsMine)
-        {
-            LoadCharacterInfo();
-        }
+        
+        LoadCharacterInfo();
     }
 
     private void LoadCharacterInfo()
@@ -53,27 +50,32 @@ public class LoadData : MonoBehaviourPun
 
             FriendInfo loadedData = JsonUtility.FromJson<FriendInfo>(jsonData); // 역직렬화 구조 수정
 
-            DataBase.instance.characterData.myData = loadedData.data;
+            DataBase.instance.savedCustomData.myData = loadedData.data;
 
-            Debug.Log("Data loaded: 박은아 공주" + jsonData);
+            Debug.Log(SceneManager.GetActiveScene().name +"데이터 불러옴" + jsonData);
         }
 
         ApplyCharacterInfo();
+
+        if(photonView.IsMine)
+        {
+            photonView.RPC(nameof(ApplyCharacterInfoRPC),RpcTarget.All);
+        }
     }
 
     private void ApplyCharacterInfo()
     {
         for (int i = 0; i < partObj.Count; i++)
         {
-            print(i + "dd");
             SkinnedMeshRenderer skinnedMeshRenderer = partObj[i].GetComponent<SkinnedMeshRenderer>();
-            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.characterData.myData[0].meshIndex[i]];
+            skinnedMeshRenderer.sharedMesh = DataBase.instance.db[i].partListArray[DataBase.instance.savedCustomData.myData[0].meshIndex[i]];
         }
     }
 
     [PunRPC]
     private void ApplyCharacterInfoRPC()
     {
-
+        print("포톤");
+        ApplyCharacterInfo();
     }
 }

@@ -11,7 +11,7 @@ public class CustomPartDB
 }
 
 [System.Serializable]
-public class CharacterData
+public class SavedCustomData
 {
     public List<CharacterInfo> myData;
 }
@@ -43,7 +43,7 @@ public class DataBase : MonoBehaviour
 
     public CustomPartDB[] db;
 
-    public CharacterData characterData;
+    public SavedCustomData savedCustomData;
 
     public CharacterInfo myInfo;
 
