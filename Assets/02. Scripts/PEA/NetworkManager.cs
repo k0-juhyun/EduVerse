@@ -60,12 +60,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         SceneManager.sceneLoaded += OnSceneLoaded; // 이벤트에 메서드 추가
-        PhotonNetwork.LoadLevel(2);
+
+        if (DataBase.instance.userInfo.isTeacher)
+            PhotonNetwork.LoadLevel(2);
+
+        if (DataBase.instance.userInfo.isTeacher == false)
+            PhotonNetwork.LoadLevel(3);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == 2 && PhotonNetwork.IsConnected) // 2번 씬이 로드되고 포톤이 연결되었을 때
+        if ((scene.buildIndex == 4 || scene.buildIndex ==5) && PhotonNetwork.IsConnected) // 2번 씬이 로드되고 포톤이 연결되었을 때
         {
             PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             SceneManager.sceneLoaded -= OnSceneLoaded; // 메서드를 이벤트에서 제거 (중복 호출 방지)

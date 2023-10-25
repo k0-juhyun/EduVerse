@@ -34,19 +34,19 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - animPlayRPC
+  - ApplyCharacterInfoRPC
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - animPlayRPC
-  - ApplyMeshRPC
-  - UpdateAnimation
-  - SetChairIsFull
-  - SetIsFull
-  - ApplyMesh
-  - ApplyCharacterInfoRPC
+  - RpcAddIceCandidate
+  - RpcCreateViewerPeer
+  - RpcSetRemoteDescription
   - SendMeshInfoToMaster
+  - UpdateAnimation
+  - UpdateChairSitStatus
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

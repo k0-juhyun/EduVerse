@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
+
 public class ButtonManager : MonoBehaviour
 {
-    public Button Btn_LoadScene;
-    public Button Btn_Save;
-
-    private void Awake()
+    public void OnSaveBtnClick()
     {
-        Btn_Save.onClick.AddListener(() => GameManager.Instance.SaveCharacterInfo());
-        Btn_LoadScene.onClick.AddListener(() => OnLoadNextSceneClick());
+        GameManager.Instance.SaveCharacterInfo();
     }
 
-    private void OnLoadNextSceneClick()
+    public void OnLoadNextBtnClick()
     {
         NetworkManager.instance.JoinRoom();
+    }
+
+    public void OnClassrommBtnClick()
+    {
+        PhotonNetwork.LoadLevel(4);
+    }
+
+    public void OnTeachersRoomBtnClick()
+    {
+        PhotonNetwork.LoadLevel(5);
     }
 }

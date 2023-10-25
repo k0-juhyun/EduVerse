@@ -1,3 +1,4 @@
+using ParrelSync;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,18 +6,11 @@ using UnityEngine;
 
 public class ChairInfo : MonoBehaviourPun
 {
-    // 의자에 앉아있는지 여부
-    public bool isFull;
+    public bool isSit;
 
-    private void Start()
+    private void Awake()
     {
-        // 초기 상태 설정
-        isFull = false;
-    }
 
-    [PunRPC]
-    public void SetIsFull(bool value)
-    {
-        isFull = value;
     }
 }
+

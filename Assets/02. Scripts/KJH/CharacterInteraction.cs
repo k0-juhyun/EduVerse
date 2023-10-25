@@ -29,7 +29,6 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
 
-    private bool isSit;
     [HideInInspector] public bool isTPSCam = true;
 
     private void Awake()
@@ -48,14 +47,15 @@ public class CharacterInteraction : MonoBehaviourPun
         if (other.gameObject.CompareTag("Chair"))
         {
             ChairInfo chairInfo = other.GetComponent<ChairInfo>();
-            isSit = chairInfo.isFull;
+
+            bool isSit = chairInfo.isSit;
 
             // 범위 내에서 버튼을 클릭했을때
             if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
             {
                 // 의자에 누가 앉아 있지 않으면
                 // isFull = false 이면 그위치로 가서 앉는 애니메이션 실행
-                if (false == isSit)
+                if (!isSit)
                 {
                     // 앉는 애니메이션실행하고
                     anim.Play("Sit");
@@ -65,10 +65,11 @@ public class CharacterInteraction : MonoBehaviourPun
                     // 위치를 의자 위치로
                     Character.transform.position =
                         new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
-                    Character.transform.forward = -other.transform.right;
+                    Character.transform.forward = other.transform.right;
 
                     // 사람 앉았다.
-                    chairInfo.isFull = true;
+                    isSit = true;
+                    //chairInfo.photonView.RPC("UpdateChairSitStatus", RpcTarget.AllBuffered, chairIndex, true);
                 }
             }
 
@@ -79,7 +80,10 @@ public class CharacterInteraction : MonoBehaviourPun
                 {
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
-                    chairInfo.isFull = false;
+
+                    isSit = false;
+                    //chairInfo.photonView.RPC("UpdateChairSitStatus", RpcTarget.AllBuffered, chairIndex, false);
+                    // chairInfo.isFull = false;
                 }
             }
         }

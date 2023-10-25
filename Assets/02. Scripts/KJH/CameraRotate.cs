@@ -29,7 +29,7 @@ public class CameraRotate : MonoBehaviour
         originFieldOfView = Camera.main.fieldOfView;
 
         // 화면의 특정 부분을 터치 영역으로 지정합니다. (예시로 화면의 중앙 200x200 영역)
-        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 200, 200);
+        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 600, 400);
     }
 
     private void LateUpdate()

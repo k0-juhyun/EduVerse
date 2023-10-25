@@ -31,15 +31,35 @@ public class UserDataList
     public SavedCustomData userCustomData;
 }
 
+[System.Serializable]
+public class User
+{
+    public string name;
+    public bool isTeacher;
+
+    public User(string name, bool isTeacher)
+    {
+        this.name = name;
+        this.isTeacher = isTeacher;
+    }
+}
 
 public class DataBase : MonoBehaviour
 {
+    public User userInfo;
     public static DataBase instance;
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public CustomPartDB[] db;
@@ -51,5 +71,10 @@ public class DataBase : MonoBehaviour
     {
         UserDataList newUser = new UserDataList { userPhotonView = view, userCustomData = customData };
         userDataList.Add(newUser);
+    }
+
+    public void SetMyInfo(User user)
+    {
+        userInfo = user;
     }
 }

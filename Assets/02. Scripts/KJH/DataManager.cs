@@ -78,24 +78,6 @@ public class DataManager : MonoBehaviourPunCallbacks
         if (photonView.OwnerActorNr == actorNumber)
         {
             ApplyCharacterInfo(charInfo);
-            print("메쉬적용");
         }
     }
-
-    //private IEnumerator HandlePlayerEntry(Player newPlayer)
-    //{
-    //    UserDataList currentUserData = null;
-
-    //    // 데이터가 DataBase에 올바르게 추가될 때까지 대기
-    //    while (currentUserData == null)
-    //    {
-    //        currentUserData = DataBase.instance.userDataList.Find(data => data.userPhotonView.OwnerActorNr == newPlayer.ActorNumber);
-    //        // 다음 프레임까지 대기
-    //        yield return null;  
-    //    }
-
-    //    string charInfoJson = JsonUtility.ToJson(currentUserData.userCustomData.myData[0]);
-    //    currentUserData.userPhotonView.RPC(nameof(ApplyCharacterInfoRPC), newPlayer, newPlayer.ActorNumber, charInfoJson);
-    //    print("적용시켜봐");
-    //}
 }
