@@ -14,16 +14,26 @@ public class ButtonManager : MonoBehaviour
 
     public void OnLoadNextBtnClick()
     {
-        NetworkManager.instance.JoinRoom();
+        if (DataBase.instance.userInfo.isTeacher)
+            PhotonNetwork.LoadLevel(2);
+
+        if (DataBase.instance.userInfo.isTeacher == false)
+            PhotonNetwork.LoadLevel(3);
     }
 
     public void OnClassrommBtnClick()
     {
-        PhotonNetwork.LoadLevel(4);
+        NetworkManager.instance.JoinRoom();
     }
 
     public void OnTeachersRoomBtnClick()
     {
         PhotonNetwork.LoadLevel(5);
+    }
+
+    public void OnStudyBtnClick(Button btn)
+    {
+        // 버튼 누르면 버튼 비활성화
+        btn.enabled = false;
     }
 }

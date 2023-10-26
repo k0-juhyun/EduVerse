@@ -4,12 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager instance = null;
 
-    private Vector3 spawnPos = new Vector3(-4, 0, 6);
+    private Vector3 teacherSpawnPos = new Vector3(-6.7f, 0, 5.5f);
+    private Vector3 studentSpawnPos = new Vector3(6, 0, 5);
     private Quaternion spawnRot = Quaternion.identity;
 
     private void Awake()
@@ -59,19 +61,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+        PhotonNetwork.LoadLevel(4);
         SceneManager.sceneLoaded += OnSceneLoaded; // 이벤트에 메서드 추가
-
-        if (DataBase.instance.userInfo.isTeacher)
-            PhotonNetwork.LoadLevel(2);
-
-        if (DataBase.instance.userInfo.isTeacher == false)
-            PhotonNetwork.LoadLevel(3);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if ((scene.buildIndex == 4 || scene.buildIndex ==5) && PhotonNetwork.IsConnected) // 2번 씬이 로드되고 포톤이 연결되었을 때
         {
+            Vector3 spawnPos = (DataBase.instance.userInfo.isTeacher ? teacherSpawnPos : studentSpawnPos);
             PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             SceneManager.sceneLoaded -= OnSceneLoaded; // 메서드를 이벤트에서 제거 (중복 호출 방지)
         }

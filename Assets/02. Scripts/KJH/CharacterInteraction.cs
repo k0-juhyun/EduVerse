@@ -30,6 +30,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private CharacterMovement characterMovement;
 
     [HideInInspector] public bool isTPSCam = true;
+    [HideInInspector] public bool isTeacherSit = false;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class CharacterInteraction : MonoBehaviourPun
     #region 의자 앉기 기능
     private void OnTriggerStay(Collider other)
     {
+        #region 학색용 의자
         // 의자 근처에 있고
         if (other.gameObject.CompareTag("Chair"))
         {
@@ -82,11 +84,44 @@ public class CharacterInteraction : MonoBehaviourPun
                     (Character.transform.position.x, 0, Character.transform.position.z);
 
                     isSit = false;
-                    //chairInfo.photonView.RPC("UpdateChairSitStatus", RpcTarget.AllBuffered, chairIndex, false);
-                    // chairInfo.isFull = false;
                 }
             }
         }
+        #endregion
+
+        #region 선생님의자
+        // 접근 객체가 선생님의자이고
+        // 내가 선생님이면
+        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.userInfo.isTeacher)
+        {
+            // 앉기 버튼을 눌렀을 때
+            if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !isTeacherSit)
+            {
+                anim.Play("Sit");
+
+                photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
+
+                Character.transform.position =
+                        new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
+                Character.transform.forward = other.transform.right;
+
+                isTeacherSit = true;
+            }
+
+            else
+            {
+                if (characterMovement.moveSpeed != 0)
+                {
+                    Character.transform.position = new Vector3
+                    (Character.transform.position.x, 0, Character.transform.position.z);
+
+                    Character.transform.forward = other.transform.right;
+
+                    isTeacherSit = false;
+                }
+            }
+        }
+        #endregion
     }
 
     [PunRPC]
@@ -96,6 +131,8 @@ public class CharacterInteraction : MonoBehaviourPun
     }
 
     #endregion
+
+
 
     #region 카메라 전환 기능
     // TPS랑 FPS 카메라 전환

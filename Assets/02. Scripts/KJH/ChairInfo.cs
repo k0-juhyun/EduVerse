@@ -7,10 +7,5 @@ using UnityEngine;
 public class ChairInfo : MonoBehaviourPun
 {
     public bool isSit;
-
-    private void Awake()
-    {
-
-    }
 }
 
