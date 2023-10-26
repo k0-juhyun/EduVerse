@@ -9,8 +9,22 @@ public class TeacherInteraction : MonoBehaviour
 
     public bool enableButton;
 
+    private CharacterInteraction characterInteraction;
     private void OnTriggerStay(Collider other)
     {
-        Btn.gameObject.SetActive(enableButton);
+        if(other.gameObject.transform.parent.name == "Character(Clone)")
+        {
+            enableButton = true;
+            Btn.gameObject.SetActive(enableButton);
+        }    
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.transform.parent.name == "Character(Clone)")
+        {
+            enableButton = false;
+            Btn.gameObject.SetActive(enableButton);
+        }
     }
 }
