@@ -114,7 +114,7 @@ public class PEA_MyItemSlot : MonoBehaviour
     public void SetItemInfo(Item item)
     {
         this.item = item;
-        print("dd");
+
         switch (item.itemType)
         {
             case Item.ItemType.Image:
@@ -197,6 +197,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 break;
             case Item.ItemType.Video:
                 useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
+                useItem.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
                 break;
             case Item.ItemType.Object:
                 break;
