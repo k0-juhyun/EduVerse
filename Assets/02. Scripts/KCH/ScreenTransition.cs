@@ -47,7 +47,6 @@ public class ScreenTransition : MonoBehaviour
             maincam.gameObject.tag = "Untagged";
             ShareCam.gameObject.tag = "MainCamera";
             camera = !camera;
-
         }
 
         else
@@ -62,6 +61,7 @@ public class ScreenTransition : MonoBehaviour
             // 캔버스 키고 다시 클릭 버튼 가능
             startStudy.isClick = false;
             startStudy.enableCanvas = true;
+
         }
     }
 }

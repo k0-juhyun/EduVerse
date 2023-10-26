@@ -12,6 +12,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 {
     public GameObject Camera;
     public GameObject CharacterCanvas;
+    public GameObject SpareCanvas;
 
     [Header("조이스틱")]
     public RectTransform rectBackground;
@@ -111,6 +112,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             // 임시 주석
             Camera.gameObject.SetActive(true);
             CharacterCanvas.gameObject.SetActive(true);
+            SpareCanvas.gameObject.SetActive(false);
         }
 
         radius = rectBackground.rect.width * 0.5f;

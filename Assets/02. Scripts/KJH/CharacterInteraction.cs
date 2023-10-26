@@ -28,17 +28,24 @@ public class CharacterInteraction : MonoBehaviourPun
     private Animator anim;
 
     private CharacterMovement characterMovement;
+    private CameraSetting cameraSetting;
 
     [HideInInspector] public bool _isSit;
     [HideInInspector] public bool isTPSCam = true;
 
+    Camera subMainCam;
+
     private void Awake()
     {
+
         anim = Character.GetComponent<Animator>();
         characterMovement = GetComponent<CharacterMovement>();
+        cameraSetting = GetComponentInChildren<CameraSetting>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
+
+        subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
     }
 
     #region 의자 앉기 기능
@@ -162,21 +169,50 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         isTPSCam = !isTPSCam;
 
-        if (photonView.IsMine && _isSit)
+        if (photonView.IsMine)
         {
-            characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
-        }
+            cameraSetting.TPS_Camera.gameObject.SetActive(isTPSCam);
+            cameraSetting.FPS_Camera.gameObject.SetActive(!cameraSetting.TPS_Camera.gameObject.activeSelf);
+            if (_isSit)
+            {
+                // 앉아 있을 때 카메라를 전환하면 캔버스의 활성 상태를 바꿉니다.
+                characterMovement.CharacterCanvas.gameObject.SetActive(isTPSCam);
+            }
+            else
+            {
+                // 앉아 있지 않을 때는 캔버스를 항상 활성화합니다.
+                characterMovement.CharacterCanvas.gameObject.SetActive(true);
+            }
 
-        //if(photonView.IsMine)
-        //{
-        //    if(DataBase.instance.userInfo.isTeacher && _isSit)
-        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
-        //    else if(DataBase.instance.userInfo.isTeacher == false && _isSit)
-        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
-        //}
+            // FPS 카메라 설정
+            if (!isTPSCam && !DataBase.instance.userInfo.isTeacher)
+            {
+                if (subMainCam != null)
+                {
+                    subMainCam.orthographicSize = 1.75f;
+                    subMainCam.transform.position = new Vector3(-6, 2.65f, -0.06f);
+                    subMainCam.transform.rotation = Quaternion.Euler(0, -90, 0);
+                }
+            }
+
+            characterMovement.SpareCanvas.gameObject.SetActive
+                (characterMovement.CharacterCanvas.gameObject.activeSelf == false);
+            cameraSetting.FPS_Camera.depth = _isSit ? -1 : 1;
+        }
     }
 
+    public void OnXButtonClick()
+    {
+        if (photonView.IsMine)
+        {
+            characterMovement.SpareCanvas.gameObject.SetActive(false);
+            characterMovement.CharacterCanvas.gameObject.SetActive(true);
+            cameraSetting.FPS_Camera.depth = 1;
+        }
+    }
     #endregion
+
+
 
     #region 의상 변경 기능
     private void OnCustomButtonClick()
