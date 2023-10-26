@@ -27,8 +27,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     [Space]
     [Header("이동속도")]
-    public float minSpeed;
-    public float maxSpeed;
+    private float minSpeed = 0;
+#if UNITY_EDITOR
+    private float maxSpeed = 4;
+#elif UNITY_ANDROID
+    private float maxSpeed = 2;
+#endif
 
     private bool isTouch = false;
 
