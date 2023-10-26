@@ -126,9 +126,19 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             StartStudy startStudy = other.gameObject.GetComponent<StartStudy>();
 
-            characterMovement.Canvas.gameObject.SetActive(startStudy.enableCanvas);
+            if (photonView.IsMine)
+            {
+                characterMovement.Canvas.gameObject.SetActive(startStudy.enableCanvas);
+                //photonView.RPC(nameof(UpdateCanvasStatusRPC), RpcTarget.All, startStudy.enableCanvas);
+            }
         }
         #endregion
+    }
+
+    [PunRPC]
+    private void UpdateCanvasStatusRPC(bool enable)
+    {
+        characterMovement.Canvas.gameObject.SetActive(enable);
     }
 
     [PunRPC]
