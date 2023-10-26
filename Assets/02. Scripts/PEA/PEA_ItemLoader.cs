@@ -1,9 +1,19 @@
+using System.IO;
+using System.Text;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class MyItems
+{
+    public List<Item> data;
+}
+
+// 마켓, 내 아이템에서 아이템 불러오는 스크립트
 public class PEA_ItemLoader : MonoBehaviour
 {
     public enum SearchType
@@ -13,21 +23,24 @@ public class PEA_ItemLoader : MonoBehaviour
         Object
     }
 
-    private SearchType searchType = SearchType.Image;
+    //private string myItemsJsonPath;
+    private MyItems myItems;
 
+    private List<Texture2D> itemTextures = new List<Texture2D>();
+
+    public Button[] searchTypeButtons;
     public GameObject itemSlot;
     public Transform content;
     public bool isMarket = false;
 
     private void OnEnable()
     {
-        // 임시 주석
-        //AssetDatabase.Refresh();
+        LoadItems(0);
     }
 
     void Start()
     {
-        LoadItems(searchType);
+        //myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
     }
 
     void Update()
@@ -35,29 +48,116 @@ public class PEA_ItemLoader : MonoBehaviour
         
     }
 
-    public void LoadItems(SearchType loadItemType)
+    // 아이템 불러오기
+    public void LoadItems(int loadItemType)
     {
-        switch (loadItemType)
+        foreach (Transform tr in content)
+        {
+            Destroy(tr.gameObject);
+        }
+
+        switch ((SearchType)loadItemType)
         {
             case SearchType.Image:
-                Texture2D[] itemSprites = Resources.LoadAll<Texture2D>(isMarket ? "Market_Item_Sprites" : "MyItems_Sprites");
+                itemTextures.Clear();
 
-                for (int i = 0; i < itemSprites.Length; i++)
+                MyItems imageItems = new MyItems();
+                imageItems.data = new List<Item>();
+
+                if (isMarket)
+                {
+                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                }
+                else
+                {
+                    if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+                    {
+                        byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+                        string json = Encoding.UTF8.GetString(bytes.ToArray());
+                        myItems = JsonUtility.FromJson<MyItems>(json);                        
+
+                        foreach (Item item in myItems.data)
+                        {
+                            print(item.itemName + " : " + item.itemType);
+                            if(item.itemType == Item.ItemType.Image)
+                            {
+                                print(item.itemName + " 은 이미지");
+                                imageItems.data.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        print("else");
+                    }
+                }
+
+                for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
-                    if(slot.TryGetComponent<PEA_MyItemSlot>(out PEA_MyItemSlot myItemSlot))
+                    if (isMarket)
                     {
-                        myItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemSprites[i].name, itemSprites[i]));
+                        PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                    }
+                    else
+                    {
+                        PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
+                        myItemSlot.SetItemInfo(imageItems.data[i]);
                         myItemSlot.canvas = transform.parent;
                     }
-                    else if(slot.TryGetComponent<PEA_MarketItemSlot>(out PEA_MarketItemSlot marketItemSlot))
-                    {
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemSprites[i].name, itemSprites[i]));
-                    }
-                    slot.GetComponentInChildren<RawImage>().texture = itemSprites[i];
                 }
                 break;
             case SearchType.Video:
+                itemTextures.Clear();
+
+                MyItems videoItems = new MyItems();
+                videoItems.data = new List<Item>();
+
+                if (isMarket)
+                {
+                    //itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                }
+                else
+                {
+                    if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+                    {
+                        byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+                        string json = Encoding.UTF8.GetString(bytes.ToArray());
+                        myItems = JsonUtility.FromJson<MyItems>(json);
+
+                        foreach (Item item in myItems.data)
+                        {
+                            print(item.itemName + " : " + item.itemType);
+                            if (item.itemType == Item.ItemType.Video)
+                            {
+                                print(item.itemName + " 은 gif");
+                                videoItems.data.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        print("else");
+                    }
+                }
+
+                for (int i = 0; i < (isMarket ? itemTextures.Count : videoItems.data.Count); i++)
+                {
+                    GameObject slot = Instantiate(itemSlot, content);
+                    if (isMarket)
+                    {
+                        PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name));
+                    }
+                    else
+                    {
+                        PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
+                        myItemSlot.SetItemInfo(videoItems.data[i]);
+                        myItemSlot.canvas = transform.parent;
+                    }
+                }
+
                 break;
             case SearchType.Object:
                 break;

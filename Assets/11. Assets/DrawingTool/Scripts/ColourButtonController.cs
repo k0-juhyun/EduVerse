@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ColourButtonController : MonoBehaviour
 {
@@ -11,10 +12,15 @@ public class ColourButtonController : MonoBehaviour
     /// it takes their index number that corresponds to the colour they
     /// are assigned and updates the drawing tool to ues that colour
     /// </summary>
+
+    public Image img;
+
     public void ButtonPressed() {
         string myName = gameObject.name;
         string[] splitName = myName.Split('_');
         int colourIndex = Int32.Parse(splitName[2]);
         GetComponentInParent<DrawingTool>().UpdateBrushColour(colourIndex);
     }
+
+
 }
