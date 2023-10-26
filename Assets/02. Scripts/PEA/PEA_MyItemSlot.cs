@@ -69,7 +69,7 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     private void OnEnable()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 2 && item!= null)
+        if (SceneManager.GetActiveScene().buildIndex == 4 && item!= null)
         {
             gameObject.SetActive(item.showInClassroom);
             selectToggle.gameObject.SetActive(false);

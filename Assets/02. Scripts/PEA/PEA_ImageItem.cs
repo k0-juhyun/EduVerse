@@ -17,6 +17,10 @@ public class PEA_ImageItem : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         imageTransform = transform.GetChild(0);
+
+        rectTransform.anchoredPosition = Vector2.zero;
+        transform.localScale = Vector3.one;
+        //transform.localPosition = Vector3.one;
     }
 
     void Update()
@@ -28,6 +32,11 @@ public class PEA_ImageItem : MonoBehaviour
         else if (isScaling)
         {
             SetScale();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            rectTransform.anchoredPosition = Vector2.zero;
+            transform.localScale = Vector3.one;
         }
     }
 
@@ -62,7 +71,7 @@ public class PEA_ImageItem : MonoBehaviour
         moveX = Input.GetAxis("Mouse X");
         moveY = Input.GetAxis("Mouse Y");
 
-        rectTransform.position += new Vector3(moveX, moveY, 0f) * 20f;
+        //rectTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0,0,Camera.main.transform.position.z);
     }
 
     public void ImageDown()
