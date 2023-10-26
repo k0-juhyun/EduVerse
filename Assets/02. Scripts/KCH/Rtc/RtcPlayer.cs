@@ -22,7 +22,7 @@ public class RtcPlayer : MonoBehaviourPun
         }
 
         //플레이어의 photonView 를 GameMgr 에 알려주자
-        //GameMgr.instance.AddPlayer(photonView);
+        GameMgr.instance.AddPlayer(photonView);
     }
 
     void Update()

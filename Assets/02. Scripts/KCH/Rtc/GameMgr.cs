@@ -44,6 +44,7 @@ public class GameMgr : MonoBehaviour
 
     public void OnClickShare()
     {
+        Debug.Log(myPlayerPv);
         //나의 RtcSender 로 공유를 시작하게 한다
         myPlayerPv.GetComponent<RtcSender>().Setup();
     }

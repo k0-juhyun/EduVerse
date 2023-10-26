@@ -103,7 +103,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
                 Character.transform.position =
                         new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
-                Character.transform.forward = other.transform.right;
+                Character.transform.forward = Quaternion.Euler(0, -90, 0) * other.transform.right;
 
                 isTeacherSit = true;
             }
@@ -115,11 +115,18 @@ public class CharacterInteraction : MonoBehaviourPun
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
 
-                    Character.transform.forward = other.transform.right;
-
                     isTeacherSit = false;
                 }
             }
+        }
+        #endregion
+
+        #region 선생님 컴퓨터
+        if (other.gameObject.name == "Teacher Computer")
+        {
+            StartStudy startStudy = other.gameObject.GetComponent<StartStudy>();
+
+            characterMovement.Canvas.gameObject.SetActive(startStudy.enableCanvas);
         }
         #endregion
     }

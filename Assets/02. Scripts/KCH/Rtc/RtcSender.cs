@@ -66,7 +66,7 @@ public class RtcSender : MonoBehaviour
     public void Setup()
     {
         shareCam = GameObject.Find("ShareCamera").GetComponent<Camera>(); //Camera.main;
-
+        Debug.Log(shareCam);
         mediaStream = new MediaStream();
 
         // WebCam 사용시..

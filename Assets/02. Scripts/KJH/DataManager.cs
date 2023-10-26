@@ -25,7 +25,11 @@ public class DataManager : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            string filePath = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";// Application.streamingAssetsPath + "/myInfo.txt";
+#if UNITY_EDITOR
+            string filePath = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
+#elif UNITY_ANDROID
+        string filePath = Application.persistentDataPath + filePath;
+#endif
 
             if (File.Exists(filePath))
             {

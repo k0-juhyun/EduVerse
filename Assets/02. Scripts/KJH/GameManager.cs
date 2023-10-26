@@ -16,11 +16,18 @@ public class GameManager : MonoBehaviourPun
 
     private void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
 
-        if (Character != null)
-            customization = Character.GetComponent<Customization>();
+            if (Character != null)
+                customization = Character.GetComponent<Customization>();
+        }
+        else if (Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public void SaveCharacterInfo()
@@ -39,8 +46,11 @@ public class GameManager : MonoBehaviourPun
         string jsonData = JsonUtility.ToJson(obj, true);
         byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
 
-        string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";//Application.streamingAssetsPath + filePath;
-
+#if UNITY_EDITOR
+        string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
+#elif UNITY_ANDROID
+        string path = Application.persistentDataPath + filePath;
+#endif
         using (FileStream file = new FileStream(path, FileMode.Create))
         {
             file.Write(byteData, 0, byteData.Length);

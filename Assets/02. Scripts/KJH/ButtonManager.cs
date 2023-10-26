@@ -30,10 +30,4 @@ public class ButtonManager : MonoBehaviour
     {
         PhotonNetwork.LoadLevel(5);
     }
-
-    public void OnStudyBtnClick(Button btn)
-    {
-        // 버튼 누르면 버튼 비활성화
-        btn.enabled = false;
-    }
 }

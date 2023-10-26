@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class StartStudy : MonoBehaviour
 {
     public Button Btn_study;
+
     public bool _isTeacherSit;
     public bool isClick = false;
+    public bool enableCanvas = true;
 
     private void Start()
     {
@@ -20,6 +22,7 @@ public class StartStudy : MonoBehaviour
         if (_isTeacherSit && !isClick)
         {
             isClick = true;
+            enableCanvas = false;
         }
     }
 
