@@ -46,18 +46,17 @@ public class CameraSetting : MonoBehaviour
 
     private void LateUpdate()
     {
-        ChangeCamera();
+        //ChangeCamera();
         HandleInput();
         FollowCamera();
     }
 
     private void ChangeCamera()
     {
-        TPS_Camera.gameObject.SetActive(characterInteraction.isTPSCam);
-        FPS_Camera.gameObject.SetActive(!TPS_Camera.gameObject.activeSelf);
+        //TPS_Camera.gameObject.SetActive(characterInteraction.isTPSCam);
+        //FPS_Camera.gameObject.SetActive(!TPS_Camera.gameObject.activeSelf);
 
-        FPS_Camera.depth = characterInteraction._isSit? -1 : 1;
-
+        //FPS_Camera.depth = characterInteraction._isSit? -1 : 1;
     }
 
     // 카메라가 target 오브젝트를 따라다님
