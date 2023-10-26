@@ -53,12 +53,12 @@ public class MenuUI : MonoBehaviour
         if (!isItem_menu)
         {
             //ItemMenu.DOLocalMoveY(750, 0.5f);
-            ItemMenu.DOAnchorPos(new Vector2(0, -50), 0.5f);
+            ItemMenu.DOAnchorPos(new Vector2(0, -125), 0.5f);
             isItem_menu = !isItem_menu;
         }
         else
         {
-            ItemMenu.DOAnchorPos(new Vector2(0, 50), 0.5f);
+            ItemMenu.DOAnchorPos(new Vector2(0, 0), 0.5f);
             isItem_menu = !isItem_menu;
         }
     }
@@ -69,12 +69,12 @@ public class MenuUI : MonoBehaviour
         Debug.Log("item");
         if (!isOpen_menu)
         {
-            ChatBotMenu.DOAnchorPos(new Vector2(-200, 20), 0.5f);
+            ChatBotMenu.DOAnchorPos(new Vector2(0, 0), 0.5f);
             isOpen_menu = !isOpen_menu;
         }
         else
         {
-            ChatBotMenu.DOAnchorPos((new Vector2(200, 20)), 0.5f);
+            ChatBotMenu.DOAnchorPos((new Vector2(300, 0)), 0.5f);
             isOpen_menu = !isOpen_menu;
         }
     }
