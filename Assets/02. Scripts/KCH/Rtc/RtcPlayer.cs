@@ -14,6 +14,15 @@ public class RtcPlayer : MonoBehaviourPun
 
     void Start()
     {
+        // 로드된 씬이 교무실이라면. return 해줘야함.
+        if (!GameObject.Find("LoadScene"))
+        {
+            Debug.Log("실행");
+            return;
+        }
+
+        // 문서 간트 체크리스트                                                  
+
         // 내 캐릭터에만 RtcSender, RtcReceiver 를 붙이자
         if(photonView.IsMine)
         {
