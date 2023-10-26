@@ -135,13 +135,13 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.userInfo.isTeacher)
         {
-            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
         }
 
         if (other.gameObject.name == "BackToClass")
         {
-            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
         }
     }
