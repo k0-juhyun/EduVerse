@@ -28,7 +28,7 @@ public class DataManager : MonoBehaviourPunCallbacks
 #if UNITY_EDITOR
             string filePath = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
 #elif UNITY_ANDROID
-        string filePath = Application.persistentDataPath + filePath;
+        string filePath =Application.persistentDataPath +"/"+ PhotonNetwork.NickName + ".txt";
 #endif
 
             if (File.Exists(filePath))
