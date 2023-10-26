@@ -105,7 +105,7 @@ public class PEA_MyItemSlot : MonoBehaviour
         {
             if(newItem != null)
             {
-                newItem.transform.position = Input.mousePosition;
+                newItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);
             }
         }
     }
