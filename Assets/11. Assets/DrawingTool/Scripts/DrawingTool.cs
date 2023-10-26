@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DrawingTool : MonoBehaviour
@@ -107,6 +108,15 @@ public class DrawingTool : MonoBehaviour
 
 	// 그림을 그리기 시작
 	private void CreateLine() {
+
+#if UNITY_EDITOR
+		if (EventSystem.current.IsPointerOverGameObject()) return;
+#else
+		Touch touch = Input.GetTouch(0);
+		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId)) return;
+#endif
+
+
 		drawing = true;
 		//Create the line at mouse position and add positions to line
 		var mousePosRaw = Camera.main.ScreenToWorldPoint(Input.mousePosition); //Get mouse position to world
