@@ -135,6 +135,21 @@ public class CharacterInteraction : MonoBehaviourPun
         #endregion
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.userInfo.isTeacher)
+        {
+            PhotonNetwork.LeaveRoom();
+            NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
+        }
+
+        if (other.gameObject.name == "BackToClass")
+        {
+            PhotonNetwork.LeaveRoom();
+            NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+        }
+    }
+
     [PunRPC]
     private void UpdateCanvasStatusRPC(bool enable)
     {
@@ -156,7 +171,13 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnCameraButtonClick()
     {
         isTPSCam = !isTPSCam;
+
+        if(photonView.IsMine)
+        {
+            characterMovement.Canvas.gameObject.SetActive(!isTPSCam);
+        }
     }
+
     #endregion
 
     #region 의상 변경 기능
@@ -165,6 +186,7 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine) // 현재 오브젝트의 소유권이 있는지 확인
         {
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel(1);
         }
     }
     #endregion

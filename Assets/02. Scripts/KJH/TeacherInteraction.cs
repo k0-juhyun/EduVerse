@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EditDigitalTextbook : MonoBehaviour
+public class TeacherInteraction : MonoBehaviour
 {
-    public Button Btn_Edit;
+    public Button Btn;
+
+    public bool enableButton;
 
     private void OnTriggerStay(Collider other)
     {
-        
+        Btn.gameObject.SetActive(enableButton);
     }
 }
