@@ -23,11 +23,11 @@ public class ButtonManager : MonoBehaviour
 
     public void OnClassrommBtnClick()
     {
-        NetworkManager.instance.JoinRoom();
+        NetworkManager.instance.JoinRoom("4.ClassRoomScene");
     }
 
     public void OnTeachersRoomBtnClick()
     {
-        PhotonNetwork.LoadLevel(5);
+        NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
     }
 }

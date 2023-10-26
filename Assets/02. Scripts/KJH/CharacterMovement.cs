@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
     public GameObject Camera;
-    public GameObject Canvas;
+    public GameObject CharacterCanvas;
 
     [Header("조이스틱")]
     public RectTransform rectBackground;
@@ -27,8 +27,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     [Space]
     [Header("이동속도")]
-    public float minSpeed;
-    public float maxSpeed;
+    private float minSpeed = 0;
+#if UNITY_EDITOR
+    private float maxSpeed = 4;
+#elif UNITY_ANDROID
+    private float maxSpeed = 2;
+#endif
 
     private bool isTouch = false;
 
@@ -106,7 +110,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         {
             // 임시 주석
             Camera.gameObject.SetActive(true);
-            Canvas.gameObject.SetActive(true);
+            CharacterCanvas.gameObject.SetActive(true);
         }
 
         radius = rectBackground.rect.width * 0.5f;

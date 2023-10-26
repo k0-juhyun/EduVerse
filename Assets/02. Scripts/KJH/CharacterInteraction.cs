@@ -29,8 +29,8 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
 
+    [HideInInspector] public bool _isSit;
     [HideInInspector] public bool isTPSCam = true;
-    [HideInInspector] public bool isTeacherSit = false;
 
     private void Awake()
     {
@@ -48,31 +48,28 @@ public class CharacterInteraction : MonoBehaviourPun
         // 의자 근처에 있고
         if (other.gameObject.CompareTag("Chair"))
         {
-            ChairInfo chairInfo = other.GetComponent<ChairInfo>();
+            //ChairInfo chairInfo = other.GetComponent<ChairInfo>();
 
-            bool isSit = chairInfo.isSit;
+            //_isSit = chairInfo.isSit;
 
             // 범위 내에서 버튼을 클릭했을때
-            if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
+            // 의자에 누가 앉아 있지 않으면
+            if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
             {
-                // 의자에 누가 앉아 있지 않으면
-                // isFull = false 이면 그위치로 가서 앉는 애니메이션 실행
-                if (!isSit)
-                {
-                    // 앉는 애니메이션실행하고
-                    anim.Play("Sit");
 
-                    photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
+                // 앉는 애니메이션실행하고
+                anim.Play("Sit");
 
-                    // 위치를 의자 위치로
-                    Character.transform.position =
-                        new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
-                    Character.transform.forward = other.transform.right;
+                photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
 
-                    // 사람 앉았다.
-                    isSit = true;
-                    //chairInfo.photonView.RPC("UpdateChairSitStatus", RpcTarget.AllBuffered, chairIndex, true);
-                }
+                // 위치를 의자 위치로
+                Character.transform.position =
+                    new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
+                Character.transform.forward = other.transform.right;
+
+                // 사람 앉았다.
+                _isSit = true;
+                //chairInfo.photonView.RPC("UpdateChairSitStatus", RpcTarget.AllBuffered, chairIndex, true);
             }
 
             // 자리에서 일어났다.
@@ -83,7 +80,7 @@ public class CharacterInteraction : MonoBehaviourPun
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
 
-                    isSit = false;
+                    _isSit = false;
                 }
             }
         }
@@ -95,7 +92,7 @@ public class CharacterInteraction : MonoBehaviourPun
         else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.userInfo.isTeacher)
         {
             // 앉기 버튼을 눌렀을 때
-            if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !isTeacherSit)
+            if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
             {
                 anim.Play("Sit");
 
@@ -105,7 +102,7 @@ public class CharacterInteraction : MonoBehaviourPun
                         new Vector3(other.transform.position.x, 0.2f, other.transform.position.z);
                 Character.transform.forward = Quaternion.Euler(0, -90, 0) * other.transform.right;
 
-                isTeacherSit = true;
+                _isSit = true;
             }
 
             else
@@ -115,7 +112,7 @@ public class CharacterInteraction : MonoBehaviourPun
                     Character.transform.position = new Vector3
                     (Character.transform.position.x, 0, Character.transform.position.z);
 
-                    isTeacherSit = false;
+                    _isSit = false;
                 }
             }
         }
@@ -128,17 +125,25 @@ public class CharacterInteraction : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                characterMovement.Canvas.gameObject.SetActive(startStudy.enableCanvas);
-                //photonView.RPC(nameof(UpdateCanvasStatusRPC), RpcTarget.All, startStudy.enableCanvas);
+                characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
             }
         }
         #endregion
     }
 
-    [PunRPC]
-    private void UpdateCanvasStatusRPC(bool enable)
+    private void OnTriggerEnter(Collider other)
     {
-        characterMovement.Canvas.gameObject.SetActive(enable);
+        if (other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.userInfo.isTeacher)
+        {
+            //PhotonNetwork.LeaveRoom();
+            NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
+        }
+
+        if (other.gameObject.name == "BackToClass")
+        {
+            //PhotonNetwork.LeaveRoom();
+            NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+        }
     }
 
     [PunRPC]
@@ -156,7 +161,21 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnCameraButtonClick()
     {
         isTPSCam = !isTPSCam;
+
+        if (photonView.IsMine && _isSit)
+        {
+            characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
+        }
+
+        //if(photonView.IsMine)
+        //{
+        //    if(DataBase.instance.userInfo.isTeacher && _isSit)
+        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
+        //    else if(DataBase.instance.userInfo.isTeacher == false && _isSit)
+        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
+        //}
     }
+
     #endregion
 
     #region 의상 변경 기능
@@ -165,6 +184,7 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine) // 현재 오브젝트의 소유권이 있는지 확인
         {
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel(1);
         }
     }
     #endregion
