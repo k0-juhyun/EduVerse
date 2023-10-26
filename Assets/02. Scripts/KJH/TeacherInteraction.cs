@@ -10,6 +10,18 @@ public class TeacherInteraction : MonoBehaviour
     public bool enableButton;
 
     private CharacterInteraction characterInteraction;
+
+    public GameObject DigitalEditCanvas;
+
+    // 디지털 교과서 제작 툴.
+    public void DigitalEdit()
+    {
+        if (!DigitalEditCanvas.activeSelf)
+            DigitalEditCanvas.SetActive(true);
+        else
+            DigitalEditCanvas.SetActive(false);
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.transform.parent.name == "Character(Clone)")
