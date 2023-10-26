@@ -11,6 +11,8 @@ public class MenuButton : MonoBehaviour
     private RaycastHit hit;
     private Button selectedBtn;
 
+    public GameObject[] menus;
+
     private void Start()
     {
         buttonSets = new Button[transform.childCount];
@@ -19,6 +21,9 @@ public class MenuButton : MonoBehaviour
         {
             buttonSets[i] = transform.GetChild(i).GetComponent<Button>();
         }
+
+        buttonSets[0].Select();
+        selectedBtn = buttonSets[0];
     }
 
     void Update()
@@ -27,12 +32,20 @@ public class MenuButton : MonoBehaviour
         {
             GameObject clickObj = EventSystem.current.currentSelectedGameObject;
 
-            foreach (Button btn in buttonSets)
+            for (int i = 0; i < buttonSets.Length; i++)
             {
-                if (btn.gameObject == clickObj)
+                if (buttonSets[i].gameObject == clickObj)
                 {
-                    selectedBtn = btn;
-                    return;
+                    selectedBtn = buttonSets[i];
+                }
+
+            }
+
+            for (int i = 0; i < buttonSets.Length; i++)
+            {
+                if(menus[i] != null)
+                {
+                    menus[i].SetActive(buttonSets[i] == selectedBtn);
                 }
             }
             selectedBtn.Select();

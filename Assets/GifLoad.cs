@@ -37,14 +37,10 @@ public class GifLoad : MonoBehaviour
 
         if (File.Exists(gifPath))
         {
-            print("yyy");
-
             byte[] data = File.ReadAllBytes(gifPath);
 
-            print("ddddddd, " + data.Length);
             gif = Gif.Decode(data);
 
-            print("dndndndndndndn");
             if (gif != null && gif.Frames.Count > 0)
             {
                 delayTime = gif.Frames[0].Delay;
@@ -75,7 +71,6 @@ public class GifLoad : MonoBehaviour
 
             //image.sprite = sprite[0];
         }
-        print(sprite.Length);
         return sprite;
     }
 

@@ -51,8 +51,10 @@ public class PEA_ItemLoader : MonoBehaviour
     // 아이템 불러오기
     public void LoadItems(int loadItemType)
     {
+        print(content.name);
         foreach (Transform tr in content)
         {
+            print(tr.name);
             Destroy(tr.gameObject);
         }
 
@@ -78,10 +80,9 @@ public class PEA_ItemLoader : MonoBehaviour
 
                         foreach (Item item in myItems.data)
                         {
-                            print(item.itemName + " : " + item.itemType);
-                            if(item.itemType == Item.ItemType.Image)
+                            //if(item.itemType == Item.ItemType.Image)
                             {
-                                print(item.itemName + " 은 이미지");
+                                //print(item.itemName + " 은 이미지");
                                 imageItems.data.Add(item);
                             }
                         }
