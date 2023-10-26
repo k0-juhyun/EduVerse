@@ -1,8 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +22,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     public void SetItemInfo(Item item)
@@ -37,7 +37,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
         }
     }
 
-    public void ItemPreview() 
+    public void ItemPreview()
     {
         Market.instance.Preview(item);
     }
@@ -59,7 +59,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
 
         string json;
 
-        if(!Directory.Exists(myItemsDataPath))
+        if (!Directory.Exists(myItemsDataPath))
         {
             Directory.CreateDirectory(myItemsDataPath);
         }
@@ -74,7 +74,6 @@ public class PEA_MarketItemSlot : MonoBehaviour
             myItems.data = new List<Item>();
             myItems.data.Add(item);
             json = JsonUtility.ToJson(myItems);
-            print(json);
         }
         else
         {
@@ -83,7 +82,6 @@ public class PEA_MarketItemSlot : MonoBehaviour
             myItems = JsonUtility.FromJson<MyItems>(json);
             myItems.data.Add(item);
             json = JsonUtility.ToJson(myItems);
-            print(json);
         }
         File.WriteAllText(myItemsJsonPath, json);
 
