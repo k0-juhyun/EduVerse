@@ -30,7 +30,7 @@ public class StartStudy : MonoBehaviour
     {
         if (DataBase.instance.userInfo.isTeacher)
         {
-            _isTeacherSit = other.gameObject.GetComponentInParent<CharacterInteraction>().isTeacherSit;
+            _isTeacherSit = other.gameObject.GetComponentInParent<CharacterInteraction>()._isSit;
 
             Btn_study.gameObject.SetActive(_isTeacherSit && (isClick == false));
             Btn_study.gameObject.transform.forward = Camera.main.transform.forward;

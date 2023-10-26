@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -13,6 +12,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Vector3 teacherSpawnPos = new Vector3(-6.7f, 0, 5.5f);
     private Vector3 studentSpawnPos = new Vector3(6, 0, 5);
     private Quaternion spawnRot = Quaternion.identity;
+
+    private bool shouldJoinNewRoom = false;
+    private string newRoomName = "";
 
     private void Awake()
     {
@@ -34,50 +36,68 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    void Update()
+    public void JoinRoom(string sceneName)
     {
-
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
+        PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
     }
 
-    public void JoinRoom()
+    public void ChangeRoom(string sceneName)
     {
-        PhotonNetwork.JoinOrCreateRoom("roomName", new RoomOptions(), TypedLobby.Default);
+        newRoomName = sceneName;
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
-
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
-
         print("Joined Lobby");
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        shouldJoinNewRoom = true;
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonNetwork.LoadLevel(4);
-        SceneManager.sceneLoaded += OnSceneLoaded; // 이벤트에 메서드 추가
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object sceneName))
+        {
+            if (!string.IsNullOrEmpty((string)sceneName))
+            {
+                PhotonNetwork.LoadLevel((string)sceneName);
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            }
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if ((scene.buildIndex == 4 || scene.buildIndex ==5) && PhotonNetwork.IsConnected) // 2번 씬이 로드되고 포톤이 연결되었을 때
+        if (PhotonNetwork.IsConnected)
         {
             Vector3 spawnPos = (DataBase.instance.userInfo.isTeacher ? teacherSpawnPos : studentSpawnPos);
             PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
-            SceneManager.sceneLoaded -= OnSceneLoaded; // 메서드를 이벤트에서 제거 (중복 호출 방지)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 
-    public override void OnLeftRoom()
+    void Update()
     {
-        // 방을 나온 후 로비로 돌아가거나 다른 작업 수행
-        PhotonNetwork.LoadLevel(1);
+        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby)
+        {
+            JoinRoom(newRoomName);
+            shouldJoinNewRoom = false;
+        }
     }
 }

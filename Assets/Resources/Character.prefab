@@ -3544,7 +3544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 1218324696606611445}
-  Canvas: {fileID: 1218324697499318056}
+  CharacterCanvas: {fileID: 1218324697499318056}
   rectBackground: {fileID: 1218324695620444939}
   rectJoyStick: {fileID: 1218324695950922614}
   cameraPivotTransform: {fileID: 1218324696606611444}
@@ -3571,8 +3571,8 @@ MonoBehaviour:
   Btn_Sit: {fileID: 1218324696723251728}
   Btn_Camera: {fileID: 1218324695796714921}
   Btn_Custom: {fileID: 1218324697267239320}
+  _isSit: 0
   isTPSCam: 1
-  isTeacherSit: 0
 --- !u!54 &1218324696208131447
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4042,7 +4042,7 @@ GameObject:
   - component: {fileID: 1218324696239341212}
   - component: {fileID: 1218324696239341213}
   m_Layer: 0
-  m_Name: Sit
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4096,7 +4096,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: aaaaa4a17f0e4db42b518c97c7ba3e5e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 288b533beb1a81c47ae9c95852fc6028, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
