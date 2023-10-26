@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
     public GameObject Camera;
-    public GameObject Canvas;
+    public GameObject CharacterCanvas;
 
     [Header("조이스틱")]
     public RectTransform rectBackground;
@@ -106,7 +106,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         {
             // 임시 주석
             Camera.gameObject.SetActive(true);
-            Canvas.gameObject.SetActive(true);
+            CharacterCanvas.gameObject.SetActive(true);
         }
 
         radius = rectBackground.rect.width * 0.5f;

@@ -4,7 +4,7 @@ using Photon.Pun;
 using Unity.WebRTC;
 using UnityEngine;
 
-public class RtcSender : MonoBehaviour
+public class RtcSender : MonoBehaviourPun
 {
 
     // 화면 공유 받을 유저의 view id 리스트
@@ -66,6 +66,15 @@ public class RtcSender : MonoBehaviour
     public void Setup()
     {
         shareCam = GameObject.Find("ShareCamera").GetComponent<Camera>(); //Camera.main;
+
+        if(!DataBase.instance.userInfo.isTeacher && photonView.IsMine)
+        {
+            Camera camera = shareCam.GetComponent<Camera>();
+            camera.orthographicSize = 1.75f;
+
+            shareCam.transform.position = new Vector3(-5, 2.65f, -0.06f);
+            shareCam.transform.rotation = new Quaternion(0,-90,0,0);
+        }
         
         mediaStream = new MediaStream();
 
