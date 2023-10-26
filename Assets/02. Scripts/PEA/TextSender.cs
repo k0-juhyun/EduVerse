@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class TextSender : MonoBehaviour
 {
     // FastAPI 서버 엔드포인트 URL
-    private string serverUrl = "http://221.163.19.218:5051/chat/send"; // 서버 주소 및 엔드포인트를 적절히 변경하세요.
+    private string serverUrl = "http://221.163.19.218:5051/chat/send_student"; // 서버 주소 및 엔드포인트를 적절히 변경하세요.
 
 
     private void Start()
