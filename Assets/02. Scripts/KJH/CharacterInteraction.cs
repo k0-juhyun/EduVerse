@@ -162,18 +162,12 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         isTPSCam = !isTPSCam;
 
+        // 앉아있다면
         if (photonView.IsMine && _isSit)
         {
-            characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
+            // TPScam이 켜져있으면 canvas 켜짐
+            characterMovement.CharacterCanvas.gameObject.SetActive(isTPSCam);
         }
-
-        //if(photonView.IsMine)
-        //{
-        //    if(DataBase.instance.userInfo.isTeacher && _isSit)
-        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
-        //    else if(DataBase.instance.userInfo.isTeacher == false && _isSit)
-        //        characterMovement.CharacterCanvas.gameObject.SetActive(!isTPSCam);
-        //}
     }
 
     #endregion
