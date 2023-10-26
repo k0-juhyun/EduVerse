@@ -69,7 +69,7 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     private void OnEnable()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 2 && item!= null)
+        if (SceneManager.GetActiveScene().buildIndex == 4 && item!= null)
         {
             gameObject.SetActive(item.showInClassroom);
             selectToggle.gameObject.SetActive(false);
@@ -105,7 +105,7 @@ public class PEA_MyItemSlot : MonoBehaviour
         {
             if(newItem != null)
             {
-                newItem.transform.position = Input.mousePosition;
+                newItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);
             }
         }
     }
@@ -114,7 +114,7 @@ public class PEA_MyItemSlot : MonoBehaviour
     public void SetItemInfo(Item item)
     {
         this.item = item;
-        print("dd");
+
         switch (item.itemType)
         {
             case Item.ItemType.Image:
@@ -197,6 +197,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 break;
             case Item.ItemType.Video:
                 useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
+                useItem.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
                 break;
             case Item.ItemType.Object:
                 break;

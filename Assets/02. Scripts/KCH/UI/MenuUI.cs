@@ -74,7 +74,7 @@ public class MenuUI : MonoBehaviour
         }
         else
         {
-            ChatBotMenu.DOAnchorPos((new Vector2(300, 0)), 0.5f);
+            ChatBotMenu.DOAnchorPos((new Vector2(400, 0)), 0.5f);
             isOpen_menu = !isOpen_menu;
         }
     }

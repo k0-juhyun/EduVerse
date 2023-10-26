@@ -66,15 +66,6 @@ public class RtcSender : MonoBehaviourPun
     public void Setup()
     {
         shareCam = GameObject.Find("ShareCamera").GetComponent<Camera>(); //Camera.main;
-
-        if(!DataBase.instance.userInfo.isTeacher && photonView.IsMine)
-        {
-            Camera camera = shareCam.GetComponent<Camera>();
-            camera.orthographicSize = 1.75f;
-
-            shareCam.transform.position = new Vector3(-5, 2.65f, -0.06f);
-            shareCam.transform.rotation = new Quaternion(0,-90,0,0);
-        }
         
         mediaStream = new MediaStream();
 
