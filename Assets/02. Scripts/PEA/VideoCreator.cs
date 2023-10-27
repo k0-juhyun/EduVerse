@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO;
 using System.Text;
@@ -7,6 +8,9 @@ using System.Collections;
 public class VideoCreator : MonoBehaviour
 {
     private string serverURL = "http://221.163.19.218:5052/text_2_video/sendvideo";
+
+    public GameObject capturePreview;
+    public GameObject captureResultText;
 
     private void Start()
     {
@@ -51,10 +55,20 @@ public class VideoCreator : MonoBehaviour
                 myItems.data.Add(item);
                 json = JsonUtility.ToJson(myItems);
                 File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
+
+                capturePreview.SetActive(false);
+                captureResultText.GetComponent<Text>().text = "성공적으로 저장했습니다.";
+                System.Action action = () => { captureResultText.SetActive(false); };
+                Invoke(nameof(action), 0.5f);
             }
             else
             {
-                Debug.Log(imageUploadRequest.error);                
+                Debug.Log(imageUploadRequest.error);
+
+                capturePreview.SetActive(false);
+                captureResultText.GetComponent<Text>().text = "저장에 실패했습니다.";
+                System.Action action = () => { captureResultText.SetActive(false); };
+                Invoke(nameof(action), 0.5f);
             }
         }
     }
