@@ -25,6 +25,7 @@ public class TeacherInteraction : MonoBehaviour
             // 메인카메라 값 리셋 
             Camera.main.transform.localPosition = new Vector3(0, 6.5f, -8);
             Camera.main.transform.localRotation = Quaternion.Euler(20, 0, 0);
+            Camera.main.GetComponentInParent<CameraSetting>().enabled = true;
         }
     }
 

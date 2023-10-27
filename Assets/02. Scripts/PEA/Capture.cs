@@ -46,7 +46,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         captureAreaImage.transform.SetParent(null);
         rtCaptureArea = captureAreaImage.GetComponent<RectTransform>();
 
-        captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
+        //captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
     }
 
     RaycastHit hit;
@@ -131,6 +131,14 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         // 카메라 위치 0 , 1  -10으로 설정
         // 이렇게 해야 캡쳐 드래그가 됌..? 왜지?
         camera.transform.localPosition = new Vector3(0, 1, -10);
+        camera.transform.localEulerAngles = Vector3.zero;
+        // 카메라 세팅 끄고
+        camera.GetComponentInParent<CameraSetting>().enabled = false;
+        // 카메라 부모 Pivot 0으로 설정
+        camera.transform.parent.transform.localPosition = new Vector3(0,0,0);
+        camera.transform.parent.transform.rotation = Quaternion.Euler(0,0,0);
+
+        Debug.Log("캡쳐 클릭");
         
     }
 
