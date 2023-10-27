@@ -73,7 +73,10 @@ public class PEA_ItemLoader : MonoBehaviour
                 {
                     itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
 
-                    gifItemsPath = Directory.GetFiles(Application.persistentDataPath + "/GIF/");
+                    if(Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                    {
+                        gifItemsPath = Directory.GetFiles(Application.persistentDataPath + "/GIF/");
+                    }
                     //marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
 
                     foreach(string path in gifItemsPath)
@@ -84,7 +87,7 @@ public class PEA_ItemLoader : MonoBehaviour
                         //}
                         //else
                         //{
-                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path), path);
+                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
                             imageItems.data.Add(item);
 
                             //byte[] bytes = File.ReadAllBytes(path);
