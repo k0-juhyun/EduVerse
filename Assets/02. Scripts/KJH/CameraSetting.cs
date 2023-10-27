@@ -45,6 +45,7 @@ public class CameraSetting : MonoBehaviour
 
         // 부모에서 컴포넌트 취득
         characterInteraction = GetComponentInParent<CharacterInteraction>();
+
     }
 
     private void LateUpdate()
@@ -151,6 +152,7 @@ public class CameraSetting : MonoBehaviour
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             ZoomCamera(scroll);
         }
+
         else
             FPS_Camera.gameObject.transform.forward = targetTransform.transform.forward;
     }
