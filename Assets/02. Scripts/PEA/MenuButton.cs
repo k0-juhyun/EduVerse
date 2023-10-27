@@ -13,6 +13,15 @@ public class MenuButton : MonoBehaviour
 
     public GameObject[] menus;
 
+    private void OnEnable()
+    {
+        if(buttonSets != null)
+        {
+            buttonSets[0].Select();
+            selectedBtn = buttonSets[0];
+        }
+    }
+
     private void Start()
     {
         buttonSets = new Button[transform.childCount];
@@ -38,7 +47,6 @@ public class MenuButton : MonoBehaviour
                 {
                     selectedBtn = buttonSets[i];
                 }
-
             }
 
             for (int i = 0; i < buttonSets.Length; i++)

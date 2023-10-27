@@ -26,7 +26,7 @@ public class PEA_ItemLoader : MonoBehaviour
     //private string myItemsJsonPath;
     private MyItems myItems;
 
-    private string[] marketItemsPath;
+    private string[] gifItemsPath;
 
     private List<Texture2D> itemTextures = new List<Texture2D>();
 
@@ -71,11 +71,15 @@ public class PEA_ItemLoader : MonoBehaviour
 
                 if (isMarket)
                 {
-                    //itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
 
-                    marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
+                    if(Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                    {
+                        gifItemsPath = Directory.GetFiles(Application.persistentDataPath + "/GIF/");
+                    }
+                    //marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
 
-                    foreach(string path in marketItemsPath)
+                    foreach(string path in gifItemsPath)
                     {
                         //if (path.Contains(".gif"))
                         //{
@@ -83,7 +87,7 @@ public class PEA_ItemLoader : MonoBehaviour
                         //}
                         //else
                         //{
-                            Item item = new Item(path.Contains(".gif") ? Item.ItemType.Video : Item.ItemType.Image, Path.GetFileName(path), path);
+                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
                             imageItems.data.Add(item);
 
                             //byte[] bytes = File.ReadAllBytes(path);
@@ -118,21 +122,30 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                //for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
-                for (int i = 0; i < (imageItems.data.Count); i++)
+                for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
+                //for (int i = 0; i < (imageItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
-                        marketItemSlot.SetItemInfo(imageItems.data[i]);
-                        //marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                        //marketItemSlot.SetItemInfo(imageItems.data[i]);
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
                     }
                     else
                     {
                         PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
                         myItemSlot.SetItemInfo(imageItems.data[i]);
                         myItemSlot.canvas = transform.parent;
+                    }
+                }
+
+                if (isMarket && imageItems.data.Count > 0)
+                {
+                    for (int i = 0; i < imageItems.data.Count; i++)
+                    {
+                        GameObject slot = Instantiate(itemSlot, content);
+                        slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(imageItems.data[i]);
                     }
                 }
 

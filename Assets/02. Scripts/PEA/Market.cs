@@ -48,15 +48,15 @@ public class Market : MonoBehaviour
             case Item.ItemType.Image:
                 previewImage.gameObject.SetActive(true);
 
-                byte[] bytes = File.ReadAllBytes(item.itemPath);
-                Texture2D texture = new Texture2D(2, 2);
-                texture.LoadImage(bytes);
-                texture.Apply();
-                previewImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                //byte[] bytes = File.ReadAllBytes(item.itemPath);
+                //Texture2D texture = new Texture2D(2, 2);
+                //texture.LoadImage(bytes);
+                //texture.Apply();
+                previewImage.sprite = Sprite.Create(item.itemTexture, new Rect(0, 0, item.itemTexture.width, item.itemTexture.height), new Vector2(0.5f, 0.5f));
                 break;
             case Item.ItemType.Video:
                 GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
-                gifLoad.Show(previewImage,gifLoad.GetSpritesByFrame(item.itemPath));
+                gifLoad.Show(previewImage, gifLoad.GetSpritesByFrame(item.itemPath));
                 previewImage.preserveAspect = true;
                 previewImage.gameObject.SetActive(true);
                 break;

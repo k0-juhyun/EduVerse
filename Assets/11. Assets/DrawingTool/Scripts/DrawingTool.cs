@@ -93,6 +93,9 @@ public class DrawingTool : MonoBehaviour
 	// 마우스 위치가 캔버스 내에 있는지 여부 반환
 	private bool InBounds() {
 		//Get our mouse position
+
+		if (Camera.main == null) 
+			return false;
 		var mousePosRaw = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var mousePosFinal = new Vector3(mousePosRaw.x, mousePosRaw.y, drawnLinesParent.position.z);
 		//Get the width and height of the sprite (dont forget the scale of our image object)

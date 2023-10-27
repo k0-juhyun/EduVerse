@@ -49,20 +49,20 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         //captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
     }
 
-    RaycastHit hit;
+    //RaycastHit hit;
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-            {
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+        //    {
 
-            }
-            else
-            {
+        //    }
+        //    else
+        //    {
 
-            }
-        }
+        //    }
+        //}
     }
 
     public void OnPointerDown(PointerEventData eventData)
