@@ -24,6 +24,7 @@ public class CameraSetting : MonoBehaviour
     private float originFieldOfView;
 
     private bool isDragging = false;
+    private bool isDrawing = false;
 
     private Vector2 previousMousePosition;
 
@@ -31,6 +32,8 @@ public class CameraSetting : MonoBehaviour
     private Rect touchZone;
 
     private CharacterInteraction characterInteraction;
+    private MenuUI menuUI;
+
 
     private void Awake()
     {
@@ -38,25 +41,19 @@ public class CameraSetting : MonoBehaviour
         originFieldOfView = Camera.main.fieldOfView;
 
         // 화면의 특정 부분을 터치 영역으로 지정합니다. (예시로 화면의 중앙 200x200 영역)
-        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 200, 200);
+        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 600, 400);
 
         // 부모에서 컴포넌트 취득
         characterInteraction = GetComponentInParent<CharacterInteraction>();
     }
-
+    private void Start()
+    {
+        menuUI = GameObject.Find("Button_MENU").GetComponent<MenuUI>();
+    }
     private void LateUpdate()
     {
-        //ChangeCamera();
         HandleInput();
         FollowCamera();
-    }
-
-    private void ChangeCamera()
-    {
-        //TPS_Camera.gameObject.SetActive(characterInteraction.isTPSCam);
-        //FPS_Camera.gameObject.SetActive(!TPS_Camera.gameObject.activeSelf);
-
-        //FPS_Camera.depth = characterInteraction._isSit? -1 : 1;
     }
 
     // 카메라가 target 오브젝트를 따라다님
@@ -74,7 +71,8 @@ public class CameraSetting : MonoBehaviour
     // 입력 처리
     private void HandleInput()
     {
-        if (characterInteraction.isTPSCam)
+        isDrawing = menuUI.DrawingTool.activeSelf;
+        if (characterInteraction.isTPSCam && isDrawing == false)
         {
             if (Input.touchCount > 0)
             {
