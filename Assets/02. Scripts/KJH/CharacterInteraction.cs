@@ -45,7 +45,9 @@ public class CharacterInteraction : MonoBehaviourPun
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
 
-        subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
+        if (GameObject.Find("SubMainCam"))
+             subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
+
     }
 
     #region 의자 앉기 기능
