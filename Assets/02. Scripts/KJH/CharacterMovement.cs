@@ -53,7 +53,10 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     #region 캐릭터 움직임 (조이스틱)
     public void OnPointerDown(PointerEventData eventData)
     {
-        isTouch = true;
+        if (eventData.pointerCurrentRaycast.gameObject == rectJoyStick.gameObject)
+        {
+            isTouch = true;
+        }
     }
 
     // 손을 떼면
@@ -76,36 +79,38 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 value = eventData.position - (Vector2)rectBackground.position;
-        value = Vector2.ClampMagnitude(value, radius);
-        rectJoyStick.localPosition = value;
+        if (isTouch)
+        {
+            Vector2 value = eventData.position - (Vector2)rectBackground.position;
+            value = Vector2.ClampMagnitude(value, radius);
+            rectJoyStick.localPosition = value;
 
-        value = value.normalized;
+            value = value.normalized;
 
-        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+            float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
-        // 조이스틱 방향으로 움직임
-        Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+            // 조이스틱 방향으로 움직임
+            Vector3 moveDirection = new Vector3(value.x, 0, value.y);
 
-        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+            moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
-        movePos = cameraPivotTransform.TransformDirection(moveDirection);
+            movePos = cameraPivotTransform.TransformDirection(moveDirection);
 
-        movePos.Normalize();
+            movePos.Normalize();
 
-        movePos *= (moveSpeed * Time.deltaTime);
+            movePos *= (moveSpeed * Time.deltaTime);
 
-        Character.transform.forward = movePos;
+            Character.transform.forward = movePos;
 
-        // 조이스틱 입력에 따른 블렌드 값 계산
-        float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
-        animParameters = distance / radius; // 0부터 1 사이의 값
+            // 조이스틱 입력에 따른 블렌드 값 계산
+            float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+            animParameters = distance / radius; // 0부터 1 사이의 값
 
-        // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
-        animator.SetFloat("moveSpeed", animParameters);
+            // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+            animator.SetFloat("moveSpeed", animParameters);
 
-        photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
-
+            photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+        }
     }
     #endregion
 
@@ -142,6 +147,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         }
     }
 
+    // 포톤으로 정보 보내기
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -156,6 +162,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         }
     }
 
+    // 포톤 애니메이션 업데이트
     [PunRPC]
     private void UpdateAnimation(float animParameter)
     {
