@@ -34,7 +34,7 @@ public class CharacterInteraction : MonoBehaviourPun
     [HideInInspector] public bool isTPSCam = true;
 
     Camera subMainCam;
-
+    Scene scene;
     private void Awake()
     {
 
@@ -45,7 +45,8 @@ public class CharacterInteraction : MonoBehaviourPun
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
 
-        subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
+        if (scene.buildIndex == 4)
+            subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
     }
 
     #region 의자 앉기 기능
@@ -217,10 +218,12 @@ public class CharacterInteraction : MonoBehaviourPun
     #region 의상 변경 기능
     private void OnCustomButtonClick()
     {
-        if (photonView.IsMine) // 현재 오브젝트의 소유권이 있는지 확인
+        if (photonView.IsMine)
         {
+            NetworkManager.instance.isCustom = true;
+            NetworkManager.instance.enableChoose = true;
             PhotonNetwork.LeaveRoom();
-            PhotonNetwork.LoadLevel(1);
+            print("커스텀버튼");
         }
     }
     #endregion
