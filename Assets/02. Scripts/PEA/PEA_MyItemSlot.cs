@@ -66,6 +66,7 @@ public class PEA_MyItemSlot : MonoBehaviour
     public GameObject[] itemPrefabs;
 
     public Transform canvas;
+    public GameObject toggleIsOnBG;
 
     private void OnEnable()
     {
@@ -84,10 +85,12 @@ public class PEA_MyItemSlot : MonoBehaviour
         //selectToggle = GetComponentInChildren<Toggle>();
         selectToggle.onValueChanged.AddListener((b) => OnSelectToggleValueChanged(b));
         selectToggle.isOn = item.showInClassroom;
+        toggleIsOnBG.SetActive(selectToggle.isOn);
 
         if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             selectToggle.gameObject.SetActive(false);
+            toggleIsOnBG.SetActive(false);
         }
     }
 
@@ -167,13 +170,12 @@ public class PEA_MyItemSlot : MonoBehaviour
                 if (item.itemName.Equals(this.item.itemName))
                 {
                     item.showInClassroom = isSelected;
-                    print(item.itemName);
                 }
             }
             json = JsonUtility.ToJson(myItems);
-            print(json);
         }
         File.WriteAllText(myItemsJsonPath, json);
+        toggleIsOnBG.SetActive(selectToggle.isOn);
     }
 
     public void OnButtonDown()
