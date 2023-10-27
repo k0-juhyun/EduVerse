@@ -83,7 +83,6 @@ public class MenuUI : MonoBehaviour
     // µå·ÎÀ× Åø
     public void DrawingToolMenu()
     {
-        CameraSetting.isDrawing = true;
         DrawingTool.SetActive(true);
         DrawingCanvas.GetComponent<RectTransform>().DOAnchorPosY(-295, 0.5f);
         isdrawing_menu = !isdrawing_menu;

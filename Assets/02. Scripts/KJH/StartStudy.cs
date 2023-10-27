@@ -9,6 +9,7 @@ public class StartStudy : MonoBehaviour
     public Button Btn_study;
 
     public bool _isTeacherSit;
+    public bool _isDrawing;
     public bool isClick = false;
     public bool enableCanvas = true;
 
@@ -23,6 +24,7 @@ public class StartStudy : MonoBehaviour
         {
             isClick = true;
             enableCanvas = false;
+            _isDrawing = true;
         }
     }
 
@@ -30,10 +32,15 @@ public class StartStudy : MonoBehaviour
     {
         if (DataBase.instance.userInfo.isTeacher)
         {
-            _isTeacherSit = other.gameObject.GetComponentInParent<CharacterInteraction>()._isSit;
+            CharacterInteraction characterInteraction = other.gameObject.GetComponentInParent<CharacterInteraction>();
+            _isTeacherSit = characterInteraction._isSit;
+            characterInteraction.isDrawing = _isDrawing;
 
             Btn_study.gameObject.SetActive(_isTeacherSit && (isClick == false));
-            Btn_study.gameObject.transform.forward = Camera.main.transform.forward;
+            if (Camera.main != null)
+            {
+                Btn_study.gameObject.transform.forward = Camera.main.transform.forward;
+            }
         }
     }
 }

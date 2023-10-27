@@ -1,7 +1,8 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CameraSetting : MonoBehaviour
+public class CameraSetting : MonoBehaviourPun
 {
     [Header("카메라")]
     public Camera TPS_Camera;
@@ -27,7 +28,6 @@ public class CameraSetting : MonoBehaviour
 
     // 불리언 변수
     private bool isDragging = false;
-    public static bool isDrawing = false;
 
     // 터치 가능한 부분
     private Rect touchZone;
@@ -50,6 +50,7 @@ public class CameraSetting : MonoBehaviour
 
     private void LateUpdate()
     {
+        UpdateCamera();
         HandleInput();
         FollowCamera();
     }
@@ -61,6 +62,14 @@ public class CameraSetting : MonoBehaviour
         {
             Vector3 targetPos = Vector3.Lerp(originTransform.position, targetTransform.position, Time.deltaTime / 0.2f);
             originTransform.position = targetPos;
+        }
+    }
+
+    private void UpdateCamera()
+    {
+        if (photonView.IsMine)
+        {
+            TPS_Camera.gameObject.SetActive(!characterInteraction.isDrawing);
         }
     }
 
@@ -107,20 +116,20 @@ public class CameraSetting : MonoBehaviour
                     }
 
                     // 터치 확대 및 축소
-                    if (Input.touchCount == 2)
-                    {
-                        Touch touchZero = Input.GetTouch(0);
-                        Touch touchOne = Input.GetTouch(1);
+                    //if (Input.touchCount == 2)
+                    //{
+                    //    Touch touchZero = Input.GetTouch(0);
+                    //    Touch touchOne = Input.GetTouch(1);
 
-                        Vector2 touchZeroPreviousPos = touchZero.position - touchZero.deltaPosition;
-                        Vector2 touchOnePreviousPos = touchOne.position - touchOne.deltaPosition;
+                    //    Vector2 touchZeroPreviousPos = touchZero.position - touchZero.deltaPosition;
+                    //    Vector2 touchOnePreviousPos = touchOne.position - touchOne.deltaPosition;
 
-                        float prevMagnitude = (touchZeroPreviousPos - touchOnePreviousPos).magnitude;
-                        float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
+                    //    float prevMagnitude = (touchZeroPreviousPos - touchOnePreviousPos).magnitude;
+                    //    float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
 
-                        float difference = currentMagnitude - prevMagnitude;
-                        ZoomCamera(difference * 0.01f);
-                    }
+                    //    float difference = currentMagnitude - prevMagnitude;
+                    //    //ZoomCamera(difference * 0.01f);
+                    //}
                 }
             }
 
@@ -149,16 +158,16 @@ public class CameraSetting : MonoBehaviour
             }
 
             // 마우스 스크롤로 확대 및 축소
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            ZoomCamera(scroll);
+            //float scroll = Input.GetAxis("Mouse ScrollWheel");
+            //ZoomCamera(scroll);
         }
 
         else
             FPS_Camera.gameObject.transform.forward = targetTransform.transform.forward;
     }
 
-    private void ZoomCamera(float increment)
-    {
-        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView - increment * scrollSpeed, 30, 90);
-    }
+    //private void ZoomCamera(float increment)
+    //{
+    //    Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView - increment * scrollSpeed, 30, 90);
+    //}
 }
