@@ -106,7 +106,15 @@ public class PEA_MyItemSlot : MonoBehaviour
         {
             if(newItem != null)
             {
-                newItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);
+                print("action");
+                if(SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    newItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);
+                }
+                else
+                {
+                    newItem.transform.position = Input.mousePosition;
+                }
             }
         }
     }
@@ -170,7 +178,10 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     public void OnButtonDown()
     {
-        slotState = SlotState.Down;
+        if(SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            slotState = SlotState.Down;
+        }
     }
 
     public void OnButtonUp()

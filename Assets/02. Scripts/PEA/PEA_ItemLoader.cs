@@ -33,6 +33,8 @@ public class PEA_ItemLoader : MonoBehaviour
     public Transform content;
     public bool isMarket = false;
 
+    public GameObject gifMarketItem;
+
     private void OnEnable()
     {
         LoadItems(0);
@@ -108,6 +110,12 @@ public class PEA_ItemLoader : MonoBehaviour
                         myItemSlot.canvas = transform.parent;
                     }
                 }
+
+                if (isMarket)
+                {
+                    Instantiate(gifMarketItem, content);
+                }
+
                 break;
             case SearchType.Video:
                 itemTextures.Clear();

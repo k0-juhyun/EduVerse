@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PEA_ImageItem : MonoBehaviour
 {
@@ -68,17 +69,33 @@ public class PEA_ImageItem : MonoBehaviour
 
     public void MoveItem()
     {
-        rectTransform.position = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z)) - p;
+        if(SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            rectTransform.position = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z)) - p;
+        }
+        else
+        {
+            rectTransform.position = Input.mousePosition - p;
+        }
     }
 
     public void ImageDown()
     {
-        p = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z)) - rectTransform.position;
+        print("image down");
+        if(SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            p = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z)) - rectTransform.position;
+        }
+        else
+        {
+            p = Input.mousePosition - rectTransform.position;
+        }
         isMoving = true;
     }
 
     public void ImageUp()
     {
+        print("image up");
         isMoving = false;
     }
 

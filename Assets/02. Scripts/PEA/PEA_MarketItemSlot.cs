@@ -10,7 +10,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
 {
     private string myItemsDataPath;
     private string myItemsJsonPath;
-    private Item item;
+    public Item item;
 
     private MyItems myItems;
 

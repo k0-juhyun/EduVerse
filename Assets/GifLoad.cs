@@ -96,4 +96,11 @@ public class GifLoad : MonoBehaviour
             }
         }
     }
+
+    public void StopGif()
+    {
+        isShowing = false;
+        idx = 0;
+        currTime = 0f;
+    }
 }

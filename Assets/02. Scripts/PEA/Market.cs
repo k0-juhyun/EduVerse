@@ -9,6 +9,7 @@ public class Market : MonoBehaviour
 
     public GameObject previewPanel;
     public GameObject itemView;
+    public GameObject categories;
 
     public Image previewImage;
     public RawImage previewVideo_RawImaege;
@@ -39,6 +40,7 @@ public class Market : MonoBehaviour
     {
         previewPanel.SetActive(true);
         itemView.SetActive(false);
+        categories.SetActive(false);
 
         switch (item.itemType)
         {
@@ -47,6 +49,10 @@ public class Market : MonoBehaviour
                 previewImage.sprite = Sprite.Create(item.itemTexture, new Rect(0, 0, item.itemTexture.width, item.itemTexture.height), new Vector2(0.5f, 0.5f));
                 break;
             case Item.ItemType.Video:
+                GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
+                gifLoad.Show(previewImage,gifLoad.GetSpritesByFrame(item.itemPath));
+                previewImage.preserveAspect = true;
+                previewImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Object:
                 break;
@@ -57,7 +63,9 @@ public class Market : MonoBehaviour
     {
         previewPanel.SetActive(false);
         itemView.SetActive(true);
+        categories.SetActive(true);
 
         previewImage.gameObject.SetActive(false);
+        previewImage.GetComponent<GifLoad>().StopGif();
     }
 }
