@@ -32,11 +32,12 @@ public class PEA_MarketItemSlot : MonoBehaviour
         switch (item.itemType)
         {
             case Item.ItemType.Image:
-                byte[] bytes = File.ReadAllBytes(item.itemPath);
-                Texture2D texture = new Texture2D(2, 2);
-                texture.LoadImage(bytes);
-                texture.Apply();
-                GetComponentInChildren<RawImage>().texture = texture;
+                //byte[] bytes = File.ReadAllBytes(item.itemPath);
+                //Texture2D texture = new Texture2D(2, 2);
+                //texture.LoadImage(bytes);
+                //texture.Apply();
+                //GetComponentInChildren<RawImage>().texture = texture;
+                GetComponentInChildren<RawImage>().texture = item.itemTexture;
                 break;
             case Item.ItemType.Video:
                 GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;

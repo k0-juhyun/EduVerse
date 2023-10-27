@@ -38,7 +38,6 @@ public class MenuButton : MonoBehaviour
                 {
                     selectedBtn = buttonSets[i];
                 }
-
             }
 
             for (int i = 0; i < buttonSets.Length; i++)
