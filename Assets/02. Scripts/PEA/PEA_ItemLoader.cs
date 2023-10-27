@@ -76,27 +76,28 @@ public class PEA_ItemLoader : MonoBehaviour
                     if(Directory.Exists(Application.persistentDataPath + "/GIF/"))
                     {
                         gifItemsPath = Directory.GetFiles(Application.persistentDataPath + "/GIF/");
+
+                        foreach(string path in gifItemsPath)
+                        {
+                            //if (path.Contains(".gif"))
+                            //{
+
+                            //}
+                            //else
+                            //{
+                                Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
+                                imageItems.data.Add(item);
+
+                                //byte[] bytes = File.ReadAllBytes(path);
+                                //Texture2D texture = new Texture2D(2, 2);
+                                //texture.LoadImage(bytes);
+                                //texture.Apply();
+                                //itemTextures.Add(texture);
+                        //    }
+                        }
                     }
                     //marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
 
-                    foreach(string path in gifItemsPath)
-                    {
-                        //if (path.Contains(".gif"))
-                        //{
-
-                        //}
-                        //else
-                        //{
-                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
-                            imageItems.data.Add(item);
-
-                            //byte[] bytes = File.ReadAllBytes(path);
-                            //Texture2D texture = new Texture2D(2, 2);
-                            //texture.LoadImage(bytes);
-                            //texture.Apply();
-                            //itemTextures.Add(texture);
-                    //    }
-                    }
                 }
                 else
                 {
