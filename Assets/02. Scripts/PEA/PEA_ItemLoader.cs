@@ -26,6 +26,8 @@ public class PEA_ItemLoader : MonoBehaviour
     //private string myItemsJsonPath;
     private MyItems myItems;
 
+    private string[] marketItemsPath;
+
     private List<Texture2D> itemTextures = new List<Texture2D>();
 
     public Button[] searchTypeButtons;
@@ -33,7 +35,7 @@ public class PEA_ItemLoader : MonoBehaviour
     public Transform content;
     public bool isMarket = false;
 
-    public GameObject gifMarketItem;
+    //public GameObject gifMarketItem;
 
     private void OnEnable()
     {
@@ -69,7 +71,28 @@ public class PEA_ItemLoader : MonoBehaviour
 
                 if (isMarket)
                 {
-                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                    //itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+
+                    marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
+
+                    foreach(string path in marketItemsPath)
+                    {
+                        //if (path.Contains(".gif"))
+                        //{
+
+                        //}
+                        //else
+                        //{
+                            Item item = new Item(path.Contains(".gif") ? Item.ItemType.Video : Item.ItemType.Image, Path.GetFileName(path), path);
+                            imageItems.data.Add(item);
+
+                            //byte[] bytes = File.ReadAllBytes(path);
+                            //Texture2D texture = new Texture2D(2, 2);
+                            //texture.LoadImage(bytes);
+                            //texture.Apply();
+                            //itemTextures.Add(texture);
+                    //    }
+                    }
                 }
                 else
                 {
@@ -95,13 +118,15 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
+                //for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
+                for (int i = 0; i < (imageItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                        marketItemSlot.SetItemInfo(imageItems.data[i]);
+                        //marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
                     }
                     else
                     {
@@ -111,10 +136,10 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                if (isMarket)
-                {
-                    Instantiate(gifMarketItem, content);
-                }
+                //if (isMarket)
+                //{
+                //    Instantiate(gifMarketItem, content);
+                //}
 
                 break;
             case SearchType.Video:

@@ -32,7 +32,7 @@ public class VideoCreator : MonoBehaviour
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
-                string videoPath = Application.persistentDataPath + Time.time + ".gif";  // 저장할 동영상 파일 경로
+                string videoPath = Application.persistentDataPath + "/MarketItems/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
 
                 File.WriteAllBytes(videoPath, videoData);
 

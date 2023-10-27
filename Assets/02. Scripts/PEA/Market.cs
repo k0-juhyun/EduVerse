@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class Market : MonoBehaviour
 {
@@ -46,7 +47,12 @@ public class Market : MonoBehaviour
         {
             case Item.ItemType.Image:
                 previewImage.gameObject.SetActive(true);
-                previewImage.sprite = Sprite.Create(item.itemTexture, new Rect(0, 0, item.itemTexture.width, item.itemTexture.height), new Vector2(0.5f, 0.5f));
+
+                byte[] bytes = File.ReadAllBytes(item.itemPath);
+                Texture2D texture = new Texture2D(2, 2);
+                texture.LoadImage(bytes);
+                texture.Apply();
+                previewImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 break;
             case Item.ItemType.Video:
                 GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
