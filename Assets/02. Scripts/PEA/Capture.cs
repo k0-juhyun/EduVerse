@@ -123,6 +123,15 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         captureAreaImage.transform.localScale = Vector3.one;
         captureAreaImage.transform.SetParent(rtCanvas);
         captureAreaImage.SetActive(true);
+
+        // main camera pivot rotation 0으로 설정
+        // main camera의 부모가 rotation 값이 바뀌면 이상해짐.
+        Camera camera = Camera.main;
+
+        // 카메라 위치 0 , 1  -10으로 설정
+        // 이렇게 해야 캡쳐 드래그가 됌..? 왜지?
+        camera.transform.localPosition = new Vector3(0, 1, -10);
+        
     }
 
     public void OnClickSendCapture()
