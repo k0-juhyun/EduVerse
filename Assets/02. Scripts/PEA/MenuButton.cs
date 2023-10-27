@@ -15,7 +15,7 @@ public class MenuButton : MonoBehaviour
 
     private void OnEnable()
     {
-        if(buttonSets.Length > 0)
+        if(buttonSets != null)
         {
             buttonSets[0].Select();
             selectedBtn = buttonSets[0];
