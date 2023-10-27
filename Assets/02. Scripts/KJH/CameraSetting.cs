@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraSetting : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CameraSetting : MonoBehaviour
     private Transform originTransform;
 
     private Vector3 cameraFollowVelo = Vector3.zero;
+    private Vector2 previousMousePosition;
 
     private GameObject Character;
 
@@ -23,17 +25,15 @@ public class CameraSetting : MonoBehaviour
     private float xRotate;
     private float originFieldOfView;
 
+    // 불리언 변수
     private bool isDragging = false;
-    private bool isDrawing = false;
-
-    private Vector2 previousMousePosition;
+    public static bool isDrawing = false;
 
     // 터치 가능한 부분
     private Rect touchZone;
 
+    // 컴포넌트 들
     private CharacterInteraction characterInteraction;
-    private MenuUI menuUI;
-
 
     private void Awake()
     {
@@ -41,15 +41,12 @@ public class CameraSetting : MonoBehaviour
         originFieldOfView = Camera.main.fieldOfView;
 
         // 화면의 특정 부분을 터치 영역으로 지정합니다. (예시로 화면의 중앙 200x200 영역)
-        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 600, 400);
+        touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 200, 200);
 
         // 부모에서 컴포넌트 취득
         characterInteraction = GetComponentInParent<CharacterInteraction>();
     }
-    private void Start()
-    {
-        menuUI = GameObject.Find("Button_MENU").GetComponent<MenuUI>();
-    }
+
     private void LateUpdate()
     {
         HandleInput();
@@ -59,9 +56,7 @@ public class CameraSetting : MonoBehaviour
     // 카메라가 target 오브젝트를 따라다님
     private void FollowCamera()
     {
-        //Vector3 targetPos = Vector3.SmoothDamp(originTransform.position, targetTransform.position,
-        //    ref cameraFollowVelo, Time.deltaTime / 0.1f);
-        if(characterInteraction.isTPSCam)
+        if (characterInteraction.isTPSCam)
         {
             Vector3 targetPos = Vector3.Lerp(originTransform.position, targetTransform.position, Time.deltaTime / 0.2f);
             originTransform.position = targetPos;
@@ -71,8 +66,7 @@ public class CameraSetting : MonoBehaviour
     // 입력 처리
     private void HandleInput()
     {
-        isDrawing = menuUI.DrawingTool.activeSelf;
-        if (characterInteraction.isTPSCam && isDrawing == false)
+        if (characterInteraction.isTPSCam)
         {
             if (Input.touchCount > 0)
             {
@@ -160,15 +154,6 @@ public class CameraSetting : MonoBehaviour
         else
             FPS_Camera.gameObject.transform.forward = targetTransform.transform.forward;
     }
-
-    // 카메라 확대 및 축소
-    //private void ZoomCamera(float increment)
-    //{
-    //    Vector3 pos = cameraTransform.localPosition;
-    //    pos.z += increment * scrollSpeed;
-    //    pos.z = Mathf.Clamp(pos.z, -5, -1);
-    //    cameraTransform.localPosition = pos;
-    //}
 
     private void ZoomCamera(float increment)
     {
