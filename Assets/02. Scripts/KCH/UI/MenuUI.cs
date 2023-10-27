@@ -50,6 +50,7 @@ public class MenuUI : MonoBehaviour
     // 아이템 창 열기
     public void ItemOpenMenu()
     {
+        print(isItem_menu);
         if (!isItem_menu)
         {
             //ItemMenu.DOLocalMoveY(750, 0.5f);

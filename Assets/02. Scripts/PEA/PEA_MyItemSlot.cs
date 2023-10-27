@@ -56,7 +56,7 @@ public class PEA_MyItemSlot : MonoBehaviour
     private string myItemsJsonPath;
     private MyItems myItems;
 
-    private Toggle selectToggle;
+    public Toggle selectToggle;
 
     private GameObject newItem;
 
@@ -69,18 +69,19 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     private void OnEnable()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 4 && item!= null)
-        {
-            gameObject.SetActive(item.showInClassroom);
-            selectToggle.gameObject.SetActive(false);
-        }
+        //if (SceneManager.GetActiveScene().buildIndex == 4 && item!= null)
+        //{
+        //    print("slot, " + item.itemName + ", " + item.showInClassroom);
+        //    gameObject.SetActive(item.showInClassroom);
+        //    selectToggle.gameObject.SetActive(false);
+        //}
     }
 
     void Start()
     {
         myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
 
-        selectToggle = GetComponentInChildren<Toggle>();
+        //selectToggle = GetComponentInChildren<Toggle>();
         selectToggle.onValueChanged.AddListener((b) => OnSelectToggleValueChanged(b));
         selectToggle.isOn = item.showInClassroom;
 
@@ -128,7 +129,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 break;
         }
 
-        if(SceneManager.GetActiveScene().buildIndex == 2)
+        if(SceneManager.GetActiveScene().buildIndex == 4)
         {
             gameObject.SetActive(item.showInClassroom);
         }

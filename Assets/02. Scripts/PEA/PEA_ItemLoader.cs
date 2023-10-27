@@ -54,7 +54,6 @@ public class PEA_ItemLoader : MonoBehaviour
         print(content.name);
         foreach (Transform tr in content)
         {
-            print(tr.name);
             Destroy(tr.gameObject);
         }
 
@@ -83,6 +82,7 @@ public class PEA_ItemLoader : MonoBehaviour
                             //if(item.itemType == Item.ItemType.Image)
                             {
                                 //print(item.itemName + " 은 이미지");
+                                print(item.itemName + ", " + item.showInClassroom);
                                 imageItems.data.Add(item);
                             }
                         }
