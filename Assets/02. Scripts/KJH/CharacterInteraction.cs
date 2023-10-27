@@ -32,6 +32,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     [HideInInspector] public bool _isSit;
     [HideInInspector] public bool isTPSCam = true;
+    [HideInInspector] public bool isDrawing = false;
 
     Camera subMainCam;
     Scene scene;
@@ -208,6 +209,7 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             characterMovement.SpareCanvas.gameObject.SetActive(false);
             characterMovement.CharacterCanvas.gameObject.SetActive(true);
+            isDrawing = false;
             cameraSetting.FPS_Camera.depth = 1;
         }
     }

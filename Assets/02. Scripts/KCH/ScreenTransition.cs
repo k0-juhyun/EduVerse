@@ -61,7 +61,7 @@ public class ScreenTransition : MonoBehaviour
             // 캔버스 키고 다시 클릭 버튼 가능
             startStudy.isClick = false;
             startStudy.enableCanvas = true;
-
+            startStudy._isDrawing = false;
         }
     }
 }

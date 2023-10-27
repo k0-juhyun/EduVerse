@@ -53,7 +53,6 @@ public class UIControls : MonoBehaviour
         color_toggle = !color_toggle;
         palette.GetComponent<RectTransform>().DOAnchorPosY(-365, 0.5f).OnComplete(() =>
         {
-            CameraSetting.isDrawing = false;
             DrawingTool.SetActive(false);
         });
 
