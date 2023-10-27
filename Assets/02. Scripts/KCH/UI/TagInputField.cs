@@ -31,10 +31,10 @@ public class TagInputField : MonoBehaviour
 
         // 만약 이 자식이 첫 번째 자식이어야 한다면,
         // 다른 형제들을 뒤로 밀어내야 합니다.
-        for (int i = parentTransform.childCount - 1; i > 0; i--)
-        {
-            parentTransform.GetChild(i).SetSiblingIndex(i + 1);
-        }
+        
+        // inputField 가장 뒤로 밀기.
+        playerNameInput.transform.SetAsLastSibling();
+
 
     }
     public void Test3()
