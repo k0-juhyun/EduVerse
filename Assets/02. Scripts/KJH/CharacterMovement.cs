@@ -30,9 +30,9 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     [Header("이동속도")]
     private float minSpeed = 0;
 #if UNITY_EDITOR
-    private float maxSpeed = 4;
+    private float maxSpeed = 4f;
 #elif UNITY_ANDROID
-    private float maxSpeed = 2;
+    private float maxSpeed = 2f;
 #endif
 
     private bool isTouch = false;
@@ -70,8 +70,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         animator.SetFloat("moveSpeed", 0f);
 
         photonView.RPC("UpdateAnimation", RpcTarget.All, 0f);
-
-        animator.SetTrigger("Idle");
     }
 
     // 드래그중
@@ -88,7 +86,14 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 조이스틱 방향으로 움직임
         Vector3 moveDirection = new Vector3(value.x, 0, value.y);
-        movePos = cameraPivotTransform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
+
+        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+
+        movePos = cameraPivotTransform.TransformDirection(moveDirection);
+
+        movePos.Normalize();
+
+        movePos *= (moveSpeed * Time.deltaTime);
 
         Character.transform.forward = movePos;
 
@@ -101,7 +106,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
 
-        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
     }
     #endregion
 
