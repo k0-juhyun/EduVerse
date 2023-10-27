@@ -23,6 +23,12 @@ public class DataManager : MonoBehaviourPunCallbacks
 
     private void LoadCharacterInfo()
     {
+        if (!PhotonNetwork.IsConnected)
+        {
+            ApplyCharacterInfo(DataBase.instance.myInfo);
+            return;
+        }
+
         if (photonView.IsMine)
         {
 #if UNITY_EDITOR

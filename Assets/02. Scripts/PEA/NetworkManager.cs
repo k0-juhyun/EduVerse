@@ -14,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Quaternion spawnRot = Quaternion.identity;
 
     private bool shouldJoinNewRoom = false;
+    [HideInInspector] public bool isCustom = false;
+    [HideInInspector] public bool enableChoose = false;
     private string newRoomName = "";
 
     private void Awake()
@@ -35,6 +37,35 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.ConnectUsingSettings();
     }
+
+    public void LoadScene(int sceneIndex)
+    {
+        StartCoroutine(LoadSceneAfterLeavingRoom(sceneIndex));
+    }
+
+    private IEnumerator LoadSceneAfterLeavingRoom(int sceneIndex)
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+            while (PhotonNetwork.InRoom)
+            {
+                yield return null;
+            }
+        }
+
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            while (!PhotonNetwork.IsConnectedAndReady)
+            {
+                yield return null;
+            }
+        }
+
+        SceneManager.LoadScene(sceneIndex);
+    }
+
 
     public void JoinRoom(string sceneName)
     {
@@ -59,13 +90,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
-        print("Joined Lobby");
+        print("로비들림");
     }
 
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
+        PhotonNetwork.ConnectUsingSettings();
         shouldJoinNewRoom = true;
+        if (isCustom)
+        {
+            LoadScene(1);
+        }
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnJoinedRoom()
@@ -103,7 +144,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby)
+        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby && !isCustom && !enableChoose)
         {
             JoinRoom(newRoomName);
             shouldJoinNewRoom = false;

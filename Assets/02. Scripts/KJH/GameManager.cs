@@ -11,22 +11,24 @@ public class GameManager : MonoBehaviourPun
     public static GameManager Instance;
 
     [Header("Ä³¸¯ÅÍ")]
-    public GameObject Character;
+    private GameObject Character;
     private Customization customization;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-
+            Character = GameObject.Find("Character");
             if (Character != null)
                 customization = Character.GetComponent<Customization>();
-        }
-        else if (Instance != this)
-        {
-            Destroy(this.gameObject);
         }
     }
 

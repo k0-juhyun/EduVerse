@@ -19,15 +19,19 @@ public class ButtonManager : MonoBehaviour
 
         if (DataBase.instance.userInfo.isTeacher == false)
             PhotonNetwork.LoadLevel(3);
+
+        NetworkManager.instance.isCustom = false;
     }
 
     public void OnClassrommBtnClick()
     {
         NetworkManager.instance.JoinRoom("4.ClassRoomScene");
+        NetworkManager.instance.enableChoose = false;
     }
 
     public void OnTeachersRoomBtnClick()
     {
         NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
+        NetworkManager.instance.enableChoose = false;
     }
 }
