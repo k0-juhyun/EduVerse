@@ -35,6 +35,7 @@ public class TeacherInteraction : MonoBehaviour
         {
             enableButton = true;
             Btn.gameObject.SetActive(enableButton);
+            Btn.gameObject.transform.forward = Camera.main.transform.forward;
         }    
     }
 
