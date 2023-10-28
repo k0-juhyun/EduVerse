@@ -16,7 +16,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private bool shouldJoinNewRoom = false;
     [HideInInspector] public bool isCustom = false;
     [HideInInspector] public bool enableChoose = false;
+
     private string newRoomName = "";
+    private string loadingSceneName = "LoadingScene";
+
+    public delegate void LoadSceneProgress(float progress);
+    public event LoadSceneProgress OnLoadSceneProgress;
 
     private void Awake()
     {
@@ -63,7 +68,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
         }
 
-        SceneManager.LoadScene(sceneIndex);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+        while (!asyncLoad.isDone)
+        {
+            OnLoadSceneProgress?.Invoke(asyncLoad.progress);
+            yield return null;
+        }
+
+        OnLoadSceneProgress?.Invoke(1f);
     }
 
 
@@ -78,8 +90,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void ChangeRoom(string sceneName)
     {
         newRoomName = sceneName;
-        PhotonNetwork.LeaveRoom();
+        StartCoroutine(ChangeRoomCoroutine());
     }
+
+    private IEnumerator ChangeRoomCoroutine()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+        {
+            yield return null;
+        }
+
+        SceneManager.LoadScene("LoadingScene"); // ·Îµù ¾À ÀÌ¸§
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
+
+        shouldJoinNewRoom = true;
+    }
+
 
     public override void OnConnectedToMaster()
     {

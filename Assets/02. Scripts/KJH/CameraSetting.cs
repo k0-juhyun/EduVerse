@@ -166,8 +166,21 @@ public class CameraSetting : MonoBehaviourPun
             FPS_Camera.gameObject.transform.forward = targetTransform.transform.forward;
     }
 
-    //private void ZoomCamera(float increment)
-    //{
-    //    Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView - increment * scrollSpeed, 30, 90);
-    //}
+    public void ToggleCameraMode(bool isTPSCam, bool isSitting)
+    {
+        if (isSitting)
+        {
+            // 앉아 있을 때의 카메라 설정
+            TPS_Camera.gameObject.SetActive(false);
+            FPS_Camera.gameObject.SetActive(true);
+            FPS_Camera.depth = 1;
+        }
+        else
+        {
+            // 서 있을 때의 카메라 설정
+            TPS_Camera.gameObject.SetActive(isTPSCam);
+            FPS_Camera.gameObject.SetActive(!isTPSCam);
+            FPS_Camera.depth = isTPSCam ? -1 : 1;
+        }
+    }
 }

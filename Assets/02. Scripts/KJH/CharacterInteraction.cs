@@ -65,7 +65,6 @@ public class CharacterInteraction : MonoBehaviourPun
             // 의자에 누가 앉아 있지 않으면
             if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
             {
-
                 // 앉는 애니메이션실행하고
                 anim.Play("Sit");
 
@@ -170,6 +169,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnCameraButtonClick()
     {
         isTPSCam = !isTPSCam;
+        isDrawing = !isDrawing;
 
         if (photonView.IsMine)
         {
@@ -209,12 +209,13 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             characterMovement.SpareCanvas.gameObject.SetActive(false);
             characterMovement.CharacterCanvas.gameObject.SetActive(true);
+            cameraSetting.FPS_Camera.gameObject.SetActive(false);
+            isTPSCam = true;
             isDrawing = false;
             cameraSetting.FPS_Camera.depth = 1;
         }
     }
     #endregion
-
 
 
     #region 의상 변경 기능
