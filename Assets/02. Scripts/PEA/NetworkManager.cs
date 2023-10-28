@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -69,9 +70,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+        asyncLoad.allowSceneActivation = false;  // 씬 활성화를 중지합니다.
+
         while (!asyncLoad.isDone)
         {
-            OnLoadSceneProgress?.Invoke(asyncLoad.progress);
+            float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
+            Debug.Log($"Loading progress: {progress}");
+            OnLoadSceneProgress?.Invoke(progress);
+
+            if (asyncLoad.progress >= 0.9f)
+            {
+                Debug.Log("Activating scene...");
+                asyncLoad.allowSceneActivation = true;
+            }
+
             yield return null;
         }
 
