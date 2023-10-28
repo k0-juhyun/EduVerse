@@ -1,11 +1,13 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenTransition : MonoBehaviour
+public class ScreenTransition : MonoBehaviourPun
 {
     Camera maincam;
     Camera ShareCam;
+    GameObject subMainCam;
     public GameObject canvas;
     public GameObject teacherComputer;
 
@@ -16,9 +18,17 @@ public class ScreenTransition : MonoBehaviour
     private void Start()
     {
         maincam = Camera.main;
+        subMainCam = this.gameObject;
         ShareCam = GetComponent<Camera>();
 
         startStudy = teacherComputer.GetComponent<StartStudy>();
+
+        if (DataBase.instance.userInfo.isTeacher == false)
+        {
+            ShareCam.orthographicSize = 1.75f;
+            subMainCam.transform.position = new Vector3(-6, 2.65f, -0.06f);
+            subMainCam.transform.rotation = Quaternion.Euler(0, -90, 0);
+        }
     }
 
     private void Update()
