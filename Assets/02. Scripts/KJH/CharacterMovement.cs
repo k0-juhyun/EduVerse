@@ -27,10 +27,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private float animParameters;
 
     [Space]
-    [Header("이동속도")]
     private float minSpeed = 0;
 #if UNITY_EDITOR
-    private float maxSpeed = 4f;
+    [Header("이동속도")]
+    [SerializeField]
+    private float maxSpeed = 2f;
 #elif UNITY_ANDROID
     private float maxSpeed = 2f;
 #endif
@@ -130,7 +131,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         animator = Character.GetComponent<Animator>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (photonView.IsMine)
         {
