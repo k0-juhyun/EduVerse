@@ -144,10 +144,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnClickSendCapture()
     {
-        if(tagInput.text.Length > 0)
-        {
-            videoCreator.UploadImageAndDownloadVideo(captureResultDataPath);
-        }
+        rtCaptureArea.sizeDelta = Vector2.zero;
+        videoCreator.UploadImageAndDownloadVideo(captureResultDataPath);
     } 
 
     public void OnClickBackBtn()
