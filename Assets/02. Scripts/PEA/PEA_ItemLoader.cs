@@ -55,7 +55,6 @@ public class PEA_ItemLoader : MonoBehaviour
     // 아이템 불러오기
     public void LoadItems(int loadItemType)
     {
-        print(content.name);
         foreach (Transform tr in content)
         {
             Destroy(tr.gameObject);
@@ -66,8 +65,9 @@ public class PEA_ItemLoader : MonoBehaviour
             case SearchType.Image:
                 itemTextures.Clear();
 
-                MyItems imageItems = new MyItems();
-                imageItems.data = new List<Item>();
+                List<Item> gifItems = new List<Item>();
+                MyItems myItems = MyItemsManager.instance.GetMyItems();
+                //myItems.data = new List<Item>();
 
                 if (isMarket)
                 {
@@ -86,7 +86,7 @@ public class PEA_ItemLoader : MonoBehaviour
                             //else
                             //{
                                 Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
-                                imageItems.data.Add(item);
+                                gifItems.Add(item);
 
                                 //byte[] bytes = File.ReadAllBytes(path);
                                 //Texture2D texture = new Texture2D(2, 2);
@@ -101,29 +101,29 @@ public class PEA_ItemLoader : MonoBehaviour
                 }
                 else
                 {
-                    if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
-                    {
-                        byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
-                        string json = Encoding.UTF8.GetString(bytes.ToArray());
-                        myItems = JsonUtility.FromJson<MyItems>(json);                        
+                    //if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+                    //{
+                    //    byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+                    //    string json = Encoding.UTF8.GetString(bytes.ToArray());
+                    //    this.myItems = JsonUtility.FromJson<MyItems>(json);                        
 
-                        foreach (Item item in myItems.data)
-                        {
-                            //if(item.itemType == Item.ItemType.Image)
-                            {
-                                //print(item.itemName + " 은 이미지");
-                                print(item.itemName + ", " + item.showInClassroom);
-                                imageItems.data.Add(item);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        print("else");
-                    }
+                    //    foreach (Item item in this.myItems.data)
+                    //    {
+                    //        //if(item.itemType == Item.ItemType.Image)
+                    //        {
+                    //            //print(item.itemName + " 은 이미지");
+                    //            print(item.itemName + ", " + item.showInClassroom);
+                    //            myItems.data.Add(item);
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    print("else");
+                    //}
                 }
 
-                for (int i = 0; i < (isMarket ? itemTextures.Count : imageItems.data.Count); i++)
+                for (int i = 0; i < (isMarket ? itemTextures.Count : myItems != null ?  myItems.data.Count : 0); i++)
                 //for (int i = 0; i < (imageItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
@@ -131,22 +131,23 @@ public class PEA_ItemLoader : MonoBehaviour
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
                         //marketItemSlot.SetItemInfo(imageItems.data[i]);
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                        //marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".png"));
                     }
                     else
                     {
                         PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
-                        myItemSlot.SetItemInfo(imageItems.data[i]);
+                        myItemSlot.SetItemInfo(myItems.data[i]);
                         myItemSlot.canvas = transform.parent;
                     }
                 }
 
-                if (isMarket && imageItems.data.Count > 0)
+                if (isMarket && gifItems.Count > 0)
                 {
-                    for (int i = 0; i < imageItems.data.Count; i++)
+                    for (int i = 0; i < gifItems.Count; i++)
                     {
                         GameObject slot = Instantiate(itemSlot, content);
-                        slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(imageItems.data[i]);
+                        slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(gifItems[i]);
                     }
                 }
 
@@ -172,9 +173,9 @@ public class PEA_ItemLoader : MonoBehaviour
                     {
                         byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
                         string json = Encoding.UTF8.GetString(bytes.ToArray());
-                        myItems = JsonUtility.FromJson<MyItems>(json);
+                        this.myItems = JsonUtility.FromJson<MyItems>(json);
 
-                        foreach (Item item in myItems.data)
+                        foreach (Item item in this.myItems.data)
                         {
                             print(item.itemName + " : " + item.itemType);
                             if (item.itemType == Item.ItemType.Video)
@@ -209,6 +210,19 @@ public class PEA_ItemLoader : MonoBehaviour
                 break;
             case SearchType.Object:
                 break;
+        }
+    }
+
+    public void DeleteAllMyItems()
+    {
+        if(File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+        {
+            File.Delete(Application.persistentDataPath + "/MyItems.txt");
+
+            foreach(Transform tr in content)
+            {
+                Destroy(tr.gameObject);
+            }
         }
     }
 }

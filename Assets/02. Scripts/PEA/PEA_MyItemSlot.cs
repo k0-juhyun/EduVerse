@@ -87,7 +87,7 @@ public class PEA_MyItemSlot : MonoBehaviour
         selectToggle.isOn = item.showInClassroom;
         toggleIsOnBG.SetActive(selectToggle.isOn);
 
-        if(SceneManager.GetActiveScene().buildIndex == 2)
+        if(SceneManager.GetActiveScene().buildIndex == 4)
         {
             selectToggle.gameObject.SetActive(false);
             toggleIsOnBG.SetActive(false);
@@ -143,6 +143,8 @@ public class PEA_MyItemSlot : MonoBehaviour
         if(SceneManager.GetActiveScene().buildIndex == 4)
         {
             gameObject.SetActive(item.showInClassroom);
+            selectToggle.gameObject.SetActive(false);
+            toggleIsOnBG.SetActive(false);
         }
     }
 
@@ -150,31 +152,33 @@ public class PEA_MyItemSlot : MonoBehaviour
     {
         item.showInClassroom = isSelected;
 
-        string json;
+        MyItemsManager.instance.EditItemData(item);
 
-        if (!File.Exists(myItemsJsonPath))
-        {
-            myItems = new MyItems();
-            myItems.data = new List<Item>();
-            myItems.data.Add(item);
-            json = JsonUtility.ToJson(myItems);
-            print(json);
-        }
-        else
-        {
-            byte[] bytes = File.ReadAllBytes(myItemsJsonPath);
-            json = Encoding.UTF8.GetString(bytes);
-            myItems = JsonUtility.FromJson<MyItems>(json);
-            foreach (Item item in myItems.data)
-            {
-                if (item.itemName.Equals(this.item.itemName))
-                {
-                    item.showInClassroom = isSelected;
-                }
-            }
-            json = JsonUtility.ToJson(myItems);
-        }
-        File.WriteAllText(myItemsJsonPath, json);
+        //string json;
+
+        //if (!File.Exists(myItemsJsonPath))
+        //{
+        //    myItems = new MyItems();
+        //    myItems.data = new List<Item>();
+        //    myItems.data.Add(item);
+        //    json = JsonUtility.ToJson(myItems);
+        //    print(json);
+        //}
+        //else
+        //{
+        //    byte[] bytes = File.ReadAllBytes(myItemsJsonPath);
+        //    json = Encoding.UTF8.GetString(bytes);
+        //    myItems = JsonUtility.FromJson<MyItems>(json);
+        //    foreach (Item item in myItems.data)
+        //    {
+        //        if (item.itemName.Equals(this.item.itemName))
+        //        {
+        //            item.showInClassroom = isSelected;
+        //        }
+        //    }
+        //    json = JsonUtility.ToJson(myItems);
+        //}
+        //File.WriteAllText(myItemsJsonPath, json);
         toggleIsOnBG.SetActive(selectToggle.isOn);
     }
 
