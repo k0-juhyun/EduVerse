@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Collections;
@@ -38,6 +39,11 @@ public class VideoCreator : MonoBehaviour
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
                 string videoPath = Application.persistentDataPath + "/GIF/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
 
+                if(!Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                {
+                    Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
+                }
+
                 File.WriteAllBytes(videoPath, videoData);
 
                 // 아이템 정보 저장
@@ -50,6 +56,10 @@ public class VideoCreator : MonoBehaviour
                     byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
                     json = Encoding.UTF8.GetString(jsonBytes);
                     myItems = JsonUtility.FromJson<MyItems>(json);
+                }
+                else
+                {
+                    myItems.data = new List<Item>();
                 }
                             
                 myItems.data.Add(item);
