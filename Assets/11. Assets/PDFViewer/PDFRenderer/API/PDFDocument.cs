@@ -256,7 +256,7 @@ namespace Paroxe.PdfRenderer
             // 임시 수정 -100
             // height 아예 800으로 값 수정.
 
-            height = 600;
+            height = 640;
             return (int)height;
         }
 #endif

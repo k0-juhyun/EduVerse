@@ -10,7 +10,6 @@ public class TagInputField : MonoBehaviour
 
     public void Test()
     {
-        Debug.Log("1");
     }
     public void Tes1t()
     {
@@ -35,10 +34,10 @@ public class TagInputField : MonoBehaviour
         // inputField 가장 뒤로 밀기.
         playerNameInput.transform.SetAsLastSibling();
 
+        playerNameInput.text = string.Empty;
 
     }
     public void Test3()
     {
-        Debug.Log("13");
     }
 }
