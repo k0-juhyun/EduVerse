@@ -217,6 +217,7 @@ public class PEA_ItemLoader : MonoBehaviour
     {
         if(File.Exists(Application.persistentDataPath + "/MyItems.txt"))
         {
+            print("file exists");
             File.Delete(Application.persistentDataPath + "/MyItems.txt");
 
             foreach(Transform tr in content)
@@ -224,5 +225,7 @@ public class PEA_ItemLoader : MonoBehaviour
                 Destroy(tr.gameObject);
             }
         }
+
+        MyItemsManager.instance.LoadData();
     }
 }

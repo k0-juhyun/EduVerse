@@ -33,7 +33,7 @@ public class MyItemsManager : MonoBehaviour
         
     }
 
-    private void  LoadData()
+    public void  LoadData()
     {
         print("LoadData");
         if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
