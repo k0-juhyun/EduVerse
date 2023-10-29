@@ -297,7 +297,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 			}
 		}
 #endif
-
+		
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData) { }
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData) { }
