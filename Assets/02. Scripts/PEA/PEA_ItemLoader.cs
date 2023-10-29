@@ -225,7 +225,6 @@ public class PEA_ItemLoader : MonoBehaviour
                 Destroy(tr.gameObject);
             }
         }
-
-        MyItemsManager.instance.LoadData();
+        MyItemsManager.instance.DeleteAll();
     }
 }

@@ -98,6 +98,11 @@ public class MyItemsManager : MonoBehaviour
         SaveData();
     }
 
+    public void DeleteAll()
+    {
+        myItems.data.Clear();
+    }
+
     private void SaveData()
     {
         string json = JsonUtility.ToJson(myItems);
