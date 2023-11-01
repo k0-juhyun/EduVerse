@@ -19,9 +19,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [HideInInspector] public bool enableChoose = false;
 
     private string newRoomName = "";
-    private string loadingSceneName = "LoadingScene";
+    //private string loadingSceneName = "LoadingScene";
 
     public delegate void LoadSceneProgress(float progress);
+
     public event LoadSceneProgress OnLoadSceneProgress;
 
     private void Awake()
