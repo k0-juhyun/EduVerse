@@ -78,4 +78,9 @@ public class DataBase : MonoBehaviour
     {
         userInfo = user;
     }
+
+    public void SetStudent(User user,int stuNum)
+    {
+        user.stuNum = stuNum;
+    }
 }

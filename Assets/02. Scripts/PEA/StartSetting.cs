@@ -23,7 +23,7 @@ public class StartSetting : MonoBehaviour
     {
         if(nameInput.text.Length > 0)
         {
-            DataBase.instance.SetMyInfo( new User(nameInput.text, isTeacherTpggle.isOn));
+            DataBase.instance.SetMyInfo(new User(nameInput.text, isTeacherTpggle.isOn));
             if(PhotonNetwork.IsConnectedAndReady)
             {
                 PhotonNetwork.NickName = nameInput.text;
