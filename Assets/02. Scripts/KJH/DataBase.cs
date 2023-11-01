@@ -38,11 +38,10 @@ public class User
     public bool isTeacher;
     public int stuNum;
 
-    public User(string name, bool isTeacher, int stuNum)
+    public User(string name, bool isTeacher)
     {
         this.name = name;
         this.isTeacher = isTeacher;
-        this.stuNum = stuNum;
     }
 }
 
