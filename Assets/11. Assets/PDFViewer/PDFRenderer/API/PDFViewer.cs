@@ -2312,8 +2312,15 @@ namespace Paroxe.PdfRenderer
         {
             if(Input.GetKeyDown(KeyCode.U))
             {
-                m_Internal.PageContainer.sizeDelta = new Vector2(m_Internal.PageContainer.sizeDelta.x * 2, m_Internal.PageContainer.sizeDelta.y);
-                Debug.Log("ff");
+                PDFPageTextureHolder holder_ = m_PageTextureHolders[0];
+
+                Color customColor = new Color(0.71f, 0.71f, 0.71f, 1.0f); // 0.71은 B7B7B7을 0에서 1 사이의 값으로 변환한 것입니다.
+
+                RawImage rawImage = holder_.Page.GetComponent<RawImage>();
+                if (rawImage != null)
+                {
+                    rawImage.color = customColor; // B7B7B7 색상을 적용합니다.
+                }
             }
 
             if (m_DelayedOnEnable)
@@ -2482,7 +2489,26 @@ namespace Paroxe.PdfRenderer
 
             // 임시 테스트용.
             m_Internal.PageContainer.sizeDelta = new Vector2(m_Internal.PageContainer.sizeDelta.x * 2, m_Internal.PageContainer.sizeDelta.y);
+
+            StartCoroutine(FirstPageColor());
         }
+
+        // 임시 테스트용 첫페이지 색깔 바꾸기
+        IEnumerator FirstPageColor()
+        {
+            yield return new WaitForSeconds(0.3f);
+
+            PDFPageTextureHolder holder_ = m_PageTextureHolders[0];
+
+            Color customColor = new Color(0.71f, 0.71f, 0.71f, 1.0f); // 0.71은 B7B7B7을 0에서 1 사이의 값으로 변환한 것입니다.
+
+            RawImage rawImage = holder_.Page.GetComponent<RawImage>();
+            if (rawImage != null)
+            {
+                rawImage.color = customColor; // B7B7B7 색상을 적용합니다.
+            }
+        }
+
 
         // 문서 로드가 실패했음을 알림.
         private void NotifyDocumentLoadFailed()
@@ -2521,7 +2547,6 @@ namespace Paroxe.PdfRenderer
             if (OnZoomChanged != null)
                 OnZoomChanged(this, oldZoom, newZoom);
         }
-
 
         protected override void OnDisable()
         {
@@ -3085,6 +3110,8 @@ namespace Paroxe.PdfRenderer
 
                 holderRectTransform.anchoredPosition3D = newPosition;
             }
+
+
 
         }
 

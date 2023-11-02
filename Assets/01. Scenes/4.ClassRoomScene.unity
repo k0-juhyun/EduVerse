@@ -10061,7 +10061,7 @@ RectTransform:
   - {fileID: 155199423}
   - {fileID: 1344096612}
   m_Father: {fileID: 680839769}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -11950,7 +11950,7 @@ RectTransform:
   - {fileID: 618323579}
   - {fileID: 690044294}
   m_Father: {fileID: 680839769}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -16310,7 +16310,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1855170296}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -16339,9 +16339,9 @@ RectTransform:
   - {fileID: 1108501106}
   - {fileID: 99542544}
   - {fileID: 1260185167}
-  - {fileID: 6695326667805936932}
   - {fileID: 452823432}
   - {fileID: 515212392}
+  - {fileID: 1840051180}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32866,7 +32866,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.0000246151, y: 0}
+  m_AnchoredPosition: {x: 0.000030049261, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1532016052
@@ -33039,7 +33039,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 1
@@ -37391,7 +37391,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 34437982}
   drawnLinesParent: {fileID: 933703204}
   linePrefab: {fileID: 8736313027647296527, guid: 4e440a4b54d68ed4d84963d68921c558, type: 3}
-  lineStepDistance: 0.005
+  lineStepDistance: 0.001
   brushSize: 0.01
   currentMaterialIndex: 0
   brushColours:
@@ -38318,6 +38318,107 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837085808}
   m_CullTransparentMesh: 1
+--- !u!1 &1840051179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1840051180}
+  - component: {fileID: 1840051183}
+  - component: {fileID: 1840051182}
+  - component: {fileID: 1840051181}
+  m_Layer: 6
+  m_Name: ChatBot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1840051180
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840051179}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6695326667805936932}
+  m_Father: {fileID: 680839769}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1840051181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840051179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1840051182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840051179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &1840051183
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840051179}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1852610371
 GameObject:
   m_ObjectHideFlags: 0
@@ -81548,7 +81649,7 @@ GameObject:
   - component: {fileID: 6695326667655107045}
   - component: {fileID: 6695326667655107047}
   - component: {fileID: 6695326667655107044}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81635,8 +81736,8 @@ RectTransform:
   - {fileID: 6695326669762188351}
   - {fileID: 6695326668296158059}
   - {fileID: 6695326669405482428}
-  m_Father: {fileID: 680839769}
-  m_RootOrder: 6
+  m_Father: {fileID: 1840051180}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -81655,7 +81756,7 @@ GameObject:
   - component: {fileID: 6695326667805936935}
   - component: {fileID: 6695326667805936937}
   - component: {fileID: 6695326667805936934}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: ChatBotAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81752,7 +81853,7 @@ GameObject:
   - component: {fileID: 6695326667865692287}
   - component: {fileID: 6695326667865692284}
   - component: {fileID: 6695326667865692285}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: InputField (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81876,7 +81977,7 @@ GameObject:
   - component: {fileID: 6695326667868998515}
   - component: {fileID: 6695326667868998517}
   - component: {fileID: 6695326667868998514}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81950,7 +82051,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6695326668110966423}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82009,7 +82110,7 @@ GameObject:
   - component: {fileID: 6695326668250372754}
   - component: {fileID: 6695326668250372756}
   - component: {fileID: 6695326668250372757}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82065,7 +82166,7 @@ GameObject:
   - component: {fileID: 6695326668296158059}
   - component: {fileID: 6695326668296158061}
   - component: {fileID: 6695326668296158058}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82164,7 +82265,7 @@ GameObject:
   - component: {fileID: 6695326668339392753}
   - component: {fileID: 6695326668339392750}
   - component: {fileID: 6695326668339392751}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Send Button (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82299,7 +82400,7 @@ GameObject:
   - component: {fileID: 6695326668451612403}
   - component: {fileID: 6695326668451612400}
   - component: {fileID: 6695326668451612401}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: ChatBot_Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82405,7 +82506,7 @@ GameObject:
   - component: {fileID: 6695326668561885358}
   - component: {fileID: 6695326668561885360}
   - component: {fileID: 6695326668561885361}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82485,7 +82586,7 @@ GameObject:
   - component: {fileID: 6695326668603518958}
   - component: {fileID: 6695326668603518960}
   - component: {fileID: 6695326668603518961}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: BG Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82562,7 +82663,7 @@ GameObject:
   - component: {fileID: 6695326668750451090}
   - component: {fileID: 6695326668750451092}
   - component: {fileID: 6695326668750451093}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82638,7 +82739,7 @@ GameObject:
   - component: {fileID: 6695326668930739172}
   - component: {fileID: 6695326668930739175}
   - component: {fileID: 6695326668930739174}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82697,7 +82798,7 @@ GameObject:
   - component: {fileID: 6695326669037808520}
   - component: {fileID: 6695326669037808521}
   - component: {fileID: 6695326669037808518}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82823,7 +82924,7 @@ GameObject:
   - component: {fileID: 6695326669045910205}
   - component: {fileID: 6695326669045910207}
   - component: {fileID: 6695326669045910204}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82899,7 +83000,7 @@ GameObject:
   - component: {fileID: 6695326669309223999}
   - component: {fileID: 6695326669309224129}
   - component: {fileID: 6695326669309223998}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82979,7 +83080,7 @@ GameObject:
   - component: {fileID: 6695326669405482428}
   - component: {fileID: 6695326669405482429}
   - component: {fileID: 6695326669405482431}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text Sender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83037,7 +83138,7 @@ GameObject:
   - component: {fileID: 6695326669406328737}
   - component: {fileID: 6695326669406328739}
   - component: {fileID: 6695326669406328736}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83133,7 +83234,7 @@ GameObject:
   - component: {fileID: 6695326669410883226}
   - component: {fileID: 6695326669410883228}
   - component: {fileID: 6695326669410883229}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83215,7 +83316,7 @@ GameObject:
   - component: {fileID: 6695326669725119593}
   - component: {fileID: 6695326669725119590}
   - component: {fileID: 6695326669725119591}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83284,7 +83385,7 @@ GameObject:
   - component: {fileID: 6695326669757047001}
   - component: {fileID: 6695326669757047003}
   - component: {fileID: 6695326669757047000}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Logo Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83358,7 +83459,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6695326669762188351}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}

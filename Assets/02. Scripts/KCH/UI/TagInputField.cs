@@ -8,10 +8,25 @@ public class TagInputField : MonoBehaviour
     public GameObject TagText;
     public InputField playerNameInput;
 
-    public void Test()
+    public void SendBtn()
     {
+        // 부모 오브젝트
+        Transform parentTransform = GetComponent<Transform>();
+
+        // 부모 객체에 있는 모든 자식객체 가져옴
+
+        foreach (Transform childTransform in parentTransform)
+        {
+            // 각 자식 객체의 이름을 출력합니다.
+            Debug.Log("자식 객체 이름: " + childTransform.gameObject.name);
+            if(childTransform.gameObject.name == "TagText(Clone)")
+            {
+                Debug.Log("실행");
+                Destroy(childTransform.gameObject);
+            }
+        }
     }
-    public void Tes1t()
+    public void EnterTxtBtn()
     {
         Debug.Log("12");
 
@@ -37,7 +52,22 @@ public class TagInputField : MonoBehaviour
         playerNameInput.text = string.Empty;
 
     }
-    public void Test3()
+    public void BackBtn()
     {
+        // 부모 오브젝트
+        Transform parentTransform = GetComponent<Transform>();
+
+        // 부모 객체에 있는 모든 자식객체 가져옴
+
+        foreach (Transform childTransform in parentTransform)
+        {
+            // 각 자식 객체의 이름을 출력합니다.
+            Debug.Log("자식 객체 이름: " + childTransform.gameObject.name);
+            if (childTransform.gameObject.name == "TagText(Clone)")
+            {
+                Debug.Log("실행");
+                Destroy(childTransform.gameObject);
+            }
+        }
     }
 }

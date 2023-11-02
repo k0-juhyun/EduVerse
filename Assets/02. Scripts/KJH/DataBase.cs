@@ -36,6 +36,7 @@ public class User
 {
     public string name;
     public bool isTeacher;
+    public int stuNum;
 
     public User(string name, bool isTeacher)
     {
@@ -76,5 +77,10 @@ public class DataBase : MonoBehaviour
     public void SetMyInfo(User user)
     {
         userInfo = user;
+    }
+
+    public void SetStudent(User user,int stuNum)
+    {
+        user.stuNum = stuNum;
     }
 }
