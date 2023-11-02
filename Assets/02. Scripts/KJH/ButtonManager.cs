@@ -36,20 +36,4 @@ public class ButtonManager : MonoBehaviourPun
         NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
         NetworkManager.instance.enableChoose = false;
     }
-
-    public void OnFocusBtnClick()
-    {
-        if (!DataBase.instance.userInfo.isTeacher)
-            return;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        focusStudents = !focusStudents;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        focusStudents = !focusStudents;
-    }
 }
