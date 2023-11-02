@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 
 // 1. 의자에 앉기
 // - 히어라키창에 있는 의자 오브젝트를 태그를 이용해서 찾아서
@@ -24,6 +25,8 @@ public class CharacterInteraction : MonoBehaviourPun
     public Button Btn_Sit;
     public Button Btn_Camera;
     public Button Btn_Custom;
+    private Button Btn_Focus;
+    private Button Btn_Normal;
 
     private Animator anim;
 
@@ -36,9 +39,9 @@ public class CharacterInteraction : MonoBehaviourPun
 
     Camera subMainCam;
     Scene scene;
+
     private void Awake()
     {
-
         anim = Character.GetComponent<Animator>();
         characterMovement = GetComponent<CharacterMovement>();
         cameraSetting = GetComponentInChildren<CameraSetting>();
@@ -48,6 +51,16 @@ public class CharacterInteraction : MonoBehaviourPun
 
         if (scene.buildIndex == 4)
             subMainCam = GameObject.Find("SubMainCam").GetComponent<Camera>();
+
+        Btn_Focus = GameObject.Find("FocusButton").GetComponent<Button>();
+        Btn_Normal = GameObject.Find("NormalButton").GetComponent<Button>();
+        print(Btn_Focus.gameObject.name);
+    }
+
+    private void Start()
+    {
+        Btn_Focus.onClick.AddListener(OnFocusBtnClick);
+        Btn_Normal.onClick.AddListener(OnNormalBtnClick);
     }
 
     #region 의자 앉기 기능
@@ -162,6 +175,17 @@ public class CharacterInteraction : MonoBehaviourPun
 
     #endregion
 
+    public void OnFocusBtnClick()
+    {
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
+        print("앉기");
+    }
+
+    public void OnNormalBtnClick()
+    {
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
+        print("차렷");
+    }
 
 
     #region 카메라 전환 기능

@@ -5,8 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-public class ButtonManager : MonoBehaviour
+public class ButtonManager : MonoBehaviourPun
 {
+    private bool focusStudents;
+
     public void OnSaveBtnClick()
     {
         GameManager.Instance.SaveCharacterInfo();
@@ -33,5 +35,21 @@ public class ButtonManager : MonoBehaviour
     {
         NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
         NetworkManager.instance.enableChoose = false;
+    }
+
+    public void OnFocusBtnClick()
+    {
+        if (!DataBase.instance.userInfo.isTeacher)
+            return;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        focusStudents = !focusStudents;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        focusStudents = !focusStudents;
     }
 }
