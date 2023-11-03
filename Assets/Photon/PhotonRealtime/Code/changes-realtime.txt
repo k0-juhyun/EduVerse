@@ -4,6 +4,9 @@ Exit Games GmbH - www.photonengine.com - forum.photonengine.com
 
 
 
+Version 4.1.7.1 (06. September 2023 - rev7148)
+    No notable changes.
+
 Version 4.1.7.0 (18. August 2023 - rev7111)
     Added: Class SystemConnectionSummary, which wraps up network-related conditions on the client when it gets created. It relies on Unity's callbacks and requires a ConnectionHandler to be present in the scene (as implementation of a MonoBehaviour getting the callbacks). Check the reference doc for details on how to put it to use.
     Added: LoadBalancingClient.SystemConnectionSummary, created for DisconnectCause.ExceptionOnConnect, DisconnectCause.Exception, DisconnectCause.ServerTimeout and DisconnectCause.ClientTimeout.

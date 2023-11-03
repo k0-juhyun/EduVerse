@@ -16,8 +16,8 @@ MonoBehaviour:
     AppIdRealtime: 63faf1e6-f2fe-43e3-a7ef-654d82881923
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
-    AppVersion: 1.03
+    AppIdVoice: 7a242dba-3d11-4ba7-b506-110fd5bea366
+    AppVersion: 
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -34,10 +34,13 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - animPlayRPC
-  - ApplyCharacterInfoRPC
+  - CantHearYou
+  - ChangeColour
   - ClickRpc
   - DestroyRpc
+  - HeresWhy
+  - animPlayRPC
+  - ApplyCharacterInfoRPC
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
@@ -46,12 +49,8 @@ MonoBehaviour:
   - RpcSetRemoteDescription
   - SendMeshInfoToMaster
   - UpdateAnimation
-  - UpdateChairSitStatus
-  - UpdateCanvasStatusRPC
-  - forceAnimPlayRPC
-  - PlaySitAnimationForAllPlayers
-  - AnimPlayRPC
-  - SwitchAllStudentsCam
+  - MuteStudents
+  - RPCMuteStudents
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

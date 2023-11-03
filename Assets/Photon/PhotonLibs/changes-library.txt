@@ -4,6 +4,9 @@ Exit Games GmbH - www.photonengine.com - forum.photonengine.com
 
 
 
+Version 4.1.7.1 (06. September 2023 - rev7148)
+    Fixed: Internal state changes to report UDP based Client Timeouts to the server.
+
 Version 4.1.7.0 (18. August 2023 - rev7111)
     Added: PhotonPeer.SocketErrorCode (int) to provide the low level error code (relevant when the connection gets lost).
     Changed: SocketUdp to report WouldBlock exceptions as "busy". The handling code could use this to not try send anything else in this loop.
