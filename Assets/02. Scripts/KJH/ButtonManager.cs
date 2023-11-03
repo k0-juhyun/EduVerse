@@ -5,8 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-public class ButtonManager : MonoBehaviour
+public class ButtonManager : MonoBehaviourPun
 {
+    private bool focusStudents;
+
     public void OnSaveBtnClick()
     {
         GameManager.Instance.SaveCharacterInfo();
