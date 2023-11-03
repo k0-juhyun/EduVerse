@@ -272,7 +272,12 @@ public class CharacterInteraction : MonoBehaviourPun
         if (_isSit)
         {
             OnCameraButtonClick();
-            print("22");
         }
+    }
+
+    private void FindEmptyChair()
+    {
+        var chair = new GameObject();
+
     }
 }
