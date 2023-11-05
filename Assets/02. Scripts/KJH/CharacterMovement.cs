@@ -41,6 +41,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private Vector3 movePos;
 
     private Animator animator;
+    private CharacterInteraction characterInteraction;
 
     #region Æ÷Åæ °ª
     [HideInInspector]

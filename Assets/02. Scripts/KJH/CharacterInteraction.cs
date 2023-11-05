@@ -24,14 +24,14 @@ public class CharacterInteraction : MonoBehaviourPun
     public Button Btn_Sit;
     public Button Btn_Camera;
     public Button Btn_Custom;
-    private Button Btn_Focus, Btn_Normal,Btn_ShareCam;
+    private Button Btn_Focus, Btn_Normal, Btn_ShareCam;
 
     private Animator anim;
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
 
-    [HideInInspector] public bool _isSit;
+    public bool _isSit;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
 
@@ -181,6 +181,9 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnFocusBtnClick()
     {
         photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
+        photonView.RPC("TrySitDownRPC", RpcTarget.Others);
+        photonView.RPC("SetIsSitRPC", RpcTarget.Others);
+
         print("앉기");
     }
 
@@ -266,6 +269,7 @@ public class CharacterInteraction : MonoBehaviourPun
         photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
     }
 
+
     [PunRPC]
     public void SwitchAllStudentsCam()
     {
@@ -275,9 +279,54 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
-    private void FindEmptyChair()
+    [PunRPC]
+    public void TrySitDownRPC()
     {
-        var chair = new GameObject();
+        // 선생님 캐릭터가 아니라면, 앉습니다.
+        if (!DataBase.instance.userInfo.isTeacher)
+        {
+            Collider nearestChair = FindNearestChair();
+            if (nearestChair != null)
+            {
+                SitDown(nearestChair);
+                _isSit = true;
+            }
+        }
+    }
+
+    private Collider FindNearestChair()
+    {
+        // TODO: 가장 가까운 'Chair' 태그를 가진 의자를 찾아서 그 Collider를 반환해야 합니다.
+        // 의자들을 리스트로 관리하고 있지 않다면, 여기서 FindGameObjectsWithTag 등을 사용하여
+        // 가장 가까운 의자를 찾는 로직을 구현해야 합니다.
+        // 아래는 간단한 예시 코드입니다:
+        GameObject[] chairs = GameObject.FindGameObjectsWithTag("Chair");
+        GameObject nearestChair = null;
+        float closestDistance = Mathf.Infinity;
+        Vector3 position = Character.transform.position;
+
+        foreach (GameObject chair in chairs)
+        {
+            float distance = (chair.transform.position - position).sqrMagnitude;
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                nearestChair = chair;
+            }
+        }
+
+        return nearestChair?.GetComponent<Collider>();
+    }
+
+    [PunRPC]
+    public void SetIsSitRPC()
+    {
+        print("dd");
+        _isSit = true;
+    }
+
+    public void ShakeHand()
+    {
 
     }
 }
