@@ -8,7 +8,10 @@ using System.Collections;
 
 public class VideoCreator : MonoBehaviour
 {
-    private string serverURL = "http://221.163.19.218:5052/text_2_video/sendvideo";
+    private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
+
+    private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz";
+
 
     public GameObject capturePreview;
     public GameObject captureResultText;
@@ -23,6 +26,11 @@ public class VideoCreator : MonoBehaviour
         StartCoroutine(UploadAndDownloadCoroutine(imagePath));
     }
 
+    public void UploadImageAndDownloadQuiz()
+    {
+        //StartCoroutine(UploadAndDownloadCoroutine_Quiz());
+    }
+
     IEnumerator UploadAndDownloadCoroutine(string imagePath)
     {
         //string imagePath = "Assets/2.jpg";  // 업로드할 이미지 파일 경로
@@ -31,8 +39,9 @@ public class VideoCreator : MonoBehaviour
         // 이미지 업로드
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", File.ReadAllBytes(imagePath), "image.png", "image/png");
-        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL, form))
+        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_QUIZ, form))
         {
+            // 응답이 올 때까지 대기.
             yield return imageUploadRequest.SendWebRequest();
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
@@ -79,6 +88,40 @@ public class VideoCreator : MonoBehaviour
                 captureResultText.GetComponent<Text>().text = "저장에 실패했습니다.";
                 System.Action action = () => { captureResultText.SetActive(false); };
                 Invoke(nameof(action), 0.5f);
+            }
+        }
+    }
+
+    IEnumerator UploadAndDownloadCoroutine_Quiz(string json)
+    {
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+        using (UnityWebRequest request = new UnityWebRequest(serverURL_QUIZ, "POST"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("JSON 데이터가 성공적으로 서버로 전송되었습니다.");
+                Debug.Log("서버 응답: " + request.downloadHandler.text);
+
+                string Json = request.downloadHandler.text;
+                QuizData quizData = JsonUtility.FromJson<QuizData>(Json);
+
+                // Json 형태로 local로 저장됌.
+
+                Debug.Log("퀴즈: " + quizData.quiz);
+                Debug.Log("정답: " + quizData.answer);
+
+            }
+            else
+            {
+                Debug.LogError("JSON 데이터 전송 중 오류 발생: " + request.error);
             }
         }
     }

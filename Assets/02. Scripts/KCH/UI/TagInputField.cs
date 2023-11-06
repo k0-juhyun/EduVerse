@@ -62,10 +62,8 @@ public class TagInputField : MonoBehaviour
         foreach (Transform childTransform in parentTransform)
         {
             // 각 자식 객체의 이름을 출력합니다.
-            Debug.Log("자식 객체 이름: " + childTransform.gameObject.name);
             if (childTransform.gameObject.name == "TagText(Clone)")
             {
-                Debug.Log("실행");
                 Destroy(childTransform.gameObject);
             }
         }

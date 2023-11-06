@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 
+
 public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     private Vector2 startMousePosition;
@@ -37,6 +38,11 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     // pagecontainer 자식 설정
     RawImage[] pagecontainer_Children;
+
+    // 이미지 받아오기와 문제 생성
+    public GameObject Imagedown;
+    public GameObject QuizCreate;
+
 
     private void Start()
     {
@@ -142,12 +148,21 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         
     }
 
-    public void OnClickSendCapture()
+    // GIF랑 문제 생성이랑 나눠야함.
+    public void OnClickSendCapture_Gif()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
         videoCreator.UploadImageAndDownloadVideo(captureResultDataPath);
-    } 
+    }
 
+    // 일단은 이미지 없이 태그로만 문제 생성이 되므로 이렇게 해둠.
+    public void OnClickSendCapture_Quiz()
+    {
+        rtCaptureArea.sizeDelta = Vector2.zero;
+        videoCreator.UploadImageAndDownloadQuiz();
+    }
+
+    // TagText(Clone)
     public void OnClickBackBtn()
     {
         captureResult.SetActive(false);
@@ -158,10 +173,10 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     void CaptureScreen(string savePath)
     {
         print(Application.persistentDataPath);       
-        StartCoroutine(IScreenCapture(width, height, startX, startY, savePath));
+        StartCoroutine(IScreenCapture_GIF(width, height, startX, startY, savePath));
     }
 
-    IEnumerator IScreenCapture(int width, int height, int startX, int startY, string savePath)
+    IEnumerator IScreenCapture_GIF(int width, int height, int startX, int startY, string savePath)
     {
         yield return new WaitForEndOfFrame();
 
