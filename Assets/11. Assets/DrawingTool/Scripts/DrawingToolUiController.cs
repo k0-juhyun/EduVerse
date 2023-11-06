@@ -35,6 +35,7 @@ public class DrawingToolUiController : MonoBehaviour
 
     public void UpdateWidth() {
         GetComponentInParent<DrawingTool>().UpdateBrushWidth(widthSlider.value); //Called to update brush width everytime the slider value is updated in the UI
+        print("aaaaa");
     }
 
 

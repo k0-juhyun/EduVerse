@@ -69,6 +69,7 @@ public class ScreenTransition : MonoBehaviourPun
             camera = !camera;
 
             // 캔버스 키고 다시 클릭 버튼 가능
+            // 잠깐 수정함 - PEA (if문)
             startStudy.isClick = false;
             startStudy.enableCanvas = true;
             startStudy._isDrawing = false;
