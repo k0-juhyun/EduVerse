@@ -34,6 +34,7 @@ public class CameraSetting : MonoBehaviourPun
 
     // ÄÄÆ÷³ÍÆ® µé
     private CharacterInteraction characterInteraction;
+    private TeacherInteraction teacherInteraction;
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class CameraSetting : MonoBehaviourPun
 
         // ºÎ¸ð¿¡¼­ ÄÄÆ÷³ÍÆ® Ãëµæ
         characterInteraction = GetComponentInParent<CharacterInteraction>();
-
+        teacherInteraction = GetComponentInParent<TeacherInteraction>();
     }
 
     private void LateUpdate()
@@ -149,7 +150,7 @@ public class CameraSetting : MonoBehaviourPun
                 isDragging = false;
             }
 
-            if (isDragging)
+            if (isDragging && teacherInteraction.isSpawnBtnClick == false)
             {
                 Vector2 delta = (Vector2)Input.mousePosition - previousMousePosition;
                 xRotate += delta.x * rotSpeed;

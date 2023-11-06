@@ -45,10 +45,18 @@ public class User
     }
 }
 
+[System.Serializable]
+public class Model
+{
+    public List<GameObject> spawnPrefab;
+    public List<Sprite> spawnSprite;
+}
+
 public class DataBase : MonoBehaviour
 {
-    public User userInfo;
     public static DataBase instance;
+    public User userInfo;
+    public Model model;
 
     private void Awake()
     {
@@ -56,6 +64,7 @@ public class DataBase : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadModelsFromResources();
         }
         else
         {
@@ -79,8 +88,28 @@ public class DataBase : MonoBehaviour
         userInfo = user;
     }
 
-    public void SetStudent(User user,int stuNum)
+    public void SetStudent(User user, int stuNum)
     {
         user.stuNum = stuNum;
+    }
+
+    private void LoadModelsFromResources()
+    {
+        // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models");
+
+        // model.spawnPrefab 리스트를 초기화합니다.
+        model.spawnPrefab = new List<GameObject>(prefabs.Length);
+
+        // 불러온 프리팹들을 리스트에 추가합니다.
+        foreach (var prefab in prefabs)
+        {
+            if (prefab.GetComponent<PhotonView>() == null) // 이미 PhotonView가 붙어있는지 확인
+            {
+                PhotonView view = prefab.AddComponent<PhotonView>();
+                view.ObservedComponents = new List<Component>();
+            }
+            model.spawnPrefab.Add(prefab);
+        }
     }
 }

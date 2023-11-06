@@ -42,6 +42,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     private Animator animator;
     private CharacterInteraction characterInteraction;
+    private TeacherInteraction characterTeacherInteraction;
 
     #region 포톤 값
     [HideInInspector]
@@ -81,7 +82,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
     {
-        if (isTouch)
+        if (isTouch && characterTeacherInteraction.isSpawnBtnClick == false)
         {
             Vector2 value = eventData.position - (Vector2)rectBackground.position;
             value = Vector2.ClampMagnitude(value, radius);
@@ -130,6 +131,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
+        characterTeacherInteraction = GetComponent<TeacherInteraction>();
     }
 
     private void Update()
