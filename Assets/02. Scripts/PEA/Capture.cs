@@ -98,7 +98,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         if (isCapturing)
         {
             isCapturing = false;
-            CaptureScreen();
+            CaptureScreen(Application.persistentDataPath + "/Capture/");
             col.enabled = false;
             captureAreaImage.SetActive(false);
             captureAreaImage.transform.SetParent(null);
@@ -155,25 +155,26 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         rtCaptureArea.sizeDelta = Vector2.zero;
     }
 
-    void CaptureScreen()
+    void CaptureScreen(string savePath)
     {
         print(Application.persistentDataPath);       
-        StartCoroutine(IScreenCapture(width, height, startX, startY));
+        StartCoroutine(IScreenCapture(width, height, startX, startY, savePath));
     }
 
-    IEnumerator IScreenCapture(int width, int height, int startX, int startY)
+    IEnumerator IScreenCapture(int width, int height, int startX, int startY, string savePath)
     {
         yield return new WaitForEndOfFrame();
 
         Texture2D captureTexture = new Texture2D(width, height);
         captureTexture.ReadPixels(new Rect(startX, startY, width, height), 0, 0);
 
-        string filePath = "/Capture/" + Time.time + ".png";
-        captureResultDataPath = Application.persistentDataPath + filePath ;
+        string filePath = Time.time + ".png";
+        captureResultDataPath = savePath + filePath ;
 
-        if(!Directory.Exists(Application.persistentDataPath + "/Capture/"))
+        //if(!Directory.Exists(Application.persistentDataPath + "/Capture/"))
+        if(!Directory.Exists(savePath))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Capture/");
+            Directory.CreateDirectory(savePath);
         }
 
         File.WriteAllBytes(captureResultDataPath, captureTexture.EncodeToPNG());
@@ -196,6 +197,5 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
             child.raycastTarget = true;
         }
-
     }
 }

@@ -1,50 +1,93 @@
+using DG.Tweening;
+using Photon.Chat.UtilityScripts;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeacherInteraction : MonoBehaviour
+public class TeacherInteraction : MonoBehaviourPun
 {
-    public Button Btn;
+    public GameObject spawnButton;
+    private GameObject player;
+    public GameObject buttonPrefab;
+    public GameObject scrollView;
 
-    public bool enableButton;
+    private Button Btn_Spawn;
+
+    public bool isSpawnBtnClick;
+
+    public Transform buttonsParent;
 
     private CharacterInteraction characterInteraction;
 
-    public GameObject DigitalEditCanvas;
-
-    // 디지털 교과서 제작 툴.
-    public void DigitalEdit()
+    private void Awake()
     {
-        if (!DigitalEditCanvas.activeSelf)
-            DigitalEditCanvas.SetActive(true);
+        if (DataBase.instance.userInfo.isTeacher == false && photonView.IsMine)
+            this.enabled = false;
         else
-        {
-            DigitalEditCanvas.SetActive(false);
+            spawnButton.gameObject.SetActive(true);
 
-            // 메인카메라 값 리셋 
-            Camera.main.transform.localPosition = new Vector3(0, 6.5f, -8);
-            Camera.main.transform.localRotation = Quaternion.Euler(20, 0, 0);
-            Camera.main.GetComponentInParent<CameraSetting>().enabled = true;
+        characterInteraction = GetComponent<CharacterInteraction>();
+        scrollView.SetActive(false);
+
+    }
+
+    private void Start()
+    {
+        player = characterInteraction.Character;
+        CreateButtonsForModels();
+        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
+        Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
+    }
+
+    public void OnSpawnBtnClick()
+    {
+        scrollView.SetActive(!scrollView.activeSelf);
+        isSpawnBtnClick = !isSpawnBtnClick;
+    }
+
+    //private void CreateButtonsForModels()
+    //{
+    //    int modelCount = DataBase.instance.model.spawnPrefab.Count;
+
+    //    // 스크롤뷰의 Content 내에 버튼들을 생성합니다.
+    //    for (int i = 0; i < modelCount; i++)
+    //    {
+    //        int index = i; // 클로저 문제 방지를 위한 로컬 변수
+    //        GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
+    //        newButton.GetComponentInChildren<Text>().text = "Model " + (i + 1); // 버튼에 텍스트 할당
+    //        newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
+    //    }
+    //}
+
+    //private void SpawnModel(int modelIndex)
+    //{
+    //    GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
+    //    GameObject newObject = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+    //}
+
+    private void CreateButtonsForModels()
+    {
+        int modelCount = DataBase.instance.model.spawnPrefab.Count;
+
+        // 스크롤뷰의 Content 내에 버튼들을 생성합니다.
+        for (int i = 0; i < modelCount; i++)
+        {
+            int index = i; // 클로저 문제 방지를 위한 로컬 변수
+            GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
+            newButton.GetComponentInChildren<Text>().text = DataBase.instance.model.spawnPrefab[index].name; // 원래 프리팹의 이름으로 버튼 텍스트 할당
+            newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void SpawnModel(int modelIndex)
     {
-        if(other.gameObject.transform.parent.name == "Character(Clone)")
+        if (modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
         {
-            enableButton = true;
-            Btn.gameObject.SetActive(enableButton);
-            Btn.gameObject.transform.forward = Camera.main.transform.forward;
-        }    
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.transform.parent.name == "Character(Clone)")
-        {
-            enableButton = false;
-            Btn.gameObject.SetActive(enableButton);
+            GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
+            GameObject newObject = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         }
     }
+
 }

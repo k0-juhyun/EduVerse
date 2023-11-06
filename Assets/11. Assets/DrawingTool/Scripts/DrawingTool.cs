@@ -54,6 +54,7 @@ public class DrawingTool : MonoBehaviour
 
 
 	private void Update() {
+		//print(EventSystem.current.currentSelectedGameObject.name);
 		if (InBounds()) {
 			// 그리기 실력
 			if (Input.GetMouseButtonDown(0)) {
@@ -94,8 +95,12 @@ public class DrawingTool : MonoBehaviour
 	private bool InBounds() {
 		//Get our mouse position
 
+		print("1111111111");
+
 		if (Camera.main == null) 
 			return false;
+
+		print("2222222222");
 		var mousePosRaw = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var mousePosFinal = new Vector3(mousePosRaw.x, mousePosRaw.y, drawnLinesParent.position.z);
 		//Get the width and height of the sprite (dont forget the scale of our image object)
@@ -104,8 +109,12 @@ public class DrawingTool : MonoBehaviour
 		var backTrans = backgroundImage.transform.position; //Get reference to the position of the image
 		//Check if mouse is inside its bounds
 		if ((mousePosFinal.x > backTrans.x - width / 2 && mousePosFinal.x < backTrans.x + width / 2) && (mousePosFinal.y > backTrans.y - height / 2 && mousePosFinal.y < backTrans.y + height / 2)) {
+
+			print("333333333");
 			return true;	
 		}
+
+		print("44444444444");
 		return false;
 	}
 
@@ -113,14 +122,20 @@ public class DrawingTool : MonoBehaviour
 	private void CreateLine() {
 
 #if UNITY_EDITOR
-		if (EventSystem.current.IsPointerOverGameObject()) return;
+		if (EventSystem.current.IsPointerOverGameObject())
+		{
+			print("d");
+			return;
+		}
+
+		print("D");
 #else
 		Touch touch = Input.GetTouch(0);
 		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId)) return;
 #endif
 
 
-		drawing = true;
+            drawing = true;
 		//Create the line at mouse position and add positions to line
 		var mousePosRaw = Camera.main.ScreenToWorldPoint(Input.mousePosition); //Get mouse position to world
 		var mousePosFinal = new Vector3(mousePosRaw.x, mousePosRaw.y, drawnLinesParent.position.z);

@@ -22,8 +22,7 @@ public class CharacterInteraction : MonoBehaviourPun
     [Space]
     [Header("¹öÆ°")]
     public Button Btn_Sit;
-    public Button Btn_Camera;
-    public Button Btn_Custom;
+    public Button Btn_Camera, Btn_Custom, Btn_Greet;
     private Button Btn_Focus, Btn_Normal, Btn_ShareCam;
 
     private Animator anim;
@@ -46,6 +45,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
+        Btn_Greet.onClick.AddListener(() => OnGreetBtnClick());
 
         subMainCam = GameObject.Find("SubMainCam")?.GetComponent<Camera>();
         Btn_Focus = GameObject.Find("FocusButton")?.GetComponent<Button>();
@@ -325,8 +325,21 @@ public class CharacterInteraction : MonoBehaviourPun
         _isSit = true;
     }
 
-    public void ShakeHand()
+    public void OnGreetBtnClick()
     {
+        anim.Play("GreetR");
+        StartCoroutine(WaitForAnimation(anim, "GreetR"));
+    }
 
+    private IEnumerator WaitForAnimation(Animator animator, string stateName)
+    {
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(stateName) ||
+               animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
+        anim.Play("GreetL");
+        photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "GreetL");
     }
 }

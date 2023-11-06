@@ -7,8 +7,6 @@ using Photon.Pun;
 
 public class ButtonManager : MonoBehaviourPun
 {
-    private bool focusStudents;
-
     public void OnSaveBtnClick()
     {
         GameManager.Instance.SaveCharacterInfo();
@@ -27,12 +25,14 @@ public class ButtonManager : MonoBehaviourPun
 
     public void OnClassrommBtnClick()
     {
+        PhotonNetwork.LoadLevel("LoadingScene");
         NetworkManager.instance.JoinRoom("4.ClassRoomScene");
         NetworkManager.instance.enableChoose = false;
     }
 
     public void OnTeachersRoomBtnClick()
     {
+        PhotonNetwork.LoadLevel("LoadingScene");
         NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
         NetworkManager.instance.enableChoose = false;
     }
