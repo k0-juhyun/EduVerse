@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeacherInteraction : MonoBehaviour
+public class TeachersRoom : MonoBehaviour
 {
     public Button Btn;
 
