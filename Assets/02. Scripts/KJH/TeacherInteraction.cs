@@ -1,50 +1,41 @@
+using DG.Tweening;
+using Photon.Chat.UtilityScripts;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeacherInteraction : MonoBehaviour
+public class TeacherInteraction : MonoBehaviourPun
 {
-    public Button Btn;
+    public GameObject spawnButton;
+    private GameObject player;
+    public List<GameObject> spawnPrefab;
+    //public List<Sprite> spawnSprite;
 
-    public bool enableButton;
+    private Button Btn_Spawn;
 
     private CharacterInteraction characterInteraction;
 
-    public GameObject DigitalEditCanvas;
-
-    // 디지털 교과서 제작 툴.
-    public void DigitalEdit()
+    private void Awake()
     {
-        if (!DigitalEditCanvas.activeSelf)
-            DigitalEditCanvas.SetActive(true);
+        if (DataBase.instance.userInfo.isTeacher == false && photonView.IsMine)
+            this.enabled = false;
         else
-        {
-            DigitalEditCanvas.SetActive(false);
+            spawnButton.gameObject.SetActive(true);
 
-            // 메인카메라 값 리셋 
-            Camera.main.transform.localPosition = new Vector3(0, 6.5f, -8);
-            Camera.main.transform.localRotation = Quaternion.Euler(20, 0, 0);
-            Camera.main.GetComponentInParent<CameraSetting>().enabled = true;
-        }
+        characterInteraction = GetComponent<CharacterInteraction>();
     }
 
-    private void OnTriggerStay(Collider other)
+    private void Start()
     {
-        if(other.gameObject.transform.parent.name == "Character(Clone)")
-        {
-            enableButton = true;
-            Btn.gameObject.SetActive(enableButton);
-            Btn.gameObject.transform.forward = Camera.main.transform.forward;
-        }    
+        player = characterInteraction.Character;
+        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
+        Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnSpawnBtnClick()
     {
-        if(other.gameObject.transform.parent.name == "Character(Clone)")
-        {
-            enableButton = false;
-            Btn.gameObject.SetActive(enableButton);
-        }
+        PhotonNetwork.Instantiate("/3D_Models" +spawnPrefab[0].name, new Vector3(player.transform.position.x, player.transform.position.y,player.transform.position.z) , Quaternion.identity);
     }
 }
