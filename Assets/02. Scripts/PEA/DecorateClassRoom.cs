@@ -73,12 +73,16 @@ public class DecorateClassRoom : MonoBehaviour
 
     public void UploadMyDraw()
     {
+        if (curSelectedDraw == null)
+            return;
+
         if(boardPanel.childCount < 15)
         {
             GameObject drawItem = Instantiate(decoItem, boardPanel);
             drawItem.transform.GetChild(0).GetComponent<RawImage>().texture = curSelectedDraw;
-            drawItem.transform.localScale = Vector3.one * 0.15f;
         }
+
+        curSelectedDraw = null;
     }
 
     public void SelectDraw(Texture2D texture)

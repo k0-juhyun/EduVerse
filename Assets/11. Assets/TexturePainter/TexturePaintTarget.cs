@@ -24,7 +24,7 @@ namespace Rito.TexturePainter
     [DisallowMultipleComponent]
     public class TexturePaintTarget : MonoBehaviour
     {
-
+        public Button eraseBtn;
         public RawImage rawImage;
 
         /***********************************************************************
@@ -85,6 +85,11 @@ namespace Rito.TexturePainter
         {
             Init();
             InitRenderTexture();
+        }
+
+        private void Start()
+        {
+            eraseBtn.onClick.AddListener(InitRenderTexture);
         }
 
         #endregion

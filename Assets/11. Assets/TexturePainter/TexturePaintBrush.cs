@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // 날짜 : 2021-06-18 AM 2:30:31
 // 작성자 : Rito
@@ -216,12 +217,6 @@ namespace Rito.TexturePainter
         {
             print("change color");
             SetBrushColor(co);
-        }
-
-        public void OnClickEraseBtn()
-        {
-            brushColor.a = 0;
-            SetBrushColor(brushColor);
         }
     }
 }

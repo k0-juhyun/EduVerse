@@ -21,8 +21,7 @@ public class ScreenTransition : MonoBehaviourPun
         subMainCam = this.gameObject;
         ShareCam = GetComponent<Camera>();
 
-        //잠깐 수정함 - PEA(GetComponent -> TryGetComponent)
-        teacherComputer.TryGetComponent<StartStudy>(out startStudy);
+        startStudy = teacherComputer.GetComponent<StartStudy>();
 
         if (DataBase.instance.userInfo.isTeacher == false)
         {
@@ -71,12 +70,9 @@ public class ScreenTransition : MonoBehaviourPun
 
             // 캔버스 키고 다시 클릭 버튼 가능
             // 잠깐 수정함 - PEA (if문)
-            if(startStudy != null)
-            {
-                startStudy.isClick = false;
-                startStudy.enableCanvas = true;
-                startStudy._isDrawing = false;
-            }
+            startStudy.isClick = false;
+            startStudy.enableCanvas = true;
+            startStudy._isDrawing = false;
         }
     }
 }
