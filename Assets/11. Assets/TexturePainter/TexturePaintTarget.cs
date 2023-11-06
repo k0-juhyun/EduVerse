@@ -157,8 +157,11 @@ namespace Rito.TexturePainter
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/MyDraws/");
             }
+            string fileName = DateTime.Now.ToString(("yyyy-MM-dd HH.mm.ss")) + ".png";
+            print(fileName);
+            File.WriteAllBytes(Application.persistentDataPath + "/MyDraws/" + fileName, txtBytes);
 
-            File.WriteAllBytes(Application.persistentDataPath + "/MyDraws/" + Time.time + ".png", txtBytes);
+            DecorateClassRoom.instance.AddMyDraw(txt);
         }
     }
 }
