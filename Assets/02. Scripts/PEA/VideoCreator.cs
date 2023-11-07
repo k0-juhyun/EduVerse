@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Collections;
+using static UnityEditor.Progress;
 
 [System.Serializable]
 public struct ServerToJson
@@ -17,6 +18,15 @@ public struct ServerToJson
 public struct QuizData
 {
     public string quiz;
+    public string answer;
+}
+
+[System.Serializable]
+public struct QuizSaveData
+{
+    public string quiz;
+    public string subject;
+    public string question;
     public string answer;
 }
 
@@ -39,6 +49,15 @@ public class VideoCreator : MonoBehaviour
     public GameObject QuizPanel;
     // 퀴즈 Question, Answer
     public Text QuestionText;
+
+    // 로컬로 저장할 quiz 데이터
+    public List<QuizSaveData> quizsavedata;
+    QuizSaveData quizsavedata_;
+    string fileName;
+
+    public GameObject incorrect;
+    public GameObject wrong;
+
     private void Start()
     {
 
@@ -53,20 +72,31 @@ public class VideoCreator : MonoBehaviour
     {
         //StartCoroutine(UploadAndDownloadCoroutine_Quiz());
 
+        quizsavedata_.quiz = null;
+        quizsavedata_.subject = null;
+        quizsavedata_.question = null;
+        quizsavedata_.answer = null;
+
         Text[] T = TagToJson.GetComponentsInChildren<Text>();
         List<string> textList = new List<string>();
         foreach (Text t in T)
         {
             if (t.text == "입력" || t.text == "") continue;
 
-            Debug.Log(t.text);
             // 가져온 T[] 배열 Json화 시켜야함.
             textList.Add(t.text);
         }
 
+        // textList[2]는 파일의 이름임.
+        fileName = T[2].text;
+
         ServerToJson wrapper = new ServerToJson();
         wrapper.quiz = T[0].text;
         wrapper.subject = T[1].text;
+
+        // 로컬로 저장할 데이터 넣기.
+        quizsavedata_.quiz = T[0].text;
+        quizsavedata_.subject = T[1].text;
 
         string json = JsonUtility.ToJson(wrapper);
 
@@ -160,9 +190,20 @@ public class VideoCreator : MonoBehaviour
 
                 Debug.Log("퀴즈: " + quizData.quiz);
                 // 특정 문자열 제거
-                QuestionText.text = System.Text.RegularExpressions.Regex.Replace(quizData.quiz, @"퀴즈: |\(O/X\)", "");
-                Debug.Log("정답: " + quizData.answer);
+                string quiz_question = System.Text.RegularExpressions.Regex.Replace(quizData.quiz, @"퀴즈: |\(O/X\)", "");
+                QuestionText.text = quiz_question;
+              
+                string quiz_answer = System.Text.RegularExpressions.Regex.Replace(quizData.answer, @"answer: ", "");
 
+                if (quiz_answer == "O") incorrect.SetActive(true);               
+                else if (quiz_answer == "X") wrong.SetActive(true);
+
+                quizsavedata_.question = quiz_question;
+                quizsavedata_.answer = quiz_answer;
+
+                // 리스트에 추가.
+
+                //"answer":"O"
             }
             else
             {
@@ -171,8 +212,27 @@ public class VideoCreator : MonoBehaviour
         }
     }
 
+    // quiz panel On
     public void OnQuizPanelBtnClick()
     {
         QuizPanel.SetActive(true);
+    }
+
+    public void OnQuizSaveBtnClick()
+    {
+        quizsavedata.Add(quizsavedata_);
+
+        string filepath = Application.persistentDataPath + "/myQuizData.txt";
+
+        SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer);
+
+        SaveSystem.Save(quizData, fileName);
+
+        // MyQuizTitleData 여기에 Title 제목들을 저장.
+        SaveSystem.AppendTitleToJson("MyQuizTitleData", fileName);
+
+        SaveData loadData = SaveSystem.Load(fileName);
+
+        Debug.Log(loadData.question);
     }
 }

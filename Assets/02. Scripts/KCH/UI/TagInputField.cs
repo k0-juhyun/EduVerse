@@ -26,7 +26,6 @@ public class TagInputField : MonoBehaviour
     }
     public void EnterTxtBtn()
     {
-        Debug.Log("12");
 
         // 부모 오브젝트를 찾습니다.
         Transform parentTransform = transform; // 예시로 현재 스크립트가 붙은 오브젝트를 부모로 설정합니다.

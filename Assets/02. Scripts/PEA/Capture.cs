@@ -84,7 +84,6 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public void OnDrag(PointerEventData eventData)
     {
-            Debug.Log("µå·¡±×");
         if (isCapturing)
         {
             endMousePosition = Input.mousePosition;
