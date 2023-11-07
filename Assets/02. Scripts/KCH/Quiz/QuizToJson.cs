@@ -126,7 +126,7 @@ public static class SaveSystem
 
         return null;
 
-        // 이 함수 쓰는 방법
+
         List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
 
         if (titles != null)
@@ -154,7 +154,7 @@ public class QuizToJson : MonoBehaviour
                     Debug.Log("Title: " + title);
 
                    SaveData saveData = SaveSystem.Load(title);
-                    Debug.Log(saveData.question);
+                   Debug.Log(saveData.question);
                 }
             }
         }

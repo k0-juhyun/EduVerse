@@ -53,8 +53,12 @@ public class VideoCreator : MonoBehaviour
     // 로컬로 저장할 quiz 데이터
     public List<QuizSaveData> quizsavedata;
     QuizSaveData quizsavedata_;
+
+    string unit;
     string fileName;
 
+
+    public Text Question;
     public GameObject incorrect;
     public GameObject wrong;
 
@@ -87,8 +91,10 @@ public class VideoCreator : MonoBehaviour
             textList.Add(t.text);
         }
 
-        // textList[2]는 파일의 이름임.
-        fileName = T[2].text;
+        // textList[2]는 단원.
+        unit = T[2].text;
+        // textList[3]은 타이틀 제목.
+        fileName = T[3].text;
 
         ServerToJson wrapper = new ServerToJson();
         wrapper.quiz = T[0].text;
@@ -218,6 +224,7 @@ public class VideoCreator : MonoBehaviour
         QuizPanel.SetActive(true);
     }
 
+    // quiz 저장 버튼
     public void OnQuizSaveBtnClick()
     {
         quizsavedata.Add(quizsavedata_);
@@ -226,13 +233,20 @@ public class VideoCreator : MonoBehaviour
 
         SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer);
 
-        SaveSystem.Save(quizData, fileName);
+        SaveSystem.Save(quizData, unit + " " + fileName);
 
-        // MyQuizTitleData 여기에 Title 제목들을 저장.
-        SaveSystem.AppendTitleToJson("MyQuizTitleData", fileName);
-
-        SaveData loadData = SaveSystem.Load(fileName);
+        // MyQuizTitleData 여기에 Title 제목들을 저장. // 단원과 이름.
+        SaveSystem.AppendTitleToJson("MyQuizTitleData", unit+ " " + fileName);
+        Debug.Log(unit + " " + fileName);
+        SaveData loadData = SaveSystem.Load(unit + " " + fileName);
 
         Debug.Log(loadData.question);
+    }
+
+    // quiz panel off
+    public void OnQuizPanelCancelBtnClick()
+    {
+        Question.text = "생성중....";
+        QuizPanel.SetActive(false);
     }
 }
