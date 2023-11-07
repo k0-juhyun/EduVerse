@@ -39,9 +39,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     // pagecontainer 자식 설정
     RawImage[] pagecontainer_Children;
 
+    [Space(20)]
     // 이미지 받아오기와 문제 생성
     public GameObject Imagedown;
     public GameObject QuizCreate;
+    public GameObject ImagedownButton;
+    public GameObject QuizCreateButton;
 
 
     private void Start()
@@ -110,6 +113,34 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             captureAreaImage.transform.SetParent(null);
         }
     }
+
+    #region Gif 버튼
+    public void OnGifBtnClick()
+    {
+        Imagedown.SetActive(true);
+        ImagedownButton.SetActive(true);
+    }
+
+    public void OffGifBtnClick()
+    {
+        Imagedown.SetActive(false);
+        ImagedownButton.SetActive(false);
+    }
+    #endregion
+
+    #region quiz 버튼
+    public void OnquizBtnClick()
+    {
+        QuizCreate.SetActive(true);
+        QuizCreateButton.SetActive(true);
+    }
+
+    public void OffquizBtnClick()
+    {
+        QuizCreate.SetActive(false);
+        QuizCreateButton.SetActive(false);
+    }
+    #endregion
 
     public void OnCaptureBtnClick()
     {

@@ -6,6 +6,20 @@ using System.IO;
 using System.Text;
 using System.Collections;
 
+[System.Serializable]
+public struct ServerToJson
+{
+    public string quiz;
+    public string subject;
+}
+
+[System.Serializable]
+public struct QuizData
+{
+    public string quiz;
+    public string answer;
+}
+
 public class VideoCreator : MonoBehaviour
 {
     private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
@@ -16,6 +30,15 @@ public class VideoCreator : MonoBehaviour
     public GameObject capturePreview;
     public GameObject captureResultText;
 
+    [Space (20)]
+    [Header ("Quiz")]
+    // Tag 가져와서 json화 시켜야 함.
+    public GameObject TagToJson;
+
+    // 문제 확인용 패널
+    public GameObject QuizPanel;
+    // 퀴즈 Question, Answer
+    public Text QuestionText;
     private void Start()
     {
 
@@ -29,6 +52,26 @@ public class VideoCreator : MonoBehaviour
     public void UploadImageAndDownloadQuiz()
     {
         //StartCoroutine(UploadAndDownloadCoroutine_Quiz());
+
+        Text[] T = TagToJson.GetComponentsInChildren<Text>();
+        List<string> textList = new List<string>();
+        foreach (Text t in T)
+        {
+            if (t.text == "입력" || t.text == "") continue;
+
+            Debug.Log(t.text);
+            // 가져온 T[] 배열 Json화 시켜야함.
+            textList.Add(t.text);
+        }
+
+        ServerToJson wrapper = new ServerToJson();
+        wrapper.quiz = T[0].text;
+        wrapper.subject = T[1].text;
+
+        string json = JsonUtility.ToJson(wrapper);
+
+        Debug.Log(json);
+        StartCoroutine(UploadAndDownloadCoroutine_Quiz(json));
     }
 
     IEnumerator UploadAndDownloadCoroutine(string imagePath)
@@ -116,6 +159,8 @@ public class VideoCreator : MonoBehaviour
                 // Json 형태로 local로 저장됌.
 
                 Debug.Log("퀴즈: " + quizData.quiz);
+                // 특정 문자열 제거
+                QuestionText.text = System.Text.RegularExpressions.Regex.Replace(quizData.quiz, @"퀴즈: |\(O/X\)", "");
                 Debug.Log("정답: " + quizData.answer);
 
             }
@@ -124,5 +169,10 @@ public class VideoCreator : MonoBehaviour
                 Debug.LogError("JSON 데이터 전송 중 오류 발생: " + request.error);
             }
         }
+    }
+
+    public void OnQuizPanelBtnClick()
+    {
+        QuizPanel.SetActive(true);
     }
 }
