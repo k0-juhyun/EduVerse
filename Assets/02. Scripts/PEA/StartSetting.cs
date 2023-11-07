@@ -31,4 +31,9 @@ public class StartSetting : MonoBehaviour
             }
         }
     }
+
+    public void OnClickRegisterBtn()
+    {
+        PhotonNetwork.LoadLevel("RegisterScene");
+    }
 }
