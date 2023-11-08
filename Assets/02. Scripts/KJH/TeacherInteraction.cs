@@ -47,26 +47,6 @@ public class TeacherInteraction : MonoBehaviourPun
         isSpawnBtnClick = !isSpawnBtnClick;
     }
 
-    //private void CreateButtonsForModels()
-    //{
-    //    int modelCount = DataBase.instance.model.spawnPrefab.Count;
-
-    //    // 스크롤뷰의 Content 내에 버튼들을 생성합니다.
-    //    for (int i = 0; i < modelCount; i++)
-    //    {
-    //        int index = i; // 클로저 문제 방지를 위한 로컬 변수
-    //        GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
-    //        newButton.GetComponentInChildren<Text>().text = "Model " + (i + 1); // 버튼에 텍스트 할당
-    //        newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
-    //    }
-    //}
-
-    //private void SpawnModel(int modelIndex)
-    //{
-    //    GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
-    //    GameObject newObject = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-    //}
-
     private void CreateButtonsForModels()
     {
         int modelCount = DataBase.instance.model.spawnPrefab.Count;

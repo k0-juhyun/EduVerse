@@ -23,7 +23,7 @@ public class StartSetting : MonoBehaviour
     {
         if(nameInput.text.Length > 0)
         {
-            DataBase.instance.SetMyInfo(new User(nameInput.text, isTeacherTpggle.isOn));
+            DataBase.instance.SetMyInfo(new User(nameInput.text, DataBase.instance.userInfo.isTeacher));
             if(PhotonNetwork.IsConnectedAndReady)
             {
                 PhotonNetwork.NickName = nameInput.text;
@@ -35,5 +35,11 @@ public class StartSetting : MonoBehaviour
     public void OnClickRegisterBtn()
     {
         PhotonNetwork.LoadLevel("RegisterScene");
+    }
+
+    public void OnClickVerifyButton()
+    {
+        DataBase.instance.userInfo.isTeacher = true;
+        print("12");
     }
 }

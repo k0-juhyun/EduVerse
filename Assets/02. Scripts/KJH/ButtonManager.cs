@@ -30,10 +30,10 @@ public class ButtonManager : MonoBehaviourPun
         NetworkManager.instance.enableChoose = false;
     }
 
-    public void OnTeachersRoomBtnClick()
-    {
-        PhotonNetwork.LoadLevel("LoadingScene");
-        NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
-        NetworkManager.instance.enableChoose = false;
-    }
+    //public void OnTeachersRoomBtnClick()
+    //{
+    //    PhotonNetwork.LoadLevel("LoadingScene");
+    //    NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
+    //    NetworkManager.instance.enableChoose = false;
+    //}
 }
