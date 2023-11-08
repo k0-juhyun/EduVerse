@@ -23,6 +23,7 @@ public class MarketToQuiz : MonoBehaviour
                     Debug.Log("Title: " + title);
                     SaveData saveData = SaveSystem.Load(title);
 
+                    // 앞에 단원 삭제
                     text[0].text = title.Substring(4);
                     Debug.Log(saveData.question); 
                     string a = saveData.question.Substring(4);
