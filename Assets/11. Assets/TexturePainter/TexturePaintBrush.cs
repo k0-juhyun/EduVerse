@@ -15,7 +15,10 @@ namespace Rito.TexturePainter
     [DisallowMultipleComponent]
     public class TexturePaintBrush : MonoBehaviour
     {
+        private Texture2D defaultTexture;
         public FlexibleColorPicker fcp;
+        public Button eraseBtn;
+        public Texture2D eraseTexture;
 
         /***********************************************************************
         *                               Public Fields
@@ -58,6 +61,7 @@ namespace Rito.TexturePainter
         private void Start()
         {
             fcp.onColorChange.AddListener(OnChangeColor);
+            eraseBtn.onClick.AddListener(OnClickEraseBtn);
         }
 
         private void Update()
@@ -125,6 +129,7 @@ namespace Rito.TexturePainter
             brushTexture = new Texture2D(res, res);
             brushTexture.filterMode = FilterMode.Point;
             brushTexture.alphaIsTransparency = true;
+            defaultTexture = brushTexture;
 
             for (int y = 0; y < res; y++)
             {
@@ -216,7 +221,19 @@ namespace Rito.TexturePainter
         private void OnChangeColor(Color co)
         {
             print("change color");
+            if (brushTexture != defaultTexture)
+            {
+                brushTexture = defaultTexture;
+                CopyBrushTexture();
+            }
             SetBrushColor(co);
+        }
+
+        private void OnClickEraseBtn()
+        {
+            brushTexture = eraseTexture;
+            CopyBrushTexture();
+            SetBrushColor(Color.white);
         }
     }
 }

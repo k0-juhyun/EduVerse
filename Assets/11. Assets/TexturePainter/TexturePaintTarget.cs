@@ -24,7 +24,7 @@ namespace Rito.TexturePainter
     [DisallowMultipleComponent]
     public class TexturePaintTarget : MonoBehaviour
     {
-        public Button eraseBtn;
+        public Button resetBtn;
         public RawImage rawImage;
 
         /***********************************************************************
@@ -38,7 +38,7 @@ namespace Rito.TexturePainter
                 if (_clearTex == null)
                 {
                     _clearTex = new Texture2D(1, 1);
-                    _clearTex.SetPixel(0, 0, Color.clear);
+                    _clearTex.SetPixel(0, 0, Color.white);
                     _clearTex.Apply();
                 }
                 return _clearTex;
@@ -89,7 +89,7 @@ namespace Rito.TexturePainter
 
         private void Start()
         {
-            eraseBtn.onClick.AddListener(InitRenderTexture);
+            resetBtn.onClick.AddListener(InitRenderTexture);
         }
 
         #endregion
