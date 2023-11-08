@@ -328,6 +328,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnGreetBtnClick()
     {
         anim.Play("GreetR");
+        photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "GreetR");
         StartCoroutine(WaitForAnimation(anim, "GreetR"));
     }
 

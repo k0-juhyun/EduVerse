@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private Vector3 teacherSpawnPos = new Vector3(-6.7f, 0, 5.5f);
     private Vector3 studentSpawnPos = new Vector3(6, 0, 5);
-    private Quaternion spawnRot = Quaternion.identity;
+    private Quaternion spawnRot = Quaternion.Euler(0, 180, 0);
 
     private bool shouldJoinNewRoom = false;
     [HideInInspector] public bool isCustom = false;
@@ -174,6 +174,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             else if (scene.buildIndex == 5)
             {
                 spawnPos = new Vector3(-5.75f, 0, -1.85f);
+            }
+            else if (scene.buildIndex == 6)
+            {
+                spawnPos = new Vector3(12.5f, 0, 17.5f);
             }
 
             PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
