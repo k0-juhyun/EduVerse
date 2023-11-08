@@ -12,6 +12,8 @@ public class CustomPart
     public GameObject partObj; // 커스텀할 파츠 오브젝트
     public string objName;
     public Mesh[] partList; // 교체 메쉬들
+    public Image[] partImages;
+    public Sprite[] partSprites; // 스프라이트들
     [HideInInspector]
     public int currentIdx; // 현재 인덱스
     public SkinnedMeshRenderer customRenderer;
@@ -38,6 +40,14 @@ public class Customization : MonoBehaviour
             {
                 part.rightBtn.onClick.AddListener(() => OnClickRight(part));
                 part.leftBtn.onClick.AddListener(() => OnClickLeft(part));
+            }
+        }
+
+        for (int i = 0; i < customParts.Length; i++)
+        {
+            for (int j = 0; j < customParts[i].partImages.Length; j++)
+            {
+                customParts[i].partImages[j].sprite = customParts[i].partSprites[j];
             }
         }
 
