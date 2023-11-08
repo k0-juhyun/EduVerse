@@ -106,6 +106,7 @@ public static class SaveSystem
         Debug.Log("Title Append Success: " + saveFilePath);
     }
 
+    // MyQuizTitleData에서 데이터 가져와서 추가.
     public static List<string> GetTitlesFromJson(string fileName)
     {
         string saveFilePath = SavePath + "MyQuizTitleData.json";
