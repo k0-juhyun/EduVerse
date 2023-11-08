@@ -13,6 +13,10 @@ public class TeacherInteraction : MonoBehaviourPun
     public GameObject buttonPrefab;
     public GameObject scrollView;
 
+    private bool isObjectBeingPlaced = false;
+    private GameObject objectToPlace;
+    private GameObject currentlyDragging;
+
     private Button Btn_Spawn;
 
     public bool isSpawnBtnClick;
@@ -31,6 +35,27 @@ public class TeacherInteraction : MonoBehaviourPun
         characterInteraction = GetComponent<CharacterInteraction>();
         scrollView.SetActive(false);
 
+    }
+
+    private void Update()
+    {
+        if (isObjectBeingPlaced)
+        {
+            // 마우스 위치를 월드 좌표로 변환합니다.
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+            // Z 좌표를 캐릭터 앞으로 조정합니다.
+            mousePosition.z = player.transform.position.z + 1.0f;
+
+            // 오브젝트를 마우스 커서 위치로 이동시킵니다.
+            objectToPlace.transform.position = mousePosition;
+
+            // 마우스 버튼을 다시 누르면 오브젝트를 배치합니다.
+            if (Input.GetMouseButtonDown(0))
+            {
+                isObjectBeingPlaced = false;
+                currentlyDragging = null;
+            }
+        }
     }
 
     private void Start()
@@ -61,12 +86,20 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
-    private void SpawnModel(int modelIndex)
+    public void SpawnModel(int modelIndex)
     {
-        if (modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
+        if (!isObjectBeingPlaced && modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
         {
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
-            GameObject newObject = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            objectToPlace = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+
+            // InteractableModel 컴포넌트를 추가합니다.
+            InteractableModel interactableModel = objectToPlace.AddComponent<InteractableModel>();
+            // 필요하다면 InteractableModel의 속성을 설정할 수 있습니다.
+            // 예: interactableModel.someProperty = someValue;
+
+            isObjectBeingPlaced = true; // 오브젝트 생성중 상태로 설정
+            currentlyDragging = objectToPlace; // 현재 드래깅 오브젝트로 설정
         }
     }
 

@@ -40,7 +40,8 @@ public class RegisterManager : MonoBehaviour
 
     [Space(10)]
     [Header("3. 가입완료")]
-    public GameObject 가입완료;
+    public GameObject 선생가입완료;
+    public GameObject 학생가입완료;
 
     [Space(10)]
     [Header("4. 만 14세 미만")]
@@ -48,6 +49,13 @@ public class RegisterManager : MonoBehaviour
     private bool isFirst;
     public GameObject 내용1;
     public GameObject 내용2;
+    public GameObject 내용3;
+    public RawImage 법정대리인본인확인체크;
+    public RawImage 법정대리인동의체크;
+    private bool 법정대리인본인확인;
+    private bool 법정대리인동의;
+    public GameObject 엑스버튼;
+    public GameObject 다음버튼;
 
     [Space(10)]
     [Header("5. 학생 회원정보 입력")]
@@ -116,22 +124,27 @@ public class RegisterManager : MonoBehaviour
     {
         if (선생이름.text.Length > 0 )
         {
-            가입완료.SetActive(true);
+            선생가입완료.SetActive(true);
             FireAuth.instance.OnClickSingIn(선생이메일앞자리.text + "@" + 선생이메일뒷자리.text, 선생비밀번호.text);
             FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true));
         }
 
         else if(학생이름.text.Length > 0 )
         {
-            가입완료.SetActive(true);
+            학생가입완료.SetActive(true);
             FireAuth.instance.OnClickSingIn(학생이메일앞자리.text + "@" + 학생이메일뒷자리.text, 학생비밀번호.text);
             FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false));
         }
     }
 
-    public void OnXButtonClick()
+    public void OnTXButtonClick()
     {
-        가입완료.SetActive(!가입완료.gameObject.activeSelf);
+        선생가입완료.SetActive(!선생가입완료.gameObject.activeSelf);
+    }
+
+    public void OnSTXButtonClick()
+    {
+        학생가입완료.SetActive(!학생가입완료.gameObject.activeSelf);
     }
 
     public void OnNextBtnClick()
@@ -145,7 +158,7 @@ public class RegisterManager : MonoBehaviour
         }
     }
 
-    public void OnBackBtnClick()
+    public void OnNextContentBtnClick()
     {
         if (isFirst == false)
         {
@@ -153,12 +166,37 @@ public class RegisterManager : MonoBehaviour
             내용2.SetActive(true);
             isFirst = true;
         }
-        else
+
+        else if (isFirst && 법정대리인본인확인)
         {
-            만14세.SetActive(false);
             isFirst = false;
-            약관동의및본인인증.SetActive(false);
-            학생회원정보입력.SetActive(true);
+            내용2.SetActive(false);
+            내용3.SetActive(true);
         }
+    }
+
+    public void OnLawCheckBoxClick()
+    {
+        법정대리인본인확인체크.gameObject.SetActive(!법정대리인본인확인체크.gameObject.activeSelf);
+        법정대리인본인확인 = !법정대리인본인확인;
+    }
+
+    public void OnLawAgreeCheckBoxClick()
+    {
+        법정대리인동의체크.gameObject.SetActive(!법정대리인동의체크.gameObject.activeSelf);
+        법정대리인동의 = !법정대리인동의;
+
+        if(법정대리인동의)
+        {
+            엑스버튼.SetActive(true);
+            다음버튼.SetActive(false);
+        }
+    }
+
+    public void OnFinishLawAgreeButtonClick()
+    {
+        약관동의및본인인증.gameObject.SetActive(false);
+        만14세.gameObject.SetActive(false);
+        학생회원정보입력.gameObject.SetActive(true);
     }
 }
