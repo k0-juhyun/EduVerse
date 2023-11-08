@@ -18,17 +18,14 @@ public class TagInputField : MonoBehaviour
         foreach (Transform childTransform in parentTransform)
         {
             // 각 자식 객체의 이름을 출력합니다.
-            Debug.Log("자식 객체 이름: " + childTransform.gameObject.name);
             if(childTransform.gameObject.name == "TagText(Clone)")
             {
-                Debug.Log("실행");
                 Destroy(childTransform.gameObject);
             }
         }
     }
     public void EnterTxtBtn()
     {
-        Debug.Log("12");
 
         // 부모 오브젝트를 찾습니다.
         Transform parentTransform = transform; // 예시로 현재 스크립트가 붙은 오브젝트를 부모로 설정합니다.
@@ -62,10 +59,8 @@ public class TagInputField : MonoBehaviour
         foreach (Transform childTransform in parentTransform)
         {
             // 각 자식 객체의 이름을 출력합니다.
-            Debug.Log("자식 객체 이름: " + childTransform.gameObject.name);
             if (childTransform.gameObject.name == "TagText(Clone)")
             {
-                Debug.Log("실행");
                 Destroy(childTransform.gameObject);
             }
         }
