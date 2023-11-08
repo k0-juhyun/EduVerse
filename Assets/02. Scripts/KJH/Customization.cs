@@ -45,7 +45,7 @@ public class Customization : MonoBehaviour
 
         for (int i = 0; i < customParts.Length; i++)
         {
-            for (int j = 0; j < customParts[i].partImages.Length; j++)
+            for (int j = 0; j < customParts[i].partImages?.Length; j++)
             {
                 customParts[i].partImages[j].sprite = customParts[i].partSprites[j];
             }
