@@ -61,6 +61,11 @@ public class RegisterManager : MonoBehaviour
     public TMP_InputField 학생학교;
     public TMP_InputField 학생학년;
 
+    public bool IsTeacher
+    {
+        get { return _isTeacher; }
+    }
+
     public void OnTeacherBtnClick()
     {
         if(_isTeacher == false)
@@ -109,14 +114,18 @@ public class RegisterManager : MonoBehaviour
 
     public void OnRegisterCompleteBtnClick()
     {
-        if (선생이름.text.Length > 0)
+        if (선생이름.text.Length > 0 )
         {
             가입완료.SetActive(true);
+            FireAuth.instance.OnClickSingIn(선생이메일앞자리.text + "@" + 선생이메일뒷자리.text, 선생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true));
         }
 
-        else if(학생이름.text.Length > 0)
+        else if(학생이름.text.Length > 0 )
         {
             가입완료.SetActive(true);
+            FireAuth.instance.OnClickSingIn(학생이메일앞자리.text + "@" + 학생이메일뒷자리.text, 학생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false));
         }
     }
 
