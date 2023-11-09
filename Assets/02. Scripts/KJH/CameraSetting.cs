@@ -77,6 +77,11 @@ public class CameraSetting : MonoBehaviourPun
     // 입력 처리
     private void HandleInput()
     {
+        if (AnyInteractableIsDragging())
+        {
+            return;
+        }
+
         if (characterInteraction.isTPSCam)
         {
             if (Input.touchCount > 0)
@@ -183,5 +188,18 @@ public class CameraSetting : MonoBehaviourPun
             FPS_Camera.gameObject.SetActive(!isTPSCam);
             FPS_Camera.depth = isTPSCam ? -1 : 1;
         }
+    }
+
+    private bool AnyInteractableIsDragging()
+    {
+        InteractableModel[] interactables = FindObjectsOfType<InteractableModel>();
+        foreach (var interactable in interactables)
+        {
+            if (interactable.IsDragging())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
