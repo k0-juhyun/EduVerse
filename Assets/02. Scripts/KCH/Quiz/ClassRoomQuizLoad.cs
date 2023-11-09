@@ -19,6 +19,7 @@ public class ClassRoomQuizLoad : MonoBehaviour
     public GameObject 정답인원;
     public GameObject 오답인원;
 
+
     // 진행중
     // 종료
     public enum QuizState
@@ -30,11 +31,10 @@ public class ClassRoomQuizLoad : MonoBehaviour
 
     [Space(20)]
     public QuizState quizState = QuizState.None;
+    public GameObject QuizPanel_student;
 
-    private void Update()
+    private void Start()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
             quizs= MyQuizStorage.Instance.quizList;
             Debug.Log("실행");
             for (int i = 0; i < MyQuizStorage.Instance.quizList.Count; i++)
@@ -46,9 +46,7 @@ public class ClassRoomQuizLoad : MonoBehaviour
                 quiz_obj.transform.parent = AddQuizViewport.transform;
                 quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
                     MyQuizStorage.Instance.quizList[i].answer);
-            }
-        }
-
+            }       
         // 여기서 저장한 리스트 뽑아서 써야함.
     }
 
@@ -58,7 +56,10 @@ public class ClassRoomQuizLoad : MonoBehaviour
         questionText.text = question_;
         // 현재 들어온 총 인원 값 받는다.
         // 들어온 인원 퀴즈 창 띄우기.
-
+        if(DataBase.instance.userInfo.isTeacher==false)
+        {
+            GameObject quizPanel = Instantiate(QuizPrefab);
+        }
         // QuizState.Proceeding 중 문제를 풀어 정답 오답 체크를 한다.
 
         // 문제를 다 풀게 되면 QuizState.End로 넘어감.

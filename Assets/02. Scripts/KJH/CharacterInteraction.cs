@@ -238,8 +238,8 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (subMainCam == null) return;
 
-        subMainCam.orthographicSize = 1.75f;
-        subMainCam.transform.position = new Vector3(-6, 2.65f, -0.06f);
+        subMainCam.orthographicSize = 1.9f;
+        subMainCam.transform.position = new Vector3(-6, 2.525f, -0.0f);
         subMainCam.transform.rotation = Quaternion.Euler(0, -90, 0);
     }
 

@@ -17,6 +17,7 @@ public class MenuUI : MonoBehaviour
     public GameObject DrawingCanvas;
     public GameObject HomePage;
     public GameObject MyCanvas;
+    public GameObject QuizMenu;
 
     bool isOpen_menu;
     bool isItem_menu;
@@ -130,5 +131,13 @@ public class MenuUI : MonoBehaviour
     {
         HomePage.SetActive(true);
         MyCanvas.SetActive(false);
+    }
+
+    public void OnQuizBtnClick()
+    {
+
+        // 프리팹 instantsiate 한다 (포톤인스턴시에이트 X)
+        GameObject quizPanel = Instantiate(QuizMenu);
+
     }
 }
