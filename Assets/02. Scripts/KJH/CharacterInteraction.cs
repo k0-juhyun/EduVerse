@@ -113,7 +113,7 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         PlaySitAnimation();
         SetCharacterPosition(chair.transform.position);
-        SetCharacterForwardDirection(chair.transform.right);
+        SetCharacterForwardDirection(chair.transform.forward * -1);
         _isSit = true;
     }
 
@@ -159,7 +159,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.userInfo.isTeacher)
+        if (photonView.IsMine && other.gameObject.name == "q" && DataBase.instance.userInfo.isTeacher)
         {
             //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
@@ -328,6 +328,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnGreetBtnClick()
     {
         anim.Play("GreetR");
+        photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "GreetR");
         StartCoroutine(WaitForAnimation(anim, "GreetR"));
     }
 
