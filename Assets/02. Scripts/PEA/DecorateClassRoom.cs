@@ -3,20 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class DecorateClassRoom : MonoBehaviour
+public class DecorateClassRoom : MonoBehaviourPun
 {
     public static DecorateClassRoom instance = null;
 
     private List<Texture2D> myDraws = new List<Texture2D>();
 
-    private Texture2D curSelectedDraw;
+    public Texture2D curSelectedDraw;
 
     public Transform myDrawsContent;
     public Transform boardPanel;
     public GameObject myDrawItem;
-    public GameObject decoItem;
     public Button uploadBtn;
+
+    public GameObject[] decoItems;
 
     private void Awake()
     {
@@ -78,8 +80,15 @@ public class DecorateClassRoom : MonoBehaviour
 
         if(boardPanel.childCount < 15)
         {
-            GameObject drawItem = Instantiate(decoItem, boardPanel);
-            drawItem.transform.GetChild(0).GetComponent<RawImage>().texture = curSelectedDraw;
+            foreach (GameObject drawItem in decoItems)
+            {
+                if (!drawItem.GetComponent<RawImage>().enabled)
+                {
+                    drawItem.GetComponent<DecoItem>().SetDraw(curSelectedDraw);
+                    break;
+                }
+
+            }
         }
 
         curSelectedDraw = null;

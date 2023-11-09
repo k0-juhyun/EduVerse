@@ -31,10 +31,12 @@ public class UserInfo
 
     }
 
-    public UserInfo(string name, bool isTeacher)
+    public UserInfo(string name, bool isTeacher, string email, string password)
     {
         this.name = name;
         this.isteacher = isTeacher;
+        this.email = email;
+        this.password = password;
     }
 }
 
