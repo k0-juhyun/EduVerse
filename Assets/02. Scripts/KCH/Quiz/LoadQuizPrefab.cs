@@ -54,6 +54,25 @@ public class LoadQuizPrefab : MonoBehaviour
         }
     }
 
+    public void SelectQuizBtnClick()
+    {
+
+        // 부모 오브젝트의 ClassRoomQuizLoad 스크립트에 값 전달.
+        // 필요한 값 현재 문제 string 답 string
+        Transform parentobj = FindRootParent(transform.gameObject);
+        parentobj.gameObject.GetComponent<ClassRoomQuizLoad>().SelectQuiz(quiz.question, quiz.answer);
+    }
+
+    // 부모 오브젝트 찾는 함수.
+    Transform FindRootParent(GameObject childObject)
+    {
+        Transform parent = childObject.transform.parent;
+        while (parent.parent != null)
+        {
+            parent = parent.parent;
+        }
+        return parent;
+    }
 }
 
 
