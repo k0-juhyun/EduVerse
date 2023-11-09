@@ -34,6 +34,10 @@ public class CharacterInteraction : MonoBehaviourPun
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
 
+    public Text myNickNameTxt;
+    private string myNickName;
+
+    public Camera Cam;
     Camera subMainCam;
     Scene scene;
 
@@ -58,6 +62,18 @@ public class CharacterInteraction : MonoBehaviourPun
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
         Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
+
+        if(photonView.IsMine)
+            myNickNameTxt.text = PhotonNetwork.LocalPlayer.NickName;
+        else
+            myNickNameTxt.text = photonView.Owner.NickName;
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+
     }
 
     private void OnTriggerStay(Collider other)

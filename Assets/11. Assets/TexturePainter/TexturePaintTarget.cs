@@ -25,7 +25,6 @@ namespace Rito.TexturePainter
     public class TexturePaintTarget : MonoBehaviour
     {
         public Button resetBtn;
-        public RawImage rawImage;
 
         /***********************************************************************
         *                               Static Fields
@@ -44,6 +43,7 @@ namespace Rito.TexturePainter
                 return _clearTex;
             }
         }
+
         private MaterialPropertyBlock TextureBlock
         {
             get
@@ -107,8 +107,6 @@ namespace Rito.TexturePainter
         private void InitRenderTexture()
         {
             renderTexture = new RenderTexture(resolution, resolution, 32);
-
-            rawImage.texture = renderTexture;
 
             Graphics.Blit(ClearTex, renderTexture);
 

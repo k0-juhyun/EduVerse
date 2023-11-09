@@ -128,7 +128,7 @@ namespace Rito.TexturePainter
 
             brushTexture = new Texture2D(res, res);
             brushTexture.filterMode = FilterMode.Point;
-            brushTexture.alphaIsTransparency = true;
+            //brushTexture.alphaIsTransparency = true;
             defaultTexture = brushTexture;
 
             for (int y = 0; y < res; y++)
@@ -159,7 +159,7 @@ namespace Rito.TexturePainter
             {
                 CopiedBrushTexture = new Texture2D(brushTexture.width, brushTexture.height);
                 CopiedBrushTexture.filterMode = FilterMode.Point;
-                CopiedBrushTexture.alphaIsTransparency = true;
+               // CopiedBrushTexture.alphaIsTransparency = true;
             }
 
             int height = brushTexture.height;
@@ -199,10 +199,11 @@ namespace Rito.TexturePainter
                 prevBrushColor = brushColor;
             }
         }
-#endif
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
+#endif
         private void UpdateBrushColorOnEditor()
         {
+#if UNITY_EDITOR
             if (brushTextureUpdateCounter > 0f && 
                 brushTextureUpdateCounter <= BrushTextureUpdateCounterInitValue)
             {
@@ -214,8 +215,9 @@ namespace Rito.TexturePainter
                 CopyBrushTexture();
                 brushTextureUpdateCounter = 9999f;
             }
+#endif
         }
-        #endregion
+#endregion
 
 
         private void OnChangeColor(Color co)
