@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class InteractableModel : MonoBehaviour
+public class InteractableModel : MonoBehaviourPun
 {
     private Camera mainCamera;
     private bool isDragging;
@@ -53,5 +54,10 @@ public class InteractableModel : MonoBehaviour
             return hit.transform == this.transform;
         }
         return false;
+    }
+
+    public bool IsDragging()
+    {
+        return isDragging;
     }
 }

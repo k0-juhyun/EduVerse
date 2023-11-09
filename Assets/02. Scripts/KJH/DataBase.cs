@@ -107,7 +107,6 @@ public class DataBase : MonoBehaviour
             if (prefab.GetComponent<PhotonView>() == null) // 이미 PhotonView가 붙어있는지 확인
             {
                 PhotonView view = prefab.AddComponent<PhotonView>();
-                view.ObservedComponents = new List<Component>();
             }
             model.spawnPrefab.Add(prefab);
         }
