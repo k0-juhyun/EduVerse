@@ -15,6 +15,8 @@ public class MenuUI : MonoBehaviour
     public RectTransform DrawingToolmenu;
     public GameObject DrawingTool;
     public GameObject DrawingCanvas;
+    public GameObject HomePage;
+    public GameObject MyCanvas;
 
     bool isOpen_menu;
     bool isItem_menu;
@@ -122,5 +124,11 @@ public class MenuUI : MonoBehaviour
     {
         NativeFilePicker.Permission permission = await NativeFilePicker.RequestPermissionAsync(readPermissionOnly);
         Debug.Log("Permission result: " + permission);
+    }
+
+    public void OnBackBtnClick()
+    {
+        HomePage.SetActive(true);
+        MyCanvas.SetActive(false);
     }
 }

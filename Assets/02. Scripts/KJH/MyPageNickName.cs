@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MyPageNickName : MonoBehaviour
+public class MyPageNickName : MonoBehaviourPun
 {
     public Text myNickNameTxt;
     public string myNickName;

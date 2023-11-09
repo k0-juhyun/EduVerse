@@ -162,17 +162,18 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
         // main camera pivot rotation 0으로 설정
         // main camera의 부모가 rotation 값이 바뀌면 이상해짐.
-        Camera camera = Camera.main;
+        //Camera camera = Camera.main;
 
-        // 카메라 위치 0 , 1  -10으로 설정
-        // 이렇게 해야 캡쳐 드래그가 됌..? 왜지?
-        camera.transform.localPosition = new Vector3(0, 1, -10);
-        camera.transform.localEulerAngles = Vector3.zero;
-        // 카메라 세팅 끄고
-        camera.GetComponentInParent<CameraSetting>().enabled = false;
-        // 카메라 부모 Pivot 0으로 설정
-        camera.transform.parent.transform.localPosition = new Vector3(0,0,0);
-        camera.transform.parent.transform.rotation = Quaternion.Euler(0,0,0);
+        //// 카메라 위치 0 , 1  -10으로 설정
+        //// 이렇게 해야 캡쳐 드래그가 됌..? 왜지?
+        //camera.transform.localPosition = new Vector3(0, 1, -10);
+        //camera.transform.localEulerAngles = Vector3.zero;
+        //// 카메라 세팅 끄고
+        ////if(camera.GetComponentInParent<CameraSetting>()!=null)
+        ////camera.GetComponentInParent<CameraSetting>().enabled = false;
+        //// 카메라 부모 Pivot 0으로 설정
+        //camera.transform.parent.transform.localPosition = new Vector3(0,0,0);
+        //camera.transform.parent.transform.rotation = Quaternion.Euler(0,0,0);
 
         Debug.Log("캡쳐 클릭");
         

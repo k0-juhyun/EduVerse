@@ -88,91 +88,59 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
-    //public void SpawnModel(int modelIndex)
-    //{
-    //    if (!isObjectBeingPlaced && modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
-    //    {
-    //        GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
-    //        objectToPlace = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-
-    //        // 이 부분에서 .obj 파일을 불러옵니다.
-    //        GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/mesh_3/mesh.obj");
-    //        importedObj.transform.SetParent(objectToPlace.transform); // objectToPlace를 부모로 설정합니다.
-    //        importedObj.transform.localPosition = Vector3.zero;
-    //        importedObj.transform.localRotation = Quaternion.identity;
-
-    //        // 메시의 노말을 뒤집습니다.
-    //        Mesh mesh = importedObj.GetComponentInChildren<MeshFilter>().mesh;
-
-    //        FlipMesh(mesh);
-
-    //        GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
-
-    //        // 필요하다면 재질을 적용합니다.
-    //        ApplyMaterials(meshObj);
-
-    //        // 오브젝트 생성을 완료합니다.
-    //        isObjectBeingPlaced = true; // 오브젝트 생성중 상태로 설정
-    //        currentlyDragging = objectToPlace; // 현재 드래깅 오브젝트로 설정
-    //    }
-    //}
-
     public void SpawnModel(int modelIndex)
     {
         if (!isObjectBeingPlaced && modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
         {
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
 
-            // 이 부분에서 Instantiate가 성공적으로 반환되었는지 확인합니다.
+            // Instantiate model and check for success.
             objectToPlace = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
-            // objectToPlace가 정상적으로 생성되었는지 확인합니다.
+            // Only proceed if objectToPlace has been successfully created.
             if (objectToPlace != null)
             {
-                // RPC를 사용하여 모든 클라이언트에서 OBJ 로딩과 머티리얼 적용을 수행하도록 요청합니다.
-                photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name);
+                isObjectBeingPlaced = true; // Set state to placing object.
+                currentlyDragging = objectToPlace; // Set current dragging object.
 
-                // 오브젝트 생성을 완료합니다.
-                isObjectBeingPlaced = true; // 오브젝트 생성중 상태로 설정
-                currentlyDragging = objectToPlace; // 현재 드래깅 오브젝트로 설정
+                // Call RPC to load and apply OBJ to the newly instantiated object.
+                // We pass objectToPlace's PhotonView ID to ensure the correct object is targeted.
+                photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name, objectToPlace.GetPhotonView().ViewID);
             }
             else
             {
-                // 오브젝트 생성 실패 처리
                 Debug.LogError("Failed to instantiate object on network.");
             }
         }
     }
 
     [PunRPC]
-    public void LoadAndApplyOBJ(string modelName)
+    public void LoadAndApplyOBJ(string modelName, int viewID)
     {
         // 이 부분에서 .obj 파일을 불러옵니다.
-        if (objectToPlace == null)
+        PhotonView targetPhotonView = PhotonView.Find(viewID);
+        if (targetPhotonView != null)
         {
-            Debug.LogError("objectToPlace is null!");
-            return;
+            objectToPlace = targetPhotonView.gameObject;
+
+            // Load the OBJ file as before.
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/mesh_3/mesh.obj");
+            if (importedObj != null)
+            {
+                importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
+                importedObj.transform.localPosition = Vector3.zero;
+                importedObj.transform.localRotation = Quaternion.identity;
+
+                // 메시의 노말을 뒤집습니다.
+                Mesh mesh = importedObj.GetComponentInChildren<MeshFilter>().mesh;
+                FlipMesh(mesh);
+
+                GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
+
+                // 필요하다면 재질을 적용합니다.
+                ApplyMaterials(meshObj);
+            }
         }
-
-        // 이 부분에서 .obj 파일을 불러옵니다.
-        GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/mesh_3/mesh.obj");
-        if (importedObj == null)
-        {
-            Debug.LogError("Failed to load OBJ file.");
-            return;
-        }
-        importedObj.transform.SetParent(objectToPlace.transform); // objectToPlace를 부모로 설정합니다.
-        importedObj.transform.localPosition = Vector3.zero;
-        importedObj.transform.localRotation = Quaternion.identity;
-
-        // 메시의 노말을 뒤집습니다.
-        Mesh mesh = importedObj.GetComponentInChildren<MeshFilter>().mesh;
-        FlipMesh(mesh);
-
-        GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
-
-        // 필요하다면 재질을 적용합니다.
-        ApplyMaterials(meshObj);
     }
 
     private void FlipMesh(Mesh mesh)
