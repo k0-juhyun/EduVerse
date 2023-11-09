@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class MyQuizStorage : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static MyQuizStorage Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+        DontDestroyOnLoad(Instance);
+    }
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
