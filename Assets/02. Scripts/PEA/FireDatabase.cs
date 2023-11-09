@@ -31,10 +31,12 @@ public class UserInfo
 
     }
 
-    public UserInfo(string name, bool isTeacher)
+    public UserInfo(string name, bool isTeacher, string email, string password)
     {
         this.name = name;
         this.isteacher = isTeacher;
+        this.email = email;
+        this.password = password;
     }
 }
 
@@ -76,7 +78,7 @@ public class FireDatabase : MonoBehaviour
         database = FirebaseDatabase.DefaultInstance;
 
         //내정보 임시 입력
-
+        
     }
 
     private void Update()
@@ -105,7 +107,7 @@ public class FireDatabase : MonoBehaviour
 
     IEnumerator ISaveUserInfo(UserInfo userInfo)
     {
-        string path = "USER_INFO/" + FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+        string path = "USER_INFO/" + FirebaseAuth.DefaultInstance.CurrentUser.UserId + userInfo.name;
 
         // GetReference() -> USER_INFO 데이터가 저장될 위치를 가르키는 경로
         // SetRawJsonValueAsync 비동기로 데이터 저장
@@ -117,6 +119,7 @@ public class FireDatabase : MonoBehaviour
         //myInfo.nickname = InputNickName.text;
         //myInfo.password = InputPassword.text;
         //myInfo.email = InputEmail.text;
+
 
         var task = database.GetReference(path).SetRawJsonValueAsync(JsonUtility.ToJson(userInfo));
         
@@ -151,13 +154,8 @@ public class FireDatabase : MonoBehaviour
         if (task.Exception == null)
         {
             var a = task.Result.GetValue(false);
-            print(a);
 
             myInfo = JsonUtility.FromJson<UserInfo>(task.Result.GetRawJsonValue());
-
-            //print(myInfo.name);
-            //print(myInfo.age);
-            //print(myInfo.height);
 
             print("유저 정보 가져오기 성공");
             if (onComplete != null) onComplete();

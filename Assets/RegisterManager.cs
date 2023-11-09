@@ -114,18 +114,21 @@ public class RegisterManager : MonoBehaviour
 
     public void OnRegisterCompleteBtnClick()
     {
+        string email;
         if (선생이름.text.Length > 0 )
         {
             가입완료.SetActive(true);
-            FireAuth.instance.OnClickSingIn(선생이메일앞자리.text + "@" + 선생이메일뒷자리.text, 선생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true));
+            email = 선생이메일앞자리.text + "@" + 선생이메일뒷자리.text;
+            FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, email, 선생비밀번호.text));
         }
 
         else if(학생이름.text.Length > 0 )
         {
             가입완료.SetActive(true);
-            FireAuth.instance.OnClickSingIn(학생이메일앞자리.text + "@" + 학생이메일뒷자리.text, 학생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false));
+            email = 학생이메일앞자리.text + "@" + 학생이메일뒷자리.text;
+            FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, email, 학생비밀번호.text));
         }
     }
 
