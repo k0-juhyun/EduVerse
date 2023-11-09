@@ -19,7 +19,7 @@ public class TeacherInteraction : MonoBehaviourPun
     private GameObject objectToPlace;
     private GameObject currentlyDragging;
 
-    public string ModelName;
+    public string TestName;
 
     private Button Btn_Spawn;
 
@@ -96,8 +96,9 @@ public class TeacherInteraction : MonoBehaviourPun
         {
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
 
+            print(modelToSpawn.name);
             // Instantiate model and check for success.
-            objectToPlace = PhotonNetwork.Instantiate("3D_Models/" + modelToSpawn.name, player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            objectToPlace = PhotonNetwork.Instantiate("3D_Models/mesh", player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
             // Only proceed if objectToPlace has been successfully created.
             if (objectToPlace != null)
@@ -108,6 +109,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 // Call RPC to load and apply OBJ to the newly instantiated object.
                 // We pass objectToPlace's PhotonView ID to ensure the correct object is targeted.
                 photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name, objectToPlace.GetPhotonView().ViewID);
+                print(modelToSpawn.name);
             }
             else
             {
@@ -126,7 +128,7 @@ public class TeacherInteraction : MonoBehaviourPun
             objectToPlace = targetPhotonView.gameObject;
 
             // Load the OBJ file as before.
-            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/"+ModelName+"/mesh.obj");
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/"+modelName+".obj");
             if (importedObj != null)
             {
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
@@ -140,7 +142,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
 
                 // 필요하다면 재질을 적용합니다.
-                ApplyMaterials(meshObj);
+                ApplyMaterials(modelName,meshObj);
             }
         }
     }
@@ -170,11 +172,12 @@ public class TeacherInteraction : MonoBehaviourPun
         mesh.RecalculateTangents();
     }
 
-    private void ApplyMaterials(GameObject obj)
+    // mat 적용
+    private void ApplyMaterials(string modelName,GameObject obj)
     {
         // "mesh_3/mesh"라는 이름의 텍스처를 로드합니다.
-        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + ModelName+"/albedo");
-
+        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+        //Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
         if (albedoTexture != null)
         {
             print(albedoTexture.name);
