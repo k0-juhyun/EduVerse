@@ -56,6 +56,7 @@ public class QuizMarketManager : MonoBehaviour
 
                     // 앞에 단원 글자만 추출
                     string extracted = title.Substring(0, 3);
+                    string titleSlice = title.Substring(4);
 
                     Debug.Log(extracted+ " : "+ unit);
                     if(extracted ==unit)
@@ -68,7 +69,7 @@ public class QuizMarketManager : MonoBehaviour
                         Debug.Log(Unit_quiz.transform.GetChild(0).GetChild(0));
 
                         // 안에 이름을 넣음.
-                        quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question,saveData.answer);
+                        quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question, saveData.answer);
                         // 이름 바꿔야 함.
                     }
 

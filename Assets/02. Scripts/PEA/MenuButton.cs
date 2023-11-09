@@ -13,6 +13,8 @@ public class MenuButton : MonoBehaviour
 
     public GameObject[] menus;
 
+    public GameObject quizCanvas;
+
     private void OnEnable()
     {
         if(buttonSets != null)
@@ -58,5 +60,10 @@ public class MenuButton : MonoBehaviour
             }
             selectedBtn.Select();
         }
+    }
+
+    public void OnQuizDataBtnClick()
+    {
+        quizCanvas.SetActive(true);
     }
 }
