@@ -19,6 +19,8 @@ public class TeacherInteraction : MonoBehaviourPun
     private GameObject objectToPlace;
     private GameObject currentlyDragging;
 
+    public string ModelName;
+
     private Button Btn_Spawn;
 
     public bool isSpawnBtnClick;
@@ -124,7 +126,7 @@ public class TeacherInteraction : MonoBehaviourPun
             objectToPlace = targetPhotonView.gameObject;
 
             // Load the OBJ file as before.
-            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/mesh_3/mesh.obj");
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/"+ModelName+"/mesh.obj");
             if (importedObj != null)
             {
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
@@ -171,7 +173,7 @@ public class TeacherInteraction : MonoBehaviourPun
     private void ApplyMaterials(GameObject obj)
     {
         // "mesh_3/mesh"라는 이름의 텍스처를 로드합니다.
-        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/mesh_3/mesh");
+        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + ModelName+"/albedo");
 
         if (albedoTexture != null)
         {
