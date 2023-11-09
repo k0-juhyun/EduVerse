@@ -254,7 +254,6 @@ public class FlexibleColorPicker : MonoBehaviour {
     }
 
     private void Update() {
-        print(canvas.name);
         typeUpdate = false;
         if(lastUpdatedMode != mode)
             ChangeMode(mode);
