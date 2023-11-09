@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckForQuiz : MonoBehaviour
+public class BringQuiz : MonoBehaviour
 {
-
-
 
 }
