@@ -1,8 +1,10 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.WSA;
 
 [System.Serializable]
 public class CustomPartDB
@@ -96,7 +98,7 @@ public class DataBase : MonoBehaviour
     private void LoadModelsFromResources()
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
-        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models/ModelDatas");
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models/");
 
         // model.spawnPrefab 리스트를 초기화합니다.
         model.spawnPrefab = new List<GameObject>(prefabs.Length);
@@ -104,6 +106,9 @@ public class DataBase : MonoBehaviour
         // 불러온 프리팹들을 리스트에 추가합니다.
         foreach (var prefab in prefabs)
         {
+            if (prefab.name == "Dummy")
+                continue;
+
             if (prefab.GetComponent<PhotonView>() == null) // 이미 PhotonView가 붙어있는지 확인
             {
                 PhotonView view = prefab.AddComponent<PhotonView>();

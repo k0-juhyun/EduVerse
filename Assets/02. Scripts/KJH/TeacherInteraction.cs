@@ -126,7 +126,7 @@ public class TeacherInteraction : MonoBehaviourPun
             objectToPlace = targetPhotonView.gameObject;
 
             // Load the OBJ file as before.
-            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/"+ModelName+"/mesh.obj");
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/"+ modelName+".obj");
             if (importedObj != null)
             {
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
@@ -140,7 +140,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
 
                 // 필요하다면 재질을 적용합니다.
-                ApplyMaterials(meshObj);
+                ApplyMaterials(meshObj, modelName);
             }
         }
     }
@@ -170,10 +170,10 @@ public class TeacherInteraction : MonoBehaviourPun
         mesh.RecalculateTangents();
     }
 
-    private void ApplyMaterials(GameObject obj)
+    private void ApplyMaterials(GameObject obj, string modelName)
     {
         // "mesh_3/mesh"라는 이름의 텍스처를 로드합니다.
-        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + ModelName+"/albedo");
+        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/" + modelName);
 
         if (albedoTexture != null)
         {
