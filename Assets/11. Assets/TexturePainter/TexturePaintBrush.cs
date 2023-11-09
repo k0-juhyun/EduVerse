@@ -128,7 +128,7 @@ namespace Rito.TexturePainter
 
             brushTexture = new Texture2D(res, res);
             brushTexture.filterMode = FilterMode.Point;
-            brushTexture.alphaIsTransparency = true;
+            //brushTexture.alphaIsTransparency = true;
             defaultTexture = brushTexture;
 
             for (int y = 0; y < res; y++)

@@ -122,18 +122,21 @@ public class RegisterManager : MonoBehaviour
 
     public void OnRegisterCompleteBtnClick()
     {
+        string email;
         if (선생이름.text.Length > 0 )
         {
             선생가입완료.SetActive(true);
-            FireAuth.instance.OnClickSingIn(선생이메일앞자리.text + "@" + 선생이메일뒷자리.text, 선생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true));
+            email = 선생이메일앞자리.text + "@" + 선생이메일뒷자리.text;
+            FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, email, 선생비밀번호.text));
         }
 
         else if(학생이름.text.Length > 0 )
         {
             학생가입완료.SetActive(true);
-            FireAuth.instance.OnClickSingIn(학생이메일앞자리.text + "@" + 학생이메일뒷자리.text, 학생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false));
+            email = 학생이메일앞자리.text + "@" + 학생이메일뒷자리.text;
+            FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text);
+            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, email, 학생비밀번호.text));
         }
     }
 
@@ -150,10 +153,10 @@ public class RegisterManager : MonoBehaviour
     public void OnNextBtnClick()
     {
         print(선생이름.text + "+" + _isTeacher);
-        DataBase.instance.SetMyInfo(new User(선생이름.text, _isTeacher));
+        DataBase.instance.SetMyInfo(new User(_isTeacher? 선생이름.text : 학생이름.text, _isTeacher));
         if (PhotonNetwork.IsConnectedAndReady)
         {
-            PhotonNetwork.NickName = 선생이름.text;
+            PhotonNetwork.NickName = _isTeacher ? 선생이름.text : 학생이름.text;
             PhotonNetwork.LoadLevel(1);
         }
     }
