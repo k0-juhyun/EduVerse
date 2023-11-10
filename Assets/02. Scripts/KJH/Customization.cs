@@ -64,4 +64,5 @@ public class Customization : MonoBehaviour
             DataBase.instance.myInfo.meshIndex[index] = meshIndex;
         }
     }
+
 }
