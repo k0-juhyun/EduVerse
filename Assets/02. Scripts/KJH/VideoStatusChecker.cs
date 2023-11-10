@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.IO;
+
 
 public class VideoStatusChecker : MonoBehaviour
 {
     private string videoStatusCheckUrl = "http://221.163.19.218:5052/text_2_video/api/video_status";
-    private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
+    private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/api/video_status";
     public float checkIntervalSecondsForVideo = 60f;
-    public float checkIntervalSecondsForGIF = 40f;
+    public float checkIntervalSecondsForGIF = 5;
 
     private void Awake()
     {
@@ -18,7 +20,7 @@ public class VideoStatusChecker : MonoBehaviour
     void Start()
     {
         // 주기적인 비디오 상태 확인을 시작합니다.
-        StartCoroutine(CheckVideoStatusRoutine());
+        //StartCoroutine(CheckVideoStatusRoutine());
         StartCoroutine(CheckGifStatusRoutine());
     }
 
@@ -75,10 +77,21 @@ public class VideoStatusChecker : MonoBehaviour
 
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
+                Debug.Log(UnityWebRequest.Result.Success);
                     var status = webRequest.downloadHandler.text;
                     // 상태에 따라 필요한 작업을 수행합니다.
                     if (status == "complete")
                     {
+                        byte[] videoData = webRequest.downloadHandler.data;
+                        string videoPath = Application.persistentDataPath + "/GIF/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
+
+                        if (!Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                        {
+                            Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
+                        }
+
+                        File.WriteAllBytes(videoPath, videoData);
+
                         Debug.Log("Video processing is complete.");
                         // 비디오 다운로드 함수 호출 등
                         break;

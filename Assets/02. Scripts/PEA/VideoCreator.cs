@@ -131,7 +131,7 @@ public class VideoCreator : MonoBehaviour
                     Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
                 }
 
-                File.WriteAllBytes(videoPath, videoData);
+                //File.WriteAllBytes(videoPath, videoData);
 
                 // 아이템 정보 저장
                 Item item = new Item(Item.ItemType.Video, Time.time.ToString(), videoPath);
