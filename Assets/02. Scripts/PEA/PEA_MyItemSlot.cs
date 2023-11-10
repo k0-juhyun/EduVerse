@@ -23,6 +23,8 @@ public class Item
     public bool isMine = false;
     public bool showInClassroom = false;
     public Texture2D itemTexture;
+    public byte[] gifItemBytes;
+    public Sprite[] gifSprites;
 
     public Item(ItemType itemType , string itemName, string itemPath ="")
     {
@@ -36,6 +38,13 @@ public class Item
         this.itemType = itemType;
         this.itemName = itemName;
         this.itemTexture = itemTexture;
+    }
+
+    public Item(ItemType itemType, string itemName, Sprite[] gifSprites)
+    {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.gifSprites = gifSprites;
     }
 }
 

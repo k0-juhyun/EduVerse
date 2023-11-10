@@ -104,7 +104,7 @@ namespace Rito.TexturePainter
         }
 
         /// <summary> 렌더 텍스쳐 초기화 </summary>
-        private void InitRenderTexture()
+        public void InitRenderTexture()
         {
             renderTexture = new RenderTexture(resolution, resolution, 32);
 

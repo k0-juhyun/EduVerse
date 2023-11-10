@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviourPun
         }
     }
 
+
     public void SaveCharacterInfo()
     {
         if (photonView.IsMine)

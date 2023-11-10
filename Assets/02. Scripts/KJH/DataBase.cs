@@ -96,7 +96,7 @@ public class DataBase : MonoBehaviour
     private void LoadModelsFromResources()
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
-        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models");
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models/ModelDatas");
 
         // model.spawnPrefab 리스트를 초기화합니다.
         model.spawnPrefab = new List<GameObject>(prefabs.Length);
