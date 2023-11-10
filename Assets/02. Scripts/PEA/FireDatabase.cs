@@ -19,7 +19,10 @@ public struct ItemInfo
 public class UserInfo
 {
     public string name;
-    public string securitynumber;
+    public int securitynumber;
+    public int grade;
+    public int classNum;
+    public int studentNum;
     public string nickname;
     public string password;
     public string email;
@@ -31,16 +34,30 @@ public class UserInfo
 
     }
 
-    public UserInfo(string name, bool isTeacher, string email, string password)
+
+    // 선생님은 번호x
+    public UserInfo(string name, bool isTeacher, int grade, int classNum, string email, string password)
     {
         this.name = name;
         this.isteacher = isTeacher;
+        this.grade = grade;
+        this.classNum = classNum;
+        this.email = email;
+        this.password = password;
+    }
+
+    public UserInfo(string name, bool isTeacher, int studentBirth, int grade, int classNum, int studentNum, string email, string password)
+    {
+        this.name = name;
+        this.isteacher = isTeacher;
+        securitynumber = studentBirth;
+        this.grade = grade;
+        this.classNum = classNum;
+        this.studentNum = studentNum;
         this.email = email;
         this.password = password;
     }
 }
-
-
 
 public class FireDatabase : MonoBehaviour
 {
@@ -133,17 +150,15 @@ public class FireDatabase : MonoBehaviour
         {
             print("유저 정보 저장 실패 : " + task.Exception);
             if (onFail != null) onFail(task.Exception.Message);
-            
         }
     }
 
-
-    public void LoadUserInfo()
+    public void LoadUserInfo(System.Action callback = null)
     {
-        StartCoroutine(ILoadUserInfo());
+        StartCoroutine(ILoadUserInfo(callback));
     }
 
-    IEnumerator ILoadUserInfo()
+    IEnumerator ILoadUserInfo(System.Action callback = null)
     {
 
         string path = "USER_INFO/" + FirebaseAuth.DefaultInstance.CurrentUser.UserId;
@@ -162,7 +177,7 @@ public class FireDatabase : MonoBehaviour
             //print(myInfo.height);
 
             print("유저 정보 가져오기 성공");
-            if (onComplete != null) onComplete();
+            if (callback != null) callback();
         }
         else
         {

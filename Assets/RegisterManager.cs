@@ -37,6 +37,8 @@ public class RegisterManager : MonoBehaviour
     public TMP_InputField 선생비밀번호확인;
     public TMP_InputField 선생이메일앞자리;
     public TMP_InputField 선생이메일뒷자리;
+    public TMP_InputField 선생담당학년;
+    public TMP_InputField 선생담당반;
 
     [Space(10)]
     [Header("3. 가입완료")]
@@ -67,7 +69,10 @@ public class RegisterManager : MonoBehaviour
     public TMP_InputField 학생이메일앞자리;
     public TMP_InputField 학생이메일뒷자리;
     public TMP_InputField 학생학교;
+    public TMP_InputField 학생생년월일;
     public TMP_InputField 학생학년;
+    public TMP_InputField 학생반;
+    public TMP_InputField 학생번호;
 
     public bool IsTeacher
     {
@@ -123,20 +128,21 @@ public class RegisterManager : MonoBehaviour
     public void OnRegisterCompleteBtnClick()
     {
         string email;
-        if (선생이름.text.Length > 0 )
+        int grade, classNum, studentNum, studentBirth;
+        if (선생이름.text.Length > 0 && int.TryParse(선생담당학년.text, out grade) && int.TryParse(선생담당반.text, out classNum))
         {
             선생가입완료.SetActive(true);
             email = 선생이메일앞자리.text + "@" + 선생이메일뒷자리.text;
             FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, email, 선생비밀번호.text));
+            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, grade, classNum, email, 선생비밀번호.text));
         }
 
-        else if(학생이름.text.Length > 0 )
+        else if(학생이름.text.Length > 0 && int.TryParse(학생학년.text, out grade) && int.TryParse(학생반.text, out classNum) && int.TryParse(학생번호.text, out studentNum) && int.TryParse(학생생년월일.text, out studentBirth))
         {
             학생가입완료.SetActive(true);
             email = 학생이메일앞자리.text + "@" + 학생이메일뒷자리.text;
             FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, email, 학생비밀번호.text));
+            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, studentBirth, grade, classNum, studentNum, email, 학생비밀번호.text));
         }
     }
 
