@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.IO;
+using System.IO.Compression;
 
 [System.Serializable]
 public class CustomPartDB
@@ -96,19 +98,33 @@ public class DataBase : MonoBehaviour
     private void LoadModelsFromResources()
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
-        GameObject[] prefabs = Resources.LoadAll<GameObject>("3D_Models/ModelDatas");
+#if UNITY_EDITOR
+        string path = Application.streamingAssetsPath+"/";
 
-        // model.spawnPrefab 리스트를 초기화합니다.
-        model.spawnPrefab = new List<GameObject>(prefabs.Length);
+#elif UNITY_ANDROID
+        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+#endif
 
-        // 불러온 프리팹들을 리스트에 추가합니다.
-        foreach (var prefab in prefabs)
+        try
         {
-            if (prefab.GetComponent<PhotonView>() == null) // 이미 PhotonView가 붙어있는지 확인
+            string[] zipFiles = Directory.GetFiles(path, "*.zip");
+
+            model.spawnPrefab = new List<GameObject>(zipFiles.Length);
+
+            foreach (string zipFile in zipFiles)
             {
-                PhotonView view = prefab.AddComponent<PhotonView>();
+                string fileName = Path.GetFileNameWithoutExtension(zipFile);
+                GameObject tempObject = new GameObject(fileName);
+                model.spawnPrefab.Add(tempObject);
+
+                // 씬에 추가하는 방법
+                tempObject.transform.SetParent(this.transform);
             }
-            model.spawnPrefab.Add(prefab);
+
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error loading zip files: " + ex.Message);
         }
     }
 }

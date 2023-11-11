@@ -84,6 +84,19 @@ public class GetZipFile : MonoBehaviour
 
             // 응답이 올 때까지 대기.
             yield return getObjectRequest.SendWebRequest();
+            //if (getObjectRequest.result == UnityWebRequest.Result.Success)
+            //{
+            //    print("성공");
+            //    print(getObjectRequest.downloadHandler.data);
+            //    if(!Directory.Exists(Application.persistentDataPath + "/3D_Models/ModelDatas/"))
+            //    {
+            //        Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
+            //    }
+
+            //    string zipPath = Application.persistentDataPath + "/3D_Models/ModelDatas/" + Time.time + ".zip";
+            //    File.WriteAllBytes(zipPath, getObjectRequest.downloadHandler.data);
+            //    unzip.RunZip(zipPath);
+            //}
             if (getObjectRequest.result == UnityWebRequest.Result.Success)
             {
                 print("성공");

@@ -127,11 +127,14 @@ public class TeacherInteraction : MonoBehaviourPun
         if (targetPhotonView != null)
         {
             objectToPlace = targetPhotonView.gameObject;
+#if UNITY_EDITOR
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/" + modelName + ".obj");
 
-            string objFilePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas/", modelName + ".obj");
-
+#elif UNITY_ANDROID
+            string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
+#endif
             if (importedObj != null)
             {
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
@@ -147,10 +150,10 @@ public class TeacherInteraction : MonoBehaviourPun
                 // 재질 적용
                 ApplyMaterials(modelName, meshObj);
             }
-            else
-            {
-                Debug.LogError("Failed to load OBJ file: " + objFilePath);
-            }
+            //else
+            //{
+            //    Debug.LogError("Failed to load OBJ file: " + objFilePath);
+            //}
         }
     }
 
@@ -182,19 +185,30 @@ public class TeacherInteraction : MonoBehaviourPun
     // mat 적용
     private void ApplyMaterials(string modelName, GameObject obj)
     {
-        StartCoroutine(LoadTextureAndApply(modelName, obj));
-    }
+#if UNITY_EDITOR
+        // 에디터에서는 Resources 폴더에서 텍스처를 로드합니다.
+        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+#elif UNITY_ANDROID
+    // 안드로이드에서는 persistentDataPath에서 텍스처를 로드합니다.
+    string textureFilePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas", modelName + ".png"); // 확장자가 필요합니다.
 
-    private IEnumerator LoadTextureAndApply(string modelName, GameObject obj)
+    if (File.Exists(textureFilePath))
     {
-        string texturePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas/", modelName + ".png");
-        UnityWebRequest textureRequest = UnityWebRequestTexture.GetTexture("file:///" + texturePath);
+        byte[] bytes = File.ReadAllBytes(textureFilePath);
+        Texture2D albedoTexture = new Texture2D(2, 2);
+        albedoTexture.LoadImage(bytes);
+        albedoTexture.Apply();
+    }
+    else
+    {
+        Debug.LogError("Texture file not found: " + textureFilePath);
+        return; // 파일이 없으면 여기서 처리를 중단합니다.
+    }
+#endif
 
-        yield return textureRequest.SendWebRequest();
-
-        if (textureRequest.result == UnityWebRequest.Result.Success)
+        // 텍스처 적용 로직
+        if (albedoTexture != null)
         {
-            Texture2D albedoTexture = DownloadHandlerTexture.GetContent(textureRequest);
             print(albedoTexture.name);
 
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
@@ -215,8 +229,9 @@ public class TeacherInteraction : MonoBehaviourPun
         }
         else
         {
-            Debug.LogError("Failed to load texture: " + textureRequest.error);
+            Debug.LogError("Failed to load texture.");
         }
     }
+
 
 }
