@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviourPun
     private GameObject Character;
     private Customization customization;
 
+    public Queue<string> makeObjectTags = new Queue<string>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -58,5 +60,15 @@ public class GameManager : MonoBehaviourPun
         {
             file.Write(byteData, 0, byteData.Length);
         }
+    }
+
+    public void AddWaitMakeObjectTag(string tag)
+    {
+        makeObjectTags.Enqueue(tag);
+    }
+
+    public string GetMakeObejctTag()
+    {
+        return makeObjectTags.Dequeue();
     }
 }
