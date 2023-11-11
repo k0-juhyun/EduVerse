@@ -24,6 +24,7 @@ public class TeacherInteraction : MonoBehaviourPun
     public string TestName;
 
     private Button Btn_Spawn;
+    public Button TestButton;
 
     public bool isSpawnBtnClick;
 
@@ -90,6 +91,11 @@ public class TeacherInteraction : MonoBehaviourPun
             newButton.GetComponentInChildren<Text>().text = DataBase.instance.model.spawnPrefab[index].name; // 원래 프리팹의 이름으로 버튼 텍스트 할당
             newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
         }
+    }
+
+    public void TestBtnClick()
+    {
+        SpawnModel(0);
     }
 
     public void SpawnModel(int modelIndex)
@@ -185,9 +191,10 @@ public class TeacherInteraction : MonoBehaviourPun
     // mat 적용
     private void ApplyMaterials(string modelName, GameObject obj)
     {
+        Texture2D albedoTexture;
 #if UNITY_EDITOR
         // 에디터에서는 Resources 폴더에서 텍스처를 로드합니다.
-        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+        albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
 #elif UNITY_ANDROID
     // 안드로이드에서는 persistentDataPath에서 텍스처를 로드합니다.
     string textureFilePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas", modelName + ".png"); // 확장자가 필요합니다.
@@ -195,7 +202,7 @@ public class TeacherInteraction : MonoBehaviourPun
     if (File.Exists(textureFilePath))
     {
         byte[] bytes = File.ReadAllBytes(textureFilePath);
-        Texture2D albedoTexture = new Texture2D(2, 2);
+        albedoTexture = new Texture2D(2, 2);
         albedoTexture.LoadImage(bytes);
         albedoTexture.Apply();
     }
@@ -205,7 +212,6 @@ public class TeacherInteraction : MonoBehaviourPun
         return; // 파일이 없으면 여기서 처리를 중단합니다.
     }
 #endif
-
         // 텍스처 적용 로직
         if (albedoTexture != null)
         {

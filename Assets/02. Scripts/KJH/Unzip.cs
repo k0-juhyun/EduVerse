@@ -47,7 +47,7 @@ public class Unzip : MonoBehaviour
     public void RunZip(string zip)
     {
         ExtractZip(zip, extractionPath);
-        File.Delete(zip);
+        //File.Delete(zip);
     }
 
     // 메서드 이름을 Unzip에서 ExtractZip으로 변경
@@ -55,7 +55,30 @@ public class Unzip : MonoBehaviour
     {
         try
         {
-            ZipFile.ExtractToDirectory(zipPath, extractionPath);
+            // 압축 파일을 열어 각 항목을 순회합니다.
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    string completeFilePath = Path.Combine(extractionPath, entry.FullName);
+
+                    // 해당 경로에 파일이 이미 존재한다면 삭제합니다.
+                    if (File.Exists(completeFilePath))
+                    {
+                        File.Delete(completeFilePath);
+                    }
+
+                    // 디렉토리가 존재하지 않으면 생성합니다.
+                    string directory = Path.GetDirectoryName(completeFilePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    // 파일을 추출합니다.
+                    entry.ExtractToFile(completeFilePath);
+                }
+            }
             Debug.Log("압축 파일이 성공적으로 해제되었습니다.");
         }
         catch (IOException e)

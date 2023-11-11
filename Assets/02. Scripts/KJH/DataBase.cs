@@ -116,6 +116,7 @@ public class DataBase : MonoBehaviour
                 string fileName = Path.GetFileNameWithoutExtension(zipFile);
                 GameObject tempObject = new GameObject(fileName);
                 model.spawnPrefab.Add(tempObject);
+                print("데베: "+ tempObject.name);
 
                 // 씬에 추가하는 방법
                 tempObject.transform.SetParent(this.transform);
