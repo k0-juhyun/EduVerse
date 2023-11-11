@@ -65,9 +65,9 @@ public class Voice : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
 
         print("Join Room");
-        //player =  PhotonNetwork.Instantiate("Voice_TestPlayer", Vector3.zero, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("Voice_TestPlayer", Vector3.zero, Quaternion.identity);
         //speaker = Instantiate(punVoiceClient.SpeakerPrefab, player.transform).GetComponent<Photon.Voice.Unity.Speaker>();
-        //listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
+        listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
     }
 
     public void OnMikeOnToggleValueChanged(bool isMikeOn)
