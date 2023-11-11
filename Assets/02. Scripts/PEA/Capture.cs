@@ -14,6 +14,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     private Vector2 endMousePosition;
     private bool isCapturing = false;
 
+    private byte[] captureBytes;
+
     private Collider col;
 
     private int width = 0;
@@ -185,7 +187,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickSendCapture_Gif()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
-        videoCreator.UploadImageAndDownloadVideo(captureResultDataPath);
+        videoCreator.UploadImageAndDownloadVideo(captureResultDataPath, () => captureResult.SetActive(false));
     }
 
     // 일단은 이미지 없이 태그로만 문제 생성이 되므로 이렇게 해둠.
@@ -205,7 +207,6 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     void CaptureScreen(string savePath)
     {
-        print(Application.persistentDataPath);       
         StartCoroutine(IScreenCapture_GIF(width, height, startX, startY, savePath));
     }
 
@@ -215,27 +216,29 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
         Texture2D captureTexture = new Texture2D(width, height);
         captureTexture.ReadPixels(new Rect(startX, startY, width, height), 0, 0);
+        captureTexture.Apply();
 
-        string filePath = Time.time + ".png";
-        captureResultDataPath = savePath + filePath ;
+        captureBytes = captureTexture.EncodeToPNG();
 
-        //if(!Directory.Exists(Application.persistentDataPath + "/Capture/"))
-        if(!Directory.Exists(savePath))
-        {
-            Directory.CreateDirectory(savePath);
-        }
+        //string filePath = Time.time + ".png";
+        //captureResultDataPath = savePath + filePath ;
 
-        File.WriteAllBytes(captureResultDataPath, captureTexture.EncodeToPNG());
+        //if(!Directory.Exists(savePath))
+        //{
+        //    Directory.CreateDirectory(savePath);
+        //}
 
-        Texture2D texture = new Texture2D(captureTexture.width, captureTexture.height);
-        Destroy(captureTexture);
+        //File.WriteAllBytes(captureResultDataPath, captureTexture.EncodeToPNG());
 
-        byte[] textureByte = File.ReadAllBytes(captureResultDataPath);
-        texture.LoadImage(textureByte);
-        texture.Apply();
+        //Texture2D texture = new Texture2D(captureTexture.width, captureTexture.height);
+        //Destroy(captureTexture);
+
+        //byte[] textureByte = File.ReadAllBytes(captureResultDataPath);
+        //texture.LoadImage(textureByte);
+        //texture.Apply();
 
         captureResult.SetActive(true);
-        captureResultImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        captureResultImage.sprite = Sprite.Create(captureTexture, new Rect(0, 0, captureTexture.width, captureTexture.height), new Vector2(0.5f, 0.5f));
         captureResultImage.preserveAspect = true;
 
         // raycast target 다시 설정.
@@ -245,6 +248,11 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
             child.raycastTarget = true;
         }
+    }
+
+    public void MakeObject()
+    {
+        GetZipFile.instance.UploadImage(captureBytes, tagInput.text);
     }
 
     public void OnClickAiTest()

@@ -6,15 +6,19 @@ using System.IO.Compression;
 
 public class Unzip : MonoBehaviour
 {
-    private string zipFilePath;
+    //private string zipFilePath;
     private string extractionPath;
+
+    private void Start()
+    {
+        RunZip(Application.persistentDataPath + "/3D_Models/ModelDatas/1.440241.zip");
+    }
 
     void RunZip(string zip)
     {
-        zipFilePath = Application.persistentDataPath + "/" + zip;
-        extractionPath = Application.dataPath + "/Resources";
-        ExtractZip(zipFilePath, extractionPath); // 메서드 이름 변경
-        File.Delete(zipFilePath);
+        extractionPath = Application.dataPath + "/Resources/3D_Models/ModelDatas/";
+        ExtractZip(zip, extractionPath); // 메서드 이름 변경
+        File.Delete(zip);
     }
 
     // 메서드 이름을 Unzip에서 ExtractZip으로 변경

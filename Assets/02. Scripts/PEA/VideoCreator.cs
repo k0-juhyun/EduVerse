@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System;
 
 [System.Serializable]
 public struct ServerToJson
@@ -72,9 +73,9 @@ public class VideoCreator : MonoBehaviour
         gifSaveBtn.onClick.AddListener(GIFSave);
     }
 
-    public void UploadImageAndDownloadVideo(string imagePath)
+    public void UploadImageAndDownloadVideo(string imagePath, System.Action action = null)
     {
-        StartCoroutine(UploadAndDownloadCoroutine(imagePath));
+        StartCoroutine(UploadAndDownloadCoroutine(imagePath, action));
     }
 
     public void UploadImageAndDownloadQuiz()
@@ -115,7 +116,7 @@ public class VideoCreator : MonoBehaviour
         StartCoroutine(UploadAndDownloadCoroutine_Quiz(json));
     }
 
-    IEnumerator UploadAndDownloadCoroutine(string imagePath)
+    IEnumerator UploadAndDownloadCoroutine(string imagePath, System.Action action = null)
     {
         // 이미지 업로드
         WWWForm form = new WWWForm();
@@ -126,8 +127,10 @@ public class VideoCreator : MonoBehaviour
             yield return imageUploadRequest.SendWebRequest();
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
+                print("성공");
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
                 gifLoad.Show(gifPreviewImage, gifLoad.GetSpritesByFrame(videoData));
+                action();
                 gifPreviewPanel.SetActive(true);
             }
             else
@@ -136,8 +139,6 @@ public class VideoCreator : MonoBehaviour
 
                 captureResultTextObject.SetActive(true);
                 captureResultText.text = "GIF 생성에 실패했습니다.";
-                System.Action action = () => captureResultTextObject.SetActive(false);
-                Invoke(nameof(action), 0.3f);
             }
         }
     }
@@ -196,7 +197,7 @@ public class VideoCreator : MonoBehaviour
 
     public void GIFSave()
     {
-        string videoPath = Application.persistentDataPath + "/GIF/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
+        string videoPath = Application.persistentDataPath + "/GIF/" + DateTime.Now.ToString(("yyyy-MM-dd HH.mm.ss")) + ".gif";  // 저장할 동영상 파일 경로
 
         if (!Directory.Exists(Application.persistentDataPath + "/GIF/"))
         {
