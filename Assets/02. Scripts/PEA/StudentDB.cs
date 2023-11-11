@@ -7,7 +7,7 @@ using Firebase.Auth;
 
 public class StudentDB : MonoBehaviour
 {
-    private Dictionary<string, UserInfo> studentsDictionary;
+    private Dictionary<int, UserInfo> studentsDictionary = new Dictionary<int, UserInfo>();            // 학생 번호를 키값으로 함.
 
     private FirebaseDatabase database;
 
@@ -45,8 +45,9 @@ public class StudentDB : MonoBehaviour
             {
                 if (!((bool)data.Child("/isteacher").Value))
                 {
-                    GameObject studentItem = Instantiate(studentDataItem, content);
-                    studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
+                    //GameObject studentItem = Instantiate(studentDataItem, content);
+                    //studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
+                    //studentsDictionary.Add(data.Child("/studentNum").Value, )
                 }
             }
 
