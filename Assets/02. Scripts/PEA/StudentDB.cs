@@ -43,25 +43,12 @@ public class StudentDB : MonoBehaviour
 
             foreach (var data in dataSnapshot.Children)
             {
-                //print(data.Key);  ->  UID
-                //foreach(var d in data.Children)
-                //{
-                //    // 유저 정보 하나씩 순서대로
-                //    print(d);
-                //}
-                //if (myClassNum.Equals((data.Child("/classNum").Value)) && !((bool)data.Child("/isteacher").Value))
                 if (!((bool)data.Child("/isteacher").Value))
                 {
                     GameObject studentItem = Instantiate(studentDataItem, content);
-                    studentDataItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
+                    studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
                 }
             }
-
-            //print(task.Result.GetRawJsonValue());
-
-            //print(myInfo.name);
-            //print(myInfo.age);
-            //print(myInfo.height);
 
             print("유저 정보 가져오기 성공");
         }
