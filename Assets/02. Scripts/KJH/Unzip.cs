@@ -11,7 +11,7 @@ public class Unzip : MonoBehaviour
 
     private void Start()
     {
-        RunZip(Application.persistentDataPath + "/3D_Models/ModelDatas/1.440241.zip");
+        RunZip(Application.persistentDataPath + "/3D_Models/ModelDatas/1.521199.zip");
     }
 
     void RunZip(string zip)

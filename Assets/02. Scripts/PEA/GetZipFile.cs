@@ -29,7 +29,7 @@ public class GetZipFile : MonoBehaviour
 
     void Start()
     {
-        //GetObject();
+        GetObject();
 
         //imagePath = Application.dataPath + "/Resources/DOG.png";
         //UploadImage();
