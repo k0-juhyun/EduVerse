@@ -7,16 +7,6 @@ public class VoiceTest_Player : MonoBehaviourPun
 {
     private Photon.Voice.Unity.Recorder recorder;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void MuteStudents(bool useStudenetsMike)
     {
         photonView.RPC(nameof(RPCMuteStudents), RpcTarget.Others, useStudenetsMike);
