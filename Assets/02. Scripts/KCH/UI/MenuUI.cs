@@ -6,8 +6,9 @@ using UnityEngine.UI;
 using Paroxe.PdfRenderer;
 using System.IO;
 using UnityEngine.Android;
+using Photon.Pun;
 
-public class MenuUI : MonoBehaviour
+public class MenuUI : MonoBehaviourPun
 {
     public HorizontalLayoutGroup horizontalgroup;
     public RectTransform ItemMenu;
@@ -18,6 +19,8 @@ public class MenuUI : MonoBehaviour
     public GameObject HomePage;
     public GameObject MyCanvas;
     public GameObject QuizMenu;
+
+    GameObject quizPanel;
 
     bool isOpen_menu;
     bool isItem_menu;
@@ -135,9 +138,26 @@ public class MenuUI : MonoBehaviour
 
     public void OnQuizBtnClick()
     {
-
         // 프리팹 instantsiate 한다 (포톤인스턴시에이트 X)
-        GameObject quizPanel = Instantiate(QuizMenu);
-
+        // 선생이 퀴즈 패널 여는 버튼.
+        quizPanel = PhotonNetwork.Instantiate("Teacher_QuizCanvas", Vector3.zero, Quaternion.identity);
+        //GameObject quizPanel = Instantiate(QuizMenu, Vector3.zero, Quaternion.identity);
+        photonView.RPC(nameof(DestroyOtherQuizPanels), RpcTarget.All);
     }
+
+    [PunRPC]
+    private void DestroyOtherQuizPanels()
+    {
+        GameObject[] quizPanels = GameObject.FindGameObjectsWithTag("QuizPanel");
+
+        foreach (GameObject panel in quizPanels)
+        {
+            if (!panel.GetPhotonView().IsMine)
+            {
+                //Destroy(panel);
+                panel.GetComponent<Canvas>().enabled = false;
+            }
+        }
+    }
+
 }

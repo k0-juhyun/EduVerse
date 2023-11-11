@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class LoadQuizPrefab : MonoBehaviour
+using Photon.Pun;
+public class LoadQuizPrefab : MonoBehaviourPun
 {
   
     public Text question;
@@ -59,8 +59,14 @@ public class LoadQuizPrefab : MonoBehaviour
 
         // 부모 오브젝트의 ClassRoomQuizLoad 스크립트에 값 전달.
         // 필요한 값 현재 문제 string 답 string
+
+        // 부모 오브젝트에 ClassRoomQuizLoad의 문제 부분 question text 갱신
         Transform parentobj = FindRootParent(transform.gameObject);
         parentobj.gameObject.GetComponent<ClassRoomQuizLoad>().SelectQuiz(quiz.question, quiz.answer);
+
+        // quiz 저장소에서 가져다 씀
+        MyQuizStorage.Instance.SelectQuiz(quiz.question, quiz.answer);
+
     }
 
     // 부모 오브젝트 찾는 함수.
