@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using TMPro;
+using static ClassRoomQuizLoad;
 
-public class Quiz : MonoBehaviour
+public class Quiz : MonoBehaviourPun
 {
 
     #region 싱글톤
@@ -22,6 +25,12 @@ public class Quiz : MonoBehaviour
     // 
     public bool isQuiz = false;
 
+    GameObject quizPanel;
+    public TextMeshProUGUI quizTime;
+    public GameObject Quizplate;
+
+    int time_;
+
     private void Start()
     {
         originTime = setTime;
@@ -36,6 +45,7 @@ public class Quiz : MonoBehaviour
             {
                 isQuiz = false;
                 // 퀴즈 종료 이벤트
+
                 QuizEnded?.Invoke();
             }
         }
@@ -44,5 +54,65 @@ public class Quiz : MonoBehaviour
             setTime = originTime;
         }
 
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            // 선생님의 퀴즈 패널 띄우기
+            OnQuizBtnClick();
+
+        }
+
+        // 퀴즈 시작 
+        if (isQuiz)
+        {
+            time_ = Mathf.FloorToInt(Quiz.instance.setTime);
+            quizTime.text = time_.ToString();
+            if (0.1f >= Quiz.instance.setTime)
+            {
+                quizTime.text = "땡";
+            }
+        }
+        if(Input.GetKeyDown (KeyCode.S))
+        {
+            photonView.RPC(nameof(startquiz), RpcTarget.All);
+        }
     }
+
+    [PunRPC]
+    public void startquiz()
+    {
+        isQuiz = !isQuiz;
+    }
+
+
+    // 선생한테만 퀴즈 패널 띄워주기.
+    public void OnQuizBtnClick()
+    {
+        // 프리팹 instantsiate 한다 (포톤인스턴시에이트 X)
+        // 선생이 퀴즈 패널 여는 버튼.
+        quizPanel = PhotonNetwork.Instantiate("Teacher_QuizCanvas", Vector3.zero, Quaternion.identity);
+        //GameObject quizPanel = Instantiate(QuizMenu, Vector3.zero, Quaternion.identity);
+        photonView.RPC(nameof(DestroyOtherQuizPanels), RpcTarget.All);
+    }
+    
+    // 학생들의 퀴즈 패널 지우기.
+    [PunRPC]
+    private void DestroyOtherQuizPanels()
+    {
+        // OX 발판 띄워주기
+        Quizplate.SetActive(true);
+
+        GameObject[] quizPanels = GameObject.FindGameObjectsWithTag("QuizPanel");
+
+        foreach (GameObject panel in quizPanels)
+        {
+            if (!panel.GetPhotonView().IsMine)
+            {
+                //Destroy(panel);
+                panel.GetComponent<Canvas>().enabled = false;
+            }
+        }
+    }
+
+
+
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public struct Quiz_
@@ -14,16 +15,17 @@ public class MyQuizStorage : MonoBehaviourPun
 {
     public static MyQuizStorage Instance;
     public GameObject QuizPanel_student;
-  
+    public GameObject QuizPanel_student_Ground;
+
     public List<Quiz_> quizList;
-
-
 
     public delegate void Correctanswercheck(string answer);
     public Correctanswercheck correctAnswerCheck;
 
     public Correctanswercheck correctCheck;
     public Correctanswercheck incorrectCheck;
+
+    bool isGroundCheck=false;
 
     private void Awake()
     {
@@ -44,7 +46,19 @@ public class MyQuizStorage : MonoBehaviourPun
         // 현재 들어온 총 인원 값 받는다.
         // 들어온 인원 퀴즈 창 띄우기.
 
-        if (DataBase.instance.userInfo.isTeacher == false)
+
+        // 광장 이라면.
+        if (DataBase.instance.userInfo.isTeacher == false && SceneManager.GetActiveScene().name == "5.GroundScene")
+        {
+            Debug.Log("실행");
+            GameObject quizPanel = Instantiate(QuizPanel_student_Ground);
+
+            quizPanel.GetComponent<RectTransform>().position = new Vector3(14,4,8);
+            quizPanel.GetComponent<QuizGroundPanel>().quizdata(question_, answer_);
+            //quizPanel의 문제와 정답을 등록해준다.
+        }
+        // 교실이라면
+        if (DataBase.instance.userInfo.isTeacher == false && SceneManager.GetActiveScene().name != "5.GroundScene")
         {
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student);
@@ -53,7 +67,6 @@ public class MyQuizStorage : MonoBehaviourPun
             //quizPanel의 문제와 정답을 등록해준다.
         }
 
-        
         // QuizState.Proceeding 중 문제를 풀어 정답 오답 체크를 한다.
 
         // 문제를 다 풀게 되면 QuizState.End로 넘어감.

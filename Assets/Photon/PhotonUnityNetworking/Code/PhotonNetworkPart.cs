@@ -410,6 +410,10 @@ namespace Photon.Pun
                 else
                 {
                     Debug.LogWarning("Received RPC \"" + inMethodName + "\" for viewID " + netViewID + " but this PhotonView does not exist! Was remote PV." + (ownerSent ? " Owner called." : " Remote called.") + " By: " + sender + " Maybe GO was destroyed but RPC not cleaned up.");
+
+
+
+
                 }
                 return;
             }
