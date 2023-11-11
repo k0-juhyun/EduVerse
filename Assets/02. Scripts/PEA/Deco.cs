@@ -6,12 +6,15 @@ using Photon.Pun;
 
 public class Deco : MonoBehaviour
 {
+    private Camera mainCam;
+
     public Button drawBtn;
     public Button decoBtn;
     public GameObject draw;
     public GameObject myDraws;
     public Button[] backBtn;
     public Camera drawCam;
+    public Rito.TexturePainter.TexturePaintTarget paintTarget;
 
     private void Start()
     {
@@ -22,6 +25,7 @@ public class Deco : MonoBehaviour
 
         drawBtn.onClick.AddListener(OnClickDrawBtn);
         decoBtn.onClick.AddListener(OnClickDecoBtn);
+        mainCam = Camera.main;
     }
 
     private void OnClickDrawBtn()
@@ -31,8 +35,9 @@ public class Deco : MonoBehaviour
         decoBtn.gameObject.SetActive(false);
         draw.SetActive(true);
 
+        mainCam.depth = -1;
         drawCam.gameObject.SetActive(true);
-        Camera.main.gameObject.SetActive(false);
+        mainCam.gameObject.SetActive(false);
     }
 
     private void OnClickDecoBtn()
@@ -51,8 +56,15 @@ public class Deco : MonoBehaviour
         myDraws.SetActive(false);
 
         DecorateClassRoom.instance.curSelectedDraw = null;
-        drawCam.gameObject.SetActive(false);
-        Camera.main.gameObject.SetActive(true);
+
+        if(mainCam.depth != 1)
+        {
+            mainCam.depth = 1;
+            drawCam.gameObject.SetActive(false);
+            mainCam.gameObject.SetActive(true);
+            paintTarget.InitRenderTexture();
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

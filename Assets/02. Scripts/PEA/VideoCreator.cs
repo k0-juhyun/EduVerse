@@ -35,9 +35,15 @@ public class VideoCreator : MonoBehaviour
 
     private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz";
 
+    public GameObject captureResultTextObject;
+    public Text captureResultText;
 
-    public GameObject capturePreview;
-    public GameObject captureResultText;
+    public GameObject gifPreviewPanel;
+    public GifLoad gifLoad;
+    public Image gifPreviewImage;
+
+    public Button gifCancelBtn;
+    public Button gifSaveBtn;
 
     [Space (20)]
     [Header ("Quiz")]
@@ -56,14 +62,14 @@ public class VideoCreator : MonoBehaviour
     string unit;
     string fileName;
 
-
     public Text Question;
     public GameObject incorrect;
     public GameObject wrong;
 
     private void Start()
     {
-
+        gifCancelBtn.onClick.AddListener(OnClickGIFCancel);
+        gifSaveBtn.onClick.AddListener(GIFSave);
     }
 
     public void UploadImageAndDownloadVideo(string imagePath)
@@ -111,9 +117,6 @@ public class VideoCreator : MonoBehaviour
 
     IEnumerator UploadAndDownloadCoroutine(string imagePath)
     {
-        //string imagePath = "Assets/2.jpg";  // 업로드할 이미지 파일 경로
-        //string videoId = "your_video_id";  // 동영상 ID
-
         // 이미지 업로드
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", File.ReadAllBytes(imagePath), "image.png", "image/png");
@@ -124,48 +127,17 @@ public class VideoCreator : MonoBehaviour
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
-                string videoPath = Application.persistentDataPath + "/GIF/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
-
-                if(!Directory.Exists(Application.persistentDataPath + "/GIF/"))
-                {
-                    Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
-                }
-
-                //File.WriteAllBytes(videoPath, videoData);
-
-                // 아이템 정보 저장
-                Item item = new Item(Item.ItemType.Video, Time.time.ToString(), videoPath);
-                string json = "";
-                MyItems myItems = new MyItems();
-
-                if(File.Exists(Application.persistentDataPath + "/MyItems.txt"))
-                {
-                    byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
-                    json = Encoding.UTF8.GetString(jsonBytes);
-                    myItems = JsonUtility.FromJson<MyItems>(json);
-                }
-                else
-                {
-                    myItems.data = new List<Item>();
-                }
-                            
-                myItems.data.Add(item);
-                json = JsonUtility.ToJson(myItems);
-                File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
-
-                capturePreview.SetActive(false);
-                captureResultText.GetComponent<Text>().text = "성공적으로 저장했습니다.";
-                System.Action action = () => { captureResultText.SetActive(false); };
-                Invoke(nameof(action), 0.5f);
+                gifLoad.Show(gifPreviewImage, gifLoad.GetSpritesByFrame(videoData));
+                gifPreviewPanel.SetActive(true);
             }
             else
             {
                 Debug.Log(imageUploadRequest.error);
 
-                capturePreview.SetActive(false);
-                captureResultText.GetComponent<Text>().text = "저장에 실패했습니다.";
-                System.Action action = () => { captureResultText.SetActive(false); };
-                Invoke(nameof(action), 0.5f);
+                captureResultTextObject.SetActive(true);
+                captureResultText.text = "GIF 생성에 실패했습니다.";
+                System.Action action = () => captureResultTextObject.SetActive(false);
+                Invoke(nameof(action), 0.3f);
             }
         }
     }
@@ -215,6 +187,30 @@ public class VideoCreator : MonoBehaviour
                 Debug.LogError("JSON 데이터 전송 중 오류 발생: " + request.error);
             }
         }
+    }
+
+    public void OnClickGIFCancel()
+    {
+        gifPreviewPanel.SetActive(false);
+    }
+
+    public void GIFSave()
+    {
+        string videoPath = Application.persistentDataPath + "/GIF/" + Time.time + ".gif";  // 저장할 동영상 파일 경로
+
+        if (!Directory.Exists(Application.persistentDataPath + "/GIF/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
+        }
+
+        gifLoad.SaveGIF(videoPath, () =>
+        {
+            captureResultTextObject.SetActive(true);
+            if (File.Exists(videoPath))
+                captureResultText.text = "성공적으로 저장했습니다.";
+            else
+                captureResultText.text = "저장에 실패했습니다.";
+        });
     }
 
     // quiz panel On
