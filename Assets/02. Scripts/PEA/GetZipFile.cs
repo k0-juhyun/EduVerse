@@ -14,6 +14,7 @@ public class GetZipFile : MonoBehaviour
     string imagePath;
 
     public Texture2D texture2D;
+    private Unzip unzip;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class GetZipFile : MonoBehaviour
 
     void Start()
     {
+        unzip = GetComponent<Unzip>();
         GetObject();
 
         //imagePath = Application.dataPath + "/Resources/DOG.png";
@@ -91,7 +93,9 @@ public class GetZipFile : MonoBehaviour
                     Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
                 }
 
-                File.WriteAllBytes(Application.persistentDataPath + "/3D_Models/ModelDatas/" + Time.time + ".zip", getObjectRequest.downloadHandler.data);
+                string zipPath = Application.persistentDataPath + "/3D_Models/ModelDatas/" + Time.time + ".zip";
+                File.WriteAllBytes(zipPath, getObjectRequest.downloadHandler.data);
+                unzip.RunZip(zipPath);
             }
             else
             {

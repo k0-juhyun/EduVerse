@@ -14,9 +14,9 @@ public class Unzip : MonoBehaviour
         RunZip(Application.persistentDataPath + "/3D_Models/ModelDatas/1.521199.zip");
     }
 
-    void RunZip(string zip)
+    public void RunZip(string zip)
     {
-        extractionPath = Application.dataPath + "/Resources/3D_Models/ModelDatas/";
+        extractionPath = Application.persistentDataPath + "/3D_Models/ModelDatas/";
         ExtractZip(zip, extractionPath); // 메서드 이름 변경
         File.Delete(zip);
     }
