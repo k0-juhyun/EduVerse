@@ -36,7 +36,7 @@ public class Voice : MonoBehaviourPunCallbacks
     void Start()
     {
         //punVoiceClient = GetComponent<Photon.Voice.PUN.PunVoiceClient>();
-        //recorder = GetComponent<Photon.Voice.Unity.Recorder>();
+        recorder = GetComponent<Photon.Voice.Unity.Recorder>();
         //mikeOnToggle.onValueChanged.AddListener((b) => OnMikeOnToggleValueChanged(b));
         //muteToggle.onValueChanged.AddListener((b) => OnMuteToggleValueChanged(b));
 
