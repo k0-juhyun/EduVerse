@@ -13,7 +13,6 @@ public class QuizSubmit_student : MonoBehaviour
     public GameObject correct;
     public GameObject incorrect;
 
-
     bool correctCheck;
 
     private void Update()
@@ -26,6 +25,7 @@ public class QuizSubmit_student : MonoBehaviour
                 GameObject quizPanel = Instantiate(QuizPrefab);
             }
         }
+
     }
 
     // 버튼을 눌렀을 때 correctCheck 변수를 사용해서 정답 오답 체크한다.

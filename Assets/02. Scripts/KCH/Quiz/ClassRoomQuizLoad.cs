@@ -59,15 +59,15 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     private void Start()
     {
             quizs= MyQuizStorage.Instance.quizList;
-            for (int i = 0; i < MyQuizStorage.Instance.quizList.Count; i++)
+        Debug.Log("스타트 함수 실행 되나?");
+
+        for (int i = 0; i < MyQuizStorage.Instance.quizList.Count; i++)
             {
                 Debug.Log(MyQuizStorage.Instance.quizList[i].question);
-                Debug.Log(MyQuizStorage.Instance.quizList[i].answer);
-
                 GameObject quiz_obj = Instantiate(QuizPrefab);
                 quiz_obj.transform.parent = AddQuizViewport.transform;
                 quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
-                    MyQuizStorage.Instance.quizList[i].answer);
+                MyQuizStorage.Instance.quizList[i].answer);
             }
         // 여기서 저장한 리스트 뽑아서 써야함.
 
