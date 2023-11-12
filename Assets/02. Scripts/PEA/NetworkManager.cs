@@ -194,4 +194,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             shouldJoinNewRoom = false;
         }
     }
+
+    private void OnApplicationQuit()
+    {
+        Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
+    }
 }

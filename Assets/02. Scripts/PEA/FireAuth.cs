@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 using Firebase.Auth;
+using Firebase.Database;
 using System;
 using UnityEngine.UI;
 
@@ -10,6 +13,7 @@ public class FireAuth : MonoBehaviour
     public static FireAuth instance = null;
 
     FirebaseAuth auth;
+    FirebaseDatabase database;
 
     public Button signInBtn;
     public Button lonInBtn;
@@ -25,7 +29,6 @@ public class FireAuth : MonoBehaviour
         if(instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -35,13 +38,15 @@ public class FireAuth : MonoBehaviour
 
     void Start()
     {
-        //로그인 상태 체크 이벤트 등록
-        auth = FirebaseAuth.DefaultInstance;
+        database = FirebaseDatabase.DefaultInstance;
+
+       //로그인 상태 체크 이벤트 등록
+       auth = FirebaseAuth.DefaultInstance;
 
         auth.StateChanged += OnChangedAuthState;
 
         //signInBtn.onClick.AddListener(OnClickSingIn);
-        //lonInBtn.onClick.AddListener(OnClickLogin);
+        lonInBtn.onClick.AddListener(() => OnClickLogin(inputLoginEmail.text, inputLoginPassword.text));
         //logOutBtn.onClick.AddListener(OnClickLogOut);
     }
 
@@ -70,7 +75,7 @@ public class FireAuth : MonoBehaviour
         }
     }
 
-    public void OnClickSingIn(string email, string password)
+    public void OnClickSingIn(string email, string password, System.Action action = null)
     {
         //if (inputEmail.text.Length == 0 || inputPassword.text.Length == 0)
         //{
@@ -79,11 +84,11 @@ public class FireAuth : MonoBehaviour
         //}
         //Debug.Log(inputEmail.text+" : "+inputPassword.text);
 
-        StartCoroutine(SingIn(email, password));
+        StartCoroutine(SingIn(email, password, action));
         //StartCoroutine(SingIn(registerManager.IsTeacher? inputEmailTeacher.text : inputEmailStudent.text, registerManager.IsTeacher ? inputPasswordTTeacher.text:inputPasswordStudent.text));
     }
 
-    IEnumerator SingIn(string email, string password)
+    IEnumerator SingIn(string email, string password, System.Action action = null)
     {
         print(email + ", " + password);
 
@@ -94,10 +99,12 @@ public class FireAuth : MonoBehaviour
         if (task.Exception == null)
         {
             print("회원가입 성공");
-
+            action();
+            //NetworkManager.instance.LoadScene(0);
         }
         else
         {
+            registerManager.OnSignInFailed();
             print("회원가입 실패 : " + task.Exception);
         }
     }
@@ -118,10 +125,37 @@ public class FireAuth : MonoBehaviour
         if (task.Exception == null)
         {
             print("로그인 성공");
+
+            // 회원가입 후 바로 로그인 방지
+            if(SceneManager.GetActiveScene().buildIndex == 8 )
+            {
+                auth.SignOut();
+            }
+            else
+            {
+                // 로그인한 유저의 정보 가져오기
+                var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+                yield return new WaitUntil(() => dataTask.IsCompleted);
+                if (dataTask.Exception == null)
+                {
+                    DataSnapshot user = dataTask.Result;
+
+                    print("유저 정보 가져오기 성공");
+                    string userName = user.Child("/name").Value.ToString();
+                    DataBase.instance.SetMyInfo(new User(userName, (bool)user.Child("/isteacher").Value));
+                    if (PhotonNetwork.IsConnectedAndReady)
+                    {
+                        PhotonNetwork.NickName = userName;
+                        PhotonNetwork.LoadLevel(1);
+                    }
+                }
+            }
         }
         else
         {
             print("로그인 실패 : " + task.Exception);
+            inputLoginEmail.text = "";
+            inputLoginPassword.text = "";
         }
     }
 

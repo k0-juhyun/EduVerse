@@ -7,7 +7,6 @@ using System.IO.Compression;
 public class Unzip : MonoBehaviour
 {
     private string extractionPath;
-    private string zipFilePath;
 
     private void Start()
     {
@@ -20,62 +19,73 @@ public class Unzip : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        // 에디터 환경에서는 StreamingAssets 폴더 내의 파일을 사용합니다.
-        zipFilePath = Path.Combine(Application.dataPath, "StreamingAssets/Mask.zip");
+        // 에디터 환경에서는 StreamingAssets 폴더 내의 모든 zip 파일을 처리합니다.
+        string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
+        ExtractAllZipsInDirectory(streamingAssetsPath);
 #elif UNITY_ANDROID
-        // 모바일 환경에서는 jar 파일 내부의 assets 폴더를 사용합니다.
-        zipFilePath = "jar:file://" + Application.dataPath + "!/assets/Mask.zip";
-        // 모바일에서는 파일을 임시 경로에 복사한 후 사용합니다.
-        StartCoroutine(CopyAndExtractZip(zipFilePath, extractionPath));
-        return;
+        // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
+        StartCoroutine(ExtractAllZipsInAndroid());
+#endif
+    }
+
+#if UNITY_EDITOR
+    private void ExtractAllZipsInDirectory(string directoryPath)
+    {
+        string[] zipFiles = Directory.GetFiles(directoryPath, "*.zip");
+        foreach (string zipFile in zipFiles)
+        {
+            RunZip(zipFile);
+        }
+    }
 #endif
 
-        // 에디터 환경에서는 바로 추출을 진행합니다.
-        RunZip(zipFilePath);
-    }
-
-    private IEnumerator CopyAndExtractZip(string sourceZip, string targetPath)
+#if UNITY_ANDROID
+    private IEnumerator ExtractAllZipsInAndroid()
     {
-        WWW www = new WWW(sourceZip);
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, "*.zip");
+        WWW www = new WWW(streamingAssetsPath);
         yield return www;
 
-        string filePath = Path.Combine(targetPath, "Mask.zip");
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogError("Error loading zip: " + www.error);
+            yield break;
+        }
+
+        string filePath = Path.Combine(extractionPath, "*.zip");
         File.WriteAllBytes(filePath, www.bytes);
-        RunZip(filePath);
+
+        ExtractZip(filePath, extractionPath);
     }
+#endif
 
     public void RunZip(string zip)
     {
         ExtractZip(zip, extractionPath);
-        //File.Delete(zip);
+        // File.Delete(zip); // 필요에 따라 압축 파일 삭제
     }
 
-    // 메서드 이름을 Unzip에서 ExtractZip으로 변경
     void ExtractZip(string zipPath, string extractionPath)
     {
         try
         {
-            // 압축 파일을 열어 각 항목을 순회합니다.
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
                     string completeFilePath = Path.Combine(extractionPath, entry.FullName);
 
-                    // 해당 경로에 파일이 이미 존재한다면 삭제합니다.
                     if (File.Exists(completeFilePath))
                     {
                         File.Delete(completeFilePath);
                     }
 
-                    // 디렉토리가 존재하지 않으면 생성합니다.
                     string directory = Path.GetDirectoryName(completeFilePath);
                     if (!Directory.Exists(directory))
                     {
                         Directory.CreateDirectory(directory);
                     }
 
-                    // 파일을 추출합니다.
                     entry.ExtractToFile(completeFilePath);
                 }
             }

@@ -131,18 +131,22 @@ public class RegisterManager : MonoBehaviour
         int grade, classNum, studentNum, studentBirth;
         if (선생이름.text.Length > 0 && int.TryParse(선생담당학년.text, out grade) && int.TryParse(선생담당반.text, out classNum))
         {
-            선생가입완료.SetActive(true);
             email = 선생이메일앞자리.text + "@" + 선생이메일뒷자리.text;
-            FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, grade, classNum, email, 선생비밀번호.text));
+            FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text, () =>
+                {
+                    선생가입완료.SetActive(true);
+                    FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, grade, classNum, email, 선생비밀번호.text));
+                });
         }
 
-        else if(학생이름.text.Length > 0 && int.TryParse(학생학년.text, out grade) && int.TryParse(학생반.text, out classNum) && int.TryParse(학생번호.text, out studentNum) && int.TryParse(학생생년월일.text, out studentBirth))
+        else if (학생이름.text.Length > 0 && int.TryParse(학생학년.text, out grade) && int.TryParse(학생반.text, out classNum) && int.TryParse(학생번호.text, out studentNum) && int.TryParse(학생생년월일.text, out studentBirth))
         {
-            학생가입완료.SetActive(true);
             email = 학생이메일앞자리.text + "@" + 학생이메일뒷자리.text;
-            FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text);
-            FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, studentBirth, grade, classNum, studentNum, email, 학생비밀번호.text));
+            FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text, () =>
+            {
+                학생가입완료.SetActive(true);
+                FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, studentBirth, grade, classNum, studentNum, email, 학생비밀번호.text));
+            });
         }
     }
 
@@ -158,13 +162,14 @@ public class RegisterManager : MonoBehaviour
 
     public void OnNextBtnClick()
     {
-        print(선생이름.text + "+" + _isTeacher);
-        DataBase.instance.SetMyInfo(new User(_isTeacher? 선생이름.text : 학생이름.text, _isTeacher));
-        if (PhotonNetwork.IsConnectedAndReady)
-        {
-            PhotonNetwork.NickName = _isTeacher ? 선생이름.text : 학생이름.text;
-            PhotonNetwork.LoadLevel(1);
-        }
+        //print(선생이름.text + "+" + _isTeacher);
+        //DataBase.instance.SetMyInfo(new User(_isTeacher? 선생이름.text : 학생이름.text, _isTeacher));
+        //if (PhotonNetwork.IsConnectedAndReady)
+        //{
+        //    PhotonNetwork.NickName = _isTeacher ? 선생이름.text : 학생이름.text;
+        //    PhotonNetwork.LoadLevel(1);
+        //}
+        PhotonNetwork.LoadLevel(0);
     }
 
     public void OnNextContentBtnClick()
@@ -207,5 +212,32 @@ public class RegisterManager : MonoBehaviour
         약관동의및본인인증.gameObject.SetActive(false);
         만14세.gameObject.SetActive(false);
         학생회원정보입력.gameObject.SetActive(true);
+    }
+
+    public void OnSignInFailed()
+    {
+        if (_isTeacher)
+        {
+            선생이름.text = "";
+            선생아이디.text = "";
+            선생비밀번호.text = "";
+            선생비밀번호확인.text = "";
+            선생이메일앞자리.text = "";
+            선생이메일뒷자리.text = "";
+            선생담당학년.text = "";
+            선생담당반.text = "";
+        }
+        else
+        {
+            학생이름.text = "";
+            학생아이디.text = "";
+            학생비밀번호.text = "";
+            학생비밀번호확인.text = "";
+            학생이메일앞자리.text = "";
+            학생이메일뒷자리.text = "";
+            학생학년.text = "";
+            학생반.text = "";
+            학생번호.text = "";
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
 [Serializable]
@@ -13,6 +14,7 @@ public class Item
     public enum ItemType
     {
         Image,
+        GIF,
         Video,
         Object
     }
@@ -68,6 +70,8 @@ public class PEA_MyItemSlot : MonoBehaviour
     public Toggle selectToggle;
 
     private GameObject newItem;
+
+    private VideoPlayer videoPlayer;
 
     [SerializeField]
     private Item item;
@@ -144,8 +148,12 @@ public class PEA_MyItemSlot : MonoBehaviour
                 texture.Apply();
                 GetComponentInChildren<RawImage>().texture = texture;
                 break;
-            case Item.ItemType.Video:
+            case Item.ItemType.GIF:
                 GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;
+                break;
+            case Item.ItemType.Video:
+                videoPlayer.url = item.itemPath;
+                GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }
 
@@ -222,7 +230,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 texture.Apply();
                 useItem.GetComponent<PEA_ImageItem>().SetImage(texture);
                 break;
-            case Item.ItemType.Video:
+            case Item.ItemType.GIF:
                 useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
                 useItem.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
                 break;

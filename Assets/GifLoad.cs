@@ -143,7 +143,7 @@ public class GifLoad : MonoBehaviour
         File.WriteAllBytes(path, gifBytes);
 
         // 아이템 정보 저장
-        Item item = new Item(Item.ItemType.Video, Time.time.ToString(), sprite);
+        Item item = new Item(Item.ItemType.GIF, Time.time.ToString(), sprite);
         string json = "";
         MyItems myItems = new MyItems();
 

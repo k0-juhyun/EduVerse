@@ -5,17 +5,20 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class PEA_MarketItemSlot : MonoBehaviour
 {
     private string myItemsDataPath;
     private string myItemsJsonPath;
+    private VideoPlayer videoPlayer;
     public Item item;
 
     private MyItems myItems;
 
     void Start()
     {
+        videoPlayer = GetComponentInChildren<VideoPlayer>();
         myItemsDataPath = Application.persistentDataPath + "/MyItems_Sprites/";
         myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
     }
@@ -39,8 +42,12 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 GetComponentInChildren<RawImage>().texture = texture;
                 //GetComponentInChildren<RawImage>().texture = item.itemTexture;
                 break;
-            case Item.ItemType.Video:
+            case Item.ItemType.GIF:
                 GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;
+                break;
+            case Item.ItemType.Video:
+                videoPlayer.url = item.itemPath;
+                GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }
     }
