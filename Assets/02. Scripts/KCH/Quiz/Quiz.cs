@@ -25,6 +25,10 @@ public class Quiz : MonoBehaviourPun
     // 
     public bool isQuiz = false;
 
+    // 퀴즈에 대한 문제와 정답
+    [HideInInspector] public string question;
+    [HideInInspector] public string answer;
+
     GameObject quizPanel;
     public TextMeshProUGUI quizTime;
     public GameObject Quizplate;
@@ -34,6 +38,11 @@ public class Quiz : MonoBehaviourPun
     private void Start()
     {
         originTime = setTime;
+        QuizEnded += Quiz_Individual.instance.OnQuizEnded;
+    }
+    private void OnDisable()
+    {
+        QuizEnded -= Quiz_Individual.instance.OnQuizEnded;
     }
 
     void Update()
@@ -80,7 +89,7 @@ public class Quiz : MonoBehaviourPun
     [PunRPC]
     public void startquiz()
     {
-        isQuiz = !isQuiz;
+        isQuiz = true;
     }
 
 
