@@ -13,6 +13,8 @@ public class Voice : MonoBehaviourPunCallbacks
     private Photon.Voice.Unity.Recorder recorder;
     private Photon.Voice.Unity.Speaker speaker;
 
+    private bool canUseMike = true;
+
     public GameObject player;
 
     public GameObject toggleCanvas;
@@ -95,8 +97,16 @@ public class Voice : MonoBehaviourPunCallbacks
 
     public void OnMikeOnToggleValueChanged(bool isMikeOn)
     {
-        print("마이크 : " + isMikeOn);
-        recorder.TransmitEnabled = isMikeOn;
+        if (canUseMike)
+        {
+            print("마이크 : " + isMikeOn);
+            recorder.TransmitEnabled = isMikeOn;
+        }
+        else
+        {
+            print("마이크 사용 불가능");
+            mikeOnToggle.isOn = false;
+        }
     }
 
     public void OnListenToggleValueChanged(bool isListen)
@@ -107,11 +117,16 @@ public class Voice : MonoBehaviourPunCallbacks
 
     public void OnMuteToggleValueChanged(bool useStudentsMike)
     {
-       player.GetComponent<VoiceTest_Player>().MuteStudents(useStudentsMike);
+        //player.GetComponent<VoiceTest_Player>().MuteStudents(useStudentsMike);
+        photonView.RPC(nameof(Mute), RpcTarget.Others, useStudentsMike);
     }
 
+    [PunRPC]
     public void Mute(bool useMike)
     {
         recorder.TransmitEnabled = useMike;
+        canUseMike = useMike;
+        recorder.TransmitEnabled = false;
+        mikeOnToggle.isOn = false;
     }
 }
