@@ -168,6 +168,7 @@ public class CameraSetting : MonoBehaviourPun
                 yRotate = Mathf.Clamp(yRotate, -30, 30);
                     
                 cameraPivotTransform.localEulerAngles = new Vector3(yRotate, xRotate, 0);
+                //cameraPivotTransform.localEulerAngles = new Vector3(0, xRotate, 0);
 
                 previousMousePosition = (Vector2)Input.mousePosition;
             }
