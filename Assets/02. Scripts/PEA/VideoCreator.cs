@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System;
+using UnityEngine.Video;
 
 [System.Serializable]
 public struct ServerToJson
@@ -36,13 +37,23 @@ public class VideoCreator : MonoBehaviour
 
     private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz";
 
+    private string serverURL_Video = "http://221.163.19.218:5055/video_crafter/text_2_video";
+
+    // 캡쳐본 확인
     public GameObject captureResultTextObject;
     public Text captureResultText;
 
+    // gif 미리보기
     public GameObject gifPreviewPanel;
     public GifLoad gifLoad;
     public Image gifPreviewImage;
 
+    // 영상 미리보기
+    public GameObject videoPreviewPanel;
+    public RawImage videoRawImage;
+    public VideoPlayer videoPlayer;
+
+    // 버튼
     public Button gifCancelBtn;
     public Button gifSaveBtn;
 
@@ -73,9 +84,9 @@ public class VideoCreator : MonoBehaviour
         gifSaveBtn.onClick.AddListener(GIFSave);
     }
 
-    public void UploadImageAndDownloadVideo(string imagePath, System.Action action = null)
+    public void UploadImageAndDownload_GIF(byte[] imageBytes, System.Action action = null)
     {
-        StartCoroutine(UploadAndDownloadCoroutine(imagePath, action));
+        StartCoroutine(UploadAndDownloadCoroutine_GIF(imageBytes, action));
     }
 
     public void UploadImageAndDownloadQuiz()
@@ -116,12 +127,17 @@ public class VideoCreator : MonoBehaviour
         StartCoroutine(UploadAndDownloadCoroutine_Quiz(json));
     }
 
-    IEnumerator UploadAndDownloadCoroutine(string imagePath, System.Action action = null)
+    public void UploadImageAndDownload_Video(byte[] imageBytes, System.Action action = null)
+    {
+        StartCoroutine(UploadAndDownloadCoroutine_Video(imageBytes));
+    }
+
+    IEnumerator UploadAndDownloadCoroutine_GIF(byte[] imageBytes, System.Action action = null)
     {
         // 이미지 업로드
         WWWForm form = new WWWForm();
-        form.AddBinaryData("file", File.ReadAllBytes(imagePath), "image.png", "image/png");
-        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_GIF, form))
+        form.AddBinaryData("file", imageBytes, "image.png", "image/png");
+        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_Video, form))
         {
             // 응답이 올 때까지 대기.
             yield return imageUploadRequest.SendWebRequest();
@@ -186,6 +202,40 @@ public class VideoCreator : MonoBehaviour
             else
             {
                 Debug.LogError("JSON 데이터 전송 중 오류 발생: " + request.error);
+            }
+        }
+    }
+
+    IEnumerator UploadAndDownloadCoroutine_Video(byte[] imageBytes, System.Action action = null)
+    {
+        // 이미지 업로드
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("file", imageBytes, "image.png", "image/png");
+        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_Video, form))
+        {
+            // 응답이 올 때까지 대기.
+            yield return imageUploadRequest.SendWebRequest();
+            if (imageUploadRequest.result == UnityWebRequest.Result.Success)
+            {
+                print("성공");
+                byte[] videoData = imageUploadRequest.downloadHandler.data;
+
+                if (!Directory.Exists(Application.persistentDataPath + "/Videos/"))
+                {
+                    Directory.CreateDirectory(Application.persistentDataPath + "/Videos/");
+                }
+
+                string videoPath = Application.persistentDataPath + "/Videos/" + DateTime.Now.ToString(("yyyy-MM-dd HH.mm.ss")) + ".mp4";
+                File.WriteAllBytes(videoPath, videoData);
+                videoPlayer.url = videoPath;
+                videoPreviewPanel.SetActive(true);
+            }
+            else
+            {
+                Debug.Log(imageUploadRequest.error);
+
+                captureResultTextObject.SetActive(true);
+                captureResultText.text = "영상 생성에 실패했습니다.";
             }
         }
     }

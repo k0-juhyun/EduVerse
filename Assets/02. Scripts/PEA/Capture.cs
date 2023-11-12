@@ -187,7 +187,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickSendCapture_Gif()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
-        videoCreator.UploadImageAndDownloadVideo(captureResultDataPath, () => captureResult.SetActive(false));
+        videoCreator.UploadImageAndDownload_GIF(captureBytes, () => captureResult.SetActive(false));
     }
 
     // 일단은 이미지 없이 태그로만 문제 생성이 되므로 이렇게 해둠.
@@ -195,6 +195,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
         videoCreator.UploadImageAndDownloadQuiz();
+    }
+
+    public void OnClickSendCapture_Video()
+    {
+        rtCaptureArea.sizeDelta = Vector2.zero;
+        videoCreator.UploadImageAndDownload_Video(captureBytes, () => captureResult.SetActive(false));
     }
 
     // TagText(Clone)

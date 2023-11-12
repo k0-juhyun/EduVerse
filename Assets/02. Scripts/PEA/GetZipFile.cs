@@ -31,7 +31,7 @@ public class GetZipFile : MonoBehaviour
     void Start()
     {
         unzip = GetComponent<Unzip>();
-        GetObject();
+        //GetObject();
 
         //imagePath = Application.dataPath + "/Resources/DOG.png";
         //UploadImage();
