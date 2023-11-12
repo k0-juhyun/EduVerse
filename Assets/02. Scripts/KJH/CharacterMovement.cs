@@ -3,8 +3,10 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
@@ -19,6 +21,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public RectTransform rectJoyStick;
 
     [Space] public Transform cameraPivotTransform;
+
+    [Space]
+    public GameObject SitButton;
+    public GameObject CameraButton;
+    public GameObject CustomizeButton;
+    public GameObject GreetButton;
 
     [Space][Header("캐릭터")] public GameObject Character;
 
@@ -125,6 +133,22 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             Camera.gameObject.SetActive(true);
             CharacterCanvas.gameObject.SetActive(true);
             SpareCanvas.gameObject.SetActive(false);
+
+            if(SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+            {
+                print("왜안돼??");
+                SitButton.SetActive(true);
+                CameraButton.SetActive(true);
+                CustomizeButton.SetActive(true);
+                GreetButton.SetActive(true);
+            }
+            else if(SceneManager.GetActiveScene().name == "5.GroundScene")
+            {
+                print("왜안돼????");
+                CameraButton.SetActive(true);
+                CustomizeButton.SetActive(true);
+                GreetButton.SetActive(true);
+            }
         }
 
         radius = rectBackground.rect.width * 0.5f;
