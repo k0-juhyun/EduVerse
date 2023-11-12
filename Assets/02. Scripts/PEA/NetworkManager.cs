@@ -181,6 +181,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
 
             PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
+            Voice.instance.OnSceneLoaded(scene.buildIndex);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
