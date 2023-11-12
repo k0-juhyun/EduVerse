@@ -80,7 +80,14 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
             MyQuizStorage.Instance.incorrectCheck = QuizSolvePeopleCheck_X;
 
     }
-
+    void Update()
+    {
+        // 퀴즈 다시 생성
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            transform.GetComponent<Canvas>().enabled = true;
+        }
+    }
 
     // 종료되는 함수 
     public void OnExitQuizBtnClick()
@@ -166,12 +173,26 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         questionText.text = question_;
 
         // 만약 그 전에 문제를 풀었다면 그 정답자와 오답자 데이터 Json형태 또는 firebase로 저장
-        
+
 
 
         // 그전에 문제를 풀었다면 정답자 오답자 체크 해제 해줌.
-        
+
 
         // 그 문제와 답에 맞는 학생들 DB에 저장 하는 함수를 만들어야함.
+
+        TextMeshProUGUI[] text = 정답인원.GetComponentsInChildren<TextMeshProUGUI>();
+
+        foreach (TextMeshProUGUI item in text)
+        {
+                Destroy(item.gameObject);          
+        }
+        TextMeshProUGUI[] text_ = 오답인원.GetComponentsInChildren<TextMeshProUGUI>();
+
+        foreach (TextMeshProUGUI item in text_)
+        {
+                Destroy(item.gameObject);
+        }
+
     }
 }

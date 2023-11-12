@@ -62,7 +62,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.ConnectUsingSettings();
             while (!PhotonNetwork.IsConnectedAndReady)
             {
                 yield return null;
@@ -135,13 +134,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
         shouldJoinNewRoom = true;
         if (isCustom)
         {
             LoadScene(1);
         }
     }
+
 
     public void LeaveRoom()
     {
@@ -189,9 +189,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby && !isCustom && !enableChoose)
+        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady 
+            && PhotonNetwork.InLobby && !isCustom && !enableChoose)
         {
-            JoinRoom(newRoomName);
             shouldJoinNewRoom = false;
         }
     }
