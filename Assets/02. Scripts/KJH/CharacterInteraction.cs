@@ -68,12 +68,20 @@ public class CharacterInteraction : MonoBehaviourPun
             myNickNameTxt.text = PhotonNetwork.LocalPlayer.NickName;
         else
             myNickNameTxt.text = photonView.Owner.NickName;
+
+        if (SceneManager.GetActiveScene().name == "5.GroundScene")
+        {
+            Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
+            Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
+
+        }
     }
 
     private void Update()
     {
         if (photonView.IsMine && Cam != null)
-            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward, Cam.transform.rotation * Vector3.up);
+            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward, 
+                Cam.transform.rotation * Vector3.up);
 
     }
 
