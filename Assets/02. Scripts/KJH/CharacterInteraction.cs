@@ -72,8 +72,8 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void Update()
     {
-        if (photonView.IsMine)
-            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+        if (photonView.IsMine && Cam != null)
+            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward, Cam.transform.rotation * Vector3.up);
 
     }
 
