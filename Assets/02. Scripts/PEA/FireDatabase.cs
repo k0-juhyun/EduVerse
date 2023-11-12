@@ -34,7 +34,6 @@ public class UserInfo
 
     }
 
-
     // 선생님은 번호x
     public UserInfo(string name, bool isTeacher, int grade, int classNum, string email, string password)
     {

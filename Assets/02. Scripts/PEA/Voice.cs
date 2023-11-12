@@ -9,12 +9,13 @@ public class Voice : MonoBehaviourPunCallbacks
 {
     public static Voice instance = null;
 
-    private Photon.Voice.PUN.PunVoiceClient punVoiceClient;
+    //private Photon.Voice.PUN.PunVoiceClient punVoiceClient;
     private Photon.Voice.Unity.Recorder recorder;
     private Photon.Voice.Unity.Speaker speaker;
 
     public GameObject player;
 
+    public GameObject toggleCanvas;
     public Toggle mikeOnToggle;
     public Toggle listenToggle;
     public Toggle muteToggle;
@@ -24,6 +25,7 @@ public class Voice : MonoBehaviourPunCallbacks
         if(instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -38,7 +40,7 @@ public class Voice : MonoBehaviourPunCallbacks
         //mikeOnToggle.onValueChanged.AddListener((b) => OnMikeOnToggleValueChanged(b));
         //muteToggle.onValueChanged.AddListener((b) => OnMuteToggleValueChanged(b));
 
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
     }
 
     void Update()
@@ -46,28 +48,43 @@ public class Voice : MonoBehaviourPunCallbacks
         
     }
 
-    public override void OnConnectedToMaster()
-    {
-        base.OnConnectedToMaster();
-        print("Connected");
-        PhotonNetwork.JoinLobby();
-    }
+    //public override void OnConnectedToMaster()
+    //{
+    //    base.OnConnectedToMaster();
+    //    print("Connected");
+    //    PhotonNetwork.JoinLobby();
+    //}
 
-    public override void OnJoinedLobby()
-    {
-        base.OnJoinedLobby();
-        print("Join Lobby");
-        PhotonNetwork.JoinRandomOrCreateRoom();
-    }
+    //public override void OnJoinedLobby()
+    //{
+    //    base.OnJoinedLobby();
+    //    print("Join Lobby");
+    //    PhotonNetwork.JoinRandomOrCreateRoom();
+    //}
 
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
+    //public override void OnJoinedRoom()
+    //{
+    //    base.OnJoinedRoom();
+    //    print("Join Room");
+    //    player = PhotonNetwork.Instantiate("Voice_TestPlayer", Vector3.zero, Quaternion.identity);
+    //    speaker = player.GetComponentInChildren<Photon.Voice.Unity.Speaker>();
+    //    listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
+    //}
 
-        print("Join Room");
-        player = PhotonNetwork.Instantiate("Voice_TestPlayer", Vector3.zero, Quaternion.identity);
-        //speaker = Instantiate(punVoiceClient.SpeakerPrefab, player.transform).GetComponent<Photon.Voice.Unity.Speaker>();
-        listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
+    public void OnSceneLoaded(int loadedSceneBuildIndex)
+    {
+        switch (loadedSceneBuildIndex)
+        {
+            case 4: // ±≥Ω«
+            case 6: // ±§¿Â
+                toggleCanvas.SetActive(true);
+                recorder.enabled = true;
+                break;
+            default:
+                toggleCanvas.SetActive(false);
+                recorder.enabled = false;
+                break;
+        }
     }
 
     public void OnMikeOnToggleValueChanged(bool isMikeOn)
@@ -75,9 +92,9 @@ public class Voice : MonoBehaviourPunCallbacks
         recorder.TransmitEnabled = isMikeOn;
     }
 
-    public void OnListenToggleValueChanged(bool IsListen)
+    public void OnListenToggleValueChanged(bool isListen)
     {
-        speaker.enabled = IsListen;
+        speaker.enabled = isListen;
     }
 
     public void OnMuteToggleValueChanged(bool useStudentsMike)
