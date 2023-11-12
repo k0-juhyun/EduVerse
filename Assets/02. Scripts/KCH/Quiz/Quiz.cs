@@ -77,7 +77,7 @@ public class Quiz : MonoBehaviourPun
             quizTime.text = time_.ToString();
             if (0.1f >= Quiz.instance.setTime)
             {
-                quizTime.text = "땡";
+                quizTime.text = "시간 초과";
             }
         }
         if(Input.GetKeyDown (KeyCode.S))
