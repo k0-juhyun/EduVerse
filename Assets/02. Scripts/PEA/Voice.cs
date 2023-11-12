@@ -9,7 +9,7 @@ public class Voice : MonoBehaviourPunCallbacks
 {
     public static Voice instance = null;
 
-    //private Photon.Voice.PUN.PunVoiceClient punVoiceClient;
+    private Photon.Voice.PUN.PunVoiceClient punVoiceClient;
     private Photon.Voice.Unity.Recorder recorder;
     private Photon.Voice.Unity.Speaker speaker;
 
@@ -35,7 +35,7 @@ public class Voice : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        //punVoiceClient = GetComponent<Photon.Voice.PUN.PunVoiceClient>();
+        punVoiceClient = GetComponent<Photon.Voice.PUN.PunVoiceClient>();
         recorder = GetComponent<Photon.Voice.Unity.Recorder>();
         //mikeOnToggle.onValueChanged.AddListener((b) => OnMikeOnToggleValueChanged(b));
         //muteToggle.onValueChanged.AddListener((b) => OnMuteToggleValueChanged(b));
@@ -67,8 +67,8 @@ public class Voice : MonoBehaviourPunCallbacks
     //    base.OnJoinedRoom();
     //    print("Join Room");
     //    player = PhotonNetwork.Instantiate("Voice_TestPlayer", Vector3.zero, Quaternion.identity);
-    //    speaker = player.GetComponentInChildren<Photon.Voice.Unity.Speaker>();
-    //    listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
+    //    //speaker = player.GetComponentInChildren<Photon.Voice.Unity.Speaker>();
+    //    //listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
     //}
 
     public void ActiveMuteAllBtn()
