@@ -71,6 +71,11 @@ public class Voice : MonoBehaviourPunCallbacks
     //    listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
     //}
 
+    public void ActiveMuteAllBtn()
+    {
+        muteToggle.gameObject.SetActive(true);
+    }
+
     public void OnSceneLoaded(int loadedSceneBuildIndex)
     {
         switch (loadedSceneBuildIndex)
