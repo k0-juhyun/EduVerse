@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject Camera;
     public GameObject CharacterCanvas;
@@ -167,27 +167,27 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 Character.transform.position += movePos;
             }
         }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-        }
+        //else
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+        //}
     }
 
     // 포톤으로 정보 보내기
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-        }
-        else
-        {
-            receivePos = (Vector3)stream.ReceiveNext();
-            receiveRot = (Quaternion)stream.ReceiveNext();
-        }
-    }
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(transform.position);
+    //        stream.SendNext(transform.rotation);
+    //    }
+    //    else
+    //    {
+    //        receivePos = (Vector3)stream.ReceiveNext();
+    //        receiveRot = (Quaternion)stream.ReceiveNext();
+    //    }
+    //}
 
     // 포톤 애니메이션 업데이트
     [PunRPC]
