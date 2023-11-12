@@ -38,6 +38,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private string myNickName;
 
     public Camera Cam;
+
     Camera subMainCam;
     Scene scene;
 
@@ -178,7 +179,7 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.userInfo.isTeacher)
         {
             //PhotonNetwork.LeaveRoom();
-            NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
+            NetworkManager.instance.ChangeRoom("3.TeacherMyPage");
         }
 
         if (other.gameObject.name == "BackToClass")

@@ -18,20 +18,12 @@ public class GameManager : MonoBehaviourPun
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        Character = GameObject.Find("Character");
+        if (Character != null)
+            customization = Character.GetComponent<Customization>();
 
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-            Character = GameObject.Find("Character");
-            if (Character != null)
-                customization = Character.GetComponent<Customization>();
-        }
     }
 
 

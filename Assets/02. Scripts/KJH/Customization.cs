@@ -24,6 +24,8 @@ public class Customization : MonoBehaviour
 
     private GameObject lastClickedButtonParent;
 
+    public static bool isScrolling = false;
+
     [Space(10)]
     [Header("¹öÆ°")]
     public Button Çì¾î¹öÆ°;
@@ -41,6 +43,13 @@ public class Customization : MonoBehaviour
     public GameObject ¿Ê½ºÅ©·Ñºä;
     public GameObject ¹ÙÁö½ºÅ©·Ñºä;
     public GameObject ½Å¹ß½ºÅ©·Ñºä;
+
+    public RectTransform Çì¾î½ºÅ©·ÑºäRectTrnasform;
+    public RectTransform ´«½ºÅ©·ÑºäRectTrnasform;
+    public RectTransform ÀÔ½ºÅ©·ÑºäRectTrnasform;
+    public RectTransform ¿Ê½ºÅ©·ÑºäRectTrnasform;
+    public RectTransform ¹ÙÁö½ºÅ©·ÑºäRectTrnasform;
+    public RectTransform ½Å¹ß½ºÅ©·ÑºäRectTrnasform;
 
     public TMP_Text ÇöÀçÄ¿½ºÅÒºÎÀ§;
 
@@ -93,6 +102,13 @@ public class Customization : MonoBehaviour
             DataBase.instance.myInfo.meshObjName.Add(customParts[i].objName);
             DataBase.instance.myInfo.meshIndex.Add(customParts[i].currentIdx);
         }
+
+        Çì¾î½ºÅ©·ÑºäRectTrnasform = Çì¾î½ºÅ©·Ñºä.GetComponent<RectTransform>();
+        ´«½ºÅ©·ÑºäRectTrnasform = ´«½ºÅ©·Ñºä.GetComponent<RectTransform>();
+        ÀÔ½ºÅ©·ÑºäRectTrnasform = ÀÔ½ºÅ©·Ñºä.GetComponent<RectTransform>();
+        ¿Ê½ºÅ©·ÑºäRectTrnasform = ¿Ê½ºÅ©·Ñºä.GetComponent<RectTransform>();
+        ¹ÙÁö½ºÅ©·ÑºäRectTrnasform = ¹ÙÁö½ºÅ©·Ñºä.GetComponent<RectTransform>();
+        ½Å¹ß½ºÅ©·ÑºäRectTrnasform = ½Å¹ß½ºÅ©·Ñºä.GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -108,6 +124,7 @@ public class Customization : MonoBehaviour
 
     private void ToggleScrollViews(GameObject activeScrollView, Button activeButton)
     {
+        isScrolling = activeScrollView.activeSelf;
         // ¸ðµç ½ºÅ©·Ñ ºä ºñÈ°¼ºÈ­
         Çì¾î½ºÅ©·Ñºä.SetActive(false);
         ´«½ºÅ©·Ñºä.SetActive(false);

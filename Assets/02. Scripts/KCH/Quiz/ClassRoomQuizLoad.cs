@@ -87,6 +87,14 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     {
         Destroy(gameObject);
     }
+    
+    // 광장에서만 쓰는 버튼
+    public void OndisappearCanvasBtnClick()
+    {
+        // 다시 키게 만드는것도 만들어야함.
+        transform.GetComponent<Canvas>().enabled = false;
+    }
+
 
     // 인원 체크 프리팹
     public void QuizNotYetSolvePeopleCheck(string str)
