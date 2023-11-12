@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler,IPunObservable
 {
     public GameObject Camera;
     public GameObject CharacterCanvas;
@@ -194,5 +194,10 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private void UpdateAnimation(float animParameter)
     {
         animator.SetFloat("moveSpeed", animParameter);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }
