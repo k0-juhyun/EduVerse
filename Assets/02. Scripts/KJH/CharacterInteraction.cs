@@ -173,13 +173,14 @@ public class CharacterInteraction : MonoBehaviourPun
         Character.transform.position = new Vector3(position.x, y, position.z);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.userInfo.isTeacher)
         {
-            //PhotonNetwork.LeaveRoom();
-            NetworkManager.instance.ChangeRoom("3.TeacherMyPage");
+            PhotonNetwork.JoinLobby();
+            PhotonNetwork.LoadLevel("3.TeacherMyPage");
+            //NetworkManager.instance.ChangeRoom("3.TeacherMyPage");
+            //StartCoroutine(ILeaveRoomAndLoadScene("3.TeacherMyPage"));
         }
 
         if (other.gameObject.name == "BackToClass")
