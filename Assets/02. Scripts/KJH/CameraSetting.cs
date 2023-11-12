@@ -35,7 +35,7 @@ public class CameraSetting : MonoBehaviourPun
 
     // 컴포넌트 들
     private CharacterInteraction characterInteraction;
-    private TeacherInteraction teacherInteraction;
+    public TeacherInteraction teacherInteraction;
     private Customization customization;
 
     private void Awake()
@@ -48,7 +48,6 @@ public class CameraSetting : MonoBehaviourPun
 
         // 부모에서 컴포넌트 취득
         characterInteraction = GetComponentInParent<CharacterInteraction>();
-        teacherInteraction = GetComponentInParent<TeacherInteraction>();
         customization = FindAnyObjectByType<Customization?>();
     }
 

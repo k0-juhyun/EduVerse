@@ -21,10 +21,7 @@ public class TeacherInteraction : MonoBehaviourPun
     private GameObject objectToPlace;
     private GameObject currentlyDragging;
 
-    public string TestName;
-
     private Button Btn_Spawn;
-    public Button TestButton;
 
     public bool isSpawnBtnClick;
 
@@ -39,7 +36,7 @@ public class TeacherInteraction : MonoBehaviourPun
         else
             spawnButton.gameObject.SetActive(true);
 
-        characterInteraction = GetComponent<CharacterInteraction>();
+        characterInteraction = GetComponentInParent<CharacterInteraction>();
         scrollView.SetActive(false);
 
     }
