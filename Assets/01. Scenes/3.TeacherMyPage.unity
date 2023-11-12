@@ -19720,7 +19720,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 685532220}
   m_HandleRect: {fileID: 685532218}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -44650,7 +44650,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 8400000, guid: ffd6b3fdd5ae028449e1c089d6814984, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -44680,10 +44680,10 @@ RectTransform:
   m_Father: {fileID: 394952257}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.49829102, y: 9.133911}
-  m_SizeDelta: {x: -100.2699, y: -72.1684}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -15.37}
+  m_SizeDelta: {x: 310, y: 310}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!328 &1519012757
 VideoPlayer:
@@ -44703,7 +44703,7 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
   m_TargetAudioSources:
@@ -44716,7 +44716,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
@@ -52964,6 +52964,7 @@ MonoBehaviour:
   categories: {fileID: 1413160349}
   previewImage: {fileID: 1778375278}
   previewVideo_RawImaege: {fileID: 1519012754}
+  videoPlayer: {fileID: 1519012757}
 --- !u!114 &1791205402
 MonoBehaviour:
   m_ObjectHideFlags: 0
