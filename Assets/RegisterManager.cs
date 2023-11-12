@@ -39,6 +39,7 @@ public class RegisterManager : MonoBehaviour
     public TMP_InputField 선생이메일뒷자리;
     public TMP_InputField 선생담당학년;
     public TMP_InputField 선생담당반;
+    public TMP_Dropdown 선생emailDropDown;
 
     [Space(10)]
     [Header("3. 가입완료")]
@@ -73,10 +74,29 @@ public class RegisterManager : MonoBehaviour
     public TMP_InputField 학생학년;
     public TMP_InputField 학생반;
     public TMP_InputField 학생번호;
+    public TMP_Dropdown 학생emailDropDown;
+
+    [Space(10)]
+    [Header("6. 회원가입 실패 알림")]
+    public GameObject failedSingUp;
 
     public bool IsTeacher
     {
         get { return _isTeacher; }
+    }
+
+    void Start()
+    {
+        // 드롭다운으로 이메일 뒷주소 선택하면 텍스트 바뀌게
+        선생emailDropDown.onValueChanged.AddListener((i) =>
+        {
+            선생이메일뒷자리.text = 선생emailDropDown.options[i].text;
+        });
+
+        학생emailDropDown.onValueChanged.AddListener((i) =>
+        {
+            학생이메일뒷자리.text = 학생emailDropDown.options[i].text;
+        });
     }
 
     public void OnTeacherBtnClick()
@@ -239,5 +259,7 @@ public class RegisterManager : MonoBehaviour
             학생반.text = "";
             학생번호.text = "";
         }
+
+        failedSingUp.SetActive(true);
     }
 }

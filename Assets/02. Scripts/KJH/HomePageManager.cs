@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 using UnityEngine.UI;
 
 public class HomePageManager : MonoBehaviour
@@ -45,7 +46,7 @@ public class HomePageManager : MonoBehaviour
     // 학생 관리
     public void OnStudentManageMentBtnClick()
     {
-
+        PhotonNetwork.LoadLevel(9);
     }
 
     // 교과 자료, 나눔 마당

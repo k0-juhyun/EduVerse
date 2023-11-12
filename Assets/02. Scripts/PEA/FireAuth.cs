@@ -15,6 +15,8 @@ public class FireAuth : MonoBehaviour
     FirebaseAuth auth;
     FirebaseDatabase database;
 
+    private Coroutine coroutine;
+
     public Button signInBtn;
     public Button lonInBtn;
     public Button logOutBtn;
@@ -23,6 +25,8 @@ public class FireAuth : MonoBehaviour
 
     public InputField inputLoginEmail;
     public InputField inputLoginPassword;
+
+    public GameObject failedLogInText;
 
     private void Awake()
     {
@@ -83,8 +87,10 @@ public class FireAuth : MonoBehaviour
         //    return;
         //}
         //Debug.Log(inputEmail.text+" : "+inputPassword.text);
-
-        StartCoroutine(SingIn(email, password, action));
+        if(coroutine == null)
+        {
+            coroutine = StartCoroutine(SingIn(email, password, action));
+        }
         //StartCoroutine(SingIn(registerManager.IsTeacher? inputEmailTeacher.text : inputEmailStudent.text, registerManager.IsTeacher ? inputPasswordTTeacher.text:inputPasswordStudent.text));
     }
 
@@ -107,11 +113,19 @@ public class FireAuth : MonoBehaviour
             registerManager.OnSignInFailed();
             print("회원가입 실패 : " + task.Exception);
         }
+
+        coroutine = null;
     }
 
     public void OnClickLogin(string email, string password)
     {
-        StartCoroutine(Login(email, password));
+        if(email.Length > 0 && password.Length > 0)
+        {
+            if(coroutine == null)
+            {
+                coroutine = StartCoroutine(Login(email, password));
+            }
+        }
         //StartCoroutine(Login(inputLoginEmail.text, inputLoginPassword.text));
     }
 
@@ -156,7 +170,21 @@ public class FireAuth : MonoBehaviour
             print("로그인 실패 : " + task.Exception);
             inputLoginEmail.text = "";
             inputLoginPassword.text = "";
+            OnFailedLogIn();
         }
+
+        coroutine = null;
+    }
+
+    private void OnFailedLogIn()
+    {
+        failedLogInText.SetActive(true);
+        //Invoke(nameof(ActiveFalseFailedLogIn), 1f);
+    }
+
+    private void ActiveFalseFailedLogIn()
+    {
+        failedLogInText.SetActive(false);
     }
 
     public void OnClickLogOut()

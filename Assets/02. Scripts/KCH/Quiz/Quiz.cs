@@ -98,7 +98,7 @@ public class Quiz : MonoBehaviourPun
     {
         // 프리팹 instantsiate 한다 (포톤인스턴시에이트 X)
         // 선생이 퀴즈 패널 여는 버튼.
-        quizPanel = PhotonNetwork.Instantiate("Teacher_QuizCanvas", Vector3.zero, Quaternion.identity);
+        quizPanel = PhotonNetwork.Instantiate("Teacher_QuizCanvas_Ground", Vector3.zero, Quaternion.identity);
         //GameObject quizPanel = Instantiate(QuizMenu, Vector3.zero, Quaternion.identity);
         photonView.RPC(nameof(DestroyOtherQuizPanels), RpcTarget.All);
     }
