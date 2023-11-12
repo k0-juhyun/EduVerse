@@ -41,7 +41,7 @@ public class FireAuth : MonoBehaviour
         auth.StateChanged += OnChangedAuthState;
 
         //signInBtn.onClick.AddListener(OnClickSingIn);
-        //lonInBtn.onClick.AddListener(OnClickLogin);
+        lonInBtn.onClick.AddListener(() => OnClickLogin(inputLoginEmail.text, inputLoginPassword.text));
         //logOutBtn.onClick.AddListener(OnClickLogOut);
     }
 
@@ -94,10 +94,12 @@ public class FireAuth : MonoBehaviour
         if (task.Exception == null)
         {
             print("회원가입 성공");
-
+            NetworkManager.instance.LoadScene(0);
         }
         else
         {
+            inputLoginEmail.text = "";
+            inputLoginPassword.text = "";
             print("회원가입 실패 : " + task.Exception);
         }
     }

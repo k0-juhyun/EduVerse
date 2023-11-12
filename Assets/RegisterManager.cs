@@ -208,4 +208,31 @@ public class RegisterManager : MonoBehaviour
         만14세.gameObject.SetActive(false);
         학생회원정보입력.gameObject.SetActive(true);
     }
+
+    public void OnSignInFailed()
+    {
+        if (_isTeacher)
+        {
+            선생이름.text = "";
+            선생아이디.text = "";
+            선생비밀번호.text = "";
+            선생비밀번호확인.text = "";
+            선생이메일앞자리.text = "";
+            선생이메일뒷자리.text = "";
+            선생담당학년.text = "";
+            선생담당반.text = "";
+        }
+        else
+        {
+            학생이름.text = "";
+            학생아이디.text = "";
+            학생비밀번호.text = "";
+            학생비밀번호확인.text = "";
+            학생이메일앞자리.text = "";
+            학생이메일뒷자리.text = "";
+            학생학년.text = "";
+            학생반.text = "";
+            학생번호.text = "";
+        }
+    }
 }
