@@ -19,6 +19,7 @@ public class PEA_ItemLoader : MonoBehaviour
     public enum SearchType
     {
         Image,
+        GIF,
         Video,
         Object
     }
@@ -27,6 +28,7 @@ public class PEA_ItemLoader : MonoBehaviour
     private MyItems myItems;
 
     private string[] gifItemsPath;
+    private string[] videoItemsPath;
 
     private List<Texture2D> itemTextures = new List<Texture2D>();
 
@@ -66,6 +68,7 @@ public class PEA_ItemLoader : MonoBehaviour
                 itemTextures.Clear();
 
                 List<Item> gifItems = new List<Item>();
+                List<Item> videoItems = new List<Item>();
                 MyItems myItems = MyItemsManager.instance.GetMyItems();
                 //myItems.data = new List<Item>();
 
@@ -79,25 +82,21 @@ public class PEA_ItemLoader : MonoBehaviour
 
                         foreach(string path in gifItemsPath)
                         {
-                            //if (path.Contains(".gif"))
-                            //{
-
-                            //}
-                            //else
-                            //{
-                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
+                            Item item = new Item(Item.ItemType.GIF, Path.GetFileNameWithoutExtension(path), path);
                             gifItems.Add(item);
-
-                            //byte[] bytes = File.ReadAllBytes(path);
-                            //Texture2D texture = new Texture2D(2, 2);
-                            //texture.LoadImage(bytes);
-                            //texture.Apply();
-                            //itemTextures.Add(texture);
-                            //    }
                         }
                     }
-                    //marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
 
+                    if(Directory.Exists(Application.persistentDataPath + "/Videos/"))
+                    {
+                        videoItemsPath = Directory.GetFiles(Application.persistentDataPath + "/Videos/");
+
+                        foreach (string path in videoItemsPath)
+                        {
+                            Item item = new Item(Item.ItemType.Video, Path.GetFileNameWithoutExtension(path), path);
+                            videoItems.Add(item);
+                        }
+                    }
                 }
                 else
                 {
@@ -142,26 +141,33 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                if (isMarket && gifItems.Count > 0)
+                if (isMarket)
                 {
-                    for (int i = 0; i < gifItems.Count; i++)
+                    if (gifItems.Count > 0)
                     {
-                        GameObject slot = Instantiate(itemSlot, content);
-                        slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(gifItems[i]);
+                        for (int i = 0; i < gifItems.Count; i++)
+                        {
+                            GameObject slot = Instantiate(itemSlot, content);
+                            slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(gifItems[i]);
+                        }
+                    }
+                    
+                    if(videoItems.Count > 0)
+                    {
+                        for (int i = 0; i < videoItems.Count; i++)
+                        {
+                            GameObject slot = Instantiate(itemSlot, content);
+                            slot.GetComponent<PEA_MarketItemSlot>().SetItemInfo(videoItems[i]);
+                        }
                     }
                 }
 
-                //if (isMarket)
-                //{
-                //    Instantiate(gifMarketItem, content);
-                //}
-
                 break;
-            case SearchType.Video:
+            case SearchType.GIF:
                 itemTextures.Clear();
 
-                MyItems videoItems = new MyItems();
-                videoItems.data = new List<Item>();
+                MyItems myGIFItems = new MyItems();
+                myGIFItems.data = new List<Item>();
 
                 if (isMarket)
                 {
@@ -178,10 +184,10 @@ public class PEA_ItemLoader : MonoBehaviour
                         foreach (Item item in this.myItems.data)
                         {
                             print(item.itemName + " : " + item.itemType);
-                            if (item.itemType == Item.ItemType.Video)
+                            if (item.itemType == Item.ItemType.GIF)
                             {
                                 print(item.itemName + " Àº gif");
-                                videoItems.data.Add(item);
+                                myGIFItems.data.Add(item);
                             }
                         }
                     }
@@ -191,7 +197,7 @@ public class PEA_ItemLoader : MonoBehaviour
                     }
                 }
 
-                for (int i = 0; i < (isMarket ? itemTextures.Count : videoItems.data.Count); i++)
+                for (int i = 0; i < (isMarket ? itemTextures.Count : myGIFItems.data.Count); i++)
                 {
                     GameObject slot = Instantiate(itemSlot, content);
                     if (isMarket)
@@ -202,12 +208,12 @@ public class PEA_ItemLoader : MonoBehaviour
                     else
                     {
                         PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
-                        myItemSlot.SetItemInfo(videoItems.data[i]);
+                        myItemSlot.SetItemInfo(myGIFItems.data[i]);
                         myItemSlot.canvas = transform.parent;
                     }
                 }
-
                 break;
+                
             case SearchType.Object:
                 break;
         }

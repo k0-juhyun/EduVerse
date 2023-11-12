@@ -1,21 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Firebase.Database;
 using Firebase.Extensions;
 using Firebase.Auth;
 
 public class StudentDB : MonoBehaviour
 {
-    private Dictionary<int, UserInfo> studentsDictionary = new Dictionary<int, UserInfo>();            // 학생 번호를 키값으로 함.
+    public static StudentDB instance = null;
 
     private FirebaseDatabase database;
 
     public Transform content;
     public GameObject studentDataItem;
+    public GameObject studentsDB;
+    public GameObject personalDB;
+    public Button backBtn;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
+        backBtn.onClick.AddListener(OnClickBackBtn);
         database = FirebaseDatabase.DefaultInstance;
         GetUserDB();
     }
@@ -40,7 +57,7 @@ public class StudentDB : MonoBehaviour
             var a = task.Result.GetValue(false);
             DataSnapshot dataSnapshot = task.Result;
 
-            var myClassNum = dataSnapshot.Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId.ToString()).Child("/classNum").Value;
+           // var myClassNum = dataSnapshot.Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId.ToString()).Child("/classNum").Value;
 
             foreach (var data in dataSnapshot.Children)
             {
@@ -57,5 +74,17 @@ public class StudentDB : MonoBehaviour
         {
             print("유저 정보 가져오기 실패 : " + task.Exception);
         }
+    }
+
+    public void ShowPersonalDB()
+    {
+        personalDB.SetActive(true);
+        studentsDB.SetActive(false);
+    }
+
+    public void OnClickBackBtn()
+    {
+        personalDB.SetActive(false);
+        studentsDB.SetActive(true);
     }
 }

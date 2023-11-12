@@ -54,7 +54,7 @@ public class Market : MonoBehaviour
                 texture.Apply();
                 previewImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 break;
-            case Item.ItemType.Video:
+            case Item.ItemType.GIF:
                 GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
                 gifLoad.Show(previewImage, gifLoad.GetSpritesByFrame(item.itemPath));
                 previewImage.preserveAspect = true;
