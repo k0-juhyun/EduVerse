@@ -46,7 +46,7 @@ public class FireAuth : MonoBehaviour
         auth.StateChanged += OnChangedAuthState;
 
         //signInBtn.onClick.AddListener(OnClickSingIn);
-        lonInBtn.onClick.AddListener(() => OnClickLogin(inputLoginEmail.text, inputLoginPassword.text));
+        lonInBtn?.onClick.AddListener(() => OnClickLogin(inputLoginEmail.text, inputLoginPassword.text));
         //logOutBtn.onClick.AddListener(OnClickLogOut);
     }
 

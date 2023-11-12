@@ -170,6 +170,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (scene.buildIndex == 4)
             {
                 spawnPos = (DataBase.instance.userInfo.isTeacher ? teacherSpawnPos : studentSpawnPos);
+                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             }
             else if (scene.buildIndex == 5)
             {
@@ -178,9 +179,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             else if (scene.buildIndex == 6)
             {
                 spawnPos = new Vector3(12.5f, 0, 17.5f);
+                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             }
 
-            PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             Voice.instance.OnSceneLoaded(scene.buildIndex);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
