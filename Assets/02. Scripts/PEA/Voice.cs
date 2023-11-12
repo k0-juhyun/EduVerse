@@ -85,11 +85,11 @@ public class Voice : MonoBehaviourPunCallbacks
         {
             case 4: // ±≥Ω«
             case 6: // ±§¿Â
-                toggleCanvas.SetActive(true);
+                ActiveToggleCanvas(true);
                 recorder.enabled = true;
                 break;
             default:
-                toggleCanvas.SetActive(false);
+                ActiveToggleCanvas(false);
                 recorder.enabled = false;
                 break;
         }
@@ -119,6 +119,11 @@ public class Voice : MonoBehaviourPunCallbacks
     {
         //player.GetComponent<VoiceTest_Player>().MuteStudents(useStudentsMike);
         photonView.RPC(nameof(Mute), RpcTarget.Others, useStudentsMike);
+    }
+
+    public void ActiveToggleCanvas(bool isActive)
+    {
+        toggleCanvas.SetActive(isActive);
     }
 
     [PunRPC]
