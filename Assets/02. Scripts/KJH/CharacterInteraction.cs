@@ -175,7 +175,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine && other.gameObject.name == "q" && DataBase.instance.userInfo.isTeacher)
+        if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.userInfo.isTeacher)
         {
             //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.TeachersRoomScene");
@@ -185,6 +185,11 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+        }
+
+        if(photonView.IsMine && other.gameObject.name == "GotoGround")
+        {
+            NetworkManager.instance.ChangeRoom("5.GroundScene");
         }
     }
 
