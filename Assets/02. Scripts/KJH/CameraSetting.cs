@@ -24,6 +24,7 @@ public class CameraSetting : MonoBehaviourPun
     public float scrollSpeed;
     public float dragSpeed;
     private float xRotate;
+    private float yRotate;
     private float originFieldOfView;
 
     // 불리언 변수
@@ -161,8 +162,14 @@ public class CameraSetting : MonoBehaviourPun
             if (isDragging && teacherInteraction.isSpawnBtnClick == false)
             {
                 Vector2 delta = (Vector2)Input.mousePosition - previousMousePosition;
+
                 xRotate += delta.x * rotSpeed;
-                cameraPivotTransform.localEulerAngles = new Vector3(0, xRotate, 0);
+                yRotate -= delta.y * rotSpeed;
+                yRotate = Mathf.Clamp(yRotate, -30, 30);
+                    
+                cameraPivotTransform.localEulerAngles = new Vector3(yRotate, xRotate, 0);
+                //cameraPivotTransform.localEulerAngles = new Vector3(0, xRotate, 0);
+
                 previousMousePosition = (Vector2)Input.mousePosition;
             }
 

@@ -102,7 +102,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             movePos.Normalize();
 
             movePos *= (moveSpeed * Time.deltaTime);
-
+            movePos.y = 0f;
             Character.transform.forward = movePos;
 
             // 조이스틱 입력에 따른 블렌드 값 계산
