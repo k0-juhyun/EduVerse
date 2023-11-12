@@ -101,21 +101,15 @@ public class CameraSetting : MonoBehaviourPun
         {
             return;
         }
-
-        if(Customization.isScrolling)
-        {
-            return;
-        }
         
-
         if (characterInteraction.isTPSCam)
         {
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
 
-                if (IsTouchInsideScrollView(touch.position))
-                    return;
+                //if (IsTouchInsideScrollView(touch.position))
+                //    return;
 
                 // 터치 영역 내에서만 터치 이벤트를 처리합니다.
                 if (touchZone.Contains(touch.position))
