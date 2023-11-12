@@ -216,9 +216,8 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     public GameObject UseItem()
     {
-        //GameObject useItem = Instantiate(itemPrefabs[(int)item.itemType]);
-        GameObject useItem = Instantiate(itemPrefabs[0]);
-        useItem.transform.parent = canvas;
+        GameObject useItem = Instantiate(itemPrefabs[(int)item.itemType]);
+        //GameObject useItem;
 
         switch (item.itemType)
         {
@@ -228,16 +227,23 @@ public class PEA_MyItemSlot : MonoBehaviour
                 Texture2D texture = new Texture2D(2,2);
                 texture.LoadImage(bytes);
                 texture.Apply();
+                useItem = Instantiate(itemPrefabs[0]);
                 useItem.GetComponent<PEA_ImageItem>().SetImage(texture);
                 break;
             case Item.ItemType.GIF:
+                useItem = Instantiate(itemPrefabs[0]);
                 useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
                 useItem.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+                break;
+            case Item.ItemType.Video:
+                useItem = Instantiate(itemPrefabs[1]);
+                useItem.GetComponent<VideoPlayer>().url = item.itemPath;
                 break;
             case Item.ItemType.Object:
                 break;
         }
 
+        useItem.transform.parent = canvas;
         return useItem;
     }
 }
