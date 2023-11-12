@@ -32,7 +32,8 @@ public class StudentDB : MonoBehaviour
 
     IEnumerator IGetUserDB()
     {
-        var task = database.GetReference("USER_INFO").GetValueAsync();
+        // 학생들 번호순서대로 정렬
+        var task = database.GetReference("USER_INFO").OrderByChild("/studentNum").GetValueAsync();
         yield return new WaitUntil(() => task.IsCompleted);
         if (task.Exception == null)
         {
@@ -45,9 +46,8 @@ public class StudentDB : MonoBehaviour
             {
                 if (!((bool)data.Child("/isteacher").Value))
                 {
-                    //GameObject studentItem = Instantiate(studentDataItem, content);
-                    //studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
-                    //studentsDictionary.Add(data.Child("/studentNum").Value, )
+                    GameObject studentItem = Instantiate(studentDataItem, content);
+                    studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
                 }
             }
 

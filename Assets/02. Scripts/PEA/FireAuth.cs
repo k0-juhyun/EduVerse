@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class FireAuth : MonoBehaviour
 {
-    public static FireAuth instance;
+    public static FireAuth instance = null;
 
     FirebaseAuth auth;
 
@@ -17,12 +17,6 @@ public class FireAuth : MonoBehaviour
 
     public RegisterManager registerManager;
 
-    //email, password inputfield
-    public InputField inputEmailTeacher;
-    public InputField inputEmailStudent;
-    public InputField inputPasswordTTeacher;
-    public InputField inputPasswordStudent;
-
     public InputField inputLoginEmail;
     public InputField inputLoginPassword;
 
@@ -31,6 +25,7 @@ public class FireAuth : MonoBehaviour
         if(instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -53,23 +48,6 @@ public class FireAuth : MonoBehaviour
     private void OnDestroy()
     {
         auth.StateChanged -= OnChangedAuthState;
-    }
-
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    OnClickSingIn();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    OnClickLogin();
-        //}
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            OnClickLogOut();
-        }
     }
 
     void OnChangedAuthState(object sender, EventArgs e)
