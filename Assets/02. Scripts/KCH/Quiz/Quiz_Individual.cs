@@ -97,6 +97,8 @@ public class Quiz_Individual : MonoBehaviourPun
         Debug.Log(DataBase.instance.userInfo.name);
         if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength)&&!DataBase.instance.userInfo.isTeacher)
         {
+
+            Debug.Log("이 문제의 정답은 : " + Quiz.instance.answer);
             if (hit.collider.name == "O")
             {
                 Debug.Log("O");
@@ -107,11 +109,14 @@ public class Quiz_Individual : MonoBehaviourPun
                 { 
                     MyQuizStorage.Instance.sendUserQuizData(true);
                     StartCoroutine(answer(Answer_O));
+                    Debug.Log("1");
                 }
                 else
                 {
                     MyQuizStorage.Instance.sendUserQuizData(false);
                     StartCoroutine( answer(Answer_X));
+                    Debug.Log("2");
+
                 }
 
                 // 오답 이면
@@ -125,14 +130,15 @@ public class Quiz_Individual : MonoBehaviourPun
                 if (Quiz.instance.answer == "O")
                 {
                     MyQuizStorage.Instance.sendUserQuizData(false);
-                    StartCoroutine(answer(Answer_O));
-
+                    StartCoroutine(answer(Answer_X));
+                    Debug.Log("3");
 
                 }
                 else
                 {
                     MyQuizStorage.Instance.sendUserQuizData(true);
-                    StartCoroutine(answer(Answer_X));
+                    StartCoroutine(answer(Answer_O));
+                    Debug.Log("4");
 
                 }
             }
@@ -140,7 +146,7 @@ public class Quiz_Individual : MonoBehaviourPun
             {
                 MyQuizStorage.Instance.sendUserQuizData(false);
                 StartCoroutine(answer(Answer_X));
-
+                Debug.Log("OX발판으로 들어가세요!.");
             }
         }
     }
