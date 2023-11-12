@@ -1338,7 +1338,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1218324695530871361}
   - component: {fileID: 1218324695530871366}
-  - component: {fileID: 832692400286408370}
   m_Layer: 0
   m_Name: R_Shoe
   m_TagString: Untagged
@@ -1463,19 +1462,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0029522008, y: -0.012582424, z: 0.00027191918}
     m_Extent: {x: 0.0052239853, y: 0.0059437854, z: 0.006083111}
   m_DirtyAABB: 0
---- !u!65 &832692400286408370
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218324695530871367}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.006399602, y: 0.012166219, z: 0.0044055805}
-  m_Center: {x: 0.0035704118, y: 0.00089917245, z: 0.0011357036}
 --- !u!1 &1218324695541579150
 GameObject:
   m_ObjectHideFlags: 0
@@ -4022,6 +4008,7 @@ MonoBehaviour:
   isDrawing: 0
   myNickNameTxt: {fileID: 7047255182201886302}
   Cam: {fileID: 1218324696677600728}
+  bodyColl: {fileID: 8381764566480815827}
 --- !u!54 &1218324696208131447
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5787,6 +5774,7 @@ GameObject:
   - component: {fileID: 600238069001184140}
   - component: {fileID: 1704887466494247307}
   - component: {fileID: 8659505278752190010}
+  - component: {fileID: 8381764566480815827}
   m_Layer: 0
   m_Name: Base-Idle_1
   m_TagString: Player
@@ -5934,6 +5922,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Answer_O: {fileID: 6153537318886484295, guid: d59465a1fdbbaa34aa1ccee2a0cb8d87, type: 3}
   Answer_X: {fileID: 8468333608463393607, guid: d65d50574ea10b449a4ab11172688198, type: 3}
+--- !u!136 &8381764566480815827
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218324696457186562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.3
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.9, z: 0}
 --- !u!1 &1218324696468958394
 GameObject:
   m_ObjectHideFlags: 0
@@ -8214,7 +8216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1218324697225605231}
   - component: {fileID: 1218324697225605228}
-  - component: {fileID: 7434507288232396788}
   m_Layer: 0
   m_Name: L_Shoe
   m_TagString: Untagged
@@ -8339,19 +8340,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0029522008, y: -0.012582424, z: 0.00027191918}
     m_Extent: {x: 0.0052239853, y: 0.0059437854, z: 0.006083111}
   m_DirtyAABB: 0
---- !u!65 &7434507288232396788
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218324697225605229}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.0065160105, y: 0.009998698, z: 0.005016428}
-  m_Center: {x: -0.0037184798, y: 0.00090007944, z: 0.0012891801}
 --- !u!1 &1218324697232192871
 GameObject:
   m_ObjectHideFlags: 0

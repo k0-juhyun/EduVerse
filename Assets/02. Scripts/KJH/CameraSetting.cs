@@ -36,6 +36,7 @@ public class CameraSetting : MonoBehaviourPun
     // 컴포넌트 들
     private CharacterInteraction characterInteraction;
     private TeacherInteraction teacherInteraction;
+    private Customization customization;
 
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class CameraSetting : MonoBehaviourPun
         // 부모에서 컴포넌트 취득
         characterInteraction = GetComponentInParent<CharacterInteraction>();
         teacherInteraction = GetComponentInParent<TeacherInteraction>();
+        customization = FindAnyObjectByType<Customization?>();
     }
 
     private void LateUpdate()
@@ -57,6 +59,23 @@ public class CameraSetting : MonoBehaviourPun
         FollowCamera();
     }
 
+    private bool IsTouchInsideScrollView(Vector2 touchPosition)
+    {
+        if (customization.헤어스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.눈스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.입스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.옷스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.바지스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.신발스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+
+        return false;
+    }
     // 카메라가 target 오브젝트를 따라다님
     private void FollowCamera()
     {
@@ -83,11 +102,20 @@ public class CameraSetting : MonoBehaviourPun
             return;
         }
 
+        if(Customization.isScrolling)
+        {
+            return;
+        }
+        
+
         if (characterInteraction.isTPSCam)
         {
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
+
+                if (IsTouchInsideScrollView(touch.position))
+                    return;
 
                 // 터치 영역 내에서만 터치 이벤트를 처리합니다.
                 if (touchZone.Contains(touch.position))
