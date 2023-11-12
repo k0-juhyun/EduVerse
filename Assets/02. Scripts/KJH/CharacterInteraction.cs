@@ -159,7 +159,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void SetCharacterPosition(Vector3 position)
     {
-        Character.transform.position = new Vector3(position.x, 0.2f, position.z);
+        Character.transform.position = new Vector3(position.x, 0.4f, position.z);
     }
 
     private void SetCharacterForwardDirection(Vector3 direction)
