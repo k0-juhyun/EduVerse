@@ -11,7 +11,8 @@ public class PEA_MarketItemSlot : MonoBehaviour
 {
     private string myItemsDataPath;
     private string myItemsJsonPath;
-    private VideoPlayer videoPlayer;
+
+    public VideoPlayer videoPlayer;
     public Item item;
 
     private MyItems myItems;

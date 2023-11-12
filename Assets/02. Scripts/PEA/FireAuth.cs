@@ -155,6 +155,7 @@ public class FireAuth : MonoBehaviour
                     DataSnapshot user = dataTask.Result;
 
                     print("유저 정보 가져오기 성공");
+                    //print(user.)
                     string userName = user.Child("/name").Value.ToString();
                     DataBase.instance.SetMyInfo(new User(userName, (bool)user.Child("/isteacher").Value));
                     if (PhotonNetwork.IsConnectedAndReady)

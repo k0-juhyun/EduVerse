@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using System.IO;
 
 public class Market : MonoBehaviour
@@ -14,6 +15,8 @@ public class Market : MonoBehaviour
 
     public Image previewImage;
     public RawImage previewVideo_RawImaege;
+
+    public VideoPlayer videoPlayer;
 
     private void Awake()
     {
@@ -47,7 +50,6 @@ public class Market : MonoBehaviour
         {
             case Item.ItemType.Image:
                 previewImage.gameObject.SetActive(true);
-
                 byte[] bytes = File.ReadAllBytes(item.itemPath);
                 Texture2D texture = new Texture2D(2, 2);
                 texture.LoadImage(bytes);
@@ -55,13 +57,14 @@ public class Market : MonoBehaviour
                 previewImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 break;
             case Item.ItemType.GIF:
+                previewImage.gameObject.SetActive(true);
                 GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
                 gifLoad.Show(previewImage, gifLoad.GetSpritesByFrame(item.itemPath));
                 previewImage.preserveAspect = true;
-                previewImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:
-
+                previewVideo_RawImaege.gameObject.SetActive(true);
+                videoPlayer.url = item.itemPath;
                 break;
             case Item.ItemType.Object:
                 break;
@@ -75,6 +78,7 @@ public class Market : MonoBehaviour
         categories.SetActive(true);
 
         previewImage.gameObject.SetActive(false);
+        previewVideo_RawImaege.gameObject.SetActive(false);
         previewImage.GetComponent<GifLoad>().StopGif();
     }
 }
