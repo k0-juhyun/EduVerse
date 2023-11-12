@@ -59,6 +59,8 @@ public class ScreenTransition : MonoBehaviourPun
             ShareCam.gameObject.tag = "MainCamera";
             camera = !camera;
             Voice.instance.ActiveToggleCanvas(false);
+            // 오디오 리스너 에러
+            transform.GetComponent<AudioListener>().enabled = true;
         }
 
         else
@@ -75,6 +77,10 @@ public class ScreenTransition : MonoBehaviourPun
             startStudy.enableCanvas = true;
             startStudy._isDrawing = false;
             Voice.instance.ActiveToggleCanvas(true);
+            // 오디오 리스너 에러
+
+            transform.GetComponent<AudioListener>().enabled = false;
+
         }
     }
 }
