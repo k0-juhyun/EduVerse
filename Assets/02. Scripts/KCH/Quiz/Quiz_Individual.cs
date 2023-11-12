@@ -7,24 +7,33 @@ using Photon.Pun;
 public class Quiz_Individual : MonoBehaviourPun
 {
     // 서버에 문제와 정답인지 오답인지 체크해서 보내줌.
-
-
-    private void Start()
+    public static Quiz_Individual instance;
+    private void Awake()
     {
-        Quiz.instance.QuizEnded += OnQuizEnded; // 이벤트 구독
+        instance = this;
     }
 
-    private void OnDisable()
+    // Quiz 스크립트에서 이벤트 구독함.
+
+    //private void OnEnable()
+    //{
+    //    Quiz.instance.QuizEnded += OnQuizEnded; // 이벤트 구독
+    //}
+
+    //private void OnDisable()
+    //{
+    //    Quiz.instance.QuizEnded -= OnQuizEnded; // 이벤트 해지
+    //}
+
+
+     public void OnQuizEnded()
     {
-        Quiz.instance.QuizEnded -= OnQuizEnded; // 이벤트 해지
+        photonView.RPC(nameof(OX_GroundCheck), RpcTarget.All);
     }
 
-    void OnQuizEnded()
-    {
-        OX_GroundCheck();
-    }
-
-    void OX_GroundCheck()
+    // rpc 로 해야됌.
+    [PunRPC]
+    public void OX_GroundCheck()
     {
         Debug.Log("OX실행");
         RaycastHit hit;
@@ -44,7 +53,6 @@ public class Quiz_Individual : MonoBehaviourPun
                 Debug.Log("X");
                 // 오답인지 체크해서 서버에 보내주는 부분  
             }
-            Debug.Log(hit.collider.name);
         }
     }
  

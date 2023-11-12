@@ -34,6 +34,11 @@ public class Quiz : MonoBehaviourPun
     private void Start()
     {
         originTime = setTime;
+        QuizEnded += Quiz_Individual.instance.OnQuizEnded;
+    }
+    private void OnDisable()
+    {
+        QuizEnded -= Quiz_Individual.instance.OnQuizEnded;
     }
 
     void Update()
@@ -43,7 +48,7 @@ public class Quiz : MonoBehaviourPun
             setTime -= Time.deltaTime;
             if (setTime <= 0)
             {
-                isQuiz = false;
+                photonView.RPC(nameof(startquiz), RpcTarget.All);
                 // 퀴즈 종료 이벤트
 
                 QuizEnded?.Invoke();
