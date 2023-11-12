@@ -38,18 +38,22 @@ public class QuizGroundPanel : MonoBehaviour
         // 못 푼 인원에 추가.
         MyQuizStorage.Instance.sendUserQuizData();
 
-        // Don't destoryobject되어있는 MyQuizStorage에 넣자.
-        // 여기는 개별적으로 생성되어있고 포톤 뷰 선생한테는 이 오브젝트가 없기 때문에
-        // 학생 json으로 DB 저장 일단 나중에 하는걸로 하고 일단 
-        // 선생 패널에 푼 인원과 못푼 인원 나누는 걸로 하자.
-
-        // 못푼 인원에 추가
-        // 풀면 못푼 인원에 있는 데이터 지우고
+        // 광장에서의 퀴즈 시작
+        Quiz.instance.startquiz();
+        
+        // 문제와 정답 quiz 스크립트에 담는다
+        Quiz.instance.question = question_;
+        Quiz.instance.answer = answer_;
 
     }
+
+    // 시간이 다 끝나면 패널에 정답 띄워줌.
+    // 아니다 개인적으로 띄워주는걸로 해야겠다 그게 더 편하겠네.
+
     IEnumerator quizPaneldelete()
     {
         yield return new WaitForSeconds(3);
         Destroy(gameObject);
+
     }
 }

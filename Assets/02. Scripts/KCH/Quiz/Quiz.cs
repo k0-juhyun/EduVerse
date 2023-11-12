@@ -25,6 +25,10 @@ public class Quiz : MonoBehaviourPun
     // 
     public bool isQuiz = false;
 
+    // 퀴즈에 대한 문제와 정답
+    [HideInInspector] public string question;
+    [HideInInspector] public string answer;
+
     GameObject quizPanel;
     public TextMeshProUGUI quizTime;
     public GameObject Quizplate;
@@ -48,7 +52,7 @@ public class Quiz : MonoBehaviourPun
             setTime -= Time.deltaTime;
             if (setTime <= 0)
             {
-                photonView.RPC(nameof(startquiz), RpcTarget.All);
+                isQuiz = false;
                 // 퀴즈 종료 이벤트
 
                 QuizEnded?.Invoke();
@@ -85,7 +89,7 @@ public class Quiz : MonoBehaviourPun
     [PunRPC]
     public void startquiz()
     {
-        isQuiz = !isQuiz;
+        isQuiz = true;
     }
 
 
