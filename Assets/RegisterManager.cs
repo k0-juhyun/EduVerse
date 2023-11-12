@@ -101,20 +101,23 @@ public class RegisterManager : MonoBehaviour
 
     public void OnTeacherBtnClick()
     {
-        if(_isTeacher == false)
-            _isTeacher = true;
+        //if(_isTeacher == false)
+        //    _isTeacher = true;
 
-        isTorSBtn = !isTorSBtn;
+        //isTorSBtn = !isTorSBtn;
         학교선생님체크.gameObject.SetActive(!학교선생님체크.gameObject.activeSelf);
         학생체크.gameObject.SetActive(false);
+        _isTeacher = 학교선생님체크.gameObject.activeSelf;
+        isTorSBtn = 학교선생님체크.gameObject.activeSelf;
     }
 
     public void OnStudentBtnClick()
     {
         _isTeacher = false;
-        isTorSBtn = !isTorSBtn;
+        //isTorSBtn = !isTorSBtn;
         학교선생님체크.gameObject.SetActive(false);
         학생체크.gameObject.SetActive(!학생체크.gameObject.activeSelf);
+        isTorSBtn = 학생체크.gameObject.activeSelf;
     }
 
     public void OnServiceBtnClick()

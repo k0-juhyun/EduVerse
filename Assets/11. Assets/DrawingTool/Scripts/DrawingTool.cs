@@ -95,12 +95,9 @@ public class DrawingTool : MonoBehaviour
 	private bool InBounds() {
 		//Get our mouse position
 
-		print("1111111111");
-
 		if (Camera.main == null) 
 			return false;
 
-		print("2222222222");
 		var mousePosRaw = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var mousePosFinal = new Vector3(mousePosRaw.x, mousePosRaw.y, drawnLinesParent.position.z);
 		//Get the width and height of the sprite (dont forget the scale of our image object)
@@ -110,11 +107,9 @@ public class DrawingTool : MonoBehaviour
 		//Check if mouse is inside its bounds
 		if ((mousePosFinal.x > backTrans.x - width / 2 && mousePosFinal.x < backTrans.x + width / 2) && (mousePosFinal.y > backTrans.y - height / 2 && mousePosFinal.y < backTrans.y + height / 2)) {
 
-			print("333333333");
 			return true;	
 		}
 
-		print("44444444444");
 		return false;
 	}
 

@@ -58,6 +58,7 @@ public class ScreenTransition : MonoBehaviourPun
             maincam.gameObject.tag = "Untagged";
             ShareCam.gameObject.tag = "MainCamera";
             camera = !camera;
+            Voice.instance.ActiveToggleCanvas(false);
         }
 
         else
@@ -73,6 +74,7 @@ public class ScreenTransition : MonoBehaviourPun
             startStudy.isClick = false;
             startStudy.enableCanvas = true;
             startStudy._isDrawing = false;
+            Voice.instance.ActiveToggleCanvas(true);
         }
     }
 }

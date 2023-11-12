@@ -86,6 +86,8 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     public void OnExitQuizBtnClick()
     {
         Destroy(gameObject);
+        // 퀴즈 종료 버튼
+        Quiz.instance.EndQuiz();
     }
     
     // 광장에서만 쓰는 버튼
