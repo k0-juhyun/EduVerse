@@ -167,37 +167,32 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 Character.transform.position += movePos;
             }
         }
-        //else
-        //{
-        //    transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-        //}
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+        }
     }
 
     // 포톤으로 정보 보내기
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(transform.position);
-    //        stream.SendNext(transform.rotation);
-    //    }
-    //    else
-    //    {
-    //        receivePos = (Vector3)stream.ReceiveNext();
-    //        receiveRot = (Quaternion)stream.ReceiveNext();
-    //    }
-    //}
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
+        }
+    }
 
     // 포톤 애니메이션 업데이트
     [PunRPC]
     private void UpdateAnimation(float animParameter)
     {
         animator.SetFloat("moveSpeed", animParameter);
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        throw new System.NotImplementedException();
     }
 }
