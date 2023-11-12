@@ -122,6 +122,9 @@ public class Quiz : MonoBehaviourPun
         }
     }
 
-
+    public void EndQuiz()
+    {
+        Quizplate.SetActive(false);
+    }
 
 }
