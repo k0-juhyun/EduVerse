@@ -60,6 +60,9 @@ public class Market : MonoBehaviour
                 previewImage.preserveAspect = true;
                 previewImage.gameObject.SetActive(true);
                 break;
+            case Item.ItemType.Video:
+
+                break;
             case Item.ItemType.Object:
                 break;
         }

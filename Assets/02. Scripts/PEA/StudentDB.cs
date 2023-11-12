@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 using Firebase.Database;
 using Firebase.Extensions;
 using Firebase.Auth;
@@ -16,7 +17,8 @@ public class StudentDB : MonoBehaviour
     public GameObject studentDataItem;
     public GameObject studentsDB;
     public GameObject personalDB;
-    public Button backBtn;
+    public Button backStudentBtn;
+    public Button backMyPageBtn;
 
     private void Awake()
     {
@@ -32,7 +34,8 @@ public class StudentDB : MonoBehaviour
 
     void Start()
     {
-        backBtn.onClick.AddListener(OnClickBackBtn);
+        backStudentBtn.onClick.AddListener(OnClicGoBackStudentBtn);
+        backMyPageBtn.onClick.AddListener(OnClickGoBackMyPageBtn);
         database = FirebaseDatabase.DefaultInstance;
         GetUserDB();
     }
@@ -82,9 +85,14 @@ public class StudentDB : MonoBehaviour
         studentsDB.SetActive(false);
     }
 
-    public void OnClickBackBtn()
+    public void OnClicGoBackStudentBtn()
     {
         personalDB.SetActive(false);
         studentsDB.SetActive(true);
+    }
+
+    public void OnClickGoBackMyPageBtn()
+    {
+        PhotonNetwork.LoadLevel(2);
     }
 }
