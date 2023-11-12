@@ -140,6 +140,7 @@ public class Quiz_Individual : MonoBehaviourPun
             {
                 MyQuizStorage.Instance.sendUserQuizData(false);
                 StartCoroutine(answer(Answer_X));
+                Debug.Log("OX발판으로 들어가세요!.");
 
             }
         }
