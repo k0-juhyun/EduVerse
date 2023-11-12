@@ -37,8 +37,9 @@ public class Voice : MonoBehaviourPunCallbacks
     {
         punVoiceClient = GetComponent<Photon.Voice.PUN.PunVoiceClient>();
         recorder = GetComponent<Photon.Voice.Unity.Recorder>();
-        //mikeOnToggle.onValueChanged.AddListener((b) => OnMikeOnToggleValueChanged(b));
-        //muteToggle.onValueChanged.AddListener((b) => OnMuteToggleValueChanged(b));
+        mikeOnToggle.onValueChanged.AddListener((b) => OnMikeOnToggleValueChanged(b));
+        muteToggle.onValueChanged.AddListener((b) => OnMuteToggleValueChanged(b));
+        listenToggle.onValueChanged.AddListener((b) => OnListenToggleValueChanged(b));
 
         //PhotonNetwork.ConnectUsingSettings();
     }
@@ -94,12 +95,14 @@ public class Voice : MonoBehaviourPunCallbacks
 
     public void OnMikeOnToggleValueChanged(bool isMikeOn)
     {
+        print("∏∂¿Ã≈© : " + isMikeOn);
         recorder.TransmitEnabled = isMikeOn;
     }
 
     public void OnListenToggleValueChanged(bool isListen)
     {
-        speaker.enabled = isListen;
+        print("µË±‚ : " + isListen);
+        recorder.enabled = isListen;
     }
 
     public void OnMuteToggleValueChanged(bool useStudentsMike)
