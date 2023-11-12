@@ -85,15 +85,15 @@ public class PEA_ItemLoader : MonoBehaviour
                             //}
                             //else
                             //{
-                                Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
-                                gifItems.Add(item);
+                            Item item = new Item(Item.ItemType.Video, Path.GetFileName(path).Split('.')[0], path);
+                            gifItems.Add(item);
 
-                                //byte[] bytes = File.ReadAllBytes(path);
-                                //Texture2D texture = new Texture2D(2, 2);
-                                //texture.LoadImage(bytes);
-                                //texture.Apply();
-                                //itemTextures.Add(texture);
-                        //    }
+                            //byte[] bytes = File.ReadAllBytes(path);
+                            //Texture2D texture = new Texture2D(2, 2);
+                            //texture.LoadImage(bytes);
+                            //texture.Apply();
+                            //itemTextures.Add(texture);
+                            //    }
                         }
                     }
                     //marketItemsPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");

@@ -99,10 +99,13 @@ public class CameraSetting : MonoBehaviourPun
                             Vector2 delta = (Vector2)Input.mousePosition - previousMousePosition;
                             xRotate += delta.x * rotSpeed;
 
+                            float yRotate = cameraPivotTransform.localEulerAngles.x - delta.y * rotSpeed;
+                            yRotate = Mathf.Clamp(yRotate, -30f, 30f); // y축 회전 각도 제한
+
                             // x값 제한
                             xRotate = Mathf.Clamp(xRotate, -20f, 0f);
 
-                            cameraPivotTransform.localEulerAngles = new Vector3(Mathf.Clamp(0f, 0f, 360f), Mathf.Clamp(xRotate, -20f, 0f), 0);
+                            cameraPivotTransform.localEulerAngles = new Vector3(yRotate, xRotate, 0);
                             previousMousePosition = (Vector2)Input.mousePosition;
                         }
                     }

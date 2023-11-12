@@ -6,7 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.IO;
 
 public class TeacherInteraction : MonoBehaviourPun
 {
@@ -22,6 +24,7 @@ public class TeacherInteraction : MonoBehaviourPun
     public string TestName;
 
     private Button Btn_Spawn;
+    public Button TestButton;
 
     public bool isSpawnBtnClick;
 
@@ -90,6 +93,11 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
+    public void TestBtnClick()
+    {
+        SpawnModel(0);
+    }
+
     public void SpawnModel(int modelIndex)
     {
         if (!isObjectBeingPlaced && modelIndex >= 0 && modelIndex < DataBase.instance.model.spawnPrefab.Count)
@@ -121,14 +129,18 @@ public class TeacherInteraction : MonoBehaviourPun
     [PunRPC]
     public void LoadAndApplyOBJ(string modelName, int viewID)
     {
-        // 이 부분에서 .obj 파일을 불러옵니다.
         PhotonView targetPhotonView = PhotonView.Find(viewID);
         if (targetPhotonView != null)
         {
             objectToPlace = targetPhotonView.gameObject;
+#if UNITY_EDITOR
+            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/" + modelName + ".obj");
 
-            // Load the OBJ file as before.
-            GameObject importedObj = new OBJLoader().Load("Assets/Resources/3D_Models/ModelDatas/"+modelName+".obj");
+#elif UNITY_ANDROID
+            string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
+            // OBJ 파일 로드
+            GameObject importedObj = new OBJLoader().Load(objFilePath);
+#endif
             if (importedObj != null)
             {
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
@@ -141,9 +153,13 @@ public class TeacherInteraction : MonoBehaviourPun
 
                 GameObject meshObj = importedObj.transform.GetChild(0).gameObject;
 
-                // 필요하다면 재질을 적용합니다.
-                ApplyMaterials(modelName,meshObj);
+                // 재질 적용
+                ApplyMaterials(modelName, meshObj);
             }
+            //else
+            //{
+            //    Debug.LogError("Failed to load OBJ file: " + objFilePath);
+            //}
         }
     }
 
@@ -173,16 +189,34 @@ public class TeacherInteraction : MonoBehaviourPun
     }
 
     // mat 적용
-    private void ApplyMaterials(string modelName,GameObject obj)
+    private void ApplyMaterials(string modelName, GameObject obj)
     {
-        // "mesh_3/mesh"라는 이름의 텍스처를 로드합니다.
-        Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
-        //Texture2D albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+        Texture2D albedoTexture;
+#if UNITY_EDITOR
+        // 에디터에서는 Resources 폴더에서 텍스처를 로드합니다.
+        albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+#elif UNITY_ANDROID
+    // 안드로이드에서는 persistentDataPath에서 텍스처를 로드합니다.
+    string textureFilePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas", modelName + ".png"); // 확장자가 필요합니다.
+
+    if (File.Exists(textureFilePath))
+    {
+        byte[] bytes = File.ReadAllBytes(textureFilePath);
+        albedoTexture = new Texture2D(2, 2);
+        albedoTexture.LoadImage(bytes);
+        albedoTexture.Apply();
+    }
+    else
+    {
+        Debug.LogError("Texture file not found: " + textureFilePath);
+        return; // 파일이 없으면 여기서 처리를 중단합니다.
+    }
+#endif
+        // 텍스처 적용 로직
         if (albedoTexture != null)
         {
             print(albedoTexture.name);
 
-            // 오브젝트의 모든 렌더러를 순회하며 각 렌더러의 모든 재질에 텍스처를 할당합니다.
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
             {
@@ -191,14 +225,19 @@ public class TeacherInteraction : MonoBehaviourPun
                 {
                     if (materials[i] != null)
                     {
-                        // 새 Material을 생성하기 전에 기존 Material의 속성을 복사합니다.
-                        Material newMaterial = new Material(materials[i]); // 기존 Material을 복사하여 새 Material 생성
-                        newMaterial.mainTexture = albedoTexture; // 알베도 텍스처 할당
-                        materials[i] = newMaterial; // Material 교체
+                        Material newMaterial = new Material(materials[i]);
+                        newMaterial.mainTexture = albedoTexture;
+                        materials[i] = newMaterial;
                     }
                 }
-                renderer.sharedMaterials = materials; // 수정된 재질 배열을 렌더러에 다시 할당합니다.
+                renderer.sharedMaterials = materials;
             }
         }
+        else
+        {
+            Debug.LogError("Failed to load texture.");
+        }
     }
+
+
 }
