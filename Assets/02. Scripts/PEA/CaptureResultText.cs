@@ -6,7 +6,7 @@ public class CaptureResultText : MonoBehaviour
 {
     private void OnEnable()
     {
-        Invoke(nameof(SetActiveFalse), 0.3f);
+        Invoke(nameof(SetActiveFalse), 0.5f);
     }
 
     private void SetActiveFalse()

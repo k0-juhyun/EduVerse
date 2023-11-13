@@ -137,7 +137,7 @@ public class VideoCreator : MonoBehaviour
         // 이미지 업로드
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", imageBytes, "image.png", "image/png");
-        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_Video, form))
+        using (UnityWebRequest imageUploadRequest = UnityWebRequest.Post(serverURL_GIF, form))
         {
             // 응답이 올 때까지 대기.
             yield return imageUploadRequest.SendWebRequest();

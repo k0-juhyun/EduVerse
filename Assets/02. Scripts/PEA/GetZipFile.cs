@@ -31,7 +31,7 @@ public class GetZipFile : MonoBehaviour
     void Start()
     {
         unzip = GetComponent<Unzip>();
-        //GetObject();
+        GetObject();
 
         //imagePath = Application.dataPath + "/Resources/DOG.png";
         //UploadImage();
@@ -78,7 +78,7 @@ public class GetZipFile : MonoBehaviour
     {
         WWWForm form = new WWWForm();
         //form.AddField("text", GameManager.Instance.GetMakeObejctTag());
-        form.AddField("text", "dog");
+        form.AddField("text", "chipmunk");
         using (UnityWebRequest getObjectRequest = UnityWebRequest.Post(getObjectUrl, form))
         {
 
