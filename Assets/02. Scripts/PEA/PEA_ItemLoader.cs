@@ -131,7 +131,7 @@ public class PEA_ItemLoader : MonoBehaviour
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
                         //marketItemSlot.SetItemInfo(imageItems.data[i]);
                         //marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, itemTextures[i]));
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".png"));
+                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".jpg"));
                     }
                     else
                     {
