@@ -147,8 +147,9 @@ public class FireAuth : MonoBehaviour
             }
             else
             {
-                // 로그인한 유저의 정보 가져오기
-                var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+                yield return new WaitForSeconds(5);
+               // 로그인한 유저의 정보 가져오기
+               var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
                 yield return new WaitUntil(() => dataTask.IsCompleted);
                 if (dataTask.Exception == null)
                 {
