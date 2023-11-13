@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class BGM
@@ -27,6 +29,7 @@ public class SoundManager : MonoBehaviour
     [Space(10)]
     public SFX[] sfx;
 
+
     private void Awake()
     {
         if (instance == null)
@@ -38,6 +41,43 @@ public class SoundManager : MonoBehaviour
         else if (instance != this)
         {
             Destroy(gameObject);
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // 이벤트 등록 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // "GroundScene" 씬으로 전환되었을 때
+        if (scene.name == "5.GroundScene")
+        {
+            PlayBGM(1); // 1번 BGM 재생
+        }
+        else
+        {
+            PlayBGM(0); // 그 외의 경우에는 0번 BGM 재생
+        }
+    }
+
+
+    private void PlayBGM(int index)
+    {
+        // 모든 BGM 정지
+        foreach (BGM bgmItem in bgm)
+        {
+            bgmItem.BGMSource.Stop();
+        }
+
+        // 지정된 인덱스의 BGM 재생
+        if (index >= 0 && index < bgm.Length)
+        {
+            bgm[index].BGMSource.Play();
         }
     }
 
