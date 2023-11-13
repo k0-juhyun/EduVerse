@@ -294,5 +294,7 @@ public class VideoCreator : MonoBehaviour
     {
         Question.text = "»ý¼ºÁß....";
         QuizPanel.SetActive(false);
+        incorrect.SetActive(false);
+        wrong.SetActive(false);
     }
 }
