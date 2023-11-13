@@ -12,7 +12,7 @@ public class Unzip : MonoBehaviour
     {
         extractionPath = Application.persistentDataPath + "/3D_Models/ModelDatas/";
 
-        RunZip(extractionPath + "5.95049.zip");
+        //RunZip(extractionPath + "5.95049.zip");
 
         //if (!Directory.Exists(extractionPath))
         //{
