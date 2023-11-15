@@ -19,7 +19,7 @@ public class QuizSubmit_student : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.N))
         {
-            if (DataBase.instance.userInfo.isTeacher == false)
+            if (DataBase.instance.user.isTeacher == false)
             {
                 Debug.Log("실행");
                 GameObject quizPanel = Instantiate(QuizPrefab);
@@ -32,7 +32,7 @@ public class QuizSubmit_student : MonoBehaviour
 
     void mydatabase()
     { 
-        string name = DataBase.instance.userInfo.name;
+        string name = DataBase.instance.user.name;
     }
     // 정답 제출
     public void CorrectBtnClick()
@@ -100,7 +100,7 @@ public class QuizSubmit_student : MonoBehaviour
 
         // 여기선 아직 못풀었다는 정보를 줘야함.
         // 이름과 같이 줘야함.
-        string sendName = DataBase.instance.userInfo.name;
+        string sendName = DataBase.instance.user.name;
 
         // 못 푼 인원에 추가.
         MyQuizStorage.Instance.sendUserQuizData();

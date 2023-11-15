@@ -94,8 +94,8 @@ public class Quiz_Individual : MonoBehaviourPun
         RaycastHit hit;
         float rayLength = 1.0f; // 레이 길이
         Vector3 rayOrigin = transform.position; // 플레이어의 현재 위치
-        Debug.Log(DataBase.instance.userInfo.name);
-        if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength)&&!DataBase.instance.userInfo.isTeacher)
+        Debug.Log(DataBase.instance.user.name);
+        if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayLength)&&!DataBase.instance.user.isTeacher)
         {
 
             Debug.Log("이 문제의 정답은 : " + Quiz.instance.answer);

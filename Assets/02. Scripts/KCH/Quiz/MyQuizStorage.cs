@@ -48,7 +48,7 @@ public class MyQuizStorage : MonoBehaviourPun
 
 
         // 광장 이라면.
-        if (DataBase.instance.userInfo.isTeacher == false && SceneManager.GetActiveScene().name == "5.GroundScene")
+        if (DataBase.instance.user.isTeacher == false && SceneManager.GetActiveScene().name == "5.GroundScene")
         {
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student_Ground);
@@ -58,7 +58,7 @@ public class MyQuizStorage : MonoBehaviourPun
             //quizPanel의 문제와 정답을 등록해준다.
         }
         // 교실이라면
-        if (DataBase.instance.userInfo.isTeacher == false && SceneManager.GetActiveScene().name != "5.GroundScene")
+        if (DataBase.instance.user.isTeacher == false && SceneManager.GetActiveScene().name != "5.GroundScene")
         {
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student);
@@ -78,13 +78,13 @@ public class MyQuizStorage : MonoBehaviourPun
 
     public void sendUserQuizData()
     {
-        photonView.RPC(nameof(Photon_sendUserQuizData), RpcTarget.All, DataBase.instance.userInfo.name);
+        photonView.RPC(nameof(Photon_sendUserQuizData), RpcTarget.All, DataBase.instance.user.name);
     }
     [PunRPC]
     public void Photon_sendUserQuizData(string name)
     {
         // 선생만 데이터 받게 설정
-        if (DataBase.instance.userInfo.isTeacher)
+        if (DataBase.instance.user.isTeacher)
         {
             // 못 푼 인원
             Debug.Log(name);
@@ -102,13 +102,13 @@ public class MyQuizStorage : MonoBehaviourPun
     // sendUserQuizData 오버로딩.
     public void sendUserQuizData(bool correct)
     {
-        photonView.RPC(nameof(Photon_sendUserQuizData), RpcTarget.All, correct, DataBase.instance.userInfo.name);
+        photonView.RPC(nameof(Photon_sendUserQuizData), RpcTarget.All, correct, DataBase.instance.user.name);
     }
     [PunRPC]
     public void Photon_sendUserQuizData(bool correct,string name)
     {
         // 선생만 데이터 받게 설정
-        if (DataBase.instance.userInfo.isTeacher)
+        if (DataBase.instance.user.isTeacher)
         {
             // 푼 이름.
             Debug.Log(name+ " 오답 체크 : "+ correct);

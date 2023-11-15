@@ -170,7 +170,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Vector3 spawnPos = Vector3.zero;
             if (scene.buildIndex == 4)
             {
-                spawnPos = (DataBase.instance.userInfo.isTeacher ? teacherSpawnPos : studentSpawnPos);
+                spawnPos = (DataBase.instance.user.isTeacher ? teacherSpawnPos : studentSpawnPos);
                 PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             }
             else if (scene.buildIndex == 5)

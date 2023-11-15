@@ -31,7 +31,7 @@ public class TeacherInteraction : MonoBehaviourPun
 
     private void Awake()
     {
-        if (DataBase.instance.userInfo.isTeacher == false && photonView.IsMine)
+        if (DataBase.instance.user.isTeacher == false && photonView.IsMine)
             this.enabled = false;
         else
             spawnButton.gameObject.SetActive(true);
