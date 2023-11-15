@@ -57,8 +57,9 @@ public class Model
 public class DataBase : MonoBehaviour
 {
     public static DataBase instance;
-    public User userInfo;
+    public User user;
     public Model model;
+    public UserInfo userInfo;
 
     private void Awake()
     {
@@ -85,9 +86,10 @@ public class DataBase : MonoBehaviour
         userDataList.Add(newUser);
     }
 
-    public void SetMyInfo(User user)
+    public void SetMyInfo(User user, UserInfo userInfo)
     {
-        userInfo = user;
+        this.user = user;
+        this.userInfo = userInfo;
 
         if (user.isTeacher)
         {

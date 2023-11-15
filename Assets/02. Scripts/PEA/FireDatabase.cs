@@ -25,6 +25,7 @@ public class UserInfo
     public int studentNum;
     public string nickname;
     public string password;
+    public string school;
     public string email;
     public bool isteacher;
     public int[] clothindex;
@@ -45,11 +46,12 @@ public class UserInfo
         this.password = password;
     }
 
-    public UserInfo(string name, bool isTeacher, int studentBirth, int grade, int classNum, int studentNum, string email, string password)
+    public UserInfo(string name, bool isTeacher, int studentBirth, string school, int grade, int classNum, int studentNum, string email, string password)
     {
         this.name = name;
         this.isteacher = isTeacher;
         securitynumber = studentBirth;
+        this.school = school;
         this.grade = grade;
         this.classNum = classNum;
         this.studentNum = studentNum;

@@ -12,7 +12,7 @@ public class MyPageNickName : MonoBehaviourPun
 
     void Start()
     {
-        if(DataBase.instance.userInfo.isTeacher)
+        if(DataBase.instance.user.isTeacher)
             myNickNameTxt.text = PhotonNetwork.NickName + "  ¼±»ý´Ô | ·Î±×¾Æ¿ô";
         else
             myNickNameTxt.text = PhotonNetwork.NickName + "  ÇÐ»ý | ·Î±×¾Æ¿ô";

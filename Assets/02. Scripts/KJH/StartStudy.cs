@@ -30,7 +30,7 @@ public class StartStudy : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (DataBase.instance.userInfo.isTeacher)
+        if (DataBase.instance.user.isTeacher)
         {
             CharacterInteraction characterInteraction = other.gameObject.GetComponentInParent<CharacterInteraction>();
             _isTeacherSit = characterInteraction._isSit;

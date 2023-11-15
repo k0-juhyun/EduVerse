@@ -76,6 +76,10 @@ public class FireAuth : MonoBehaviour
         else
         {
             print("로그아웃 상태");
+            if(SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                PhotonNetwork.LoadLevel(0);
+            }
         }
     }
 
@@ -149,19 +153,26 @@ public class FireAuth : MonoBehaviour
             {
                 yield return new WaitForSeconds(5);
                // 로그인한 유저의 정보 가져오기
-               var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+               var dataTask = database.GetReference("USER_INFO/").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
                 yield return new WaitUntil(() => dataTask.IsCompleted);
                 if (dataTask.Exception == null)
                 {
-                    DataSnapshot user = dataTask.Result;
+                    DataSnapshot userInfo = dataTask.Result;
 
                     print("유저 정보 가져오기 성공");
-                    //print(user.)
-                    string userName = user.Child("/name").Value.ToString();
-                    DataBase.instance.SetMyInfo(new User(userName, (bool)user.Child("/isteacher").Value));
+                    UserInfo user = new UserInfo();
+                    if ((bool)userInfo.Child("/isteacher").Value)
+                    {
+                        user = new UserInfo((string)userInfo.Child("/name").Value, true, (int)userInfo.Child("/grade").Value, (int)userInfo.Child("/classNum").Value, (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
+                    }
+                    else
+                    {
+                        user = new UserInfo((string)userInfo.Child("/name").Value, false, int.Parse(userInfo.Child("/securitynumber").Value.ToString()), (string)userInfo.Child("/school").Value, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), int.Parse(userInfo.Child("/studentNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
+                    }
+                    DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
                     if (PhotonNetwork.IsConnectedAndReady)
                     {
-                        PhotonNetwork.NickName = userName;
+                        PhotonNetwork.NickName = user.name;
                         PhotonNetwork.LoadLevel(1);
                     }
                 }
