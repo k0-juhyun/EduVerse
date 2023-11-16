@@ -91,7 +91,7 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             HandleChairInteraction(other);
         }
-        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.userInfo.isTeacher)
+        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
         {
             HandleTeacherChairInteraction(other);
         }
@@ -183,7 +183,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.userInfo.isTeacher)
+        if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.user.isTeacher)
         {
             PhotonNetwork.JoinLobby();
             PhotonNetwork.LoadLevel("3.TeacherMyPage");
@@ -242,7 +242,7 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         cameraSetting.TPS_Camera.gameObject.SetActive(isTPSCam);
         cameraSetting.FPS_Camera.gameObject.SetActive(!isTPSCam);
-        if (!isTPSCam && !DataBase.instance.userInfo.isTeacher)
+        if (!isTPSCam && !DataBase.instance.user.isTeacher)
         {
             ConfigureSubMainCamera();
         }
@@ -314,7 +314,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void TrySitDownRPC()
     {
         // 선생님 캐릭터가 아니라면, 앉습니다.
-        if (!DataBase.instance.userInfo.isTeacher)
+        if (!DataBase.instance.user.isTeacher)
         {
             Collider nearestChair = FindNearestChair();
             if (nearestChair != null)

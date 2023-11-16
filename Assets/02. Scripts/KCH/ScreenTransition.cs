@@ -23,7 +23,7 @@ public class ScreenTransition : MonoBehaviourPun
 
         startStudy = teacherComputer.GetComponent<StartStudy>();
 
-        if (DataBase.instance.userInfo.isTeacher == false)
+        if (DataBase.instance.user.isTeacher == false)
         {
             Debug.Log("½ÇÇà");
             ShareCam.orthographicSize = 1.9f;

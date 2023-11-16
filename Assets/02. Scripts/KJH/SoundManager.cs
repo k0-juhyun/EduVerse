@@ -45,6 +45,11 @@ public class SoundManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void OnDestroy()
     {
         // 이벤트 등록 해제

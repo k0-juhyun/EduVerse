@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
@@ -14,10 +15,10 @@ public class ButtonManager : MonoBehaviourPun
 
     public void OnLoadNextBtnClick()
     {
-        if (DataBase.instance.userInfo.isTeacher)
+        if (DataBase.instance.user.isTeacher)
             PhotonNetwork.LoadLevel(2);
 
-        if (DataBase.instance.userInfo.isTeacher == false)
+        if (DataBase.instance.user.isTeacher == false)
             PhotonNetwork.LoadLevel(3);
 
         NetworkManager.instance.isCustom = false;
@@ -42,5 +43,10 @@ public class ButtonManager : MonoBehaviourPun
         PhotonNetwork.LoadLevel("LoadingScene");
         NetworkManager.instance.JoinRoom("4.TeachersRoomScene");
         NetworkManager.instance.enableChoose = false;
+    }
+
+    public void OnStudentMyPageBtnClick()
+    {
+        PhotonNetwork.LoadLevel("MyPage_Student");
     }
 }

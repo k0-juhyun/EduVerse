@@ -19,18 +19,18 @@ public class StartSetting : MonoBehaviour
         
     }
 
-    public void OnCllickStartBtn()
-    {
-        if(nameInput.text.Length > 0)
-        {
-            DataBase.instance.SetMyInfo(new User(nameInput.text, DataBase.instance.userInfo.isTeacher));
-            if(PhotonNetwork.IsConnectedAndReady)
-            {
-                PhotonNetwork.NickName = nameInput.text;
-                PhotonNetwork.LoadLevel(1);
-            }
-        }
-    }
+    //public void OnCllickStartBtn()
+    //{
+    //    if(nameInput.text.Length > 0)
+    //    {
+    //        DataBase.instance.SetMyInfo(new User(nameInput.text, DataBase.instance.user.isTeacher));
+    //        if(PhotonNetwork.IsConnectedAndReady)
+    //        {
+    //            PhotonNetwork.NickName = nameInput.text;
+    //            PhotonNetwork.LoadLevel(1);
+    //        }
+    //    }
+    //}
 
     public void OnClickRegisterBtn()
     {
@@ -39,7 +39,7 @@ public class StartSetting : MonoBehaviour
 
     public void OnClickVerifyButton()
     {
-        DataBase.instance.userInfo.isTeacher = true;
+        DataBase.instance.user.isTeacher = true;
         print("12");
     }
 }
