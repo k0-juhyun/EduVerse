@@ -91,10 +91,10 @@ public class DataBase : MonoBehaviour
         this.user = user;
         this.userInfo = userInfo;
 
-        if (user.isTeacher)
-        {
-            Voice.instance.ActiveMuteAllBtn();
-        }
+        //if (user.isTeacher)
+        //{
+        //    Voice.instance.ActiveMuteAllBtn();
+        //}
     }
 
     public void SetStudent(User user, int stuNum)

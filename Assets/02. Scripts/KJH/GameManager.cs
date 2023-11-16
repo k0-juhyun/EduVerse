@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
@@ -18,24 +18,27 @@ public class GameManager : MonoBehaviourPun
 
     private void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
-        Character = GameObject.Find("Character");
-        if (Character != null)
-            customization = Character.GetComponent<Customization>();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+            Character = GameObject.Find("Character");
+            if (Character != null)
+                customization = Character.GetComponent<Customization>();
+        }
 
     }
 
 
     public void SaveCharacterInfo()
     {
-        if (photonView.IsMine)
-        {
+        //if (photonView.IsMine)
+        //{
             DataBase.instance.savedData.myData.Clear();
             DataBase.instance.savedData.myData.Add(DataBase.instance.myInfo);
 
             SaveToJson(DataBase.instance.savedData, "/myInfo.txt");
-        }
+        //}
     }
 
     private void SaveToJson(object obj, string filePath)

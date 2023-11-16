@@ -30,12 +30,16 @@ public class CharacterInteraction : MonoBehaviourPun
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
 
-    public bool _isSit;
+    [HideInInspector] public bool _isSit;
+    private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
 
     public Text myNickNameTxt;
+
     private string myNickName;
+
+    public RectTransform characterUI;
 
     public Camera Cam;
 
@@ -373,5 +377,20 @@ public class CharacterInteraction : MonoBehaviourPun
 
         anim.Play("GreetL");
         photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "GreetL");
+    }
+
+    public void OnClickOpenUI()
+    {
+        Debug.Log("open");
+        if (!isOpenUI)
+        {
+            characterUI.DOAnchorPos(new Vector2(0, 0), 0.5f);
+            isOpenUI = !isOpenUI;
+        }
+        else
+        {
+            characterUI.DOAnchorPos((new Vector2(400, 0)), 0.5f);
+            isOpenUI = !isOpenUI;
+        }
     }
 }
