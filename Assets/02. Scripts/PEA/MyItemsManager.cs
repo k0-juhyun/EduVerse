@@ -120,6 +120,7 @@ public class MyItemsManager : MonoBehaviour
         }
 
         myItems.data.Add(item);
+        myItemsDictionary.Add(item.itemPath, item);
         SaveData();
     }
 
@@ -132,6 +133,7 @@ public class MyItemsManager : MonoBehaviour
                 myItems.data.Remove(myItem);
             }
         }
+        myItemsDictionary.Remove(item.itemPath);
         SaveData();
     }
 
@@ -146,7 +148,19 @@ public class MyItemsManager : MonoBehaviour
             }
         }
 
+        myItemsDictionary[item.itemPath] = item;
         SaveData();
+    }
+
+    public Item GetItemInfo(string itemPath)
+    {
+        if(myItemsDictionary.TryGetValue(itemPath, out Item item))
+        {
+            return item;
+        }
+
+        return null;
+        
     }
 
     public void DeleteAll()

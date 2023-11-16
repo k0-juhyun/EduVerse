@@ -18,7 +18,10 @@ public class InteractionBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public Item Item
     {
-        set { item = value; }
+        set 
+        {
+            item = MyItemsManager.instance.GetItemInfo(value.itemPath); 
+        }
         get { return item; }
     }
 
