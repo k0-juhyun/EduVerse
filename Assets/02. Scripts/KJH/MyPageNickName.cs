@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MyPageNickName : MonoBehaviourPun
 {
-    public Text myNickNameTxt;
+    public TMP_Text myNickNameText;
     public string myNickName;
 
     void Start()
     {
         if(DataBase.instance.user.isTeacher)
-            myNickNameTxt.text = PhotonNetwork.NickName + "  ¼±»ý´Ô | ·Î±×¾Æ¿ô";
+            myNickNameText.text = PhotonNetwork.NickName + "  ¼±»ý´Ô | ·Î±×¾Æ¿ô";
         else
-            myNickNameTxt.text = PhotonNetwork.NickName + "  ÇÐ»ý | ·Î±×¾Æ¿ô";
+            myNickNameText.text = PhotonNetwork.NickName + "  ÇÐ»ý | ·Î±×¾Æ¿ô";
 
     }
 

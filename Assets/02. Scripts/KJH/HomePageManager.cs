@@ -39,8 +39,8 @@ public class HomePageManager : MonoBehaviour
     // 교과서 제작
     public void OnCreateTextbookBtnClick()
     {
-        transform.gameObject.SetActive(false);
         교과서제작.SetActive(true);
+        transform.gameObject.SetActive(false);
     }
 
     // 학생 관리
