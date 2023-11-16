@@ -163,7 +163,7 @@ public class FireAuth : MonoBehaviour
                     UserInfo user = new UserInfo();
                     if ((bool)userInfo.Child("/isteacher").Value)
                     {
-                        user = new UserInfo((string)userInfo.Child("/name").Value, true, (int)userInfo.Child("/grade").Value, (int)userInfo.Child("/classNum").Value, (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
+                        user = new UserInfo((string)userInfo.Child("/name").Value, true, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
                     }
                     else
                     {

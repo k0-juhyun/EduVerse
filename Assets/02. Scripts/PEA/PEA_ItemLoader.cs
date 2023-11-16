@@ -87,7 +87,6 @@ public class PEA_ItemLoader : MonoBehaviour
                         GameObject slot = Instantiate(itemSlot, content);
 
                         Interaction_Item  Interaction_Item  = slot.GetComponent<Interaction_Item>();
-                        Interaction_Item.Item = myItems.data[i];
                     }
                 }
                 else
