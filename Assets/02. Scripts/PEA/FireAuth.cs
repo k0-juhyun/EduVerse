@@ -160,15 +160,16 @@ public class FireAuth : MonoBehaviour
                     DataSnapshot userInfo = dataTask.Result;
 
                     print("유저 정보 가져오기 성공");
-                    UserInfo user = new UserInfo();
-                    if ((bool)userInfo.Child("/isteacher").Value)
-                    {
-                        user = new UserInfo((string)userInfo.Child("/name").Value, true, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-                    }
-                    else
-                    {
-                        user = new UserInfo((string)userInfo.Child("/name").Value, false, int.Parse(userInfo.Child("/securitynumber").Value.ToString()), (string)userInfo.Child("/school").Value, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), int.Parse(userInfo.Child("/studentNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-                    }
+                    UserInfo user = JsonUtility.FromJson<UserInfo>(userInfo.GetRawJsonValue());
+                    print(user.name);
+                    //if (user.isteacher)
+                    //{
+                    //    user = new UserInfo((string)userInfo.Child("/name").Value, true, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
+                    //}
+                    //else
+                    //{
+                    //    user = new UserInfo((string)userInfo.Child("/name").Value, false, int.Parse(userInfo.Child("/securitynumber").Value.ToString()), (string)userInfo.Child("/school").Value, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), int.Parse(userInfo.Child("/studentNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
+                    //}
                     DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
                     if (PhotonNetwork.IsConnectedAndReady)
                     {
