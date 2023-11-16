@@ -58,7 +58,7 @@ public class QuizSubmit_student : MonoBehaviour
 
             // 데이터 줘야할것들 
             // 단원. 문제 이름, 답, 문제에 대해 맞았는지 틀렸는지.
-            QuizToFireBase.instance.TestAddData(Unit,Question, "O", true);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit,Question, "O", true);
         }
         else
         {
@@ -68,7 +68,7 @@ public class QuizSubmit_student : MonoBehaviour
 
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.TestAddData(Unit, Question, "X", true);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", true);
 
         }
     }
@@ -84,7 +84,7 @@ public class QuizSubmit_student : MonoBehaviour
             Debug.Log("오답입니당");
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.TestAddData(Unit, Question, "X", false);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", false);
 
         }
         else
@@ -95,7 +95,7 @@ public class QuizSubmit_student : MonoBehaviour
             Debug.Log("정답입니당");
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.TestAddData(Unit, Question, "O", false);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", false);
         }
     }
 
