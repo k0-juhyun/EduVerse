@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
+using TMPro;
 
 // - 히어라키창에 있는 의자 오브젝트를 태그를 이용해서 찾아서
 // - 의자 리스트를 만들어서 리스트에 넣고
@@ -35,7 +36,7 @@ public class CharacterInteraction : MonoBehaviourPun
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
 
-    public Text myNickNameTxt;
+    public TMP_Text myNickNameTxt;
 
     private string myNickName;
 

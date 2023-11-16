@@ -184,4 +184,11 @@ public class Customization : MonoBehaviour
         }
     }
 
+    private void SetColor(CustomPart part,  Color color)
+    {
+        if(part.customRenderer != null)
+        {
+            // 새로운 메터리얼을 생성해서 렌더러에 삽입
+        }
+    }
 }
