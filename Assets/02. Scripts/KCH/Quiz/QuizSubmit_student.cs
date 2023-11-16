@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using Photon.Voice.PUN;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,10 @@ public class QuizSubmit_student : MonoBehaviour
 
     bool correctCheck;
 
+    // 문제
+    string Question;
+    // 단원
+    string Unit;
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.N))
@@ -50,6 +55,10 @@ public class QuizSubmit_student : MonoBehaviour
             correct.SetActive(true);
 
             StartCoroutine(quizPaneldelete());
+
+            // 데이터 줘야할것들 
+            // 단원. 문제 이름, 답, 문제에 대해 맞았는지 틀렸는지.
+            QuizToFireBase.instance.TestAddData(Unit,Question, "O", true);
         }
         else
         {
@@ -58,6 +67,8 @@ public class QuizSubmit_student : MonoBehaviour
             incorrect.SetActive(true);
 
             StartCoroutine(quizPaneldelete());
+
+            QuizToFireBase.instance.TestAddData(Unit, Question, "X", true);
 
         }
     }
@@ -73,6 +84,8 @@ public class QuizSubmit_student : MonoBehaviour
             Debug.Log("오답입니당");
             StartCoroutine(quizPaneldelete());
 
+            QuizToFireBase.instance.TestAddData(Unit, Question, "X", false);
+
         }
         else
         {
@@ -82,6 +95,7 @@ public class QuizSubmit_student : MonoBehaviour
             Debug.Log("정답입니당");
             StartCoroutine(quizPaneldelete());
 
+            QuizToFireBase.instance.TestAddData(Unit, Question, "O", false);
         }
     }
 
@@ -91,7 +105,7 @@ public class QuizSubmit_student : MonoBehaviour
         // 선생이 퀴즈 패널을 띄워주고
 
         questionText.text = question_;
-
+        Question = question_;
         // 정답인지 오답인지 체크
         if (answer_ == "O") correctCheck = true;
         else correctCheck = false;
@@ -114,11 +128,53 @@ public class QuizSubmit_student : MonoBehaviour
         // 풀면 못푼 인원에 있는 데이터 지우고
         // 
 
+        // 문제 단원, 정답
+        test(Question);
 
     }
     IEnumerator quizPaneldelete()
     {
         yield return new WaitForSeconds(3);
         Destroy(gameObject);
+    }
+
+
+    void test(string question_)
+    {
+        List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
+
+        if (titles != null)
+        {
+            foreach (string title in titles)
+            {
+                SaveData saveData = SaveSystem.Load(title);
+
+                // 단원
+                string extracted = title.Substring(0, 3);
+                // 타이틀.
+                string titleSlice = title.Substring(4);
+
+                // 문제
+                string test1 = saveData.question;
+
+                // 답
+                string test2 = saveData.answer;
+                // 문제를 가지고 앞에 있는 단원 가져옴.
+                Debug.Log(extracted + " : " + titleSlice);
+
+                //Debug....Log(test1 + " : " + test2);
+                if (test1 == question_)
+                {
+                    Debug.Log("단원가져오기." + extracted);
+
+                    // 단원 정보 저장.
+                    Unit = extracted;
+                }
+
+                // 앞에 단원 삭제
+
+                // 정답인지 오답인지 체크하고 그 오브젝트 체크.
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ public class MyItemsManager : MonoBehaviour
     public static MyItemsManager instance = null;
 
     private MyItems myItems;
+    private GifLoad gifload;
 
     private void Awake()
     {
@@ -42,8 +43,6 @@ public class MyItemsManager : MonoBehaviour
             print(bytes.Length);
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
-
-            print(json);
         }
     }
 
