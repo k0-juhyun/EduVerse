@@ -44,7 +44,7 @@ public class QuizMarketManager : MonoBehaviour
         // 그리고 단원별 문제들 content 생성해준다.
         // Unit 단원
 
-        // viewport 밑에 오브젝트가 있으면 로드 안하는걸로 하자 찬희야
+        // viewport 밑에 오브젝트가 있으면 로드 안하는걸로 하자 
         if(Unit_quiz.transform.GetChild(0).childCount==0)
         {
 
