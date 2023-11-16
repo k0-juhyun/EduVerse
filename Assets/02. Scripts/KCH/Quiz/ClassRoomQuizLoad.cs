@@ -7,7 +7,7 @@ using Photon.Pun;
 using static MyQuizStorage;
 
 public class ClassRoomQuizLoad : MonoBehaviourPun
-{   
+{
     public List<Quiz_> quizs = new List<Quiz_>();
 
     public GameObject AddQuizViewport;
@@ -58,32 +58,31 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
     private void Start()
     {
-            quizs= MyQuizStorage.Instance.quizList;
-        Debug.Log("스타트 함수 실행 되나?");
+        quizs = MyQuizStorage.Instance.quizList;
 
         for (int i = 0; i < MyQuizStorage.Instance.quizList.Count; i++)
-            {
-                Debug.Log(MyQuizStorage.Instance.quizList[i].question);
-                GameObject quiz_obj = Instantiate(QuizPrefab);
-                quiz_obj.transform.parent = AddQuizViewport.transform;
-                quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
-                MyQuizStorage.Instance.quizList[i].answer);
-            }
+        {
+            Debug.Log(MyQuizStorage.Instance.quizList[i].question);
+            GameObject quiz_obj = Instantiate(QuizPrefab);
+            quiz_obj.transform.parent = AddQuizViewport.transform;
+            quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
+            MyQuizStorage.Instance.quizList[i].answer);
+        }
         // 여기서 저장한 리스트 뽑아서 써야함.
 
 
 
-     
+
         // 인원 체크 델리게이트
-            MyQuizStorage.Instance.correctAnswerCheck = QuizNotYetSolvePeopleCheck;
-            MyQuizStorage.Instance.correctCheck = QuizSolvePeopleCheck_O;
-            MyQuizStorage.Instance.incorrectCheck = QuizSolvePeopleCheck_X;
+        MyQuizStorage.Instance.correctAnswerCheck = QuizNotYetSolvePeopleCheck;
+        MyQuizStorage.Instance.correctCheck = QuizSolvePeopleCheck_O;
+        MyQuizStorage.Instance.incorrectCheck = QuizSolvePeopleCheck_X;
 
     }
     void Update()
     {
         // 퀴즈 다시 생성
-        if(Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             transform.GetComponent<Canvas>().enabled = true;
         }
@@ -96,7 +95,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         // 퀴즈 종료 버튼
         Quiz.instance.EndQuiz();
     }
-    
+
     // 광장에서만 쓰는 버튼
     public void OndisappearCanvasBtnClick()
     {
@@ -126,7 +125,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
         foreach (TextMeshProUGUI item in text)
         {
-            if(item.text == str)
+            if (item.text == str)
             {
                 Destroy(item.gameObject);
                 break;
@@ -140,7 +139,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         checkobj.GetComponentInChildren<TextMeshProUGUI>().text = str;
 
         // 체크 후 Firebase에 저장해야함.
-        
+
 
     }
     public void QuizSolvePeopleCheck_X(string str)
@@ -167,7 +166,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
     }
 
-    public void SelectQuiz(string question_,string answer_)
+    public void SelectQuiz(string question_, string answer_)
     {
         // 여기서 문제와 정답을 저장
         questionText.text = question_;
@@ -185,13 +184,15 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
         foreach (TextMeshProUGUI item in text)
         {
-                Destroy(item.gameObject);          
+
+
+            Destroy(item.gameObject);
         }
         TextMeshProUGUI[] text_ = 오답인원.GetComponentsInChildren<TextMeshProUGUI>();
 
         foreach (TextMeshProUGUI item in text_)
         {
-                Destroy(item.gameObject);
+            Destroy(item.gameObject);
         }
 
     }
