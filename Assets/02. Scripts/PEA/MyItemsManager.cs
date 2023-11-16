@@ -11,6 +11,8 @@ public class MyItemsManager : MonoBehaviour
     private MyItems myItems;
     private GifLoad gifload;
 
+    private Dictionary<string, Item> myItemsDictionary = new Dictionary<string, Item>();
+
     private void Awake()
     {
         if(instance == null)
@@ -68,7 +70,10 @@ public class MyItemsManager : MonoBehaviour
                 default:
                     break;
             }
+
+            myItemsDictionary.Add(myItems.data[i].itemPath, myItems.data[i]);
         }
+
     }
 
     public MyItems GetMyItems()

@@ -68,6 +68,7 @@ public class StudentDB : MonoBehaviour
                 {
                     GameObject studentItem = Instantiate(studentDataItem, content);
                     studentItem.GetComponent<StudentDataItem>().SetStdentData(data.Child("/name").Value.ToString(), data.Child("/studentNum").Value.ToString());
+                    studentItem.GetComponent<StudentDataItem>().uid = data.Key;
                 }
             }
 

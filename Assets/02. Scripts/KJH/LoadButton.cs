@@ -68,13 +68,15 @@ public class LoadButton : MonoBehaviour
             if (child.GetComponent<Button>() != null)
             {
                 RectTransform rectTransform = child.GetComponent<RectTransform>();
+                InteractionBtn interactionBtn = child.GetComponent<InteractionBtn>();
                 currentSession.buttonPositions.Add(new ButtonPosition
                 {
                     buttonName = child.name,
                     posX = rectTransform.anchoredPosition.x,
-                    posY = rectTransform.anchoredPosition.y
+                    posY = rectTransform.anchoredPosition.y,
 
-                    // 아이쳄 정보 넣기
+                    // 아이템 정보 저장
+                    item = interactionBtn.Item
                 });
             }
         }
@@ -101,6 +103,7 @@ public class LoadButton : MonoBehaviour
                 //newButton.AddComponent<DraggableButton>();
 
                 // 아이템 정보 가져와서 넣기
+                newButton.GetComponent<InteractionBtn>().Item = buttonPosition.item;
             }
         }
     }
