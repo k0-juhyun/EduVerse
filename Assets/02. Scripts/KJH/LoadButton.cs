@@ -15,6 +15,7 @@ public class ButtonPosition
 {
     public string buttonName;
     public float posX, posY;
+    public Item item;
 }
 
 [System.Serializable]
@@ -35,15 +36,20 @@ public class LoadButton : MonoBehaviour
 
     public void OnClickCreateButton(Button clickedButton)
     {
-        // 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
-        if (clickedButton.name == "Create")
-        {
-            GameObject newButton = Instantiate(buttonPrefab, teachingData.transform);
-            newButton.AddComponent<DraggableButton>();
+        //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
+        //if (clickedButton.name == "Create")
+        //{
+        //    GameObject newButton = Instantiate(buttonPrefab, teachingData.transform);
+        //    newButton.AddComponent<DraggableButton>();
 
-            // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
-            newButton.name = "NewButton_" + newButton.GetInstanceID();
-        }
+        //    // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
+        //    newButton.name = "NewButton_" + newButton.GetInstanceID();
+        //}
+
+        GameObject newButton = Instantiate(buttonPrefab, teachingData.transform);
+
+        // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
+        newButton.name = "NewButton_" + newButton.GetInstanceID();
     }
 
     void Awake()
@@ -67,6 +73,8 @@ public class LoadButton : MonoBehaviour
                     buttonName = child.name,
                     posX = rectTransform.anchoredPosition.x,
                     posY = rectTransform.anchoredPosition.y
+
+                    // 아이쳄 정보 넣기
                 });
             }
         }
@@ -90,7 +98,9 @@ public class LoadButton : MonoBehaviour
                 newButton.name = buttonPosition.buttonName;
                 RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                newButton.AddComponent<DraggableButton>();
+                //newButton.AddComponent<DraggableButton>();
+
+                // 아이템 정보 가져와서 넣기
             }
         }
     }
