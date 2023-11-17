@@ -15,7 +15,7 @@ public class DraggableButton : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (parentCanvas != null)
+        if (gameObject == eventData.pointerCurrentRaycast.gameObject && parentCanvas != null)
         {
             rectTransform.anchoredPosition += eventData.delta / parentCanvas.scaleFactor;
         }

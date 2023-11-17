@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 {
-    private InteractionBtn interactionBtn;
+    private InteractionMakeBtn interactionBtn;
 
     private Item item;
 
@@ -22,7 +22,7 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        interactionBtn = GetComponentInParent<InteractionBtn>();
+        interactionBtn = GetComponentInParent<InteractionMakeBtn>();
     }
 
     void Update()
@@ -58,6 +58,7 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        print("cccccc");
         interactionBtn.SelectItem(item);
     }
 }

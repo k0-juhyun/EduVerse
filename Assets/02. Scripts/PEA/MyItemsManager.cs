@@ -30,6 +30,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
+        Debug.Log(gifload);
     }
 
     void Update()
@@ -46,6 +47,11 @@ public class MyItemsManager : MonoBehaviour
             print(bytes.Length);
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
+        }
+        else
+        {
+            myItems = new MyItems();
+            myItems.data = new List<Item>();
         }
 
         for (int i = 0; i < myItems.data.Count; i++)

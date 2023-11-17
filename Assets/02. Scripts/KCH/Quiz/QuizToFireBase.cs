@@ -5,6 +5,7 @@ using Firebase.Auth;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Voice.PUN;
 
 [System.Serializable]
 public class QuizInfo
@@ -63,6 +64,17 @@ public class QuizToFireBase : MonoBehaviour
 
     static public QuizToFireBase instance;
 
+    // 불러온 데이터 저장
+    [HideInInspector]
+    public QuizInfo LoadQuizInfo;
+
+    // 문제 데이터 저장.
+    [HideInInspector]   public string Unit;
+    [HideInInspector]   public string Question;
+    [HideInInspector]   public string Answer;
+    [HideInInspector]   public int submitQuizCnt;
+    [HideInInspector]   public int CorrectQuizCnt;
+
     private void Awake()
     {
         instance = this;
@@ -81,7 +93,7 @@ public class QuizToFireBase : MonoBehaviour
     }
 
     // 단원 문제 answer 정답인지 오답인지.
-    public void TestAddData(string unit_, string question_, string answer_, bool result_)
+    public void QuizDataSaveFun(string unit_, string question_, string answer_, bool result_)
     {
 
         database = FirebaseDatabase.DefaultInstance;
@@ -198,6 +210,56 @@ public class QuizToFireBase : MonoBehaviour
         {
             Debug.Log("퀴즈 정보 업데이트 실패 : " + task.Exception);
         }
+    }
+
+
+    // 데이터 가져오기.
+    // 학생관리 버튼을 누르게 되면 실행되게 하자 
+    // 매개변수의 학생 UID를 넣어야함.
+    public void GetQuizData(string str,GameObject obj)
+    {
+        database = FirebaseDatabase.DefaultInstance;
+
+        //// 사용자 ID 가져오기
+        //string userId = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+
+        // 가져올 경로 설정
+        string path = "Quiz_INFO/"+str;
+
+        // 해당 경로에서 데이터 가져오기
+        StartCoroutine(FetchQuizData(path, obj));
+    }
+
+    // Firebase에서 데이터 가져오기
+    IEnumerator FetchQuizData(string path, GameObject obj)
+    {
+        var task = database.GetReference(path).GetValueAsync();
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.Exception != null)
+        {
+            Debug.Log("데이터 읽기 실패: " + task.Exception);
+            yield break;
+        }
+
+        DataSnapshot snapshot = task.Result;
+
+        // 기존 데이터 불러오기
+        QuizInfo LoadQuizInfo = JsonUtility.FromJson<QuizInfo>(snapshot.GetRawJsonValue());
+
+        // 데이터 저장.
+        submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
+        CorrectQuizCnt = LoadQuizInfo.QuizCorrectAnswerCnt;
+
+        // 이게 아니지 
+        // 이 함수를 호출시킨 오브젝트의 student_QuizData를 가져와야함.
+        Debug.Log(obj);
+        obj.GetComponent<Student_QuizData>().StudentQuizInfo = LoadQuizInfo;
+
+    }
+    public void test(string str)
+    {
+        Debug.Log(str);
     }
 
 }
