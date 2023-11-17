@@ -12,7 +12,7 @@ public class semicircleUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            DOTween.To(() => semicircle.fillAmount, x => semicircle.fillAmount = x, 0.5f, 1f).SetEase(ease);
+            DOTween.To(() => semicircle.fillAmount, x => semicircle.fillAmount = x, 0.5f, 2f).SetEase(ease);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {

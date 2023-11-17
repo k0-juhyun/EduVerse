@@ -65,15 +65,15 @@ public class QuizToFireBase : MonoBehaviour
     static public QuizToFireBase instance;
 
     // 불러온 데이터 저장
-    QuizInfo LoadQuizInfo;
+    [HideInInspector]
+    public QuizInfo LoadQuizInfo;
 
     // 문제 데이터 저장.
-    string Unit;
-    string Question;
-    string Answer;
-    int submitQuizCnt;
-    int CorrectQuizCnt;
-
+    [HideInInspector]   public string Unit;
+    [HideInInspector]   public string Question;
+    [HideInInspector]   public string Answer;
+    [HideInInspector]   public int submitQuizCnt;
+    [HideInInspector]   public int CorrectQuizCnt;
 
     private void Awake()
     {
@@ -216,7 +216,7 @@ public class QuizToFireBase : MonoBehaviour
     // 데이터 가져오기.
     // 학생관리 버튼을 누르게 되면 실행되게 하자 
     // 매개변수의 학생 UID를 넣어야함.
-    public void GetQuizData(string str)
+    public void GetQuizData(string str,GameObject obj)
     {
         database = FirebaseDatabase.DefaultInstance;
 
@@ -224,14 +224,14 @@ public class QuizToFireBase : MonoBehaviour
         //string userId = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
 
         // 가져올 경로 설정
-        string path = "Quiz_INFO/27KHHFa2SWcs9Yo5L4A8zKOEls52";
+        string path = "Quiz_INFO/"+str;
 
         // 해당 경로에서 데이터 가져오기
-        StartCoroutine(FetchQuizData(path));
+        StartCoroutine(FetchQuizData(path, obj));
     }
 
     // Firebase에서 데이터 가져오기
-    IEnumerator FetchQuizData(string path)
+    IEnumerator FetchQuizData(string path, GameObject obj)
     {
         var task = database.GetReference(path).GetValueAsync();
         yield return new WaitUntil(() => task.IsCompleted);
@@ -251,9 +251,11 @@ public class QuizToFireBase : MonoBehaviour
         submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
         CorrectQuizCnt = LoadQuizInfo.QuizCorrectAnswerCnt;
 
-        Debug.Log(LoadQuizInfo.QuizAnswerCnt + " : " + LoadQuizInfo.QuizCorrectAnswerCnt);
+        // 이게 아니지 
+        // 이 함수를 호출시킨 오브젝트의 student_QuizData를 가져와야함.
+        Debug.Log(obj);
+        obj.GetComponent<Student_QuizData>().StudentQuizInfo = LoadQuizInfo;
 
-        Debug.Log(LoadQuizInfo.Unit_2.CorrectAnswer.Count);
     }
     public void test(string str)
     {
