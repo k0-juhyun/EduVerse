@@ -27,7 +27,9 @@ public class Student_QuizData : MonoBehaviour
 
         // 학생 UID를 줘야함.
 
-        //Debug.Log(QuizToFireBase.instance.submitQuizCnt);
+
+        //일단 테스트용
+        GetComponent<Button>().onClick.AddListener(() => QuizToFireBase.instance.GetQuizData(UID, MygameObject));
     }
 
 
