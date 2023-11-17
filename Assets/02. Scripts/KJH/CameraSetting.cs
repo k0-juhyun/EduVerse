@@ -53,7 +53,7 @@ public class CameraSetting : MonoBehaviourPun
 
     private void LateUpdate()
     {
-        UpdateCamera();
+        //UpdateCamera();
         HandleInput();
         FollowCamera();
     }
@@ -68,13 +68,13 @@ public class CameraSetting : MonoBehaviourPun
         }
     }
 
-    private void UpdateCamera()
-    {
-        if (photonView.IsMine)
-        {
-            TPS_Camera.gameObject.SetActive(!characterInteraction.isDrawing);
-        }
-    }
+    //private void UpdateCamera()
+    //{
+    //    if (photonView.IsMine)
+    //    {
+    //        TPS_Camera.gameObject.SetActive(!characterInteraction.isDrawing);
+    //    }
+    //}
 
     // 입력 처리
     private void HandleInput()
