@@ -145,7 +145,8 @@ public class VideoCreator : MonoBehaviour
             {
                 print("¼º°ø");
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
-                gifLoad.Show(gifPreviewImage, gifLoad.GetSpritesByFrame(videoData));
+                (Sprite[], float) gifInfo = gifLoad.GetSpritesByFrame(videoData);
+                gifLoad.Show(gifPreviewImage, gifInfo.Item1, gifInfo.Item2);
                 action();
                 gifPreviewPanel.SetActive(true);
             }

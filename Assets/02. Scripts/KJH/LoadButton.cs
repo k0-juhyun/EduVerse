@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 using System.IO;
 
 [System.Serializable]
@@ -97,6 +98,11 @@ public class LoadButton : MonoBehaviour
                 // 현재 보고 있는 페이지 저장 
                 currentSession.page = pdfViewer.CurrentPageIndex;
 
+                if(interactionBtn.Item == null)
+                {
+                    continue;
+                }
+
                 currentSession.buttonPositions.Add(new ButtonPosition
                 {
                     buttonName = child.name,
@@ -115,10 +121,10 @@ public class LoadButton : MonoBehaviour
         //UpdateSessionDropdown();
     }
 
-    public void LoadSelectedSession(bool isNext)
+    public void LoadSelectedSession(int curPage)
     {
         print("load");
-        print( isNext ? pdfViewer.CurrentPageIndex + 2 : pdfViewer.CurrentPageIndex - 2);
+        print( curPage);
         // 이전페이지에 있던 버튼들 싹 지우고 로드하기
         foreach(Transform tr in teachingData.transform)
         {
@@ -133,12 +139,14 @@ public class LoadButton : MonoBehaviour
 
             // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
             // 알아서 다음 or 이전 페이지로 계산
-            if((isNext ? pdfViewer.CurrentPageIndex + 2 : pdfViewer.CurrentPageIndex - 2) == buttonPositionData.page)
+            if(curPage == buttonPositionData.page)
             {
+                int buildIndex = SceneManager.GetActiveScene().buildIndex;
                 foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
                 //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                 {
-                    GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
+                    // 교과서 제작 페이지면 아이템 선택 버튼, 수업이면 아이템 사용 버튼 만들기
+                    GameObject newButton = Instantiate( buildIndex == 2  ? selectItemButtonPrefab : inClassButtonPrefab, teachingData.transform);
                     newButton.name = buttonPosition.buttonName;
                     RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
@@ -146,7 +154,18 @@ public class LoadButton : MonoBehaviour
 
                     // 저장된 아이템 정보 가져와서 넣기
                     //newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+
+                    // 수업시간이면 버튼 클릭 이벤트에 ShowItem 추가
+                    if(buildIndex == 4)
+                    {
+                        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    }
+
+                    // 아니면 저장된 아이템 정보 넣어주기
+                    else
+                    {
+                        newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
+                    }
                 }
             }
         }
@@ -162,7 +181,7 @@ public class LoadButton : MonoBehaviour
                 showItemRawImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.GIF:
-                gifLoad.Show(showItemImage, item.gifSprites);
+                gifLoad.Show(showItemImage, item.gifSprites, item.gifDelayTime);
                 showItemImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:

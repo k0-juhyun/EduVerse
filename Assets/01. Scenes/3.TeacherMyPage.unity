@@ -51368,6 +51368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424954786}
   - component: {fileID: 1424954785}
+  - component: {fileID: 1424954787}
   m_Layer: 5
   m_Name: PDFViewer
   m_TagString: Untagged
@@ -51453,6 +51454,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1424954787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424954784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 890b15d0cf2f3f642ae64a3e2b9613b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pdfViewer: {fileID: 1424954785}
+  nextPageBtn: {fileID: 1611352218}
+  prevPageBtn: {fileID: 599609760}
+  loadButton: {fileID: 2106049800}
 --- !u!1 &1434715176
 GameObject:
   m_ObjectHideFlags: 0
@@ -53341,6 +53358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1483474077}
   - component: {fileID: 1483474076}
+  - component: {fileID: 1483474078}
   m_Layer: 0
   m_Name: MyItemsManager
   m_TagString: Untagged
@@ -53375,6 +53393,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1483474078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483474075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3347b02decf9ae741b18014418288d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idx: 0
+  sprite: []
 --- !u!1 &1488350054
 GameObject:
   m_ObjectHideFlags: 0
@@ -75101,7 +75133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectItemButtonPrefab: {fileID: 1201656526869029854, guid: 7ffc989d1d10f494495ed965773b802a, type: 3}
-  inClassButtonPrefab: {fileID: 1201656526869029854, guid: 7db491842284ca7428b5335491d7a7f6, type: 3}
+  inClassButtonPrefab: {fileID: 1201656526869029854, guid: 6849129792459ce45b7f7f07cc111163, type: 3}
   teachingData: {fileID: 1444357651}
   sessionDropdown: {fileID: 0}
   showItemPanel: {fileID: 0}
