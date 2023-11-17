@@ -27,8 +27,8 @@ public class Customization : MonoBehaviour
 
     private bool isScrolling = false;
 
-    public Button changeClothButton;
-    public Button changeColorButton;
+    public GameObject clothGameObject;
+    public GameObject colorGameObject;
 
     [Space(10)]
     [Header("버튼")]
@@ -135,6 +135,9 @@ public class Customization : MonoBehaviour
 
     private void ToggleScrollViews(GameObject activeScrollView, Button activeButton, ref bool activeState)
     {
+        clothGameObject.SetActive(true);
+        colorGameObject.SetActive(false);
+
         // 다른 모든 스크롤 뷰의 상태를 false로 설정
         FindActivateScrollView(false);
 
@@ -236,15 +239,37 @@ public class Customization : MonoBehaviour
             CustomPart eyePart = Array.Find(customParts, part => part.partName == "눈");
             SetColor(eyePart, selectedColor);
         }
+        else if (mouthScrollView.activeSelf)
+        {
+            CustomPart mouthPart = Array.Find(customParts, part => part.partName == "입");
+            SetColor(mouthPart, selectedColor);
+        }
+        else if (clothScrollView.activeSelf)
+        {
+            CustomPart clothPart = Array.Find(customParts, part => part.partName == "상의");
+            SetColor(clothPart, selectedColor);
+        }
+        else if (mouthScrollView.activeSelf)
+        {
+            CustomPart pantPart = Array.Find(customParts, part => part.partName == "바지");
+            SetColor(pantPart, selectedColor);
+        }
+        else if (shoesScrollView.activeSelf)
+        {
+            CustomPart shoePart = Array.Find(customParts, part => part.partName == "신발");
+            SetColor(shoePart, selectedColor);
+        }
     }
 
     public void OnClickClothButton()
     {
-
+        clothGameObject.SetActive(true);
+        colorGameObject.SetActive(false);
     }
 
     public void OnClickColorButton()
     {
-
+        clothGameObject.SetActive(false);
+        colorGameObject.SetActive(true);
     }
 }
