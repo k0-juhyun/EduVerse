@@ -48,6 +48,10 @@ public class MyItemsManager : MonoBehaviour
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
         }
+        else
+        {
+            myItems.data = new List<Item>();
+        }
 
         for (int i = 0; i < myItems.data.Count; i++)
         {
