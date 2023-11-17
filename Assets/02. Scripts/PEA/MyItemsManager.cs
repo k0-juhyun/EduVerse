@@ -30,6 +30,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
+        Debug.Log(gifload);
     }
 
     void Update()
