@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Video;
+using UnityEngine.EventSystems;
 
-public class Interaction_Item : MonoBehaviour
+public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 {
+    private InteractionBtn interactionBtn;
+
     private Item item;
+
+    public Image image;
+    public RawImage rawImage;
+    public VideoPlayer videoPlayer;
 
     public Item Item
     {
@@ -13,7 +22,7 @@ public class Interaction_Item : MonoBehaviour
 
     void Start()
     {
-        
+        interactionBtn = GetComponentInParent<InteractionBtn>();
     }
 
     void Update()
@@ -27,15 +36,28 @@ public class Interaction_Item : MonoBehaviour
         switch (item.itemType)
         {
             case Item.ItemType.Image:
+                image.sprite = Sprite.Create(item.itemTexture, new Rect(0, 0, item.itemTexture.width, item.itemTexture.height), Vector2.zero);
+                image.preserveAspect = true;
+                image.gameObject.SetActive(true);
                 break;
             case Item.ItemType.GIF:
+                image.sprite = item.gifSprites[0];
+                image.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:
+                rawImage.texture = videoPlayer.targetTexture;
+                videoPlayer.url = item.itemPath;
+                rawImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Object:
                 break;
             default:
                 break;
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        interactionBtn.SelectItem(item);
     }
 }

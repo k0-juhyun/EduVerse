@@ -25,12 +25,15 @@ public class MyQuizStorage : MonoBehaviourPun
     public Correctanswercheck correctCheck;
     public Correctanswercheck incorrectCheck;
 
-    bool isGroundCheck=false;
+    bool isGroundCheck = false;
 
     private void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(Instance);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(Instance);
+        }
     }
 
 
@@ -53,7 +56,7 @@ public class MyQuizStorage : MonoBehaviourPun
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student_Ground);
 
-            quizPanel.GetComponent<RectTransform>().position = new Vector3(14,4,8);
+            quizPanel.GetComponent<RectTransform>().position = new Vector3(14, 4, 8);
             quizPanel.GetComponent<QuizGroundPanel>().quizdata(question_, answer_);
             //quizPanel의 문제와 정답을 등록해준다.
         }
@@ -95,7 +98,7 @@ public class MyQuizStorage : MonoBehaviourPun
 
             // 못푼 인원에 체크.
             correctAnswerCheck(name);
-            
+
         }
     }
 
@@ -105,18 +108,18 @@ public class MyQuizStorage : MonoBehaviourPun
         photonView.RPC(nameof(Photon_sendUserQuizData), RpcTarget.All, correct, DataBase.instance.user.name);
     }
     [PunRPC]
-    public void Photon_sendUserQuizData(bool correct,string name)
+    public void Photon_sendUserQuizData(bool correct, string name)
     {
         // 선생만 데이터 받게 설정
         if (DataBase.instance.user.isTeacher)
         {
             // 푼 이름.
-            Debug.Log(name+ " 오답 체크 : "+ correct);
+            Debug.Log(name + " 오답 체크 : " + correct);
 
             // 못 푼 인원에 들어가있는 유저 데이터 지우고
             if (correct)
                 correctCheck(name);
-            else 
+            else
                 incorrectCheck(name);
             // 푼 인원( 정답 오답 체크) 후 그 에 맞는 장소에 instantiate 한다.
             // text에 있는 이름을 가지고 일단은 하는걸로.

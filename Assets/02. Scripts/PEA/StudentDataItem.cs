@@ -9,7 +9,8 @@ using TMPro;
 public class StudentDataItem : MonoBehaviour
 {
     public TMP_Text nameText;
-    public TMP_Text studentNumText;
+    public TMP_Text studentNumText;                                                                                                                                                                                                                                            
+    public string uid;
 
     private void Start()
     {   
