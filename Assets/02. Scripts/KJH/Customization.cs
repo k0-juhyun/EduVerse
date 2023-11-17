@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,32 +25,42 @@ public class Customization : MonoBehaviour
 
     private GameObject lastClickedButtonParent;
 
-    public static bool isScrolling = false;
+    private bool isScrolling = false;
+
+    public Button changeClothButton;
+    public Button changeColorButton;
 
     [Space(10)]
     [Header("버튼")]
-    public Button 헤어버튼;
-    public Button 눈버튼;
-    public Button 입버튼;
-    public Button 의상버튼;
-    public Button 바지버튼;
-    public Button 신발버튼;
+    public Button hairButton;
+    public Button eyeButton;
+    public Button mouthButton;
+    public Button clothButton;
+    public Button pantButton;
+    public Button shoeButton;
 
     [Space(10)]
     [Header("스크롤뷰")]
-    public GameObject 헤어스크롤뷰;
-    public GameObject 눈스크롤뷰;
-    public GameObject 입스크롤뷰;
-    public GameObject 옷스크롤뷰;
-    public GameObject 바지스크롤뷰;
-    public GameObject 신발스크롤뷰;
+    public GameObject hairScrollView;
+    public GameObject eyeScrollView;
+    public GameObject mouthScrollView;
+    public GameObject clothScrollView;
+    public GameObject pantsScrollView;
+    public GameObject shoesScrollView;
 
-    public RectTransform 헤어스크롤뷰RectTrnasform;
-    public RectTransform 눈스크롤뷰RectTrnasform;
-    public RectTransform 입스크롤뷰RectTrnasform;
-    public RectTransform 옷스크롤뷰RectTrnasform;
-    public RectTransform 바지스크롤뷰RectTrnasform;
-    public RectTransform 신발스크롤뷰RectTrnasform;
+    private RectTransform hairScrollViewRectTrnasform;
+    private RectTransform eyeScrollViewRectTrnasform;
+    private RectTransform mouthScrollViewRectTrnasform;
+    private RectTransform clothScrollViewRectTrnasform;
+    private RectTransform pantsScrollViewRectTrnasform;
+    private RectTransform shoeScrollViewRectTrnasform;
+
+    public bool isHair;
+    public bool isEye;
+    public bool isMouth;
+    public bool isCloth;
+    public bool isPant;
+    public bool isShoe;
 
     public TMP_Text 현재커스텀부위;
 
@@ -103,35 +114,40 @@ public class Customization : MonoBehaviour
             DataBase.instance.myInfo.meshIndex.Add(customParts[i].currentIdx);
         }
 
-        헤어스크롤뷰RectTrnasform = 헤어스크롤뷰.GetComponent<RectTransform>();
-        눈스크롤뷰RectTrnasform = 눈스크롤뷰.GetComponent<RectTransform>();
-        입스크롤뷰RectTrnasform = 입스크롤뷰.GetComponent<RectTransform>();
-        옷스크롤뷰RectTrnasform = 옷스크롤뷰.GetComponent<RectTransform>();
-        바지스크롤뷰RectTrnasform = 바지스크롤뷰.GetComponent<RectTransform>();
-        신발스크롤뷰RectTrnasform = 신발스크롤뷰.GetComponent<RectTransform>();
+        hairScrollViewRectTrnasform = hairScrollView.GetComponent<RectTransform>();
+        eyeScrollViewRectTrnasform = eyeScrollView.GetComponent<RectTransform>();
+        mouthScrollViewRectTrnasform = mouthScrollView.GetComponent<RectTransform>();
+        clothScrollViewRectTrnasform = clothScrollView.GetComponent<RectTransform>();
+        pantsScrollViewRectTrnasform = pantsScrollView.GetComponent<RectTransform>();
+        shoeScrollViewRectTrnasform = shoesScrollView.GetComponent<RectTransform>();
     }
 
     private void Start()
     {
         // 버튼 리스너 설정
-        헤어버튼.onClick.AddListener(() => ToggleScrollViews(헤어스크롤뷰, 헤어버튼));
-        눈버튼.onClick.AddListener(() => ToggleScrollViews(눈스크롤뷰, 눈버튼));
-        입버튼.onClick.AddListener(() => ToggleScrollViews(입스크롤뷰, 입버튼));
-        의상버튼.onClick.AddListener(() => ToggleScrollViews(옷스크롤뷰, 의상버튼));
-        바지버튼.onClick.AddListener(() => ToggleScrollViews(바지스크롤뷰, 바지버튼));
-        신발버튼.onClick.AddListener(() => ToggleScrollViews(신발스크롤뷰, 신발버튼));
+        hairButton.onClick.AddListener(() => ToggleScrollViews(hairScrollView, hairButton, ref isHair));
+        eyeButton.onClick.AddListener(() => ToggleScrollViews(eyeScrollView, eyeButton, ref isEye));
+        mouthButton.onClick.AddListener(() => ToggleScrollViews(mouthScrollView, mouthButton, ref isMouth));
+        clothButton.onClick.AddListener(() => ToggleScrollViews(clothScrollView, clothButton, ref isCloth));
+        pantButton.onClick.AddListener(() => ToggleScrollViews(pantsScrollView, pantButton, ref isPant));
+        shoeButton.onClick.AddListener(() => ToggleScrollViews(shoesScrollView, shoeButton, ref isShoe));
     }
 
-    private void ToggleScrollViews(GameObject activeScrollView, Button activeButton)
+    private void ToggleScrollViews(GameObject activeScrollView, Button activeButton, ref bool activeState)
     {
-        isScrolling = activeScrollView.activeSelf;
+        // 다른 모든 스크롤 뷰의 상태를 false로 설정
+        FindActivateScrollView(false);
+
+        // 선택된 스크롤 뷰의 상태를 true로 설정
+        activeState = true;
+
         // 모든 스크롤 뷰 비활성화
-        헤어스크롤뷰.SetActive(false);
-        눈스크롤뷰.SetActive(false);
-        입스크롤뷰.SetActive(false);
-        옷스크롤뷰.SetActive(false);
-        바지스크롤뷰.SetActive(false);
-        신발스크롤뷰.SetActive(false);
+        hairScrollView.SetActive(false);
+        eyeScrollView.SetActive(false);
+        mouthScrollView.SetActive(false);
+        clothScrollView.SetActive(false);
+        pantsScrollView.SetActive(false);
+        shoesScrollView.SetActive(false);
 
         // 선택된 스크롤 뷰 활성화
         activeScrollView.SetActive(true);
@@ -139,6 +155,16 @@ public class Customization : MonoBehaviour
         print(activeScrollView);
         // 현재 커스텀 부위 텍스트 업데이트
         UpdateCurrentCustomPartText(activeButton);
+    }
+
+    private void FindActivateScrollView(bool isActive)
+    {
+        isHair = isActive;
+        isEye = isActive;
+        isMouth = isActive;
+        isCloth = isActive;
+        isPant = isActive;
+        isShoe = isActive;
     }
 
     private void ToggleButtonParentOutline(GameObject clickedButtonParent)
@@ -184,11 +210,41 @@ public class Customization : MonoBehaviour
         }
     }
 
-    private void SetColor(CustomPart part,  Color color)
+    private void SetColor(CustomPart part, Color color)
     {
-        if(part.customRenderer != null)
+        if (part.customRenderer != null)
         {
-            // 새로운 메터리얼을 생성해서 렌더러에 삽입
+            Material newMaterial = new Material(Shader.Find("Standard")); // 적절한 셰이더 사용
+            newMaterial.color = color;
+            Material[] materials = part.customRenderer.materials;
+            materials[0] = newMaterial; // 예시로 첫 번째 Material을 교체
+            part.customRenderer.materials = materials;
         }
+    }
+
+    public void ChangeColorBasedOnActiveScrollView(Button selectedButton)
+    {
+        Color selectedColor = selectedButton.GetComponent<Image>().color;
+
+        if (hairScrollView.activeSelf)
+        {
+            CustomPart hairPart = Array.Find(customParts, part => part.partName == "헤어");
+            SetColor(hairPart, selectedColor);
+        }
+        else if (eyeScrollView.activeSelf)
+        {
+            CustomPart eyePart = Array.Find(customParts, part => part.partName == "눈");
+            SetColor(eyePart, selectedColor);
+        }
+    }
+
+    public void OnClickClothButton()
+    {
+
+    }
+
+    public void OnClickColorButton()
+    {
+
     }
 }
