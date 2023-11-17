@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using System.IO;
 
 [System.Serializable]
 public class ButtonPositionData
 {
+    public int page;
     public List<ButtonPosition> buttonPositions = new List<ButtonPosition>();
 }
 
@@ -24,15 +26,41 @@ public class ButtonSessions
     public List<ButtonPositionData> sessions = new List<ButtonPositionData>();
 }
 
-
 public class LoadButton : MonoBehaviour
 {
-    public GameObject buttonPrefab;
+    private string filePath;
+    private ButtonSessions allSessions;
+
+    public GameObject selectItemButtonPrefab;           // 인터렉션할 아이템 선택하는 버튼
+    public GameObject inClassButtonPrefab;              // 수업시간에 아이템 사용할 버튼
+
+    [Space(10)]
     public GameObject teachingData;
     public Canvas canvas;
-    private string filePath;
     public Dropdown sessionDropdown; // 세션을 선택하는 드롭다운
-    private ButtonSessions allSessions;
+
+    [Space(10)]
+    public GameObject showItemPanel;
+    public Image showItemImage;
+    public RawImage showItemRawImage;
+    public GifLoad gifLoad;
+    public VideoPlayer videoPlayer;
+    public Button closeBtn;
+
+    [Space(10)]
+    public Paroxe.PdfRenderer.PDFViewer pdfViewer;
+
+    void Awake()
+    {
+        filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
+        LoadAllSessions();
+        UpdateSessionDropdown();
+    }
+
+    private void Start()
+    {
+        closeBtn.onClick.AddListener(CloseShowItem);
+    }
 
     public void OnClickCreateButton(Button clickedButton)
     {
@@ -46,17 +74,10 @@ public class LoadButton : MonoBehaviour
         //    newButton.name = "NewButton_" + newButton.GetInstanceID();
         //}
 
-        GameObject newButton = Instantiate(buttonPrefab, teachingData.transform);
+        GameObject newButton = Instantiate(selectItemButtonPrefab, teachingData.transform);
 
         // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
         newButton.name = "NewButton_" + newButton.GetInstanceID();
-    }
-
-    void Awake()
-    {
-        filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
-        LoadAllSessions();
-        UpdateSessionDropdown();
     }
 
     public void SaveCurrentSession()
@@ -68,14 +89,18 @@ public class LoadButton : MonoBehaviour
             if (child.GetComponent<Button>() != null)
             {
                 RectTransform rectTransform = child.GetComponent<RectTransform>();
-                InteractionBtn interactionBtn = child.GetComponent<InteractionBtn>();
+                InteractionMakeBtn interactionBtn = child.GetComponent<InteractionMakeBtn>();
+
+                // 현재 보고 있는 페이지 저장 
+                //currentSession.page = pdfViewer.CurrentPageIndex;
+
                 currentSession.buttonPositions.Add(new ButtonPosition
                 {
                     buttonName = child.name,
                     posX = rectTransform.anchoredPosition.x,
                     posY = rectTransform.anchoredPosition.y,
 
-                    // 아이템 정보 저장
+                    // 선택된 아이템 정보 저장
                     item = interactionBtn.Item
                 });
             }
@@ -91,21 +116,61 @@ public class LoadButton : MonoBehaviour
     {
         int selectedSessionIndex = sessionDropdown.value;
         if (selectedSessionIndex < allSessions.sessions.Count)
+        //foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
         {
             ButtonPositionData selectedSession = allSessions.sessions[selectedSessionIndex];
 
-            foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
-            {
-                GameObject newButton = Instantiate(buttonPrefab, teachingData.transform);
-                newButton.name = buttonPosition.buttonName;
-                RectTransform rectTransform = newButton.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                //newButton.AddComponent<DraggableButton>();
+            //if(pdfViewer.CurrentPageIndex == buttonPositionData.page)
+            //{
+                //foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
+                {
+                    GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
+                    newButton.name = buttonPosition.buttonName;
+                    RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+                    rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
+                    //newButton.AddComponent<DraggableButton>();
 
-                // 아이템 정보 가져와서 넣기
-                newButton.GetComponent<InteractionBtn>().Item = buttonPosition.item;
-            }
+                    // 저장된 아이템 정보 가져와서 넣기
+                    //newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                }
+            //}
         }
+    }
+
+    public void ShowItem(Item item)
+    {
+        switch (item.itemType)
+        {
+            case Item.ItemType.Image:
+                showItemRawImage.texture = item.itemTexture;
+                showItemImage.preserveAspect = true;
+                showItemRawImage.gameObject.SetActive(true);
+                break;
+            case Item.ItemType.GIF:
+                gifLoad.Show(showItemImage, item.gifSprites);
+                showItemImage.gameObject.SetActive(true);
+                break;
+            case Item.ItemType.Video:
+                videoPlayer.url = item.itemPath;
+                showItemRawImage.texture = videoPlayer.targetTexture;
+                videoPlayer.Play();
+                break;
+            case Item.ItemType.Object:
+                break;
+            default:
+                break;
+        }
+        showItemPanel.SetActive(true);
+    }
+
+    // 실행중인 아이템(이미지, GIF, 영상) 닫기
+    public void CloseShowItem()
+    {
+        showItemPanel.SetActive(false);
+        showItemImage.gameObject.SetActive(false);
+        showItemRawImage.gameObject.SetActive(false);
     }
 
     private void LoadAllSessions()

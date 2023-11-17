@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InteractionBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Item item;
     private Button btn;
