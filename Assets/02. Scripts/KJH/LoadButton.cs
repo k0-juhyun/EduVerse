@@ -215,6 +215,8 @@ public class LoadButton : MonoBehaviour
         else
         {
             allSessions = new ButtonSessions();
+            allSessions.sessions = new List<ButtonPositionData>();
+            print(allSessions.sessions.Count);
         }
     }
 
