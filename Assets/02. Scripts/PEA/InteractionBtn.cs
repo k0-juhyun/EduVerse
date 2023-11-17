@@ -8,6 +8,7 @@ public class InteractionBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 {
     [SerializeField] private Item item;
     private Button btn;
+    private bool isClick = false;
 
     private Vector3 pointerDownPos;
 
@@ -66,15 +67,21 @@ public class InteractionBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(transform.position == pointerDownPos)
+        if(isClick && transform.position == pointerDownPos)
         {
             ShowItemList(!itemList.activeSelf);
         }
+
+        isClick = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        pointerDownPos = transform.position;
+        if(gameObject == eventData.pointerCurrentRaycast.gameObject)
+        {
+            pointerDownPos = transform.position;
+            isClick = true;
+        }
     }
 
     public void Delete()
