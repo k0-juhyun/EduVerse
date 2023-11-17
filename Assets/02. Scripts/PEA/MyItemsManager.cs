@@ -50,6 +50,7 @@ public class MyItemsManager : MonoBehaviour
         }
         else
         {
+            myItems = new MyItems();
             myItems.data = new List<Item>();
         }
 
