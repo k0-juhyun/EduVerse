@@ -27,6 +27,7 @@ public class Item
     public Texture2D itemTexture;
     public byte[] gifItemBytes;
     public Sprite[] gifSprites;
+    public float gifDelayTime;
 
     public Item(ItemType itemType , string itemName, string itemPath ="")
     {
@@ -149,7 +150,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 GetComponentInChildren<RawImage>().texture = texture;
                 break;
             case Item.ItemType.GIF:
-                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;
+                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;
@@ -232,7 +233,8 @@ public class PEA_MyItemSlot : MonoBehaviour
                 break;
             case Item.ItemType.GIF:
                 useItem = Instantiate(itemPrefabs[0]);
-                useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath));
+                (Sprite[], float) gifInfo = useItem.GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath);
+                useItem.GetComponent<GifLoad>().Show(useItem.GetComponentInChildren<Image>(), gifInfo.Item1, gifInfo.Item2);
                 useItem.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
                 break;
             case Item.ItemType.Video:
