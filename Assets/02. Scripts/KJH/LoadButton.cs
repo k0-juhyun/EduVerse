@@ -62,7 +62,7 @@ public class LoadButton : MonoBehaviour
         closeBtn?.onClick.AddListener(CloseShowItem);
     }
 
-    public void OnClickCreateButton(Button clickedButton)
+    public void OnClickCreateButton()
     {
         //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
         //if (clickedButton.name == "Create")
@@ -215,6 +215,8 @@ public class LoadButton : MonoBehaviour
         else
         {
             allSessions = new ButtonSessions();
+            allSessions.sessions = new List<ButtonPositionData>();
+            print(allSessions.sessions.Count);
         }
     }
 

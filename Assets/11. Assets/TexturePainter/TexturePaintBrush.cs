@@ -15,6 +15,8 @@ namespace Rito.TexturePainter
     [DisallowMultipleComponent]
     public class TexturePaintBrush : MonoBehaviour
     {
+        private bool isDrawing = false;
+
         private Texture2D defaultTexture;
         public FlexibleColorPicker fcp;
         public Button eraseBtn;
@@ -70,12 +72,15 @@ namespace Rito.TexturePainter
         {
             UpdateBrushColorOnEditor();
 
-            if (Input.GetMouseButton(0) == false) return;
+            if (Input.GetMouseButton(0) == false)
+            {
+                isDrawing = false;
+                return;
+            }
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit)) // delete previous and uncomment for mouse painting
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit)) // delete previous and uncomment for mouse painting
             {
                 Collider currentCollider = hit.collider;
-                print(currentCollider.name);
                 if (currentCollider != null)
                 {
                     // 대상 참조 갱신
@@ -86,22 +91,40 @@ namespace Rito.TexturePainter
                         print(paintTarget.name);
                     }
 
-                    sameUvPoint = hit.textureCoord;
-                    Vector2 pixelUV = hit.textureCoord;
-                    pixelUV.x *= paintTarget.resolution;
-                    pixelUV.y *= paintTarget.resolution;
-                    paintTarget.DrawTexture(pixelUV.x, pixelUV.y, brushSize, CopiedBrushTexture);
                     // 동일한 지점에는 중첩하여 다시 그리지 않음
-                    //if (sameUvPoint != hit.lightmapCoord)
-                    //{
-                    //    print("sss");
-                    //}
-                    //else
-                    //{
-                    //    print("nnnn");
-                    //}
+                    if (sameUvPoint != hit.textureCoord)
+                    {
+                        Vector2 pixelUV = hit.textureCoord;
+                        pixelUV.x *= paintTarget.resolution;
+                        pixelUV.y *= paintTarget.resolution;
+
+                        Vector2 prevUV = new Vector2(sameUvPoint.x *= paintTarget.resolution, sameUvPoint.y *= paintTarget.resolution);
+                        if(isDrawing && Vector2.Distance(pixelUV, prevUV) > 1)
+                        {
+                            for (float lerpT = 0; lerpT <= 1; lerpT += 0.01f)
+                            {
+                                Vector2 lerpV2 = Vector2.Lerp(prevUV, pixelUV, lerpT);
+                                paintTarget.DrawTexture(lerpV2.x, lerpV2.y, brushSize, CopiedBrushTexture);
+                            }
+                        }
+
+                        paintTarget.DrawTexture(pixelUV.x, pixelUV.y, brushSize, CopiedBrushTexture);
+
+                        sameUvPoint = hit.textureCoord;
+                        isDrawing = true;
+                    }
+                }
+                else
+                {
+                    isDrawing = false;
                 }
             }
+            else
+            {
+                isDrawing = false;
+            }
+
+            print(isDrawing);
         }
         #endregion
         /***********************************************************************
