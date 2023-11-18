@@ -40,10 +40,10 @@ public class PDF_Page : MonoBehaviour
                 page += 2;
                 pdfViewer.GoToPage(page);
 
-                if (loadButton.gameObject.activeSelf)
-                {
+                //if (loadButton.gameObject.activeSelf)
+                //{
                     loadButton.LoadSelectedSession(page);
-                }
+                //}
             }
         }
     }
@@ -57,10 +57,10 @@ public class PDF_Page : MonoBehaviour
             page -= 2;
             pdfViewer.GoToPage(page);
 
-            if (loadButton.gameObject.activeSelf)
-            {
+            //if (loadButton.gameObject.activeSelf)
+            //{
                 loadButton.LoadSelectedSession(page);
-            }
+            //}
         }
     }
 }
