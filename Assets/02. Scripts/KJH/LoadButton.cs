@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
-using UnityEngine.SceneManagement;
 using System.IO;
 
 [System.Serializable]
@@ -37,6 +36,7 @@ public class LoadButton : MonoBehaviour
 
     [Space(10)]
     public GameObject teachingData;
+    public Canvas canvas;
     public Dropdown sessionDropdown; // 세션을 선택하는 드롭다운
 
     [Space(10)]
@@ -54,15 +54,15 @@ public class LoadButton : MonoBehaviour
     {
         filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
         LoadAllSessions();
-        //UpdateSessionDropdown();
+        UpdateSessionDropdown();
     }
 
     private void Start()
     {
-        closeBtn?.onClick.AddListener(CloseShowItem);
+        closeBtn.onClick.AddListener(CloseShowItem);
     }
 
-    public void OnClickCreateButton()
+    public void OnClickCreateButton(Button clickedButton)
     {
         //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
         //if (clickedButton.name == "Create")
@@ -73,10 +73,6 @@ public class LoadButton : MonoBehaviour
         //    // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
         //    newButton.name = "NewButton_" + newButton.GetInstanceID();
         //}
-
-        // 로드된 PDF파일이 없으면 리턴.
-        if (!pdfViewer.IsLoaded)
-            return;
 
         GameObject newButton = Instantiate(selectItemButtonPrefab, teachingData.transform);
 
@@ -96,12 +92,7 @@ public class LoadButton : MonoBehaviour
                 InteractionMakeBtn interactionBtn = child.GetComponent<InteractionMakeBtn>();
 
                 // 현재 보고 있는 페이지 저장 
-                currentSession.page = pdfViewer.CurrentPageIndex;
-
-                if(interactionBtn.Item == null)
-                {
-                    continue;
-                }
+                //currentSession.page = pdfViewer.CurrentPageIndex;
 
                 currentSession.buttonPositions.Add(new ButtonPosition
                 {
@@ -118,35 +109,23 @@ public class LoadButton : MonoBehaviour
         allSessions.sessions.Add(currentSession);
         string json = JsonUtility.ToJson(allSessions);
         File.WriteAllText(filePath, json);
-        //UpdateSessionDropdown();
+        UpdateSessionDropdown();
     }
 
-    public void LoadSelectedSession(int curPage)
+    public void LoadSelectedSession()
     {
-        print("load");
-        print( curPage);
-        // 이전페이지에 있던 버튼들 싹 지우고 로드하기
-        foreach(Transform tr in teachingData.transform)
+        int selectedSessionIndex = sessionDropdown.value;
+        if (selectedSessionIndex < allSessions.sessions.Count)
+        //foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
         {
-            Destroy(tr.gameObject);
-        }
+            ButtonPositionData selectedSession = allSessions.sessions[selectedSessionIndex];
 
-        //int selectedSessionIndex = sessionDropdown.value;
-        //if (selectedSessionIndex < allSessions.sessions.Count)
-        foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
-        {
-            //ButtonPositionData selectedSession = allSessions.sessions[selectedSessionIndex];
-
-            // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
-            // 알아서 다음 or 이전 페이지로 계산
-            if(curPage == buttonPositionData.page)
-            {
-                int buildIndex = SceneManager.GetActiveScene().buildIndex;
-                foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
-                //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
+            //if(pdfViewer.CurrentPageIndex == buttonPositionData.page)
+            //{
+                //foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                 {
-                    // 교과서 제작 페이지면 아이템 선택 버튼, 수업이면 아이템 사용 버튼 만들기
-                    GameObject newButton = Instantiate( buildIndex == 2  ? selectItemButtonPrefab : inClassButtonPrefab, teachingData.transform);
+                    GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
                     newButton.name = buttonPosition.buttonName;
                     RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
@@ -154,20 +133,9 @@ public class LoadButton : MonoBehaviour
 
                     // 저장된 아이템 정보 가져와서 넣기
                     //newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
-
-                    // 수업시간이면 버튼 클릭 이벤트에 ShowItem 추가
-                    if(buildIndex == 4)
-                    {
-                        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
-                    }
-
-                    // 아니면 저장된 아이템 정보 넣어주기
-                    else
-                    {
-                        newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
-                    }
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
                 }
-            }
+            //}
         }
     }
 
@@ -181,7 +149,7 @@ public class LoadButton : MonoBehaviour
                 showItemRawImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.GIF:
-                gifLoad.Show(showItemImage, item.gifSprites, item.gifDelayTime);
+                gifLoad.Show(showItemImage, item.gifSprites);
                 showItemImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:
@@ -215,8 +183,6 @@ public class LoadButton : MonoBehaviour
         else
         {
             allSessions = new ButtonSessions();
-            allSessions.sessions = new List<ButtonPositionData>();
-            print(allSessions.sessions.Count);
         }
     }
 
@@ -246,39 +212,24 @@ public class LoadButton : MonoBehaviour
         }
 
         // 드롭다운을 강제로 업데이트
-        //sessionDropdown.RefreshShownValue();
+        sessionDropdown.RefreshShownValue();
     }
 
     public void DeleteSelectedSession()
     {
-        //int selectedSessionIndex = sessionDropdown.value;
+        int selectedSessionIndex = sessionDropdown.value;
 
-        //// 선택된 세션을 리스트에서 제거
-        //if (selectedSessionIndex >= 0 && selectedSessionIndex < allSessions.sessions.Count)
-        //{
-        //    allSessions.sessions.RemoveAt(selectedSessionIndex);
-        //}
-
-        // 현재페이지에 있는 버튼들 전부 삭제
-        foreach (Transform tr in teachingData.transform)
+        // 선택된 세션을 리스트에서 제거
+        if (selectedSessionIndex >= 0 && selectedSessionIndex < allSessions.sessions.Count)
         {
-            Destroy(tr.gameObject);
-        }
-
-        // 현재 펼쳐있는 페이지의 인터렉션 정보 삭제
-        for (int i = 0; i < allSessions.sessions.Count; i++)
-        {
-            if(pdfViewer.CurrentPageIndex == allSessions.sessions[i].page)
-            {
-                allSessions.sessions.RemoveAt(i);
-            }
+            allSessions.sessions.RemoveAt(selectedSessionIndex);
         }
 
         // 변경된 세션 데이터를 저장
         SaveAllSessions();
 
         // 드롭다운 메뉴 업데이트
-        //UpdateSessionDropdown();
+        UpdateSessionDropdown();
     }
 
     private void SaveAllSessions()

@@ -34,7 +34,7 @@ public class StudentDB : MonoBehaviour
 
     void Start()
     {
-        backStudentBtn.onClick.AddListener(OnClicGoBackStudentBtn);
+        //backStudentBtn.onClick.AddListener(OnClicGoBackStudentBtn);
         backMyPageBtn.onClick.AddListener(OnClickGoBackMyPageBtn);
         database = FirebaseDatabase.DefaultInstance;
         GetUserDB();

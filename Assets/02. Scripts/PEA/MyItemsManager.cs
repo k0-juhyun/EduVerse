@@ -19,6 +19,7 @@ public class MyItemsManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadData();
         }
         else
         {
@@ -29,8 +30,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
-        print(gifload);
-        LoadData();
+        Debug.Log(gifload);
     }
 
     void Update()
@@ -67,9 +67,7 @@ public class MyItemsManager : MonoBehaviour
                     break;
                 case Item.ItemType.GIF:
                     byte[] gifBytes = File.ReadAllBytes(myItems.data[i].itemPath);
-                    (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
-                    myItems.data[i].gifSprites = gifInfo.Item1;
-                    myItems.data[i].gifDelayTime = gifInfo.Item2;
+                    myItems.data[i].gifSprites = gifload.GetSpritesByFrame(gifBytes);
                     break;
                 case Item.ItemType.Video:
                     break;
@@ -80,7 +78,6 @@ public class MyItemsManager : MonoBehaviour
             }
 
             myItemsDictionary.Add(myItems.data[i].itemPath, myItems.data[i]);
-            print(myItems.data[i].itemName);
         }
 
     }
@@ -118,9 +115,7 @@ public class MyItemsManager : MonoBehaviour
                 break;
             case Item.ItemType.GIF:
                 byte[] gifBytes = File.ReadAllBytes(item.itemPath);
-                (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
-                item.gifSprites = gifInfo.Item1;
-                item.gifDelayTime = gifInfo.Item2;
+                item.gifSprites =  gifload.GetSpritesByFrame(gifBytes);
                 break;
             case Item.ItemType.Video:
                 break;

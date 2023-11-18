@@ -10,6 +10,7 @@ public struct Quiz_
 {
     public string question;
     public string answer;
+    public string commentary;
 }
 public class MyQuizStorage : MonoBehaviourPun
 {

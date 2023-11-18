@@ -59,8 +59,7 @@ public class Market : MonoBehaviour
             case Item.ItemType.GIF:
                 previewImage.gameObject.SetActive(true);
                 GifLoad gifLoad = previewImage.GetComponent<GifLoad>();
-                (Sprite[], float) gifInfo = gifLoad.GetSpritesByFrame(item.itemPath);
-                gifLoad.Show(previewImage, gifInfo.Item1, gifInfo.Item2);
+                gifLoad.Show(previewImage, gifLoad.GetSpritesByFrame(item.itemPath));
                 previewImage.preserveAspect = true;
                 break;
             case Item.ItemType.Video:

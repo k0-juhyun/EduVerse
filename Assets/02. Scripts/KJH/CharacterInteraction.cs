@@ -101,7 +101,6 @@ public class CharacterInteraction : MonoBehaviourPun
         else if (other.gameObject.name == "Teacher Computer")
         {
             HandleTeacherComputerInteraction(other);
-            print("TT");
         }
     }
 
@@ -135,7 +134,6 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine)
         {
             characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
-            print(startStudy.enableCanvas);
         }
     }
 

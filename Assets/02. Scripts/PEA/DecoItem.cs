@@ -8,13 +8,13 @@ using Unity.VisualScripting;
 public class DecoItem : MonoBehaviourPun
 {
     Texture2D texture;
-    //PhotonView view;
+    PhotonView view;
     void Awake()
     {
-       //if(view == null)
-       // {
-       //     this.AddComponent<PhotonView>();
-       // }
+       if(view == null)
+        {
+            this.AddComponent<PhotonView>();
+        }
     }
     void Start()
     {
