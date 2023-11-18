@@ -21,7 +21,7 @@ public struct QuizData
 {
     public string quiz;
     public string answer;
-    public string commentary;
+    public string Commentary;
 }
 
 [System.Serializable]
@@ -186,6 +186,8 @@ public class VideoCreator : MonoBehaviour
                 // Json 형태로 local로 저장됌.
 
                 Debug.Log("퀴즈: " + quizData.quiz);
+                Debug.Log("퀴즈코멘트: " + quizData.Commentary);
+
                 // 특정 문자열 제거
                 string quiz_question = System.Text.RegularExpressions.Regex.Replace(quizData.quiz, @"퀴즈: |\(O/X\)", "");
                 QuestionText.text = quiz_question;
@@ -197,7 +199,7 @@ public class VideoCreator : MonoBehaviour
 
                 quizsavedata_.question = quiz_question;
                 quizsavedata_.answer = quiz_answer;
-                quizsavedata_.commentary = quizData.commentary;
+                quizsavedata_.commentary = quizData.Commentary;
 
                 // 리스트에 추가.
 
