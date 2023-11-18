@@ -21,12 +21,13 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     // MyQuizStorage에 퀴즈 담기
     Quiz_ quiz = new Quiz_();
-    public void Question_Answer(string title, string answer)
+
+    public void Question_Answer(string title, string answer,string commentary)
     {
         // 퀴즈 담기
         quiz.question = title;
         quiz.answer = answer;
-
+        quiz.commentary = commentary;
         question.text = title;
         if (answer=="O") O_object.SetActive(true);
         else X_object.SetActive(true);

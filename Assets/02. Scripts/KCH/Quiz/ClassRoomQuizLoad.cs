@@ -40,21 +40,9 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     string Question;
     string Answer;
 
-    public class AnotherClass
-    {
-        // 다른 클래스에서 델리게이트에 등록될 함수
-        public void CheckAnswer(string answer)
-        {
-            if (answer == "42")
-            {
-                Debug.Log("정답입니다!");
-            }
-            else
-            {
-                Debug.Log("틀렸습니다.");
-            }
-        }
-    }
+    // 해설은 여기 필요 없을듯
+    //string Commentary;
+
 
     private void Start()
     {
@@ -66,7 +54,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
             GameObject quiz_obj = Instantiate(QuizPrefab);
             quiz_obj.transform.parent = AddQuizViewport.transform;
             quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
-            MyQuizStorage.Instance.quizList[i].answer);
+            MyQuizStorage.Instance.quizList[i].answer, MyQuizStorage.Instance.quizList[i].commentary);
         }
         // 여기서 저장한 리스트 뽑아서 써야함.
 

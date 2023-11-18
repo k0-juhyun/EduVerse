@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections;
 using System;
 using UnityEngine.Video;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public struct ServerToJson
@@ -20,6 +21,7 @@ public struct QuizData
 {
     public string quiz;
     public string answer;
+    public string commentary;
 }
 
 [System.Serializable]
@@ -29,13 +31,14 @@ public struct QuizSaveData
     public string subject;
     public string question;
     public string answer;
+    public string commentary;
 }
 
 public class VideoCreator : MonoBehaviour
 {
     private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
 
-    private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz";
+    private string serverURL_QUIZ = "http://121.200.122.173:5051/chat/quiz2";
 
     private string serverURL_Video = "http://221.163.19.218:5055/video_crafter/text_2_video";
 
@@ -194,6 +197,7 @@ public class VideoCreator : MonoBehaviour
 
                 quizsavedata_.question = quiz_question;
                 quizsavedata_.answer = quiz_answer;
+                quizsavedata_.commentary = quizData.commentary;
 
                 // 리스트에 추가.
 
@@ -277,7 +281,7 @@ public class VideoCreator : MonoBehaviour
 
         string filepath = Application.persistentDataPath + "/myQuizData.txt";
 
-        SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer);
+        SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer, quizsavedata_.commentary);
 
         SaveSystem.Save(quizData, unit + " " + fileName);
 
