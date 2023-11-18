@@ -81,9 +81,14 @@ public class StudentDB : MonoBehaviour
         }
     }
 
-    public void ShowPersonalDB()
+    public void OffStudentDB()
     {
         personalDB.SetActive(true);
+    }
+
+
+    public void ShowPersonalDB()
+    {
         studentsDB.SetActive(false);
     }
 
