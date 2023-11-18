@@ -251,15 +251,12 @@ public class QuizToFireBase : MonoBehaviour
         submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
         CorrectQuizCnt = LoadQuizInfo.QuizCorrectAnswerCnt;
 
+
+        Debug.Log(submitQuizCnt);
+        Debug.Log(CorrectQuizCnt);
         // 이게 아니지 
         // 이 함수를 호출시킨 오브젝트의 student_QuizData를 가져와야함.
-        Debug.Log(obj);
         obj.GetComponent<Student_QuizData>().StudentQuizInfo = LoadQuizInfo;
 
     }
-    public void test(string str)
-    {
-        Debug.Log(str);
-    }
-
 }
