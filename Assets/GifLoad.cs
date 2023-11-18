@@ -33,7 +33,7 @@ public class GifLoad : MonoBehaviour
         }
     }
 
-    public (Sprite[], float) GetSpritesByFrame(string gifPath)
+    public Sprite[] GetSpritesByFrame(string gifPath)
     {
         if (File.Exists(gifPath))
         {
@@ -69,10 +69,10 @@ public class GifLoad : MonoBehaviour
                 sprite[i] = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
             }
         }
-        return (sprite, delayTime);
+        return sprite;
     }
 
-    public (Sprite[],float) /*Sprite[]*/ GetSpritesByFrame(byte[] gifBytes)
+    public Sprite[] GetSpritesByFrame(byte[] gifBytes)
     {
         this.gifBytes = gifBytes;
         gif = Gif.Decode(gifBytes);
@@ -105,16 +105,14 @@ public class GifLoad : MonoBehaviour
             sprite[i] = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
         }
 
-        //return sprite;
-        return (sprite, delayTime);
+        return sprite;
     }
 
-    public void Show(Image image, Sprite[] sprites, float gifDelayTime)
+    public void Show(Image image, Sprite[] sprites)
     {
         isShowing = true;
         this.image = image;
         this.sprite = sprites;
-        delayTime = gifDelayTime;
     }
 
     private void ShowGif()

@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections;
 using System;
 using UnityEngine.Video;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public struct ServerToJson
@@ -20,6 +21,7 @@ public struct QuizData
 {
     public string quiz;
     public string answer;
+    public string Commentary;
 }
 
 [System.Serializable]
@@ -29,13 +31,14 @@ public struct QuizSaveData
     public string subject;
     public string question;
     public string answer;
+    public string commentary;
 }
 
 public class VideoCreator : MonoBehaviour
 {
     private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
 
-    private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz";
+    private string serverURL_QUIZ = "http://121.200.122.173:5051/chat/quiz2";
 
     private string serverURL_Video = "http://221.163.19.218:5055/video_crafter/text_2_video";
 
@@ -145,8 +148,7 @@ public class VideoCreator : MonoBehaviour
             {
                 print("성공");
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
-                (Sprite[], float) gifInfo = gifLoad.GetSpritesByFrame(videoData);
-                gifLoad.Show(gifPreviewImage, gifInfo.Item1, gifInfo.Item2);
+                gifLoad.Show(gifPreviewImage, gifLoad.GetSpritesByFrame(videoData));
                 action();
                 gifPreviewPanel.SetActive(true);
             }
@@ -184,6 +186,8 @@ public class VideoCreator : MonoBehaviour
                 // Json 형태로 local로 저장됌.
 
                 Debug.Log("퀴즈: " + quizData.quiz);
+                Debug.Log("퀴즈코멘트: " + quizData.Commentary);
+
                 // 특정 문자열 제거
                 string quiz_question = System.Text.RegularExpressions.Regex.Replace(quizData.quiz, @"퀴즈: |\(O/X\)", "");
                 QuestionText.text = quiz_question;
@@ -195,6 +199,7 @@ public class VideoCreator : MonoBehaviour
 
                 quizsavedata_.question = quiz_question;
                 quizsavedata_.answer = quiz_answer;
+                quizsavedata_.commentary = quizData.Commentary;
 
                 // 리스트에 추가.
 
@@ -278,7 +283,7 @@ public class VideoCreator : MonoBehaviour
 
         string filepath = Application.persistentDataPath + "/myQuizData.txt";
 
-        SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer);
+        SaveData quizData = new SaveData(quizsavedata_.question, quizsavedata_.answer, quizsavedata_.commentary);
 
         SaveSystem.Save(quizData, unit + " " + fileName);
 

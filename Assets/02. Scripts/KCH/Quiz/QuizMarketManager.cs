@@ -71,7 +71,7 @@ public class QuizMarketManager : MonoBehaviour
                         Debug.Log(Unit_quiz.transform.GetChild(0).GetChild(0));
 
                         // 안에 이름을 넣음.
-                        quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question, saveData.answer);
+                        quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question, saveData.answer,saveData.commentary);
                         // 이름 바꿔야 함.
                     }
 

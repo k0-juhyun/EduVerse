@@ -20,9 +20,6 @@ public class MenuUI : MonoBehaviourPun
     public GameObject MyCanvas;
     public GameObject QuizMenu;
 
-    [Space(10)]
-    public PDF_Page pdfPage;
-
     GameObject quizPanel;
 
     bool isOpen_menu;
@@ -123,8 +120,6 @@ public class MenuUI : MonoBehaviourPun
 
         Debug.Log("Permission result: " + permission);
 
-        // pdf 로드하면 총 페이지수 받아오기
-        pdfPage.GetCurDocumentPageCount();
     }
 
     // Example code doesn't use this function but it is here for reference. It's recommended to ask for permissions manually using the

@@ -84,7 +84,7 @@ public class Voice : MonoBehaviourPunCallbacks
         switch (loadedSceneBuildIndex)
         {
             case 4: // ±≥Ω«
-            case 5: // ±§¿Â
+            case 6: // ±§¿Â
                 ActiveToggleCanvas(true);
                 recorder.enabled = true;
                 break;

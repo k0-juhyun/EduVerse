@@ -49,11 +49,12 @@ public class titleinfo
 {
     public string Title;
     public string Answer;
-
-    public titleinfo(string Title_, string Answer_)
+    public string Commentary;
+    public titleinfo(string Title_, string Answer_, string commentary_)
     {
         this.Title = Title_;
         this.Answer = Answer_;
+        Commentary = commentary_;
     }
 }
 
@@ -93,7 +94,7 @@ public class QuizToFireBase : MonoBehaviour
     }
 
     // 단원 문제 answer 정답인지 오답인지.
-    public void QuizDataSaveFun(string unit_, string question_, string answer_, bool result_)
+    public void QuizDataSaveFun(string unit_, string question_, string answer_,string commentary_, bool result_)
     {
 
         database = FirebaseDatabase.DefaultInstance;
@@ -103,11 +104,11 @@ public class QuizToFireBase : MonoBehaviour
 
         // 기존 데이터 가져오기
         string path = "Quiz_INFO/" + userId;
-        StartCoroutine(ReadExistingData(path, unit_, question_, answer_, result_));
+        StartCoroutine(ReadExistingData(path, unit_, question_, answer_, commentary_, result_));
     }
 
     // 현재 있는 데이터에 값 추가.
-    IEnumerator ReadExistingData(string path, string unit_, string question_, string answer_, bool result_)
+    IEnumerator ReadExistingData(string path, string unit_, string question_, string answer_,string commentary_, bool result_)
     {
         var task = database.GetReference(path).GetValueAsync();
         yield return new WaitUntil(() => task.IsCompleted);
@@ -138,7 +139,7 @@ public class QuizToFireBase : MonoBehaviour
         }
 
         // 이후에 새로운 데이터를 추가합니다.
-        titleinfo newQuestion = new titleinfo(question_, answer_);
+        titleinfo newQuestion = new titleinfo(question_, answer_, commentary_);
 
 
         // 맞으면
@@ -251,15 +252,12 @@ public class QuizToFireBase : MonoBehaviour
         submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
         CorrectQuizCnt = LoadQuizInfo.QuizCorrectAnswerCnt;
 
+
+        Debug.Log(submitQuizCnt);
+        Debug.Log(CorrectQuizCnt);
         // 이게 아니지 
         // 이 함수를 호출시킨 오브젝트의 student_QuizData를 가져와야함.
-        Debug.Log(obj);
         obj.GetComponent<Student_QuizData>().StudentQuizInfo = LoadQuizInfo;
 
     }
-    public void test(string str)
-    {
-        Debug.Log(str);
-    }
-
 }

@@ -53,11 +53,28 @@ public class CameraSetting : MonoBehaviourPun
 
     private void LateUpdate()
     {
-        //UpdateCamera();
+        UpdateCamera();
         HandleInput();
         FollowCamera();
     }
 
+    private bool IsTouchInsideScrollView(Vector2 touchPosition)
+    {
+        if (customization.헤어스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.눈스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.입스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.옷스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.바지스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+        if (customization.신발스크롤뷰RectTrnasform.rect.Contains(touchPosition))
+            return true;
+
+        return false;
+    }
     // 카메라가 target 오브젝트를 따라다님
     private void FollowCamera()
     {
@@ -68,13 +85,13 @@ public class CameraSetting : MonoBehaviourPun
         }
     }
 
-    //private void UpdateCamera()
-    //{
-    //    if (photonView.IsMine)
-    //    {
-    //        TPS_Camera.gameObject.SetActive(!characterInteraction.isDrawing);
-    //    }
-    //}
+    private void UpdateCamera()
+    {
+        if (photonView.IsMine)
+        {
+            TPS_Camera.gameObject.SetActive(!characterInteraction.isDrawing);
+        }
+    }
 
     // 입력 처리
     private void HandleInput()

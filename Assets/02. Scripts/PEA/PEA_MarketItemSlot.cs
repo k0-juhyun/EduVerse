@@ -44,7 +44,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 //GetComponentInChildren<RawImage>().texture = item.itemTexture;
                 break;
             case Item.ItemType.GIF:
-                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
+                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath)[0].texture;
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;

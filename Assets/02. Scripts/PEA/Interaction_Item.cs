@@ -9,7 +9,7 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 {
     private InteractionMakeBtn interactionBtn;
 
-    [SerializeField]private Item item;
+    private Item item;
 
     public Image image;
     public RawImage rawImage;

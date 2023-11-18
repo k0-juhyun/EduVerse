@@ -58,7 +58,7 @@ public class ScreenTransition : MonoBehaviourPun
             maincam.gameObject.tag = "Untagged";
             ShareCam.gameObject.tag = "MainCamera";
             camera = !camera;
-            //Voice.instance.ActiveToggleCanvas(false);
+            Voice.instance.ActiveToggleCanvas(false);
             // 오디오 리스너 에러
             transform.GetComponent<AudioListener>().enabled = true;
         }
@@ -66,7 +66,7 @@ public class ScreenTransition : MonoBehaviourPun
         else
         {
             // 시점 풀릴때
-            //canvas.SetActive(false);
+            canvas.SetActive(false);
             maincam.depth = 1;
             maincam.gameObject.tag = "MainCamera";
             ShareCam.gameObject.tag = "Untagged";
@@ -76,8 +76,7 @@ public class ScreenTransition : MonoBehaviourPun
             startStudy.isClick = false;
             startStudy.enableCanvas = true;
             startStudy._isDrawing = false;
-            startStudy._cameraSetting.TPS_Camera.gameObject.SetActive(true);
-            //Voice.instance.ActiveToggleCanvas(true);
+            Voice.instance.ActiveToggleCanvas(true);
             // 오디오 리스너 에러
 
             transform.GetComponent<AudioListener>().enabled = false;

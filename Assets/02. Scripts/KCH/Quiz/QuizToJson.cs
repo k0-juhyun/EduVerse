@@ -9,14 +9,16 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SaveData
 {
-    public SaveData(string _question, string _answer)
+    public SaveData(string _question, string _answer, string _commentary)
     {
         question = _question;
         answer = _answer;
+        commentary = _commentary;
     }
 
     public string question;
     public string answer;
+    public string commentary;
 }
 
 [System.Serializable]
