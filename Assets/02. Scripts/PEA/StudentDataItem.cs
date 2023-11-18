@@ -14,7 +14,7 @@ public class StudentDataItem : MonoBehaviour
 
     private void Start()
     {   
-        GetComponent<Button>().onClick.AddListener(ShowMyData);
+
     }
 
     public void SetStdentData(string name, string studentNum)
@@ -25,6 +25,6 @@ public class StudentDataItem : MonoBehaviour
 
     public void ShowMyData()
     {
-        StudentDB.instance.ShowPersonalDB();
+        //StudentDB.instance.ShowPersonalDB();
     }
 }
