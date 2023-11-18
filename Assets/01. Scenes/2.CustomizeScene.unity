@@ -22422,6 +22422,7 @@ RectTransform:
   - {fileID: 359727388}
   - {fileID: 1971005347}
   - {fileID: 1360286616}
+  - {fileID: 1186060290}
   - {fileID: 1692566220}
   - {fileID: 1608225029}
   m_Father: {fileID: 2052596864}
@@ -22580,12 +22581,12 @@ RectTransform:
   m_Children:
   - {fileID: 608971614}
   - {fileID: 259716869}
-  m_Father: {fileID: 1360286616}
-  m_RootOrder: 6
+  m_Father: {fileID: 1161867571}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000091552734, y: -4.0000134}
+  m_AnchoredPosition: {x: 4.0000916, y: 4.9999866}
   m_SizeDelta: {x: 490, y: 580}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1186060291
@@ -25687,7 +25688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1360286616}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: Cloth Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25711,7 +25712,6 @@ RectTransform:
   - {fileID: 967974890}
   - {fileID: 2144200615}
   - {fileID: 1334777833}
-  - {fileID: 1186060290}
   m_Father: {fileID: 1161867571}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30799,7 +30799,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1161867571}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -30946,7 +30946,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1608225030}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3749918496531069367}
+        m_TargetAssemblyTypeName: Customization, Assembly-CSharp
+        m_MethodName: OnClickColorButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1614433650
 GameObject:
   m_ObjectHideFlags: 0
@@ -32606,7 +32618,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1161867571}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -32753,7 +32765,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1692566221}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3749918496531069367}
+        m_TargetAssemblyTypeName: Customization, Assembly-CSharp
+        m_MethodName: OnClickClothButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1696423492
 GameObject:
   m_ObjectHideFlags: 0
@@ -45037,7 +45061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customParts:
-  - partName: "\uC55E\uBA38\uB9AC"
+  - partName: "\uD5E4\uC5B4"
     partObj: {fileID: 4512212364015413399}
     objName: 
     partList:
@@ -45082,7 +45106,7 @@ MonoBehaviour:
     - {fileID: 515438848}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uB4B7\uBA38\uB9AC"
+  - partName: "\uD5E4\uC5B4"
     partObj: {fileID: 8796940317171042757}
     objName: 
     partList:
@@ -45163,7 +45187,7 @@ MonoBehaviour:
     - {fileID: 1749559794}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC606\uBA38\uB9AC"
+  - partName: "\uD5E4\uC5B4"
     partObj: {fileID: 7890270069115683347}
     objName: 
     partList:
@@ -45208,7 +45232,7 @@ MonoBehaviour:
     - {fileID: 1026632355}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC624\uB978\uCABD \uB208"
+  - partName: "\uB208"
     partObj: {fileID: 7706758819113426103}
     objName: 
     partList:
@@ -45257,7 +45281,7 @@ MonoBehaviour:
     - {fileID: 924917179}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC67C\uCABD \uB208"
+  - partName: "\uB208"
     partObj: {fileID: 63556287579347851}
     objName: 
     partList:
@@ -45306,7 +45330,7 @@ MonoBehaviour:
     - {fileID: 924917179}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC624\uB978\uCABD \uB208\uC379"
+  - partName: "\uB208\uC379"
     partObj: {fileID: 5014812809428090820}
     objName: 
     partList:
@@ -45327,7 +45351,7 @@ MonoBehaviour:
     - {fileID: 1268486031}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC67C\uCABD \uB208\uC379"
+  - partName: "\uB208\uC379"
     partObj: {fileID: 4712022574376614081}
     objName: 
     partList:
@@ -45348,7 +45372,7 @@ MonoBehaviour:
     - {fileID: 1268486031}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC624\uB978\uCABD \uB208\uB3D9\uC790"
+  - partName: "\uB208\uB3D9\uC790"
     partObj: {fileID: 5032150201465676992}
     objName: 
     partList:
@@ -45385,7 +45409,7 @@ MonoBehaviour:
     - {fileID: 1418463078}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC67C\uCABD \uB208\uB3D9\uC790"
+  - partName: "\uB208\uB3D9\uC790"
     partObj: {fileID: 6622219323804873831}
     objName: 
     partList:
@@ -45467,7 +45491,7 @@ MonoBehaviour:
     - {fileID: 1743879763}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC154\uCE20 \uBAB8\uD1B5"
+  - partName: "\uC0C1\uC758"
     partObj: {fileID: 7784425526902664621}
     objName: 
     partList:
@@ -45550,7 +45574,7 @@ MonoBehaviour:
     partButton: []
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC7AC\uD0B7"
+  - partName: "\uC0C1\uC758"
     partObj: {fileID: 7172930520713864880}
     objName: 
     partList:
@@ -45748,7 +45772,7 @@ MonoBehaviour:
     - {fileID: 258521896}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC624\uB978\uCABD \uC2E0\uBC1C"
+  - partName: "\uC2E0\uBC1C"
     partObj: {fileID: 3425847509578414251}
     objName: 
     partList:
@@ -45789,7 +45813,7 @@ MonoBehaviour:
     - {fileID: 1754935802}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  - partName: "\uC67C\uCABD \uC2E0\uBC1C"
+  - partName: "\uC2E0\uBC1C"
     partObj: {fileID: 5981948046086599234}
     objName: 
     partList:
@@ -45830,8 +45854,8 @@ MonoBehaviour:
     - {fileID: 1754935802}
     currentIdx: 0
     customRenderer: {fileID: 0}
-  changeClothButton: {fileID: 1692566223}
-  changeColorButton: {fileID: 1608225032}
+  clothGameObject: {fileID: 1360286615}
+  colorGameObject: {fileID: 1186060289}
   hairButton: {fileID: 1531796716}
   eyeButton: {fileID: 650315122}
   mouthButton: {fileID: 1993601807}

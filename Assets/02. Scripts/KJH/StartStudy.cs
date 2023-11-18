@@ -15,16 +15,17 @@ public class StartStudy : MonoBehaviour
 
     private void Start()
     {
-        Btn_study.onClick.AddListener(OnStudyButtonClick);
+        Btn_study.onClick.AddListener(()=>OnStudyButtonClick());
     }
 
-    private void OnStudyButtonClick()
+    public void OnStudyButtonClick()
     {
         if (_isTeacherSit && !isClick)
         {
             isClick = true;
             enableCanvas = false;
             _isDrawing = true;
+            print("_isD" +  _isDrawing);
         }
     }
 
