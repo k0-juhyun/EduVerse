@@ -13,12 +13,12 @@ public class SaveData
     {
         question = _question;
         answer = _answer;
-        this.commentary = commentary;
+        this.Commentary = commentary;
     }
 
     public string question;
     public string answer;
-    public string commentary;
+    public string Commentary;
 }
 
 [System.Serializable]

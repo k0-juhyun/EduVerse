@@ -173,6 +173,10 @@ public class QuizSubmit_student : MonoBehaviour
                     Unit = extracted;
                 }
 
+                // 해설 정보 담기
+                Commentary = saveData.Commentary;
+                Debug.Log(Commentary + " : 이거 되야한다"); ;
+
                 // 앞에 단원 삭제
 
                 // 정답인지 오답인지 체크하고 그 오브젝트 체크.

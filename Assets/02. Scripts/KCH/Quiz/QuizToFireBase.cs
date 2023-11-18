@@ -58,6 +58,8 @@ public class titleinfo
     }
 }
 
+// 지금 테스트용으로 StudentDB에 넣어놈 나중에 뺴야됌.
+
 public class QuizToFireBase : MonoBehaviour
 {
     DatabaseReference reference;
