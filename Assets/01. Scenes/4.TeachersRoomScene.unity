@@ -4540,6 +4540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa787d0396bb2f45883e1c833c07a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loaderType: 0
   searchTypeButtons:
   - {fileID: 1941403905}
   - {fileID: 1916460478}
@@ -6197,6 +6198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcecb10db2d343446ae210f662ffad04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  QuizPanel_student: {fileID: 0}
+  QuizPanel_student_Ground: {fileID: 0}
   quizList: []
 --- !u!4 &294545201
 Transform:
@@ -19222,6 +19225,9 @@ MonoBehaviour:
   gifPreviewPanel: {fileID: 1477563491}
   gifLoad: {fileID: 689878794}
   gifPreviewImage: {fileID: 689878792}
+  videoPreviewPanel: {fileID: 0}
+  videoRawImage: {fileID: 0}
+  videoPlayer: {fileID: 0}
   gifCancelBtn: {fileID: 0}
   gifSaveBtn: {fileID: 0}
   TagToJson: {fileID: 1210522840}
@@ -35824,6 +35830,7 @@ MonoBehaviour:
   categories: {fileID: 834233767}
   previewImage: {fileID: 986750687}
   previewVideo_RawImaege: {fileID: 1027296414}
+  videoPlayer: {fileID: 0}
 --- !u!114 &1316428432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35836,6 +35843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa787d0396bb2f45883e1c833c07a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loaderType: 0
   searchTypeButtons:
   - {fileID: 1608829801}
   - {fileID: 2064846534}

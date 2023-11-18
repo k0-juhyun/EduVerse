@@ -175,15 +175,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             else if (scene.buildIndex == 5)
             {
-                spawnPos = new Vector3(-5.75f, 0, -1.85f);
-            }
-            else if (scene.buildIndex == 6)
-            {
-                spawnPos = new Vector3(12.5f, 0, 17.5f);
+                spawnPos = (DataBase.instance.user.isTeacher ? new Vector3(14, 1.4f, 10) : new Vector3(12.5f, 0, 17.5f));
+                spawnRot = (DataBase.instance.user.isTeacher ? Quaternion.Euler(0, 0, 0) : spawnRot);
                 PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
             }
 
-            Voice.instance.OnSceneLoaded(scene.buildIndex);
+            //Voice.instance.OnSceneLoaded(scene.buildIndex);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
