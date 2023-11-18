@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // - 히어라키창에 있는 의자 오브젝트를 태그를 이용해서 찾아서
 // - 의자 리스트를 만들어서 리스트에 넣고
@@ -35,7 +34,7 @@ public class CharacterInteraction : MonoBehaviourPun
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
 
-    public Text myNickNameTxt;
+    public TMP_Text myNickNameTxt;
 
     private string myNickName;
 
@@ -68,7 +67,7 @@ public class CharacterInteraction : MonoBehaviourPun
         Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
 
-        if(photonView.IsMine)
+        if (photonView.IsMine)
             myNickNameTxt.text = PhotonNetwork.LocalPlayer.NickName;
         else
             myNickNameTxt.text = photonView.Owner.NickName;
@@ -84,7 +83,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private void Update()
     {
         if (photonView.IsMine && Cam != null)
-            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward, 
+            myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward,
                 Cam.transform.rotation * Vector3.up);
 
     }
@@ -102,6 +101,7 @@ public class CharacterInteraction : MonoBehaviourPun
         else if (other.gameObject.name == "Teacher Computer")
         {
             HandleTeacherComputerInteraction(other);
+            print("TT");
         }
     }
 
@@ -135,6 +135,7 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine)
         {
             characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
+            print(startStudy.enableCanvas);
         }
     }
 
@@ -185,11 +186,16 @@ public class CharacterInteraction : MonoBehaviourPun
         Character.transform.position = new Vector3(position.x, y, position.z);
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeahcersRoom" && DataBase.instance.user.isTeacher)
+        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.user.isTeacher)
         {
-            PhotonNetwork.JoinLobby();
+            if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+                return;
+
+            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.JoinLobby();
             PhotonNetwork.LoadLevel("3.TeacherMyPage");
             //NetworkManager.instance.ChangeRoom("3.TeacherMyPage");
             //StartCoroutine(ILeaveRoomAndLoadScene("3.TeacherMyPage"));
@@ -201,10 +207,34 @@ public class CharacterInteraction : MonoBehaviourPun
             NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
         }
 
-        if(photonView.IsMine && other.gameObject.name == "GotoGround")
+        if (photonView.IsMine && other.gameObject.name == "GotoGround")
         {
+            //if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+            //    return;
+
+            //PhotonNetwork.LeaveRoom();
+            //StartCoroutine(IChangeRoom());
             NetworkManager.instance.ChangeRoom("5.GroundScene");
         }
+    }
+
+    private IEnumerator IChangeRoom()
+    {
+        yield return new WaitUntil(() => !PhotonNetwork.InRoom);
+
+        print("여기?");
+        // 마스터 서버에 재연결될 때까지 대기
+        PhotonNetwork.ConnectUsingSettings();
+
+        while (PhotonNetwork.InLobby)
+            yield return new WaitForSeconds(1);
+
+        print("조기?");
+
+        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+            yield return null;
+
+        NetworkManager.instance.JoinRoom("5.GroundScene");
     }
 
     [PunRPC]
@@ -295,6 +325,7 @@ public class CharacterInteraction : MonoBehaviourPun
             NetworkManager.instance.isCustom = true;
             NetworkManager.instance.enableChoose = true;
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel("LoadingScene");
             print("커스텀버튼");
         }
     }
