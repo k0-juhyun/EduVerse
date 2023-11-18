@@ -15456,7 +15456,6 @@ MonoBehaviour:
   HomePage: {fileID: 0}
   MyCanvas: {fileID: 0}
   QuizMenu: {fileID: 9062742565709445658, guid: b02a2f9c99e21f84a8ab2dd282cb897d, type: 3}
-  pdfPage: {fileID: 0}
 --- !u!114 &515212394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23968,6 +23967,7 @@ MonoBehaviour:
   selectItemButtonPrefab: {fileID: 1201656526869029854, guid: 7ffc989d1d10f494495ed965773b802a, type: 3}
   inClassButtonPrefab: {fileID: 1201656526869029854, guid: 6849129792459ce45b7f7f07cc111163, type: 3}
   teachingData: {fileID: 731037310}
+  canvas: {fileID: 0}
   sessionDropdown: {fileID: 518542134}
   showItemPanel: {fileID: 223350960}
   showItemImage: {fileID: 461385252}
@@ -28146,8 +28146,8 @@ Transform:
   - {fileID: 2098355502498166235}
   - {fileID: 3682432512461464579}
   - {fileID: 4785821817989357072}
-  - {fileID: 4350313732577363146}
   - {fileID: 8630018912171709559}
+  - {fileID: 4350313732577363146}
   - {fileID: 1651521296309031732}
   - {fileID: 3355314918338611605}
   - {fileID: 6101449147962134116}
@@ -28249,7 +28249,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 26a4f73ab7131da4698473242bbf33c3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e5c26eaefb93cb740b58bb8db921645b, type: 2}
+      objectReference: {fileID: 2100000, guid: 8446cb282e1f9f344b56bd75db83f0be, type: 2}
     - target: {fileID: 919132149155446097, guid: 26a4f73ab7131da4698473242bbf33c3, type: 3}
       propertyPath: m_Name
       value: "\uC5D0\uB4C0\uBC84\uC2A4 \uAC04\uD310 (1)"
@@ -43791,7 +43791,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.00021148965, y: 0}
+  m_AnchoredPosition: {x: 0.00003927541, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1532016052
@@ -59401,7 +59401,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 270399ea08968ff46aa2ad2f550a9b1d, type: 2}
+  - {fileID: 2100000, guid: fd46182a4fa9c2f45ae51bd47b4b497e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -59720,7 +59720,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 270399ea08968ff46aa2ad2f550a9b1d, type: 2}
+  - {fileID: 2100000, guid: fd46182a4fa9c2f45ae51bd47b4b497e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -60308,7 +60308,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 964196789}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4529872819824853726
 MeshFilter:
@@ -60628,7 +60628,6 @@ MonoBehaviour:
   _isDrawing: 0
   isClick: 0
   enableCanvas: 1
-  _cameraSetting: {fileID: 0}
 --- !u!1 &5365609998439483960
 GameObject:
   m_ObjectHideFlags: 0
@@ -65628,7 +65627,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 964196789}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8672248335073908097
 MeshFilter:
