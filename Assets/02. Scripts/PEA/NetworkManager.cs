@@ -93,32 +93,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string sceneName)
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
-        PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
-    }
-
-    public void ChangeRoom(string sceneName)
-    {
-        newRoomName = sceneName;
-        StartCoroutine(ChangeRoomCoroutine());
-    }
-
-    private IEnumerator ChangeRoomCoroutine()
-    {
-        PhotonNetwork.LeaveRoom();
-        while (PhotonNetwork.InRoom)
+        if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby)
         {
-            yield return null;
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
+            PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
         }
-
-        SceneManager.LoadScene("LoadingScene"); // 로딩 씬 이름
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
-
-        shouldJoinNewRoom = true;
+        else
+        {
+            // 마스터 서버에 재연결 시도
+            Debug.LogError("클라이언트가 마스터 서버에 연결되지 않았습니다. 재연결을 시도합니다.");
+        }
     }
 
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        print("방입장실패");
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 4; // 최대 플레이어 수 설정
+        PhotonNetwork.JoinRandomOrCreateRoom(null, 0, MatchmakingMode.FillRoom, null, null, "DefaultRoom", roomOptions);
+    }
 
     public override void OnConnectedToMaster()
     {
@@ -129,18 +125,29 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
-        print("로비들림");
+        print("로비");
     }
 
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-        PhotonNetwork.ConnectUsingSettings();
-        shouldJoinNewRoom = true;
+        PhotonNetwork.JoinLobby();
+
         if (isCustom)
-        {
             LoadScene(1);
-        }
+        //if (shouldJoinNewRoom)
+        //{
+        //    if (isCustom)
+        //    {
+        //        LoadScene(1);
+        //    }
+        //    else
+        //    {
+        //        PhotonNetwork.JoinLobby();
+        //        //JoinRoom(newRoomName);
+        //        shouldJoinNewRoom = false;
+        //    }
+        //}
     }
 
 
@@ -187,12 +194,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady 
-            && PhotonNetwork.InLobby && !isCustom && !enableChoose)
-        {
-            JoinRoom(newRoomName);
-            shouldJoinNewRoom = false;
-        }
+        //if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady
+        //    && PhotonNetwork.InLobby && !isCustom && !enableChoose)
+        //{
+        //    JoinRoom(newRoomName);
+        //    shouldJoinNewRoom = false;
+        //}
     }
 
     private void OnApplicationQuit()
