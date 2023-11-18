@@ -115,17 +115,36 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private IEnumerator IChangeRoomCoroutine()
     {
-        PhotonNetwork.LeaveRoom();
-        while (PhotonNetwork.InRoom)
+        print("연결상태: " + PhotonNetwork.NetworkClientState);
+        // 이미 방을 떠나고 있는지 확인
+        if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
         {
-            yield return null;
+            PhotonNetwork.LeaveRoom();
+            print("연결상태1: " + PhotonNetwork.NetworkClientState);
         }
 
-        SceneManager.LoadScene("LoadingScene"); // 로딩 씬 이름
+        // 방을 떠날 때까지 대기
+        yield return new WaitUntil(() => !PhotonNetwork.InRoom);
+
+        print("연결상태2: " + PhotonNetwork.NetworkClientState);
+        // 마스터 서버에 재연결
+        if (!PhotonNetwork.IsConnected)
+        {
+            print("연결상태3: " + PhotonNetwork.NetworkClientState);
+            PhotonNetwork.ConnectUsingSettings();
+            print("연결상태4: " + PhotonNetwork.NetworkClientState);
+            yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby);
+        }
+
+        print("연결상태5: " + PhotonNetwork.NetworkClientState);
+        SceneManager.LoadScene("LoadingScene");
+        print("연결상태6: " + PhotonNetwork.NetworkClientState);
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
 
+        print("연결상태7: " + PhotonNetwork.NetworkClientState);
         shouldJoinNewRoom = true;
     }
+
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {

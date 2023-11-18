@@ -28,11 +28,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    private void Update()
-    {
-        print("연결상태: " + PhotonNetwork.NetworkClientState);
-    }
-
     public void SaveCharacterInfo()
     {
         //if (photonView.IsMine)
