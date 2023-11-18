@@ -7,6 +7,7 @@ using Firebase.Auth;
 using Firebase.Database;
 using System;
 using UnityEngine.UI;
+using Firebase.Extensions;
 
 public class FireAuth : MonoBehaviour
 {
@@ -74,6 +75,33 @@ public class FireAuth : MonoBehaviour
                 return;
             }
 
+            //FirebaseDatabase.DefaultInstance.GetReference("Leaders").GetValueAsync().ContinueWithOnMainThread(task =>
+            //{
+            //    if (task.IsFaulted)
+            //    {
+            //        // Handle the error...
+            //    }
+            //    else if (task.IsCompleted)
+            //    {
+            //        DataSnapshot snapshot = task.Result;
+            //        // Do something with snapshot...
+
+            //        print("유저 정보 가져오기 성공 : " + task.Result.Value);
+
+            //        // json형식으로 가져와서 UserInfo 타입으로 바꿔줌
+            //        UserInfo user = JsonUtility.FromJson<UserInfo>(snapshot.GetRawJsonValue());
+            //        print(user.name);
+
+            //        // 가져온 유저정보 담아두기
+            //        DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
+            //        if (PhotonNetwork.IsConnectedAndReady)
+            //        {
+            //            PhotonNetwork.NickName = user.name;
+            //            PhotonNetwork.LoadLevel(1);
+            //        }
+            //    }
+            //});
+
             StartCoroutine(OnLogIn());
         }
         //그렇지 않으면
@@ -91,31 +119,28 @@ public class FireAuth : MonoBehaviour
     // 로그인 상태되면
     private IEnumerator OnLogIn()
     {
-        //if (SceneManager.GetActiveScene().buildIndex == 8)
-        //{
-        //    auth.SignOut();
-        //}
-        //else
-        //{
-        //yield return new WaitForSeconds(5);
         // 로그인한 유저의 정보 가져오기
-        var dataTask = database.GetReference("USER_INFO/").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+        var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+        print(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
         yield return new WaitUntil(() => dataTask.IsCompleted);
         if (dataTask.IsCompletedSuccessfully)
         {
             DataSnapshot userInfo = dataTask.Result;
 
-            print("유저 정보 가져오기 성공");
+            if(userInfo == null)
+            {
+                print("데이터 안들어옴");
+                yield return new WaitForSeconds(2f);
+                yield return OnLogIn();
+            }
+
+            print("유저 정보 가져오기 성공 : " + dataTask.Result.ChildrenCount);
+
+            // json형식으로 가져와서 UserInfo 타입으로 바꿔줌
             UserInfo user = JsonUtility.FromJson<UserInfo>(userInfo.GetRawJsonValue());
             print(user.name);
-            //if (user.isteacher)
-            //{
-            //    user = new UserInfo((string)userInfo.Child("/name").Value, true, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-            //}
-            //else
-            //{
-            //    user = new UserInfo((string)userInfo.Child("/name").Value, false, int.Parse(userInfo.Child("/securitynumber").Value.ToString()), (string)userInfo.Child("/school").Value, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), int.Parse(userInfo.Child("/studentNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-            //}
+
+            // 가져온 유저정보 담아두기
             DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
             if (PhotonNetwork.IsConnectedAndReady)
             {
@@ -129,8 +154,9 @@ public class FireAuth : MonoBehaviour
             auth.SignOut();
             failedLogInText.SetActive(true);
         }
-        //}
+
     }
+
 
     public void OnClickSingIn(string email, string password, System.Action action = null)
     {
