@@ -203,31 +203,37 @@ public class CharacterInteraction : MonoBehaviourPun
 
         if (other.gameObject.name == "BackToClass")
         {
-            PhotonNetwork.LeaveRoom();
-
+            //PhotonNetwork.LeaveRoom();
+            NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
         }
 
         if (photonView.IsMine && other.gameObject.name == "GotoGround")
         {
-            if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
-                return;
+            //if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+            //    return;
 
-            StartCoroutine(IChangeRoom());
-
+            //PhotonNetwork.LeaveRoom();
+            //StartCoroutine(IChangeRoom());
+            NetworkManager.instance.ChangeRoom("5.GroundScene");
         }
     }
 
     private IEnumerator IChangeRoom()
     {
-        PhotonNetwork.LeaveRoom();
         yield return new WaitUntil(() => !PhotonNetwork.InRoom);
 
         print("여기?");
         // 마스터 서버에 재연결될 때까지 대기
         PhotonNetwork.ConnectUsingSettings();
-        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby);
+
+        while (PhotonNetwork.InLobby)
+            yield return new WaitForSeconds(1);
 
         print("조기?");
+
+        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+            yield return null;
+
         NetworkManager.instance.JoinRoom("5.GroundScene");
     }
 

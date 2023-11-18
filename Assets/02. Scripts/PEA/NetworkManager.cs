@@ -93,18 +93,38 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string sceneName)
     {
-        if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby)
-        {
+        //if (PhotonNetwork.InLobby)
+        //{
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
             roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
             PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
-        }
-        else
+        //}
+        //else
+        //{
+        //    // 마스터 서버에 재연결 시도
+        //    Debug.LogError("클라이언트가 마스터 서버에 연결되지 않았습니다. 재연결을 시도합니다.");
+        //}
+    }
+
+    public void ChangeRoom(string sceneName)
+    {
+        newRoomName = sceneName;
+        StartCoroutine(IChangeRoomCoroutine());
+    }
+
+    private IEnumerator IChangeRoomCoroutine()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
         {
-            // 마스터 서버에 재연결 시도
-            Debug.LogError("클라이언트가 마스터 서버에 연결되지 않았습니다. 재연결을 시도합니다.");
+            yield return null;
         }
+
+        SceneManager.LoadScene("LoadingScene"); // 로딩 씬 이름
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
+
+        shouldJoinNewRoom = true;
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
