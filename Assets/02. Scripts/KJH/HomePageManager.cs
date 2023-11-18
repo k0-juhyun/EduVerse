@@ -46,7 +46,7 @@ public class HomePageManager : MonoBehaviour
     // 학생 관리
     public void OnStudentManageMentBtnClick()
     {
-        PhotonNetwork.LoadLevel(9);
+        PhotonNetwork.LoadLevel(8);
     }
 
     // 교과 자료, 나눔 마당
