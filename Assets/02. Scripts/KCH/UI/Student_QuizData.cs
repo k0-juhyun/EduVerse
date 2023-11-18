@@ -51,8 +51,6 @@ public class Student_QuizData : MonoBehaviour
     public void StudentQuizDataUpdateBtnClick()
     {
 
-        Debug.Log(StudentQuizInfo.QuizAnswerCnt);
-
         StartCoroutine(QuizdataUpdate());
     }
     IEnumerator QuizdataUpdate()
@@ -106,9 +104,13 @@ public class Student_QuizData : MonoBehaviour
     public void StudentUIDSaveBtnClick(string uid)
     {
         MygameObject = this.gameObject;
-
+        Debug.Log(uid);
         // 버튼을 눌렀을떄 사용자 UID와 오브젝트를 전달한다.
-        GetComponent<Button>().onClick.AddListener(() => QuizToFireBase.instance.GetQuizData(uid, MygameObject));
+        // 내가보기엔 등록이 안됌.
+        GetComponent<Button>().onClick.AddListener(() => {
+            Debug.Log("Listener added for GetQuizData");
+            QuizToFireBase.instance.GetQuizData(uid, MygameObject);
+        });
     }
 
     // 반원 평균내기.
