@@ -192,6 +192,9 @@ public class VideoCreator : MonoBehaviour
               
                 string quiz_answer = System.Text.RegularExpressions.Regex.Replace(quizData.answer, @"answer: ", "");
 
+                string quiz_commentary = System.Text.RegularExpressions.Regex.Replace(quizData.Commentary, @"맞습니다. ", "");
+
+                Debug.Log(quiz_commentary);
                 if (quiz_answer == "O") incorrect.SetActive(true);               
                 else if (quiz_answer == "X") wrong.SetActive(true);
 

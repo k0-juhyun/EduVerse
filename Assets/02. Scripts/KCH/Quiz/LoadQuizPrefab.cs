@@ -66,6 +66,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
         // quiz 저장소에서 가져다 씀
         MyQuizStorage.Instance.SelectQuiz(quiz.question, quiz.answer);
+        Debug.Log(quiz.question + " Load QuizPrefab " + quiz.answer);
 
     }
 
