@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PDF_Page : MonoBehaviour
+public class PDF_Page : MonoBehaviourPun
 {
     private int page = 0;
     private int curDocumentPageCount = 0;
@@ -42,8 +43,10 @@ public class PDF_Page : MonoBehaviour
 
                 //if (loadButton.gameObject.activeSelf)
                 //{
-                    loadButton.LoadSelectedSession(page);
+                loadButton.LoadSelectedSession(page);
                 //}
+
+                //photonView.RPC(nameof(LoadInteractionBtn), RpcTarget.All);
             }
         }
     }
@@ -61,6 +64,13 @@ public class PDF_Page : MonoBehaviour
             //{
                 loadButton.LoadSelectedSession(page);
             //}
+            //photonView.RPC(nameof(LoadInteractionBtn), RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    public void LoadInteractionBtn()
+    {
+        loadButton.LoadSelectedSession(page);
     }
 }

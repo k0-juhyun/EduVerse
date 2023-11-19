@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 using System.IO;
+using Photon.Pun;
 
 [System.Serializable]
 public class ButtonPositionData
@@ -27,11 +28,15 @@ public class ButtonSessions
     public List<ButtonPositionData> sessions = new List<ButtonPositionData>();
 }
 
-public class LoadButton : MonoBehaviour
+public class LoadButton : MonoBehaviourPun
 {
+    private string json;                  // 인터렉션 버튼 정보 json RPC로 넘겨줄거임
     private string filePath;
     private ButtonSessions allSessions;
 
+    public Button endCLassBtn;
+
+    [Space (10)]
     public GameObject selectItemButtonPrefab;           // 인터렉션할 아이템 선택하는 버튼
     public GameObject inClassButtonPrefab;              // 수업시간에 아이템 사용할 버튼
 
@@ -60,6 +65,7 @@ public class LoadButton : MonoBehaviour
     private void Start()
     {
         closeBtn?.onClick.AddListener(CloseShowItem);
+        endCLassBtn.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
     }
 
     public void OnClickCreateButton()
@@ -116,7 +122,7 @@ public class LoadButton : MonoBehaviour
         }
 
         allSessions.sessions.Add(currentSession);
-        string json = JsonUtility.ToJson(allSessions);
+        json = JsonUtility.ToJson(allSessions);
         File.WriteAllText(filePath, json);
         //UpdateSessionDropdown();
     }
@@ -125,49 +131,85 @@ public class LoadButton : MonoBehaviour
     {
         print("load");
         print( curPage);
-        // 이전페이지에 있던 버튼들 싹 지우고 로드하기
-        foreach(Transform tr in teachingData.transform)
-        {
-            Destroy(tr.gameObject);
-        }
 
-        //int selectedSessionIndex = sessionDropdown.value;
-        //if (selectedSessionIndex < allSessions.sessions.Count)
-        foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
-        {
-            //ButtonPositionData selectedSession = allSessions.sessions[selectedSessionIndex];
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
 
-            // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
-            // 알아서 다음 or 이전 페이지로 계산
-            if(curPage == buttonPositionData.page)
+        // 교과서 제작페이지
+        if(buildIndex == 2)
+        {
+            // 이전페이지에 있던 버튼들 싹 지우고 로드하기
+            DestroyAllButtons();
+
+            foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
             {
-                int buildIndex = SceneManager.GetActiveScene().buildIndex;
-                foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
-                //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
+                // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
+                // 알아서 다음 or 이전 페이지로 계산
+                if(curPage == buttonPositionData.page)
                 {
-                    // 교과서 제작 페이지면 아이템 선택 버튼, 수업이면 아이템 사용 버튼 만들기
-                    GameObject newButton = Instantiate( buildIndex == 2  ? selectItemButtonPrefab : inClassButtonPrefab, teachingData.transform);
-                    newButton.name = buttonPosition.buttonName;
-                    RectTransform rectTransform = newButton.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                    //newButton.AddComponent<DraggableButton>();
-
-                    // 저장된 아이템 정보 가져와서 넣기
-                    //newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
-
-                    // 수업시간이면 버튼 클릭 이벤트에 ShowItem 추가
-                    if(buildIndex == 4)
+                    foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                    //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                     {
-                        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
-                    }
-
-                    // 아니면 저장된 아이템 정보 넣어주기
-                    else
-                    {
-                        newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
+                            GameObject newButton = Instantiate(selectItemButtonPrefab, teachingData.transform);
+                            newButton.name = buttonPosition.buttonName;
+                            RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+                            rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
+                            newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
                     }
                 }
             }
+        }
+
+        // 교실(수업)
+        else
+        {
+            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+        }
+
+
+    }
+
+    [PunRPC]
+    public void LoadInteractionRPC(string json, int curPage)
+    {
+        print("rpcrpcrpc");
+
+        DestroyAllButtons();
+
+        ButtonSessions buttonSessions = JsonUtility.FromJson<ButtonSessions>(json);
+
+        foreach (ButtonPositionData buttonPositionData in buttonSessions.sessions)
+        {
+            // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
+            // 알아서 다음 or 이전 페이지로 계산
+            if (curPage == buttonPositionData.page)
+            {
+                foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                {
+                    GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
+                    newButton.name = buttonPosition.buttonName;
+                    RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+                    rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
+
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                }
+            }
+        }
+    }
+
+    public void DestroyAllButtons()
+    {
+        foreach (Transform tr in teachingData.transform)
+        {
+            Destroy(tr.gameObject);
+        }
+    }
+
+    [PunRPC]
+    public void DestroyAllButtonsRPC()
+    {
+        foreach (Transform tr in teachingData.transform)
+        {
+            Destroy(tr.gameObject);
         }
     }
 
@@ -209,7 +251,7 @@ public class LoadButton : MonoBehaviour
     {
         if (File.Exists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            json = File.ReadAllText(filePath);
             allSessions = JsonUtility.FromJson<ButtonSessions>(json);
         }
         else
@@ -283,7 +325,7 @@ public class LoadButton : MonoBehaviour
 
     private void SaveAllSessions()
     {
-        string json = JsonUtility.ToJson(allSessions);
+        json = JsonUtility.ToJson(allSessions);
         File.WriteAllText(filePath, json);
     }
 }

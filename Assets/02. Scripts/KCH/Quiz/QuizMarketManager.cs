@@ -45,7 +45,7 @@ public class QuizMarketManager : MonoBehaviour
         // Unit 단원
 
         // viewport 밑에 오브젝트가 있으면 로드 안하는걸로 하자 
-        if(Unit_quiz.transform.GetChild(0).childCount==0)
+        if(Unit_quiz.transform.GetChild(0).GetChild(0).childCount==0)
         {
 
             List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
@@ -66,9 +66,9 @@ public class QuizMarketManager : MonoBehaviour
                         Debug.Log("실행");
                         GameObject quiz_obj = Instantiate(QuizPrefab);
 
-                        quiz_obj.transform.parent = Unit_quiz.transform.GetChild(0);
+                        quiz_obj.transform.parent = Unit_quiz.transform.GetChild(0).GetChild(0);
 
-                        Debug.Log(Unit_quiz.transform.GetChild(0).GetChild(0));
+                        Debug.Log("여기에 문제 "+Unit_quiz.transform.GetChild(0).GetChild(0));
 
                         // 안에 이름을 넣음.
                         quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question, saveData.answer);

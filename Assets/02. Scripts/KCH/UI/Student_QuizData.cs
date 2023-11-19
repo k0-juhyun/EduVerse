@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +23,8 @@ public class Student_QuizData : MonoBehaviour
 
     [HideInInspector]
     public string UID;
+
+    public GameObject QuizdataCanvs;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,30 +32,128 @@ public class Student_QuizData : MonoBehaviour
 
         // 학생 UID를 줘야함.
 
-        //Debug.Log(QuizToFireBase.instance.submitQuizCnt);
+        //일단 테스트용
+        //GetComponent<Button>().onClick.AddListener(() => QuizToFireBase.instance.GetQuizData("27KHHFa2SWcs9Yo5L4A8zKOEls52", MygameObject));
+        GetComponent<Button>().onClick.AddListener(StudentQuizDataUpdateBtnClick);
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            Debug.Log(StudentQuizInfo.QuizCorrectAnswerCnt);
+            StudentUIDSaveBtnClick("27KHHFa2SWcs9Yo5L4A8zKOEls52");
         }
     }
 
     // 이 함수를 실행시켜줘야지.
-    public void test()
+    public void StudentQuizDataUpdateBtnClick()
     {
 
-        Debug.Log(StudentQuizInfo.QuizCorrectAnswerCnt);
+        StartCoroutine(QuizdataUpdate());
+    }
+    IEnumerator QuizdataUpdate()
+    {
+        // 임의로 1초 기다림
+        // StudentQuizInfo 로드 시간을 위해.
+        StudentDB.instance.OffStudentDB();
+        yield return new WaitForSeconds(0.3f);
+
+        // 씬에 있는 오브젝트들 값을 바꾸든지
+        // 아님 생성해서 하든지. 어떻게 할까.
+
+        // 오브젝트 이름으로 가져옴.
+        GameObject quizCanvas = GameObject.Find("영역별 점수");
+
+
+        // string 값이 null이 되면 NaN으로 뜸.
+        // 퀴즈를 안푼 단원들은 다 널값으로 해줘야 함..
+        // 단원별 평균
+
+        // 복제한 오브젝트 StudentQuizDB 스크립트 가져옴.
+        StudentQuizDB QuizDB = quizCanvas.GetComponent<StudentQuizDB>();
+        Debug.Log(QuizDB);
+
+        // 단원별 반원 그래프.
+        QuizDB.Unit_1.semicircleTween(
+            (average(StudentQuizInfo.Unit_1) * 0.5f));
+        QuizDB.Unit_2.semicircleTween(
+            (average(StudentQuizInfo.Unit_2) * 0.5f));
+        QuizDB.Unit_3.semicircleTween(
+            (average(StudentQuizInfo.Unit_3) * 0.5f));
+        QuizDB.Unit_4.semicircleTween(
+            (average(StudentQuizInfo.Unit_4) * 0.5f));
+        QuizDB.Unit_5.semicircleTween(
+            (average(StudentQuizInfo.Unit_5) * 0.5f));
+
+        // 단원별 평균
+        QuizDB.Unit_1_Average.text =
+            StudentQuizInfo.Unit_1.CorrectAnswer.Count.ToString() + "/" +
+            (StudentQuizInfo.Unit_1.CorrectAnswer.Count + StudentQuizInfo.Unit_1.IncorrectAnswer.Count).ToString();
+        QuizDB.Unit_2_Average.text =
+            StudentQuizInfo.Unit_2.CorrectAnswer.Count.ToString() + "/" +
+            (StudentQuizInfo.Unit_2.CorrectAnswer.Count + StudentQuizInfo.Unit_2.IncorrectAnswer.Count).ToString();
+        QuizDB.Unit_3_Average.text =
+            StudentQuizInfo.Unit_3.CorrectAnswer.Count.ToString() + "/" +
+            (StudentQuizInfo.Unit_3.CorrectAnswer.Count + StudentQuizInfo.Unit_3.IncorrectAnswer.Count).ToString();
+        QuizDB.Unit_4_Average.text =
+            StudentQuizInfo.Unit_4.CorrectAnswer.Count.ToString() + "/" +
+            (StudentQuizInfo.Unit_4.CorrectAnswer.Count + StudentQuizInfo.Unit_4.IncorrectAnswer.Count).ToString();
+        QuizDB.Unit_5_Average.text =
+            StudentQuizInfo.Unit_5.CorrectAnswer.Count.ToString() + "/" +
+            (StudentQuizInfo.Unit_5.CorrectAnswer.Count + StudentQuizInfo.Unit_5.IncorrectAnswer.Count).ToString();
+
+
+
+        List<titleinfo> a = StudentQuizInfo.Unit_1.CorrectAnswer;
+        
+
+        // 총 푼 개수.
+        QuizDB.CorrectCnt_AnswerCnt.text = StudentQuizInfo.QuizCorrectAnswerCnt.ToString() + "/" + StudentQuizInfo.QuizAnswerCnt.ToString();
+
+        // 전체 평균
+        // 0으로 못 나누기 때문에
+        if((float)StudentQuizInfo.QuizAnswerCnt == 0)
+        {
+            QuizDB.Average.text = "0";
+        }
+        else
+        {
+        QuizDB.Average.text =
+            ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString();
+        }
+
+
+        // 그전에 오답 QuizDB 이 컴포넌트에 quizinfo에 관한 데이터 넘겨줌.
+        QuizDB.studentQuizinfo = StudentQuizInfo;
+
+        // 계산하고 적용하고 이 오브젝트가 있는 패널 끄기.
+        StudentDB.instance.ShowPersonalDB();
+
     }
 
     // UID 받아 버튼 등록.
     public void StudentUIDSaveBtnClick(string uid)
     {
+        MygameObject = this.gameObject;
+        Debug.Log(uid);
         // 버튼을 눌렀을떄 사용자 UID와 오브젝트를 전달한다.
-        GetComponent<Button>().onClick.AddListener(() => QuizToFireBase.instance.GetQuizData(uid, MygameObject));
+        // 내가보기엔 등록이 안됌.
+        GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Debug.Log("Listener added for GetQuizData");
+            QuizToFireBase.instance.GetQuizData(uid, MygameObject);
+        });
+    }
+
+    // 반원 평균내기.
+    float average(answerinfo answerinfo)
+    {
+        float correctCount = (float)answerinfo.CorrectAnswer.Count;
+        float totalCount = correctCount + (float)answerinfo.IncorrectAnswer.Count;
+
+        float result = totalCount != 0 ? correctCount / totalCount : 0f;
+        return result;
     }
 }

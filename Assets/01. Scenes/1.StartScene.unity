@@ -2112,6 +2112,7 @@ GameObject:
   - component: {fileID: 756983462}
   - component: {fileID: 756983461}
   - component: {fileID: 756983463}
+  - component: {fileID: 756983464}
   m_Layer: 0
   m_Name: QuizManager
   m_TagString: Untagged
@@ -2171,6 +2172,41 @@ MonoBehaviour:
   sceneViewId: 670
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &756983464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756983460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6a445c7d7a36b48a6cf03be521162c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoadQuizInfo:
+    QuizAnswerCnt: 0
+    QuizCorrectAnswerCnt: 0
+    Unit_1:
+      CorrectAnswer: []
+      IncorrectAnswer: []
+    Unit_2:
+      CorrectAnswer: []
+      IncorrectAnswer: []
+    Unit_3:
+      CorrectAnswer: []
+      IncorrectAnswer: []
+    Unit_4:
+      CorrectAnswer: []
+      IncorrectAnswer: []
+    Unit_5:
+      CorrectAnswer: []
+      IncorrectAnswer: []
+  Unit: 
+  Question: 
+  Answer: 
+  submitQuizCnt: 0
+  CorrectQuizCnt: 0
 --- !u!1 &811312583
 GameObject:
   m_ObjectHideFlags: 0
