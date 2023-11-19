@@ -109,7 +109,7 @@ public class FireAuth : MonoBehaviour
         {
             print("로그아웃 상태");
             int curSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-            if(curSceneBuildIndex != 0 && curSceneBuildIndex != 8)
+            if(curSceneBuildIndex != 0 && curSceneBuildIndex != 7)
             {
                 PhotonNetwork.LoadLevel(0);
             }
