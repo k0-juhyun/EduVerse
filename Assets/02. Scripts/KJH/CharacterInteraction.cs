@@ -28,7 +28,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
-    private Rigidbody rb;
+    public Rigidbody rb;
 
     [HideInInspector] public bool _isSit;
     private bool isOpenUI;
@@ -53,7 +53,6 @@ public class CharacterInteraction : MonoBehaviourPun
         anim = Character.GetComponent<Animator>();
         characterMovement = GetComponent<CharacterMovement>();
         cameraSetting = GetComponentInChildren<CameraSetting>();
-        rb = GetComponentInChildren<Rigidbody>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
@@ -92,7 +91,23 @@ public class CharacterInteraction : MonoBehaviourPun
 
     }
 
-    private void OnTriggerStay(Collider other)
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Chair"))
+    //    {
+    //        HandleChairInteraction(other);
+    //    }
+    //    else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
+    //    {
+    //        HandleTeacherChairInteraction(other);
+    //    }
+    //    else if (other.gameObject.name == "Teacher Computer")
+    //    {
+    //        HandleTeacherComputerInteraction(other);
+    //    }
+    //}
+
+    public void HandleTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Chair"))
         {
@@ -108,12 +123,35 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
+    public void HandleTriggerEnter(Collider other)
+    {
+        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom"
+            && DataBase.instance.user.isTeacher)
+        {
+            if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+                return;
+
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel("3.TeacherMyPage");
+        }
+
+        if (other.gameObject.name == "BackToClass")
+        {
+            NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+        }
+
+        if (photonView.IsMine && other.gameObject.name == "GotoGround")
+        {
+            NetworkManager.instance.ChangeRoom("5.GroundScene");
+        }
+    }
+
     private void HandleChairInteraction(Collider chair)
     {
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
-            print("학생");
             SitDown(chair);
+            _isSit = true;
         }
         else
         {
@@ -125,8 +163,8 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
-            print("선생");
             SitDownTeacher(chair);
+            _isSit = true;
         }
         else
         {
@@ -189,28 +227,29 @@ public class CharacterInteraction : MonoBehaviourPun
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
-            && DataBase.instance.user.isTeacher)
-        {
-            if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
-                return;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
+    //        && DataBase.instance.user.isTeacher)
+    //    {
+    //        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+    //            return;
 
-            PhotonNetwork.LeaveRoom();
-            PhotonNetwork.LoadLevel("3.TeacherMyPage");
-        }
+    //        PhotonNetwork.LeaveRoom();
+    //        PhotonNetwork.LoadLevel("3.TeacherMyPage");
+    //    }
 
-        if (other.gameObject.name == "BackToClass")
-        {
-            NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
-        }
+    //    if (other.gameObject.name == "BackToClass")
+    //    {
+    //        NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+    //    }
 
-        if (photonView.IsMine && other.gameObject.name == "GotoGround")
-        {
-            NetworkManager.instance.ChangeRoom("5.GroundScene");
-        }
-    }
+    //    if (photonView.IsMine && other.gameObject.name == "GotoGround")
+    //    {
+    //        NetworkManager.instance.ChangeRoom("5.GroundScene");
+    //    }
+    //}
+
 
     [PunRPC]
     private void animPlayRPC(string animation)
