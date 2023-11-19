@@ -193,7 +193,7 @@ public class QuizSubmit_student : MonoBehaviourPun
                 // 앞에 단원 삭제
 
                 // 정답인지 오답인지 체크하고 그 오브젝트 체크.
-                photonView.RPC(nameof(SendUnit_Commentary),RpcTarget.All, Question);
+                photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
             }
         }
     }

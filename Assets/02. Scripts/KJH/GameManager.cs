@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        print("현재 연결 상태: "+PhotonNetwork.NetworkClientState);
+        //print("현재 연결 상태: "+PhotonNetwork.NetworkClientState);
     }
     public void SaveCharacterInfo()
     {
