@@ -106,20 +106,29 @@ public class Student_QuizData : MonoBehaviour
 
 
 
-
-        Debug.Log((float)StudentQuizInfo.Unit_1.CorrectAnswer.Count / 0);
+        List<titleinfo> a = StudentQuizInfo.Unit_1.CorrectAnswer;
+        
 
         // 총 푼 개수.
         QuizDB.CorrectCnt_AnswerCnt.text = StudentQuizInfo.QuizCorrectAnswerCnt.ToString() + "/" + StudentQuizInfo.QuizAnswerCnt.ToString();
 
         // 전체 평균
+        // 0으로 못 나누기 때문에
+        if((float)StudentQuizInfo.QuizAnswerCnt == 0)
+        {
+            QuizDB.Average.text = "0";
+        }
+        else
+        {
         QuizDB.Average.text =
             ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString();
+        }
 
 
+        // 그전에 오답 QuizDB 이 컴포넌트에 quizinfo에 관한 데이터 넘겨줌.
+        QuizDB.studentQuizinfo = StudentQuizInfo;
 
-
-        // 전에 있던 패널 끄기
+        // 계산하고 적용하고 이 오브젝트가 있는 패널 끄기.
         StudentDB.instance.ShowPersonalDB();
 
     }
