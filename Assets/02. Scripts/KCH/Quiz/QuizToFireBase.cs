@@ -140,9 +140,9 @@ public class QuizToFireBase : MonoBehaviour
             }
         }
 
-        Debug.Log(question_);
-        Debug.Log(answer_);
-        Debug.Log(commentary_);
+        Debug.Log("이거 확인 "+question_);
+        Debug.Log("이거 확인 " + answer_);
+        Debug.Log("이거 확인 " + commentary_);
 
         // 이후에 새로운 데이터를 추가합니다.
         titleinfo newQuestion = new titleinfo(question_, answer_, commentary_);
