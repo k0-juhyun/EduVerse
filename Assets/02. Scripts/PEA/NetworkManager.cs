@@ -14,15 +14,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Vector3 studentSpawnPos = new Vector3(6, 0, 5);
     private Quaternion spawnRot = Quaternion.Euler(0, 180, 0);
 
-    private bool shouldJoinNewRoom = false;
     [HideInInspector] public bool isCustom = false;
     [HideInInspector] public bool enableChoose = false;
-
-    private string newRoomName = "";
 
     public delegate void LoadSceneProgress(float progress);
 
     public event LoadSceneProgress OnLoadSceneProgress;
+
+    private bool leaveFlag;
 
     private void Awake()
     {
@@ -93,56 +92,52 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string sceneName)
     {
-        //if (PhotonNetwork.InLobby)
-        //{
-            RoomOptions roomOptions = new RoomOptions();
-            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
-            PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
-        //}
-        //else
-        //{
-        //    // 마스터 서버에 재연결 시도
-        //    Debug.LogError("클라이언트가 마스터 서버에 연결되지 않았습니다. 재연결을 시도합니다.");
-        //}
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Scene", sceneName } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "Scene" };
+        PhotonNetwork.JoinOrCreateRoom(sceneName + "Room", roomOptions, TypedLobby.Default);
     }
 
     public void ChangeRoom(string sceneName)
     {
-        newRoomName = sceneName;
-        StartCoroutine(IChangeRoomCoroutine());
+        StartCoroutine(IChangeRoomCoroutine(sceneName));
     }
 
-    private IEnumerator IChangeRoomCoroutine()
+    private IEnumerator IChangeRoomCoroutine(string sceneName)
     {
-        print("연결상태: " + PhotonNetwork.NetworkClientState);
-        // 이미 방을 떠나고 있는지 확인
-        if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
+        // Game 서버에 연결되어 있는지 확인합니다.
+        if (PhotonNetwork.InRoom)
         {
+            leaveFlag = true;
+
+            // 방을 떠나려고 합니다.
             PhotonNetwork.LeaveRoom();
-            print("연결상태1: " + PhotonNetwork.NetworkClientState);
+            print("방을 떠나는 중...");
+
+            // 방을 성공적으로 떠났는지 확인합니다.
+            yield return new WaitUntil(() => !PhotonNetwork.InRoom);
         }
-
-        // 방을 떠날 때까지 대기
-        yield return new WaitUntil(() => !PhotonNetwork.InRoom);
-
-        print("연결상태2: " + PhotonNetwork.NetworkClientState);
-        // 마스터 서버에 재연결
-        if (!PhotonNetwork.IsConnected)
+        else
         {
-            print("연결상태3: " + PhotonNetwork.NetworkClientState);
-            PhotonNetwork.ConnectUsingSettings();
-            print("연결상태4: " + PhotonNetwork.NetworkClientState);
-            yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby);
+            // 이미 방을 떠난 경우, Master 서버에 연결되어 있을 수 있습니다.
+            // Game 서버에 재연결을 시도합니다.
+            PhotonNetwork.JoinLobby();
+            yield return new WaitUntil(() => PhotonNetwork.InLobby);
         }
 
-        print("연결상태5: " + PhotonNetwork.NetworkClientState);
-        SceneManager.LoadScene("LoadingScene");
-        print("연결상태6: " + PhotonNetwork.NetworkClientState);
+        // 임시 로딩 씬으로 이동합니다.
+        PhotonNetwork.JoinLobby();
+        PhotonNetwork.LoadLevel("LoadingScene");
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
+        print("새로운 방으로 이동 준비 완료");
 
-        print("연결상태7: " + PhotonNetwork.NetworkClientState);
-        shouldJoinNewRoom = true;
+        yield return new WaitUntil(() => PhotonNetwork.InLobby);
+
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+
+
+        RoomOptions roomOptions = new RoomOptions();
+        PhotonNetwork.JoinOrCreateRoom("5.GroundScene", roomOptions, TypedLobby.Default);
     }
 
 
@@ -170,23 +165,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
+        print("pea babo1");
         PhotonNetwork.JoinLobby();
-
+        print("pea babo2");
         if (isCustom)
             LoadScene(1);
-        //if (shouldJoinNewRoom)
-        //{
-        //    if (isCustom)
-        //    {
-        //        LoadScene(1);
-        //    }
-        //    else
-        //    {
-        //        PhotonNetwork.JoinLobby();
-        //        //JoinRoom(newRoomName);
-        //        shouldJoinNewRoom = false;
-        //    }
-        //}
     }
 
 
@@ -198,7 +181,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object sceneName))
         {
             if (!string.IsNullOrEmpty((string)sceneName))
@@ -231,15 +213,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void Update()
-    {
-        //if (shouldJoinNewRoom && PhotonNetwork.IsConnectedAndReady
-        //    && PhotonNetwork.InLobby && !isCustom && !enableChoose)
-        //{
-        //    JoinRoom(newRoomName);
-        //    shouldJoinNewRoom = false;
-        //}
-    }
 
     private void OnApplicationQuit()
     {

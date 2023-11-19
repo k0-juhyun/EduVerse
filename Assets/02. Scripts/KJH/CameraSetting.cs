@@ -51,7 +51,7 @@ public class CameraSetting : MonoBehaviourPun
         customization = FindAnyObjectByType<Customization?>();
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         //UpdateCamera();
         HandleInput();
