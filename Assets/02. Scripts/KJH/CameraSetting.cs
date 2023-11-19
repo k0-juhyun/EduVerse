@@ -51,11 +51,15 @@ public class CameraSetting : MonoBehaviourPun
         customization = FindAnyObjectByType<Customization?>();
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         //UpdateCamera();
-        HandleInput();
         FollowCamera();
+    }
+
+    private void LateUpdate()
+    {
+        HandleInput();
     }
 
     // 카메라가 target 오브젝트를 따라다님

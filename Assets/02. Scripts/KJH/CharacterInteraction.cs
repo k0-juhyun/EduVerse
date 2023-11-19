@@ -33,6 +33,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
+    private bool isLeaving;
 
     public TMP_Text myNickNameTxt;
 
@@ -41,6 +42,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public RectTransform characterUI;
 
     public Camera Cam;
+
 
     Camera subMainCam;
     Scene scene;
@@ -90,18 +92,17 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Chair"))
+        if (other.gameObject.CompareTag("Chair") && _isSit == false)
         {
             HandleChairInteraction(other);
         }
-        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
+        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher && _isSit == false)
         {
             HandleTeacherChairInteraction(other);
         }
         else if (other.gameObject.name == "Teacher Computer")
         {
             HandleTeacherComputerInteraction(other);
-            //print("TT");
         }
     }
 
@@ -135,7 +136,7 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine)
         {
             characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
-            //print(startStudy.enableCanvas);
+            print(startStudy.enableCanvas);
         }
     }
 
@@ -189,52 +190,25 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" && DataBase.instance.user.isTeacher)
+        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
+            && DataBase.instance.user.isTeacher)
         {
             if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
                 return;
 
             PhotonNetwork.LeaveRoom();
-            //PhotonNetwork.JoinLobby();
             PhotonNetwork.LoadLevel("3.TeacherMyPage");
-            //NetworkManager.instance.ChangeRoom("3.TeacherMyPage");
-            //StartCoroutine(ILeaveRoomAndLoadScene("3.TeacherMyPage"));
         }
 
         if (other.gameObject.name == "BackToClass")
         {
-            //PhotonNetwork.LeaveRoom();
             NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
         }
 
         if (photonView.IsMine && other.gameObject.name == "GotoGround")
         {
-            //if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
-            //    return;
-
-            //PhotonNetwork.LeaveRoom();
-            //StartCoroutine(IChangeRoom());
             NetworkManager.instance.ChangeRoom("5.GroundScene");
         }
-    }
-
-    private IEnumerator IChangeRoom()
-    {
-        yield return new WaitUntil(() => !PhotonNetwork.InRoom);
-
-        print("여기?");
-        // 마스터 서버에 재연결될 때까지 대기
-        PhotonNetwork.ConnectUsingSettings();
-
-        while (PhotonNetwork.InLobby)
-            yield return new WaitForSeconds(1);
-
-        print("조기?");
-
-        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
-            yield return null;
-
-        NetworkManager.instance.JoinRoom("5.GroundScene");
     }
 
     [PunRPC]
@@ -312,7 +286,7 @@ public class CharacterInteraction : MonoBehaviourPun
             characterMovement.SpareCanvas.gameObject.SetActive(false);
             characterMovement.CharacterCanvas.gameObject.SetActive(true);
             cameraSetting.FPS_Camera.gameObject.SetActive(false);
-            isTPSCam = true;
+            Cam.gameObject.SetActive(true);
             isDrawing = false;
             cameraSetting.FPS_Camera.depth = 1;
         }
