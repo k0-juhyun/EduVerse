@@ -250,6 +250,13 @@ public class QuizToFireBase : MonoBehaviour
         // 기존 데이터 불러오기
         QuizInfo LoadQuizInfo = JsonUtility.FromJson<QuizInfo>(snapshot.GetRawJsonValue());
 
+        Debug.Log(LoadQuizInfo);
+        // 퀴즈를 안푼 학생이 있다면 예외처리
+        if(LoadQuizInfo == null)
+        {
+            yield return null;
+        }
+
         // 데이터 저장.
         submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
         CorrectQuizCnt = LoadQuizInfo.QuizCorrectAnswerCnt;
