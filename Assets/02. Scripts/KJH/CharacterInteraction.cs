@@ -2,6 +2,7 @@ using DG.Tweening;
 using Photon.Pun;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -88,7 +89,6 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine && Cam != null)
             myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward,
                 Cam.transform.rotation * Vector3.up);
-
     }
 
     //private void OnTriggerStay(Collider other)
@@ -150,12 +150,16 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
-            SitDown(chair);
-            _isSit = true;
+            if (!_isSit)
+            {
+                SitDown(chair);
+                _isSit = true;
+            }
         }
         else
         {
             StandUp();
+            _isSit = false;
         }
     }
 
@@ -163,12 +167,16 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
-            SitDownTeacher(chair);
-            _isSit = true;
+            if (!_isSit)
+            {
+                SitDownTeacher(chair);
+                _isSit = true;
+            }
         }
         else
         {
             StandUp();
+            _isSit = false;
         }
     }
 
@@ -182,11 +190,32 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
-    private void SitDown(Collider chair)
+    //private void SitDown(Collider chair)
+    //{
+    //    PlaySitAnimation();
+    //    SetCharacterPosition(chair.transform.position);
+    //    SetCharacterForwardDirection(chair.transform.forward * -1);
+    //}
+
+    public void SitDown(Collider chair)
     {
-        PlaySitAnimation();
+        Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
+        Quaternion rotation = Quaternion.LookRotation(chair.transform.forward * -1);
+
         SetCharacterPosition(chair.transform.position);
         SetCharacterForwardDirection(chair.transform.forward * -1);
+
+        photonView.RPC("SitDownRPC", RpcTarget.Others, position, rotation);
+        PlaySitAnimation(); // 로컬 플레이어의 애니메이션 실행
+        print("몇번");
+    }
+
+    [PunRPC]
+    public void SitDownRPC(Vector3 position, Quaternion rotation)
+    {
+        Character.transform.position = position;
+        Character.transform.rotation = rotation;
+        PlaySitAnimation();
     }
 
     private void SitDownTeacher(Collider chair)
@@ -207,7 +236,6 @@ public class CharacterInteraction : MonoBehaviourPun
     private void PlaySitAnimation()
     {
         anim.Play("Sit");
-        photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
     }
 
     private void SetCharacterPosition(Vector3 position)
@@ -259,11 +287,14 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void OnFocusBtnClick()
     {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
-        photonView.RPC("TrySitDownRPC", RpcTarget.Others);
-        //photonView.RPC("SetIsSitRPC", RpcTarget.Others);
+        if (!_isSit)
+        {
+            photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
+            photonView.RPC("TrySitDownRPC", RpcTarget.Others);
+            photonView.RPC("SetIsSitRPC", RpcTarget.Others);
 
-        print("앉기");
+            print("앉기");
+        }
     }
 
     public void OnNormalBtnClick()

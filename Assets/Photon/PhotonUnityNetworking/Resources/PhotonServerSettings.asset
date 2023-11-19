@@ -34,42 +34,37 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - animPlayRPC
+  - animTriggerRPC
+  - ApplyCharacterInfoRPC
   - CantHearYou
   - ChangeColour
   - ClickRpc
+  - DestroyAllButtonsRPC
+  - DestroyOtherQuizPanels
   - DestroyRpc
-  - HeresWhy
-  - animPlayRPC
-  - ApplyCharacterInfoRPC
   - DestroySpaceship
   - Fire
+  - HeresWhy
+  - LoadAndApplyOBJ
+  - LoadInteractionBtn
+  - LoadInteractionRPC
+  - Mute
+  - Photon_SelectQuiz
+  - Photon_sendUserQuizData
   - RespawnSpaceship
   - RpcAddIceCandidate
   - RpcCreateViewerPeer
+  - RPCMuteStudents
   - RpcSetRemoteDescription
   - SendMeshInfoToMaster
-  - UpdateAnimation
-  - MuteStudents
-  - RPCMuteStudents
+  - SetDrawRPC
+  - SetIsSitRPC
+  - startquiz
   - SwitchAllStudentsCam
   - TrySitDownRPC
-  - SendSitBool
-  - SetSitStateRPC
-  - SetIsSitRPC
-  - LoadAndApplyOBJ
-  - UpdateNickNameDisplay
-  - SetDrawRPC
-  - Photon_SelectQuiz
-  - QuizCanvasRPC
-  - DestroyOtherQuizPanels
-  - Photon_sendUserQuizData
-  - startquiz
-  - OX_GroundCheck
-  - DisableColliderRPC
-  - Mute
-  - LoadInteractionBtn
-  - LoadInteractionRPC
-  - DestroyAllButtonsRPC
+  - UpdateAnimation
+  - SitDownRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
