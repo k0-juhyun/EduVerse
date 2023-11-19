@@ -28,6 +28,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
+    private Rigidbody rb;
 
     [HideInInspector] public bool _isSit;
     private bool isOpenUI;
@@ -52,6 +53,7 @@ public class CharacterInteraction : MonoBehaviourPun
         anim = Character.GetComponent<Animator>();
         characterMovement = GetComponent<CharacterMovement>();
         cameraSetting = GetComponentInChildren<CameraSetting>();
+        rb = GetComponentInChildren<Rigidbody>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
@@ -92,11 +94,11 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Chair") && _isSit == false)
+        if (other.gameObject.CompareTag("Chair"))
         {
             HandleChairInteraction(other);
         }
-        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher && _isSit == false)
+        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
         {
             HandleTeacherChairInteraction(other);
         }
@@ -108,8 +110,9 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void HandleChairInteraction(Collider chair)
     {
-        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
+        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
+            print("학생");
             SitDown(chair);
         }
         else
@@ -120,8 +123,9 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void HandleTeacherChairInteraction(Collider chair)
     {
-        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
+        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
+            print("선생");
             SitDownTeacher(chair);
         }
         else
@@ -145,7 +149,6 @@ public class CharacterInteraction : MonoBehaviourPun
         PlaySitAnimation();
         SetCharacterPosition(chair.transform.position);
         SetCharacterForwardDirection(chair.transform.forward * -1);
-        _isSit = true;
     }
 
     private void SitDownTeacher(Collider chair)
@@ -153,7 +156,6 @@ public class CharacterInteraction : MonoBehaviourPun
         PlaySitAnimation();
         SetCharacterPosition(chair.transform.position);
         SetCharacterForwardDirection(Quaternion.Euler(0, -90, 0) * chair.transform.right);
-        _isSit = true;
     }
 
     private void StandUp()
@@ -161,7 +163,6 @@ public class CharacterInteraction : MonoBehaviourPun
         if (characterMovement.moveSpeed != 0)
         {
             SetCharacterYPosition(0);
-            _isSit = false;
         }
     }
 
@@ -221,7 +222,7 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
         photonView.RPC("TrySitDownRPC", RpcTarget.Others);
-        photonView.RPC("SetIsSitRPC", RpcTarget.Others);
+        //photonView.RPC("SetIsSitRPC", RpcTarget.Others);
 
         print("앉기");
     }
