@@ -26,6 +26,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private Animator anim;
 
+    private CharacterHandler characterHandler;
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
     private Rigidbody rb;
@@ -50,9 +51,6 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void Awake()
     {
-        anim = Character.GetComponent<Animator>();
-        characterMovement = GetComponent<CharacterMovement>();
-        cameraSetting = GetComponentInChildren<CameraSetting>();
         rb = GetComponentInChildren<Rigidbody>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
@@ -67,6 +65,11 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void Start()
     {
+        anim = Character.GetComponent<Animator>();
+        characterHandler = GetComponentInParent<CharacterHandler>();
+        characterMovement = GetComponent<CharacterMovement>();
+        cameraSetting = characterHandler.cameraSetting;
+
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
         Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());

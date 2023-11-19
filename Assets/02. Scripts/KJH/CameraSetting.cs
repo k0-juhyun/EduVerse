@@ -34,6 +34,7 @@ public class CameraSetting : MonoBehaviourPun
     private Rect touchZone;
 
     // 컴포넌트 들
+    private CharacterHandler characterHandler;
     private CharacterInteraction characterInteraction;
     public TeacherInteraction teacherInteraction;
     private Customization customization;
@@ -46,11 +47,15 @@ public class CameraSetting : MonoBehaviourPun
         // 화면의 특정 부분을 터치 영역으로 지정합니다. (예시로 화면의 중앙 200x200 영역)
         touchZone = new Rect((Screen.width - 200) / 2, (Screen.height - 200) / 2, 200, 200);
 
-        // 부모에서 컴포넌트 취득
-        characterInteraction = GetComponentInParent<CharacterInteraction>();
-        customization = FindAnyObjectByType<Customization?>();
     }
 
+    private void Start()
+    {
+        // 부모에서 컴포넌트 취득
+        characterHandler = GetComponentInParent<CharacterHandler>();
+        characterInteraction = characterHandler.cInteraction;
+        customization = FindAnyObjectByType<Customization?>();
+    }
     private void FixedUpdate()
     {
         //UpdateCamera();

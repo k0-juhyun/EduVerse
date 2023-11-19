@@ -36,7 +36,7 @@ public class TeacherInteraction : MonoBehaviourPun
         else
             spawnButton.gameObject.SetActive(true);
 
-        characterInteraction = GetComponentInParent<CharacterInteraction>();
+        characterInteraction = GetComponentInChildren<CharacterInteraction>();
         scrollView.SetActive(false);
 
     }

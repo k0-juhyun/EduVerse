@@ -153,8 +153,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         radius = rectBackground.rect.width * 0.5f;
 
         // 애니메이터 컴포넌트 가져오기
+    }
+
+    private void Start()
+    {
         animator = Character.GetComponent<Animator>();
-        characterTeacherInteraction = GetComponent<TeacherInteraction>();
+        characterTeacherInteraction = GetComponentInParent<TeacherInteraction>();
     }
 
     private void Update()
