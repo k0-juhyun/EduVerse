@@ -69,7 +69,9 @@ public class FireAuth : MonoBehaviour
             //FireDatabase.instance.myInfo.fbId = auth.CurrentUser.UserId;
 
             print("로그인 상태");
-            if (SceneManager.GetActiveScene().buildIndex == 8)
+
+            // 회원가입 후 바로 로그인X
+            if (SceneManager.GetActiveScene().buildIndex == 7)
             {
                 auth.SignOut();
                 return;
