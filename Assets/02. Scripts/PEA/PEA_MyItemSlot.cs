@@ -25,7 +25,7 @@ public class Item
     public bool isMine = false;
     public bool showInClassroom = false;
     public Texture2D itemTexture;
-    public byte[] gifItemBytes;
+    public byte[] itemBytes;
     public Sprite[] gifSprites;
     public float gifDelayTime;
 
