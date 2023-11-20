@@ -32,7 +32,6 @@ public class PDF_Page : MonoBehaviourPun
 
     public void NextPage()
     {
-        print("next page");
         if (pdfViewer.IsLoaded)
         {
             // 다음 페이지가 있으면 넘기기
@@ -53,7 +52,6 @@ public class PDF_Page : MonoBehaviourPun
 
     public void PrevPage()
     {
-        print("prev page");
         // 페이지 0 밑으로 안내려가게
         if (pdfViewer.IsLoaded && page > 0)
         {
