@@ -72,7 +72,7 @@ public class PEA_MyItemSlot : MonoBehaviour
 
     private GameObject newItem;
 
-    private VideoPlayer videoPlayer;
+    public VideoPlayer videoPlayer;
 
     [SerializeField]
     private Item item;
