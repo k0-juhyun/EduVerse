@@ -57,8 +57,8 @@ public class TeacherInteraction : MonoBehaviourPun
         player = characterInteraction.Character;
         CreateButtonsForModels();
 
-        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
-        Btn_Disable = disableDeskButton?.GetComponentInChildren<Button>();
+        Btn_Spawn = spawnButton?.GetComponent<Button>();
+        Btn_Disable = disableDeskButton?.GetComponent<Button>();
 
         Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
         Btn_Disable?.onClick.AddListener(() => OnClickDisableDesk());
@@ -168,6 +168,8 @@ public class TeacherInteraction : MonoBehaviourPun
 
                 // 재질 적용
                 ApplyMaterials(modelName, meshObj);
+
+                meshObj.gameObject.layer = 10;
             }
             //else
             //{
