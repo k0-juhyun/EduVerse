@@ -23,7 +23,7 @@ public class CharacterInteraction : MonoBehaviourPun
     [Header("¹öÆ°")]
     public Button Btn_Sit;
     public Button Btn_Camera, Btn_Custom, Btn_Greet;
-    private Button Btn_Focus, Btn_Normal, Btn_ShareCam;
+    private Button Btn_Focus, Btn_ShareCam;
 
     private Animator anim;
 
@@ -61,14 +61,12 @@ public class CharacterInteraction : MonoBehaviourPun
 
         subMainCam = GameObject.Find("SubMainCam")?.GetComponent<Camera>();
         Btn_Focus = GameObject.Find("FocusButton")?.GetComponent<Button>();
-        Btn_Normal = GameObject.Find("NormalButton")?.GetComponent<Button>();
         Btn_ShareCam = GameObject.Find("ShareButton")?.GetComponent<Button>();
     }
 
     private void Start()
     {
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
-        Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
         rb = GetComponentInChildren<Rigidbody>();
 
@@ -301,12 +299,6 @@ public class CharacterInteraction : MonoBehaviourPun
 
             print("¾É±â");
         }
-    }
-
-    public void OnNormalBtnClick()
-    {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-        print("Â÷·Ç");
     }
 
     // TPS¶û FPS Ä«¸Þ¶ó ÀüÈ¯
