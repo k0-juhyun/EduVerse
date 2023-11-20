@@ -45,10 +45,6 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public Camera Cam;
 
-    public GameObject shadowFloor;
-    public GameObject noShadowFloor;
-    public GameObject studentDesk;
-
     Camera subMainCam;
     Scene scene;
 
@@ -82,15 +78,6 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
             Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
-        }
-
-        if (SceneManager.GetActiveScene().name == "4.ClassRoomScene" && photonView.IsMine)
-        {
-            print("dd");
-            shadowFloor = GameObject.Find("Floor");
-            noShadowFloor = GameObject.Find("NoShadowFloor");
-            studentDesk = GameObject.Find("Student Desk");
-            noShadowFloor.SetActive(false);
         }
     }
 
@@ -294,7 +281,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
 
     [PunRPC]
-    private void animPlayRPC(string animation)
+    public void animPlayRPC(string animation)
     {
         anim.Play(animation);
     }
@@ -309,6 +296,17 @@ public class CharacterInteraction : MonoBehaviourPun
 
             print("¾É±â");
         }
+    }
+
+    public void SetPlayerIdle()
+    {
+        SetPlayerIdleRPC();
+    }
+
+    [PunRPC]
+    private void SetPlayerIdleRPC()
+    {
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
     }
 
     // TPS¶û FPS Ä«¸Þ¶ó ÀüÈ¯

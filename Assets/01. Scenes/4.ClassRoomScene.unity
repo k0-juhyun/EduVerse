@@ -23117,8 +23117,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 749904952}
+  - component: {fileID: 749904953}
   m_Layer: 0
-  m_Name: aduverse class room
+  m_Name: ClassRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23160,6 +23161,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &749904953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749904951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95edccdded4c0a340af44391e6fd134f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StudentDesk: {fileID: 2044819341}
+  Floor: {fileID: 20351451}
+  FloorWithoutShadow: {fileID: 862799948}
 --- !u!1 &749976676
 GameObject:
   m_ObjectHideFlags: 0
@@ -44226,7 +44242,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.00021394687, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1532016052

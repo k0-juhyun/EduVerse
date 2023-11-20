@@ -17,7 +17,7 @@ MonoBehaviour:
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 7a242dba-3d11-4ba7-b506-110fd5bea366
-    AppVersion: 1.1
+    AppVersion: 1.2
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -34,46 +34,40 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - animPlayRPC
+  - ApplyCharacterInfoRPC
   - CantHearYou
   - ChangeColour
   - ClickRpc
+  - DestroyAllButtonsRPC
+  - DestroyOtherQuizPanels
   - DestroyRpc
-  - HeresWhy
-  - animPlayRPC
-  - ApplyCharacterInfoRPC
   - DestroySpaceship
   - Fire
+  - HeresWhy
+  - LoadAndApplyOBJ
+  - LoadInteractionBtn
+  - LoadInteractionRPC
+  - LoadQuizData
+  - Mute
+  - OnClickDisableDeskRPC
+  - Photon_SelectQuiz
+  - Photon_sendUserQuizData
   - RespawnSpaceship
   - RpcAddIceCandidate
   - RpcCreateViewerPeer
+  - RPCMuteStudents
   - RpcSetRemoteDescription
   - SendMeshInfoToMaster
-  - UpdateAnimation
-  - MuteStudents
-  - RPCMuteStudents
+  - SendUnit_Commentary
+  - SetDrawRPC
+  - SetIsSitRPC
+  - SitDownRPC
+  - startquiz
   - SwitchAllStudentsCam
   - TrySitDownRPC
-  - SendSitBool
-  - SetSitStateRPC
-  - SetIsSitRPC
-  - LoadAndApplyOBJ
-  - UpdateNickNameDisplay
-  - SetDrawRPC
-  - Photon_SelectQuiz
-  - QuizCanvasRPC
-  - DestroyOtherQuizPanels
-  - Photon_sendUserQuizData
-  - startquiz
-  - OX_GroundCheck
-  - DisableColliderRPC
-  - Mute
-  - LoadInteractionBtn
-  - LoadInteractionRPC
-  - DestroyAllButtonsRPC
-  - LoadQuizData
-  - SendUnit_Commentary
-  - SitDownRPC
-  - OnClickDisableDeskRPC
+  - UpdateAnimation
+  - SetPlayerIdleRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
