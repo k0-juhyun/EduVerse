@@ -29,7 +29,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
-    public Rigidbody rb;
+    private Rigidbody rb;
 
     [HideInInspector] public bool _isSit;
     private bool isOpenUI;
@@ -70,6 +70,7 @@ public class CharacterInteraction : MonoBehaviourPun
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
         Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
+        rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
             myNickNameTxt.text = PhotonNetwork.LocalPlayer.NickName;
@@ -205,6 +206,9 @@ public class CharacterInteraction : MonoBehaviourPun
         SetCharacterPosition(chair.transform.position);
         SetCharacterForwardDirection(chair.transform.forward * -1);
 
+        rb.useGravity = false;
+        rb.isKinematic = true;
+
         photonView.RPC("SitDownRPC", RpcTarget.Others, position, rotation);
         PlaySitAnimation(); // 로컬 플레이어의 애니메이션 실행
         print("몇번");
@@ -230,6 +234,8 @@ public class CharacterInteraction : MonoBehaviourPun
         if (characterMovement.moveSpeed != 0)
         {
             SetCharacterYPosition(0);
+            rb.useGravity = true;
+            rb.isKinematic = false;
         }
     }
 
