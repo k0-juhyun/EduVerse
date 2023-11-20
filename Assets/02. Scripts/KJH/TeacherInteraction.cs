@@ -9,20 +9,29 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
+using System.Net.Security;
 
 public class TeacherInteraction : MonoBehaviourPun
 {
     public GameObject spawnButton;
+    public GameObject disableDeskButton;
     private GameObject player;
     public GameObject buttonPrefab;
     public GameObject scrollView;
 
-    private bool isObjectBeingPlaced = false;
     private GameObject objectToPlace;
     private GameObject currentlyDragging;
 
-    private Button Btn_Spawn;
+    public GameObject shadowFloor;
+    public GameObject noShadowFloor;
+    public GameObject studentDesk; 
 
+    private Button Btn_Spawn;
+    private Button Btn_Disable;
+
+    public bool isDisableBtnClick;
+    private bool isObjectBeingPlaced = false;
     public bool isSpawnBtnClick;
 
     public Transform buttonsParent;
@@ -34,11 +43,35 @@ public class TeacherInteraction : MonoBehaviourPun
         if (DataBase.instance.user.isTeacher == false && photonView.IsMine)
             this.enabled = false;
         else
+        {
             spawnButton.gameObject.SetActive(true);
+            disableDeskButton.gameObject.SetActive(true);
+        }
 
         characterInteraction = GetComponentInParent<CharacterInteraction>();
         scrollView.SetActive(false);
 
+    }
+    private void Start()
+    {
+        player = characterInteraction.Character;
+        CreateButtonsForModels();
+
+        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
+        Btn_Disable = disableDeskButton?.GetComponentInChildren<Button>();
+
+        Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
+        Btn_Disable?.onClick.AddListener(() => OnClickDisableDesk());
+
+
+        if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+        {
+            print("dd");
+            shadowFloor = GameObject.Find("Floor");
+            noShadowFloor = GameObject.Find("NoShadowFloor");
+            studentDesk = GameObject.Find("Student Desk");
+            noShadowFloor.SetActive(false);
+        }
     }
 
     private void Update()
@@ -62,13 +95,6 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
-    private void Start()
-    {
-        player = characterInteraction.Character;
-        CreateButtonsForModels();
-        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
-        Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
-    }
 
     public void OnSpawnBtnClick()
     {
@@ -257,5 +283,20 @@ public class TeacherInteraction : MonoBehaviourPun
         print("차렷");
     }
 
+    public void OnClickDisableDesk()
+    {
+        photonView.RPC("OnClickDisableDeskRPC", RpcTarget.All);
+        print("책상 엎애기");
+    }
+
     // 책상 다없애기
+    [PunRPC]
+    private void OnClickDisableDeskRPC()
+    {
+        // 바닥변경
+        isDisableBtnClick = !isDisableBtnClick;
+        noShadowFloor.SetActive(!isDisableBtnClick);
+        shadowFloor.SetActive(isDisableBtnClick);
+        studentDesk.SetActive(isDisableBtnClick);
+    }
 }

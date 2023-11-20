@@ -156,7 +156,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
-        characterTeacherInteraction = GetComponent<TeacherInteraction>();
+        characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
     }
 
     private void Update()

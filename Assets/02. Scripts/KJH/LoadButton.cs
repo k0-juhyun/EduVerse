@@ -69,7 +69,7 @@ public class LoadButton : MonoBehaviourPun
         closeBtn?.onClick.AddListener(CloseShowItem);
         endCLassBtn?.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
         createBtn?.onClick.AddListener(OnClickCreateButton);
-        saveBtn.onClick.AddListener(SaveCurrentSession);
+        saveBtn?.onClick.AddListener(SaveCurrentSession);
     }
     public void OnClickCreateButton()
     {
