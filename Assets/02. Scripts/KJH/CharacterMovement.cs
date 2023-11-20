@@ -58,6 +58,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public Quaternion receiveRot = Quaternion.identity;
     [HideInInspector]
     public float lerpSpeed = 50;
+    [HideInInspector]
+    public float receiveSpeed;
     #endregion
 
     #region 캐릭터 움직임 (조이스틱)
@@ -167,10 +169,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 Character.transform.position += movePos;
             }
         }
-        else
+
+        else if(receiveSpeed != 0)
         {
-            transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
         }
     }
 
@@ -179,11 +182,13 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            stream.SendNext(moveSpeed);
+            stream.SendNext(Character.transform.position);
+            stream.SendNext(Character.transform.rotation);
         }
         else
         {
+            receiveSpeed = (float)stream.ReceiveNext();
             receivePos = (Vector3)stream.ReceiveNext();
             receiveRot = (Quaternion)stream.ReceiveNext();
         }

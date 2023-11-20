@@ -250,5 +250,12 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
+    // 전부 일어서게 하기
+    public void OnStandUpBtnClick()
+    {
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
+        print("차렷");
+    }
 
+    // 책상 다없애기
 }

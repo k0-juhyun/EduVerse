@@ -46,7 +46,6 @@ public class LoadButton : MonoBehaviourPun
 
     [Space(10)]
     public GameObject teachingData;
-    public Dropdown sessionDropdown; // 세션을 선택하는 드롭다운
 
     [Space(10)]
     public GameObject showItemPanel;
@@ -63,7 +62,6 @@ public class LoadButton : MonoBehaviourPun
     {
         filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
         LoadAllSessions();
-        //UpdateSessionDropdown();
     }
 
     private void Start()
@@ -259,35 +257,6 @@ public class LoadButton : MonoBehaviourPun
             allSessions.sessions = new List<ButtonPositionData>();
             //print(allSessions.sessions.Count);
         }
-    }
-
-    private void UpdateSessionDropdown()
-    {
-        // 현재 선택된 인덱스를 저장
-        int selectedIndex = sessionDropdown.value;
-
-        sessionDropdown.ClearOptions();
-        List<string> options = new List<string>();
-        for (int i = 0; i < allSessions.sessions.Count; i++)
-        {
-            options.Add("Session " + (i + 1));
-        }
-        sessionDropdown.AddOptions(options);
-
-        // 드롭다운 옵션을 업데이트 한 후 이전에 선택된 인덱스를 복원
-        // 저장된 세션의 수가 변경되지 않았다면 이전 인덱스를 다시 설정
-        if (selectedIndex < allSessions.sessions.Count)
-        {
-            sessionDropdown.value = selectedIndex;
-        }
-        else
-        {
-            // 새 세션을 추가한 경우, 가장 최근 세션을 선택
-            sessionDropdown.value = allSessions.sessions.Count - 1;
-        }
-
-        // 드롭다운을 강제로 업데이트
-        //sessionDropdown.RefreshShownValue();
     }
 
     public void DeleteSelectedSession()

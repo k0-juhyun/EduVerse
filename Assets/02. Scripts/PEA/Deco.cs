@@ -18,6 +18,9 @@ public class Deco : MonoBehaviour
     public RawImage drawPaper;     // 그림 그리는 판 이미지(그려지는 그림을 보여줌, 실제 그림은 큐브애 그려짐)
     public Rito.TexturePainter.TexturePaintTarget paintTarget;
 
+    private bool isDrawButtonPressed = false;
+    private bool isBackButtonPressed = false;
+
     private void Start()
     {
         foreach (Button button in backBtn)
@@ -25,13 +28,19 @@ public class Deco : MonoBehaviour
             button.onClick.AddListener(OnClickBackBtn);
         }
 
-        drawBtn.onClick.AddListener(OnClickDrawBtn);
+        drawBtn.onClick.AddListener(() =>
+        {
+            OnClickDrawBtn();
+            isDrawButtonPressed = true;  // 버튼이 눌렸음을 표시
+        });
+
         decoBtn.onClick.AddListener(OnClickDecoBtn);
         mainCam = Camera.main;
 
         SetRanderTexture();
     }
 
+    // 그림 그리기 버튼을 눌렀을때
     private void OnClickDrawBtn()
     {
         drawBtn.gameObject.SetActive(false);
@@ -58,9 +67,11 @@ public class Deco : MonoBehaviour
         draw.SetActive(false);
         myDraws.SetActive(false);
 
+        isBackButtonPressed = true;
+
         DecorateClassRoom.instance.curSelectedDraw = null;
 
-        if(mainCam.depth != 1)
+        if (mainCam.depth != 1)
         {
             mainCam.depth = 1;
             drawCam.gameObject.SetActive(false);
@@ -86,6 +97,8 @@ public class Deco : MonoBehaviour
             {
                 drawBtn.gameObject.SetActive(true);
                 decoBtn.gameObject.SetActive(true);
+                StartCoroutine(ICheckClickDrawButton(other));
+                StartCoroutine(ICheckClickBackButton(other));
             }
         }
     }
@@ -100,5 +113,27 @@ public class Deco : MonoBehaviour
                 decoBtn.gameObject.SetActive(false);
             }
         }
+    }
+
+    private IEnumerator ICheckClickDrawButton(Collider other)
+    {
+        CharacterMovement characterMovement = other.GetComponentInParent<CharacterMovement>();
+
+        // 버튼이 눌릴 때까지 기다림
+        yield return new WaitUntil(() => isDrawButtonPressed);
+
+        // 버튼이 눌리면 캔버스를 비활성화
+        characterMovement.CharacterCanvas.SetActive(false);
+        isDrawButtonPressed = false;
+    }
+
+    private IEnumerator ICheckClickBackButton(Collider other)
+    {
+        CharacterMovement characterMovement = other.GetComponentInParent<CharacterMovement>();
+
+        yield return new WaitUntil(() => isBackButtonPressed);
+
+        characterMovement.CharacterCanvas.SetActive(true);
+        isDrawButtonPressed = false;
     }
 }

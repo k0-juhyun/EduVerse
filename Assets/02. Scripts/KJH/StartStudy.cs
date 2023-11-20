@@ -36,6 +36,7 @@ public class StartStudy : MonoBehaviour
     {
         if (DataBase.instance.user.isTeacher)
         {
+            print(other.gameObject.name);
             CharacterInteraction characterInteraction = other.gameObject.GetComponentInParent<CharacterInteraction>();
             _isTeacherSit = characterInteraction._isSit;
             characterInteraction.isDrawing = _isDrawing;
@@ -52,6 +53,7 @@ public class StartStudy : MonoBehaviour
     {
         if(DataBase.instance.user.isTeacher)
         {
+            print(other.gameObject.name);
             _cameraSetting = other.gameObject.transform.parent.GetComponentInChildren<CameraSetting>();
         }
     }
