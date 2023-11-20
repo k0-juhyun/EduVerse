@@ -23,9 +23,6 @@ public class TeacherInteraction : MonoBehaviourPun
     private GameObject objectToPlace;
     private GameObject currentlyDragging;
 
-    public GameObject shadowFloor;
-    public GameObject noShadowFloor;
-    public GameObject studentDesk; 
 
     private Button Btn_Spawn;
     private Button Btn_Disable;
@@ -62,16 +59,6 @@ public class TeacherInteraction : MonoBehaviourPun
 
         Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
         Btn_Disable?.onClick.AddListener(() => OnClickDisableDesk());
-
-
-        if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
-        {
-            print("dd");
-            shadowFloor = GameObject.Find("Floor");
-            noShadowFloor = GameObject.Find("NoShadowFloor");
-            studentDesk = GameObject.Find("Student Desk");
-            noShadowFloor.SetActive(false);
-        }
     }
 
     private void Update()
@@ -295,8 +282,8 @@ public class TeacherInteraction : MonoBehaviourPun
     {
         // ¹Ù´Úº¯°æ
         isDisableBtnClick = !isDisableBtnClick;
-        noShadowFloor.SetActive(!isDisableBtnClick);
-        shadowFloor.SetActive(isDisableBtnClick);
-        studentDesk.SetActive(isDisableBtnClick);
+        characterInteraction.noShadowFloor.SetActive(!isDisableBtnClick);
+        characterInteraction.shadowFloor.SetActive(isDisableBtnClick);
+        characterInteraction.studentDesk.SetActive(isDisableBtnClick);
     }
 }

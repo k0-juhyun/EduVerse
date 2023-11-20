@@ -3928,6 +3928,9 @@ MonoBehaviour:
   myNickNameTxt: {fileID: 6301747373640656966}
   characterUI: {fileID: 1218324696916440475}
   Cam: {fileID: 1218324696677600728}
+  shadowFloor: {fileID: 0}
+  noShadowFloor: {fileID: 0}
+  studentDesk: {fileID: 0}
 --- !u!114 &1218324696208131446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5734,9 +5737,7 @@ MonoBehaviour:
   disableDeskButton: {fileID: 2967611510343784133}
   buttonPrefab: {fileID: 9216737556060100791, guid: 3fc37389291ec3c4d9487acc4ba406f4, type: 3}
   scrollView: {fileID: 2192197366555960525}
-  shadowFloor: {fileID: 0}
-  noShadowFloor: {fileID: 0}
-  studentDesk: {fileID: 0}
+  isDisableBtnClick: 0
   isSpawnBtnClick: 0
   buttonsParent: {fileID: 4673640903243792965}
 --- !u!54 &1914481358462442443
@@ -8921,7 +8922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1218324697499318059
 RectTransform:
   m_ObjectHideFlags: 0
