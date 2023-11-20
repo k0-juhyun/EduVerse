@@ -17,19 +17,14 @@ public class StartStudy : MonoBehaviour
 
     private void Start()
     {
-        Btn_study.onClick.AddListener(()=>OnStudyButtonClick());
+        Btn_study.onClick.AddListener(() => OnStudyButtonClick());
     }
 
     public void OnStudyButtonClick()
     {
-        if (_isTeacherSit && !isClick)
-        {
-            isClick = true;
-            enableCanvas = false;
-            _isDrawing = true;
-            print("_isD" +  _isDrawing);
-            _cameraSetting.TPS_Camera.gameObject.SetActive(false);
-        }
+        enableCanvas = false;
+        _isDrawing = true;
+        _cameraSetting.TPS_Camera.gameObject.SetActive(false);
     }
 
     private void OnTriggerStay(Collider other)
@@ -41,7 +36,7 @@ public class StartStudy : MonoBehaviour
             _isTeacherSit = characterInteraction._isSit;
             characterInteraction.isDrawing = _isDrawing;
 
-            Btn_study.gameObject.SetActive(_isTeacherSit && (isClick == false));
+            Btn_study.gameObject.SetActive(_isTeacherSit);
             if (Camera.main != null)
             {
                 Btn_study.gameObject.transform.forward = Camera.main.transform.forward;
@@ -51,10 +46,11 @@ public class StartStudy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(DataBase.instance.user.isTeacher)
+        if (DataBase.instance.user.isTeacher)
         {
-            print(other.gameObject.name);
+            print(other.gameObject.transform.parent.name);
             _cameraSetting = other.gameObject.transform.parent.GetComponentInChildren<CameraSetting>();
+            print(_cameraSetting);
         }
     }
 }

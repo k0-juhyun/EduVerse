@@ -31,7 +31,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private CameraSetting cameraSetting;
     private Rigidbody rb;
 
-    [HideInInspector] public bool _isSit;
+    public bool _isSit;
     private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
@@ -169,7 +169,6 @@ public class CharacterInteraction : MonoBehaviourPun
         else
         {
             StandUp();
-            _isSit = false;
         }
     }
 
@@ -186,7 +185,6 @@ public class CharacterInteraction : MonoBehaviourPun
         else
         {
             StandUp();
-            _isSit = false;
         }
     }
 
@@ -245,6 +243,7 @@ public class CharacterInteraction : MonoBehaviourPun
             SetCharacterYPosition(0);
             rb.useGravity = true;
             rb.isKinematic = false;
+            _isSit = false;
         }
     }
 

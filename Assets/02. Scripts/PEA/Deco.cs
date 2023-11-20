@@ -25,7 +25,7 @@ public class Deco : MonoBehaviour
     {
         foreach (Button button in backBtn)
         {
-            button.onClick.AddListener(OnClickBackBtn);
+            button.onClick?.AddListener(OnClickBackBtn);
         }
 
         drawBtn.onClick.AddListener(() =>
