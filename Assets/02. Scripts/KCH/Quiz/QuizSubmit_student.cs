@@ -60,7 +60,7 @@ public class QuizSubmit_student : MonoBehaviourPun
 
             // 데이터 줘야할것들 
             // 단원. 문제 이름, 답, 해설 , 문제에 대해 맞았는지 틀렸는지.
-            QuizToFireBase.instance.QuizDataSaveFun(MyQuizStorage.Instance.UnitCheck, Question, "O", Commentary, true);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", Commentary, true);
         }
         else
         {
@@ -70,7 +70,7 @@ public class QuizSubmit_student : MonoBehaviourPun
 
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.QuizDataSaveFun(MyQuizStorage.Instance.UnitCheck, Question, "X", Commentary, true);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
         }
     }
@@ -86,7 +86,7 @@ public class QuizSubmit_student : MonoBehaviourPun
             Debug.Log("오답입니당");
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.QuizDataSaveFun(MyQuizStorage.Instance.UnitCheck, Question, "X", MyQuizStorage.Instance.Commentary, false);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
         }
         else
@@ -97,7 +97,7 @@ public class QuizSubmit_student : MonoBehaviourPun
             Debug.Log("정답입니당");
             StartCoroutine(quizPaneldelete());
 
-            QuizToFireBase.instance.QuizDataSaveFun(MyQuizStorage.Instance.UnitCheck, Question, "O", MyQuizStorage.Instance.Commentary, false);
+            QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", Commentary, true);
         }
     }
 
@@ -133,7 +133,7 @@ public class QuizSubmit_student : MonoBehaviourPun
         // 문제 단원, 정답
         LoadQuizData(Question);
         // 학생들 제외 선생만 함수를 보낸다.
-        photonView.RPC(nameof(LoadQuizData),RpcTarget.All, Question);
+        //photonView.RPC(nameof(LoadQuizData),RpcTarget.All, Question);
 
     }
     IEnumerator quizPaneldelete()
@@ -142,7 +142,6 @@ public class QuizSubmit_student : MonoBehaviourPun
         Destroy(gameObject);
     }
 
-    [PunRPC]
     void LoadQuizData(string question_)
     {
         // 선생이 아니라면.
@@ -151,7 +150,6 @@ public class QuizSubmit_student : MonoBehaviourPun
 
 
         // 선생이 아니라면 리턴.
-        if (!DataBase.instance.userInfo.isteacher) return;
 
         List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
 
@@ -172,9 +170,10 @@ public class QuizSubmit_student : MonoBehaviourPun
                 // 답
                 string test2 = saveData.answer;
                 // 문제를 가지고 앞에 있는 단원 가져옴.
-                Debug.Log(extracted + " : " + titleSlice);
+                Debug.Log(test1 + " : " + question_);
 
                 //Debug....Log(test1 + " : " + test2);
+                // 문제와 타이틀 제목이 같다면
                 if (test1 == question_)
                 {
                     Debug.Log("단원가져오기." + extracted);
@@ -183,31 +182,22 @@ public class QuizSubmit_student : MonoBehaviourPun
                     // 학생들에게 단원과 코멘트 전달.
 
                     Unit = extracted;
+                    Commentary = saveData.Commentary;
+                    Debug.Log(Commentary + " : 코멘트");
                 }
 
                 // 단원 정보 담기
                 // 단원 정보 담는것도 rpc로 보내야함.
 
-                Debug.Log(Commentary + " : 이거 되야한다"); ;
+
 
                 // 앞에 단원 삭제
 
                 // 정답인지 오답인지 체크하고 그 오브젝트 체크.
-                photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
+                //photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
             }
         }
     }
 
-    [PunRPC]
-    void SendUnit_Commentary()
-    {
-        if(!DataBase.instance.userInfo.isteacher)
-        {
-            MyQuizStorage.Instance.UnitCheck = Unit;
-            MyQuizStorage.Instance.Commentary = Commentary;
-            Debug.Log(Unit);
-            Debug.Log(Commentary);
 
-        }
-    }
 }

@@ -58,7 +58,7 @@ public class Student_QuizData : MonoBehaviour
         // 임의로 1초 기다림
         // StudentQuizInfo 로드 시간을 위해.
         StudentDB.instance.OffStudentDB();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1f);
 
         // 씬에 있는 오브젝트들 값을 바꾸든지
         // 아님 생성해서 하든지. 어떻게 할까.
@@ -121,7 +121,7 @@ public class Student_QuizData : MonoBehaviour
         else
         {
         QuizDB.Average.text =
-            ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString();
+            ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString("F2");
         }
 
 
