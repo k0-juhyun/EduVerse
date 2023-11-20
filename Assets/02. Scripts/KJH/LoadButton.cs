@@ -73,7 +73,6 @@ public class LoadButton : MonoBehaviourPun
     }
     public void OnClickCreateButton()
     {
-        print("on click create button 1 : " + (allSessions == null).ToString() );
         //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
         //if (clickedButton.name == "Create")
         //{
@@ -93,7 +92,6 @@ public class LoadButton : MonoBehaviourPun
         // 새 버튼에 이름 설정 (예: "NewButton_1", "NewButton_2", ...)
         newButton.name = "NewButton_" + newButton.GetInstanceID();
 
-        print("on click create button 2 : " + (allSessions == null).ToString() + ", " + (allSessions.sessions == null).ToString() + ", " + (allSessions.sessions == null ? "" : allSessions.sessions.Count));
     }
 
     public void SaveCurrentSession()
@@ -127,16 +125,10 @@ public class LoadButton : MonoBehaviourPun
             }
         }
 
-        print(allSessions == null);
-        print(allSessions.sessions.Count);
-        print(currentSession == null);
-
         allSessions.sessions.Add(currentSession);
         json = JsonUtility.ToJson(allSessions);
         File.WriteAllText(filePath, json);
         //UpdateSessionDropdown();
-
-        print("save current session : " + (allSessions == null).ToString() + ", " + (allSessions.sessions == null).ToString() + ", " + (allSessions.sessions == null ? "" : allSessions.sessions.Count));
     }
 
     public void LoadSelectedSession(int curPage)
@@ -173,15 +165,11 @@ public class LoadButton : MonoBehaviourPun
         {
             photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
         }
-
-        print("load selected session : " + (allSessions == null).ToString() + ", " + (allSessions.sessions == null).ToString() + ", " + (allSessions.sessions == null ? "" : allSessions.sessions.Count));
     }
 
     [PunRPC]
     public void LoadInteractionRPC(string json, int curPage)
     {
-        print("rpcrpcrpc");
-
         DestroyAllButtons();
 
         ButtonSessions buttonSessions = JsonUtility.FromJson<ButtonSessions>(json);
@@ -258,8 +246,6 @@ public class LoadButton : MonoBehaviourPun
 
     private void LoadAllSessions()
     {
-        print("load all session");
-
         if (File.Exists(filePath))
         {
             json = File.ReadAllText(filePath);
@@ -271,8 +257,6 @@ public class LoadButton : MonoBehaviourPun
             allSessions.sessions = new List<ButtonPositionData>();
             //print(allSessions.sessions.Count);
         }
-
-        print("load all sessions : " + (allSessions == null).ToString() + ", " + (allSessions.sessions == null).ToString() + ", " + (allSessions.sessions == null ? "" : allSessions.sessions.Count));
     }
 
     public void DeleteSelectedSession()
@@ -311,7 +295,5 @@ public class LoadButton : MonoBehaviourPun
     {
         json = JsonUtility.ToJson(allSessions);
         File.WriteAllText(filePath, json);
-
-        print("save all sessions : " + (allSessions == null).ToString() + ", " + (allSessions.sessions == null).ToString() + ", " + (allSessions.sessions == null ? "" : allSessions.sessions.Count));
     }
 }

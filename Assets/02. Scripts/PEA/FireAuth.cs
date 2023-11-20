@@ -27,7 +27,8 @@ public class FireAuth : MonoBehaviour
     public InputField inputLoginEmail;
     public InputField inputLoginPassword;
 
-    public GameObject failedLogInText;
+    public GameObject retryGetUserInfoText;             // 로그인은 성공했으나 유저정보를 제대로 가져오지 못했을 때 뜨는 텍스트
+    public GameObject failedLogInText;                  // 로그인에 실패시 뜨는 텍스트
 
     private void Awake()
     {
@@ -138,27 +139,35 @@ public class FireAuth : MonoBehaviour
 
             print("유저 정보 가져오기 성공 : " + dataTask.Result.ChildrenCount);
 
-            // json형식으로 가져와서 UserInfo 타입으로 바꿔줌
-            UserInfo user = JsonUtility.FromJson<UserInfo>(userInfo.GetRawJsonValue());
-            print(user.name);
-
-            // 가져온 유저정보 담아두기
-            DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
-            if (PhotonNetwork.IsConnectedAndReady)
+            // 정보를 제대로 불러오지 못하면 다시 로그인 시도 
+            if(dataTask.Result.ChildrenCount == 0)
             {
-                PhotonNetwork.NickName = user.name;
-                PhotonNetwork.LoadLevel(1);
+                print("회원정보 로드 실패 : " + dataTask.Result.Value);
+                auth.SignOut();
+                retryGetUserInfoText.SetActive(true);
+            }
+            else
+            {
+                // json형식으로 가져와서 UserInfo 타입으로 바꿔줌
+                UserInfo user = JsonUtility.FromJson<UserInfo>(userInfo.GetRawJsonValue());
+                print(user.name);
+
+                // 가져온 유저정보 담아두기
+                DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
+                if (PhotonNetwork.IsConnectedAndReady)
+                {
+                    PhotonNetwork.NickName = user.name;
+                    PhotonNetwork.LoadLevel(1);
+                }
             }
         }
         else
         {
             print("회원정보 로드 실패 : " + dataTask.Result.Value);
             auth.SignOut();
-            failedLogInText.SetActive(true);
+            retryGetUserInfoText.SetActive(true);
         }
-
     }
-
 
     public void OnClickSingIn(string email, string password, System.Action action = null)
     {
@@ -205,6 +214,7 @@ public class FireAuth : MonoBehaviour
             if(coroutine == null)
             {
                 failedLogInText.gameObject.SetActive(false);
+                retryGetUserInfoText.SetActive(false);
                 coroutine = StartCoroutine(Login(email, password));
             }
         }
@@ -213,7 +223,6 @@ public class FireAuth : MonoBehaviour
 
     IEnumerator Login(string email, string password)
     {
-
         //로그인 시도
         var task = auth.SignInWithEmailAndPasswordAsync(email, password);
         //통신이 완료될때까지 기다린다
@@ -222,41 +231,6 @@ public class FireAuth : MonoBehaviour
         if (task.Exception == null)
         {
             print("로그인 성공");
-
-            // 회원가입 후 바로 로그인 방지
-            //if(SceneManager.GetActiveScene().buildIndex == 8 )
-            //{
-            //    auth.SignOut();
-            //}
-            //else
-            //{
-            //    yield return new WaitForSeconds(5);
-            //   // 로그인한 유저의 정보 가져오기
-            //   var dataTask = database.GetReference("USER_INFO/").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
-            //    yield return new WaitUntil(() => dataTask.IsCompleted);
-            //    if (dataTask.Exception == null)
-            //    {
-            //        DataSnapshot userInfo = dataTask.Result;
-
-            //        print("유저 정보 가져오기 성공");
-            //        UserInfo user = JsonUtility.FromJson<UserInfo>(userInfo.GetRawJsonValue());
-            //        print(user.name);
-            //        //if (user.isteacher)
-            //        //{
-            //        //    user = new UserInfo((string)userInfo.Child("/name").Value, true, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-            //        //}
-            //        //else
-            //        //{
-            //        //    user = new UserInfo((string)userInfo.Child("/name").Value, false, int.Parse(userInfo.Child("/securitynumber").Value.ToString()), (string)userInfo.Child("/school").Value, int.Parse(userInfo.Child("/grade").Value.ToString()), int.Parse(userInfo.Child("/classNum").Value.ToString()), int.Parse(userInfo.Child("/studentNum").Value.ToString()), (string)userInfo.Child("/email").Value, (string)userInfo.Child("/password").Value);
-            //        //}
-            //        DataBase.instance.SetMyInfo(new User(user.name, user.isteacher), user);
-            //        if (PhotonNetwork.IsConnectedAndReady)
-            //        {
-            //            PhotonNetwork.NickName = user.name;
-            //            PhotonNetwork.LoadLevel(1);
-            //        }
-            //    }
-            //}
         }
         else
         {
