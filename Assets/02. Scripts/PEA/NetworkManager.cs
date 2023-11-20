@@ -131,13 +131,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "LoadingScene");
         print("새로운 방으로 이동 준비 완료");
 
-        yield return new WaitUntil(() => PhotonNetwork.InLobby);
+        //yield return new WaitUntil(() => PhotonNetwork.InLobby);
 
-        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+        //yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
 
+        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
 
-        RoomOptions roomOptions = new RoomOptions();
-        PhotonNetwork.JoinOrCreateRoom("5.GroundScene", roomOptions, TypedLobby.Default);
+        print("로비로비로비");
+
+        JoinRoom(sceneName);
+
+        //RoomOptions roomOptions = new RoomOptions();
+        //PhotonNetwork.JoinOrCreateRoom("5.GroundScene", roomOptions, TypedLobby.Default);
     }
 
 
@@ -181,13 +186,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+
+        print("방입장 : " + PhotonNetwork.CurrentRoom.Name);
+
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object sceneName))
         {
+            print("111111");
             if (!string.IsNullOrEmpty((string)sceneName))
             {
+                print("22222");
                 PhotonNetwork.LoadLevel((string)sceneName);
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
+        }
+        else
+        {
+            print("33333333");
         }
     }
 

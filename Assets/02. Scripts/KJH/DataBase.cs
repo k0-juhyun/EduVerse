@@ -123,7 +123,7 @@ public class DataBase : MonoBehaviour
                 string fileName = Path.GetFileNameWithoutExtension(zipFile);
                 GameObject tempObject = new GameObject(fileName);
                 model.spawnPrefab.Add(tempObject);
-                print("单海: "+ tempObject.name);
+                //print("单海: "+ tempObject.name);
 
                 // 纠俊 眠啊窍绰 规过
                 tempObject.transform.SetParent(this.transform);

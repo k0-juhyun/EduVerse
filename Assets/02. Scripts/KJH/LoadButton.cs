@@ -34,7 +34,11 @@ public class LoadButton : MonoBehaviourPun
     private string filePath;
     private ButtonSessions allSessions;
 
+    [Space(10)]
     public Button endCLassBtn;
+    public Button createBtn;
+    public Button saveBtn;
+
 
     [Space (10)]
     public GameObject selectItemButtonPrefab;           // 인터렉션할 아이템 선택하는 버튼
@@ -42,7 +46,6 @@ public class LoadButton : MonoBehaviourPun
 
     [Space(10)]
     public GameObject teachingData;
-    public Dropdown sessionDropdown; // 세션을 선택하는 드롭다운
 
     [Space(10)]
     public GameObject showItemPanel;
@@ -59,15 +62,15 @@ public class LoadButton : MonoBehaviourPun
     {
         filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
         LoadAllSessions();
-        //UpdateSessionDropdown();
     }
 
     private void Start()
     {
         closeBtn?.onClick.AddListener(CloseShowItem);
-        endCLassBtn.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
+        endCLassBtn?.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
+        createBtn?.onClick.AddListener(OnClickCreateButton);
+        saveBtn?.onClick.AddListener(SaveCurrentSession);
     }
-
     public void OnClickCreateButton()
     {
         //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
@@ -129,9 +132,6 @@ public class LoadButton : MonoBehaviourPun
 
     public void LoadSelectedSession(int curPage)
     {
-        print("load");
-        print( curPage);
-
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
 
         // 교과서 제작페이지
@@ -149,11 +149,11 @@ public class LoadButton : MonoBehaviourPun
                     foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
                     //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                     {
-                            GameObject newButton = Instantiate(selectItemButtonPrefab, teachingData.transform);
-                            newButton.name = buttonPosition.buttonName;
-                            RectTransform rectTransform = newButton.GetComponent<RectTransform>();
-                            rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                            newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
+                        GameObject newButton = Instantiate(selectItemButtonPrefab, teachingData.transform);
+                        newButton.name = buttonPosition.buttonName;
+                        RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+                        rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
+                        newButton.GetComponent<InteractionMakeBtn>().Item = buttonPosition.item;
                     }
                 }
             }
@@ -164,15 +164,12 @@ public class LoadButton : MonoBehaviourPun
         {
             photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
         }
-
-
     }
 
     [PunRPC]
+    // Item 정보를 보낼 수 없어서 string 타입으로 JSON 자체를 보내버림.
     public void LoadInteractionRPC(string json, int curPage)
     {
-        print("rpcrpcrpc");
-
         DestroyAllButtons();
 
         ButtonSessions buttonSessions = JsonUtility.FromJson<ButtonSessions>(json);
@@ -190,7 +187,12 @@ public class LoadButton : MonoBehaviourPun
                     RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
 
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
+                    // 아이템들 경로/ 파일 이름까지 똑같아야 함
+                    //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+
+                    newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
                 }
             }
         }
@@ -258,37 +260,8 @@ public class LoadButton : MonoBehaviourPun
         {
             allSessions = new ButtonSessions();
             allSessions.sessions = new List<ButtonPositionData>();
-            print(allSessions.sessions.Count);
+            //print(allSessions.sessions.Count);
         }
-    }
-
-    private void UpdateSessionDropdown()
-    {
-        // 현재 선택된 인덱스를 저장
-        int selectedIndex = sessionDropdown.value;
-
-        sessionDropdown.ClearOptions();
-        List<string> options = new List<string>();
-        for (int i = 0; i < allSessions.sessions.Count; i++)
-        {
-            options.Add("Session " + (i + 1));
-        }
-        sessionDropdown.AddOptions(options);
-
-        // 드롭다운 옵션을 업데이트 한 후 이전에 선택된 인덱스를 복원
-        // 저장된 세션의 수가 변경되지 않았다면 이전 인덱스를 다시 설정
-        if (selectedIndex < allSessions.sessions.Count)
-        {
-            sessionDropdown.value = selectedIndex;
-        }
-        else
-        {
-            // 새 세션을 추가한 경우, 가장 최근 세션을 선택
-            sessionDropdown.value = allSessions.sessions.Count - 1;
-        }
-
-        // 드롭다운을 강제로 업데이트
-        //sessionDropdown.RefreshShownValue();
     }
 
     public void DeleteSelectedSession()

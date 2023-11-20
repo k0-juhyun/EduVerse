@@ -27,6 +27,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     private RectTransform rtCaptureArea;
 
+    public GameObject backBlur;
     public GameObject captureAreaImage;
     public GameObject captureResult;
     public Image captureResultImage;
@@ -187,7 +188,12 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickSendCapture_Gif()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
-        videoCreator.UploadImageAndDownload_GIF(captureBytes, () => captureResult.SetActive(false));
+        videoCreator.UploadImageAndDownload_GIF(captureBytes, () =>
+        {
+            captureResult.SetActive(false);
+            Blur(false);
+        });
+
     }
 
     // 일단은 이미지 없이 태그로만 문제 생성이 되므로 이렇게 해둠.
@@ -200,13 +206,20 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickSendCapture_Video()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
-        videoCreator.UploadImageAndDownload_Video(captureBytes, () => captureResult.SetActive(false));
+        videoCreator.UploadImageAndDownload_Video(captureBytes, () =>
+        {
+            captureResult.SetActive(false);
+            Blur(false);
+        }
+            );
+
     }
 
     // TagText(Clone)
     public void OnClickBackBtn()
     {
         captureResult.SetActive(false);
+        Blur(false);
 
         rtCaptureArea.sizeDelta = Vector2.zero;
     }
@@ -244,6 +257,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         //texture.Apply();
 
         captureResult.SetActive(true);
+        Blur(true);
         captureResultImage.sprite = Sprite.Create(captureTexture, new Rect(0, 0, captureTexture.width, captureTexture.height), new Vector2(0.5f, 0.5f));
         captureResultImage.preserveAspect = true;
 
@@ -264,5 +278,10 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickAiTest()
     {
         Test.SetActive(true);
+    }
+
+    private void Blur(bool isBlur)
+    {
+        backBlur.SetActive(isBlur);
     }
 }

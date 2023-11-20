@@ -2,6 +2,7 @@ using DG.Tweening;
 using Photon.Pun;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -22,14 +23,15 @@ public class CharacterInteraction : MonoBehaviourPun
     [Header("버튼")]
     public Button Btn_Sit;
     public Button Btn_Camera, Btn_Custom, Btn_Greet;
-    private Button Btn_Focus, Btn_Normal, Btn_ShareCam;
+    private Button Btn_Focus, Btn_ShareCam;
 
     private Animator anim;
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
+    private Rigidbody rb;
 
-    [HideInInspector] public bool _isSit;
+    public bool _isSit;
     private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
@@ -43,6 +45,9 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public Camera Cam;
 
+    public GameObject shadowFloor;
+    public GameObject noShadowFloor;
+    public GameObject studentDesk;
 
     Camera subMainCam;
     Scene scene;
@@ -59,15 +64,14 @@ public class CharacterInteraction : MonoBehaviourPun
 
         subMainCam = GameObject.Find("SubMainCam")?.GetComponent<Camera>();
         Btn_Focus = GameObject.Find("FocusButton")?.GetComponent<Button>();
-        Btn_Normal = GameObject.Find("NormalButton")?.GetComponent<Button>();
         Btn_ShareCam = GameObject.Find("ShareButton")?.GetComponent<Button>();
     }
 
     private void Start()
     {
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
-        Btn_Normal?.onClick.AddListener(() => OnNormalBtnClick());
         Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
+        rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
             myNickNameTxt.text = PhotonNetwork.LocalPlayer.NickName;
@@ -78,7 +82,15 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
             Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
+        }
 
+        if (SceneManager.GetActiveScene().name == "4.ClassRoomScene" && photonView.IsMine)
+        {
+            print("dd");
+            shadowFloor = GameObject.Find("Floor");
+            noShadowFloor = GameObject.Find("NoShadowFloor");
+            studentDesk = GameObject.Find("Student Desk");
+            noShadowFloor.SetActive(false);
         }
     }
 
@@ -87,16 +99,31 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine && Cam != null)
             myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward,
                 Cam.transform.rotation * Vector3.up);
-
     }
 
-    private void OnTriggerStay(Collider other)
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Chair"))
+    //    {
+    //        HandleChairInteraction(other);
+    //    }
+    //    else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
+    //    {
+    //        HandleTeacherChairInteraction(other);
+    //    }
+    //    else if (other.gameObject.name == "Teacher Computer")
+    //    {
+    //        HandleTeacherComputerInteraction(other);
+    //    }
+    //}
+
+    public void HandleTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Chair") && _isSit == false)
+        if (other.gameObject.CompareTag("Chair"))
         {
             HandleChairInteraction(other);
         }
-        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher && _isSit == false)
+        else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
         {
             HandleTeacherChairInteraction(other);
         }
@@ -106,91 +133,9 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
-    private void HandleChairInteraction(Collider chair)
+    public void HandleTriggerEnter(Collider other)
     {
-        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
-        {
-            SitDown(chair);
-        }
-        else
-        {
-            StandUp();
-        }
-    }
-
-    private void HandleTeacherChairInteraction(Collider chair)
-    {
-        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject && !_isSit)
-        {
-            SitDownTeacher(chair);
-        }
-        else
-        {
-            StandUp();
-        }
-    }
-
-    private void HandleTeacherComputerInteraction(Collider computer)
-    {
-        StartStudy startStudy = computer.GetComponent<StartStudy>();
-        if (photonView.IsMine)
-        {
-            characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
-            print(startStudy.enableCanvas);
-        }
-    }
-
-    private void SitDown(Collider chair)
-    {
-        PlaySitAnimation();
-        SetCharacterPosition(chair.transform.position);
-        SetCharacterForwardDirection(chair.transform.forward * -1);
-        _isSit = true;
-    }
-
-    private void SitDownTeacher(Collider chair)
-    {
-        PlaySitAnimation();
-        SetCharacterPosition(chair.transform.position);
-        SetCharacterForwardDirection(Quaternion.Euler(0, -90, 0) * chair.transform.right);
-        _isSit = true;
-    }
-
-    private void StandUp()
-    {
-        if (characterMovement.moveSpeed != 0)
-        {
-            SetCharacterYPosition(0);
-            _isSit = false;
-        }
-    }
-
-    private void PlaySitAnimation()
-    {
-        anim.Play("Sit");
-        photonView.RPC(nameof(animPlayRPC), RpcTarget.All, "Sit");
-    }
-
-    private void SetCharacterPosition(Vector3 position)
-    {
-        Character.transform.position = new Vector3(position.x, 0.4f, position.z);
-    }
-
-    private void SetCharacterForwardDirection(Vector3 direction)
-    {
-        Character.transform.forward = direction;
-    }
-
-    private void SetCharacterYPosition(float y)
-    {
-        Vector3 position = Character.transform.position;
-        Character.transform.position = new Vector3(position.x, y, position.z);
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
+        if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom"
             && DataBase.instance.user.isTeacher)
         {
             if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
@@ -211,6 +156,143 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
+    private void HandleChairInteraction(Collider chair)
+    {
+        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
+        {
+            if (!_isSit)
+            {
+                SitDown(chair);
+                _isSit = true;
+            }
+        }
+        else
+        {
+            StandUp();
+        }
+    }
+
+    private void HandleTeacherChairInteraction(Collider chair)
+    {
+        if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
+        {
+            if (!_isSit)
+            {
+                SitDownTeacher(chair);
+                _isSit = true;
+            }
+        }
+        else
+        {
+            StandUp();
+        }
+    }
+
+    private void HandleTeacherComputerInteraction(Collider computer)
+    {
+        StartStudy startStudy = computer.GetComponent<StartStudy>();
+        if (photonView.IsMine)
+        {
+            characterMovement.CharacterCanvas.gameObject.SetActive(startStudy.enableCanvas);
+            print(startStudy.enableCanvas);
+        }
+    }
+
+    //private void SitDown(Collider chair)
+    //{
+    //    PlaySitAnimation();
+    //    SetCharacterPosition(chair.transform.position);
+    //    SetCharacterForwardDirection(chair.transform.forward * -1);
+    //}
+
+    public void SitDown(Collider chair)
+    {
+        Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
+        Quaternion rotation = Quaternion.LookRotation(chair.transform.forward * -1);
+
+        SetCharacterPosition(chair.transform.position);
+        SetCharacterForwardDirection(chair.transform.forward * -1);
+
+        rb.useGravity = false;
+        rb.isKinematic = true;
+
+        photonView.RPC("SitDownRPC", RpcTarget.Others, position, rotation);
+        PlaySitAnimation(); // 로컬 플레이어의 애니메이션 실행
+        print("몇번");
+    }
+
+    [PunRPC]
+    public void SitDownRPC(Vector3 position, Quaternion rotation)
+    {
+        Character.transform.position = position;
+        Character.transform.rotation = rotation;
+        PlaySitAnimation();
+    }
+
+    private void SitDownTeacher(Collider chair)
+    {
+        PlaySitAnimation();
+        SetCharacterPosition(chair.transform.position);
+        SetCharacterForwardDirection(Quaternion.Euler(0, -90, 0) * chair.transform.right);
+    }
+
+    private void StandUp()
+    {
+        if (characterMovement.moveSpeed != 0)
+        {
+            SetCharacterYPosition(0);
+            rb.useGravity = true;
+            rb.isKinematic = false;
+            _isSit = false;
+        }
+    }
+
+    private void PlaySitAnimation()
+    {
+        anim.Play("Sit");
+    }
+
+    private void SetCharacterPosition(Vector3 position)
+    {
+        Character.transform.position = new Vector3(position.x, 0.4f, position.z);
+    }
+
+    private void SetCharacterForwardDirection(Vector3 direction)
+    {
+        Character.transform.forward = direction;
+    }
+
+    private void SetCharacterYPosition(float y)
+    {
+        Vector3 position = Character.transform.position;
+        Character.transform.position = new Vector3(position.x, y, position.z);
+    }
+
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
+    //        && DataBase.instance.user.isTeacher)
+    //    {
+    //        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
+    //            return;
+
+    //        PhotonNetwork.LeaveRoom();
+    //        PhotonNetwork.LoadLevel("3.TeacherMyPage");
+    //    }
+
+    //    if (other.gameObject.name == "BackToClass")
+    //    {
+    //        NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
+    //    }
+
+    //    if (photonView.IsMine && other.gameObject.name == "GotoGround")
+    //    {
+    //        NetworkManager.instance.ChangeRoom("5.GroundScene");
+    //    }
+    //}
+
+
     [PunRPC]
     private void animPlayRPC(string animation)
     {
@@ -219,17 +301,14 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void OnFocusBtnClick()
     {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
-        photonView.RPC("TrySitDownRPC", RpcTarget.Others);
-        photonView.RPC("SetIsSitRPC", RpcTarget.Others);
+        if (!_isSit)
+        {
+            photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
+            photonView.RPC("TrySitDownRPC", RpcTarget.Others);
+            photonView.RPC("SetIsSitRPC", RpcTarget.Others);
 
-        print("앉기");
-    }
-
-    public void OnNormalBtnClick()
-    {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-        print("차렷");
+            print("앉기");
+        }
     }
 
     // TPS랑 FPS 카메라 전환
