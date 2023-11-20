@@ -35,7 +35,7 @@ public class LoadButton : MonoBehaviourPun
     private ButtonSessions allSessions;
 
     [Space(10)]
-    public Button endCLassBtn;
+    public Button endClassBtn;
     public Button createBtn;
     public Button saveBtn;
 
@@ -55,6 +55,8 @@ public class LoadButton : MonoBehaviourPun
     public VideoPlayer videoPlayer;
     public Button closeBtn;
 
+    [HideInInspector] public PhotonView myPhotonView;
+
     [Space(10)]
     public Paroxe.PdfRenderer.PDFViewer pdfViewer;
 
@@ -66,8 +68,9 @@ public class LoadButton : MonoBehaviourPun
 
     private void Start()
     {
+        myPhotonView = photonView;
         closeBtn?.onClick.AddListener(CloseShowItem);
-        endCLassBtn?.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
+        //endClassBtn?.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
         createBtn?.onClick.AddListener(OnClickCreateButton);
         saveBtn?.onClick.AddListener(SaveCurrentSession);
     }

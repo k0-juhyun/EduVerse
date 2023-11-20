@@ -81,7 +81,6 @@ public class ScreenTransition : MonoBehaviourPun
             // 오디오 리스너 에러
 
             transform.GetComponent<AudioListener>().enabled = false;
-
         }
     }
 }
