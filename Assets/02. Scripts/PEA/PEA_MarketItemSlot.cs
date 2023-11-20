@@ -31,6 +31,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
 
     public void SetItemInfo(Item item)
     {
+        this.item = item;
 
         switch (item.itemType)
         {
@@ -51,8 +52,6 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 break;
         }
 
-        item.itemBytes = File.ReadAllBytes(item.itemPath);
-        this.item = item;
     }
 
     public void ItemPreview()

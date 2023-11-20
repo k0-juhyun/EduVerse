@@ -93,6 +93,24 @@ public class LoadButton : MonoBehaviourPun
         newButton.name = "NewButton_" + newButton.GetInstanceID();
     }
 
+    // 인터렉션 버튼 하나 지우기
+    public void OnClickDeleteInteractionBtn(string btnName)
+    {
+        foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
+        {
+            if(buttonPositionData.page == pdfViewer.CurrentPageIndex)
+            {
+                foreach(ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                {
+                    if(buttonPosition.buttonName == btnName)
+                    {
+                        //allSessions.sessions
+                    }
+                }
+            }
+        }
+    }
+
     public void SaveCurrentSession()
     {
         ButtonPositionData currentSession = new ButtonPositionData();
@@ -121,6 +139,16 @@ public class LoadButton : MonoBehaviourPun
                     // 선택된 아이템 정보 저장
                     item = interactionBtn.Item
                 });
+            }
+        }
+
+        // 기존에 있던 현재 페이지 인터렉션 버튼들에 대한 정보 지우고 다시 저장할거임. 
+        for(int i = 0; i < allSessions?.sessions?.Count; i++)
+        {
+            if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
+            {
+                allSessions.sessions.RemoveAt(i);
+                break;
             }
         }
 
@@ -189,10 +217,10 @@ public class LoadButton : MonoBehaviourPun
 
                     // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
                     // 아이템들 경로/ 파일 이름까지 똑같아야 함
-                    //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
 
-                    newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
+                    //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
+                    //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
                 }
             }
         }
@@ -232,6 +260,7 @@ public class LoadButton : MonoBehaviourPun
                 videoPlayer.url = item.itemPath;
                 showItemRawImage.texture = videoPlayer.targetTexture;
                 videoPlayer.Play();
+                showItemRawImage.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Object:
                 break;
