@@ -58,7 +58,6 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        print("cccccc");
         interactionBtn.SelectItem(item);
     }
 }
