@@ -101,14 +101,13 @@ public class StudentDB : MonoBehaviour
     public void OnClickGoBackMyPageBtn()
     {
         // 학생관리 첫 페이지면 MyPage로 넘어감.
-        if (studentsDB.activeSelf)
+        if (studentsDB.activeSelf&& !personalDB.activeSelf)
         {
             PhotonNetwork.LoadLevel(2);
         }
         else if(personalDB.activeSelf)
         {
             personalDB.SetActive(false);
-            studentsDB.SetActive(true);
         }
     }
 }

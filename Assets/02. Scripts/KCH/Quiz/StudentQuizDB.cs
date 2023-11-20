@@ -32,6 +32,12 @@ public class StudentQuizDB : MonoBehaviour
     public GameObject viewport;
 
     // 단원별 오답 정리.
+    private void Start()
+    {
+        // 처음에 리셋값 받아줌.
+
+    }
+
 
     public void LoadQuizData()
     {
@@ -79,4 +85,6 @@ public class StudentQuizDB : MonoBehaviour
     {
         IncorrectNotePanel.SetActive(false);
     }
+
+
 }
