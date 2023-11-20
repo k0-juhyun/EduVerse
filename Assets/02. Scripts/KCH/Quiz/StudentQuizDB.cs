@@ -26,24 +26,54 @@ public class StudentQuizDB : MonoBehaviour
     // 여기서 문제 가져오면 된다 찬희야 
     public QuizInfo studentQuizinfo;
 
+    public GameObject IncorrectAnswerPrefab;
+    public GameObject IncorrectAnswerPanelPrefab;
 
+    public GameObject viewport;
 
     // 단원별 오답 정리.
 
-    public List<titleinfo> LoadQuizData()
+    public void LoadQuizData()
     {
         // 2단원 틀린 개수만큼 로드
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_1.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab,viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("1단원",titleinfos.Title, titleinfos.Answer,titleinfos.Commentary);
+        }
         foreach (titleinfo titleinfos in studentQuizinfo.Unit_2.IncorrectAnswer)
         {
-            Debug.Log("타이틀 : " + titleinfos.Title);
-            Debug.Log("답 : " + titleinfos.Answer);
-            Debug.Log("코멘트 : " + titleinfos.Commentary);
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("2단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_3.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("3단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_4.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("4단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_5.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("5단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
         }
     }
 
     public void OnIncorrectNoteBtnClick()
     {
         IncorrectNotePanel.SetActive(true);
+        // 오답 추가.
+        if(viewport.transform.childCount == 0)
+        LoadQuizData();
     }
     public void OffIncorrectNoteBtnClick()
     {
