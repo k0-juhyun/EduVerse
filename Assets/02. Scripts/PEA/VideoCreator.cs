@@ -37,9 +37,12 @@ public class VideoCreator : MonoBehaviour
 {
     private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
 
-    private string serverURL_QUIZ = "http://121.200.122.173:5051/chat/quiz2";
+    private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz2";
 
     private string serverURL_Video = "http://221.163.19.218:5055/video_crafter/text_2_video";
+
+    // 뒤 배경 블러처리
+    public GameObject backBlur;
 
     // 캡쳐본 확인
     public GameObject captureResultTextObject;
@@ -58,6 +61,8 @@ public class VideoCreator : MonoBehaviour
     // 버튼
     public Button gifCancelBtn;
     public Button gifSaveBtn;
+    public Button videoCancelBtn;
+    public Button videoSaveBtn;
 
     [Space (20)]
     [Header ("Quiz")]
@@ -84,6 +89,9 @@ public class VideoCreator : MonoBehaviour
     {
         gifCancelBtn.onClick.AddListener(OnClickGIFCancel);
         gifSaveBtn.onClick.AddListener(GIFSave);
+
+        videoCancelBtn.onClick.AddListener(OnClickVideoCancel);
+        videoSaveBtn.onClick.AddListener(VideoSave);
     }
 
     public void UploadImageAndDownload_GIF(byte[] imageBytes, System.Action action = null)
@@ -151,6 +159,7 @@ public class VideoCreator : MonoBehaviour
                 gifLoad.Show(gifPreviewImage, gifInfo.Item1, gifInfo.Item2);
                 action();
                 gifPreviewPanel.SetActive(true);
+                Blur(true);
             }
             else
             {
@@ -233,6 +242,7 @@ public class VideoCreator : MonoBehaviour
                 File.WriteAllBytes(videoPath, videoData);
                 videoPlayer.url = videoPath;
                 videoPreviewPanel.SetActive(true);
+                Blur(true);
             }
             else
             {
@@ -247,6 +257,7 @@ public class VideoCreator : MonoBehaviour
     public void OnClickGIFCancel()
     {
         gifPreviewPanel.SetActive(false);
+        Blur(false);
     }
 
     public void GIFSave()
@@ -268,10 +279,45 @@ public class VideoCreator : MonoBehaviour
         });
     }
 
+    public void OnClickVideoCancel()
+    {
+        videoPreviewPanel.SetActive(false);
+        Blur(false);
+
+        // 영상은 받자마자 저장 -> 저장한 영상 파일 삭제
+        File.Delete(videoPlayer.url);
+    }
+
+    public void VideoSave()
+    {
+        // 아이템 정보 저장
+        Item item = new Item(Item.ItemType.GIF, Path.GetFileNameWithoutExtension(videoPlayer.url), videoPlayer.url);
+
+        MyItemsManager.instance.AddItem(item);
+        //string json = "";
+        //MyItems myItems = new MyItems();
+
+        //if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+        //{
+        //    byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+        //    json = Encoding.UTF8.GetString(jsonBytes);
+        //    myItems = JsonUtility.FromJson<MyItems>(json);
+        //}
+        //else
+        //{
+        //    myItems.data = new List<Item>();
+        //}
+
+        //myItems.data.Add(item);
+        //json = JsonUtility.ToJson(myItems);
+        //File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
+    }
+
     // quiz panel On
     public void OnQuizPanelBtnClick()
     {
         QuizPanel.SetActive(true);
+        Blur(true);
     }
 
     // quiz 저장 버튼
@@ -302,5 +348,11 @@ public class VideoCreator : MonoBehaviour
         QuizPanel.SetActive(false);
         incorrect.SetActive(false);
         wrong.SetActive(false);
+        Blur(false);
+    }
+
+    private void Blur(bool isBlur)
+    {
+        backBlur.SetActive(isBlur);
     }
 }

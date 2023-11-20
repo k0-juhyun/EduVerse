@@ -15,6 +15,7 @@ public class Deco : MonoBehaviour
     public GameObject myDraws;
     public Button[] backBtn;
     public Camera drawCam;
+    public RawImage drawPaper;     // 그림 그리는 판 이미지(그려지는 그림을 보여줌, 실제 그림은 큐브애 그려짐)
     public Rito.TexturePainter.TexturePaintTarget paintTarget;
 
     private void Start()
@@ -27,11 +28,12 @@ public class Deco : MonoBehaviour
         drawBtn.onClick.AddListener(OnClickDrawBtn);
         decoBtn.onClick.AddListener(OnClickDecoBtn);
         mainCam = Camera.main;
+
+        SetRanderTexture();
     }
 
     private void OnClickDrawBtn()
     {
-        print("click draw btn");
         drawBtn.gameObject.SetActive(false);
         decoBtn.gameObject.SetActive(false);
         draw.SetActive(true);
@@ -64,9 +66,17 @@ public class Deco : MonoBehaviour
             drawCam.gameObject.SetActive(false);
             mainCam.gameObject.SetActive(true);
             paintTarget.InitRenderTexture();
+            SetRanderTexture();
         }
 
     }
+
+    // 그림 그리는 판 이미지에 큐브 렌더텍스쳐(그림 그려지는 텍스쳐) 넣기
+    public void SetRanderTexture()
+    {
+        drawPaper.texture = paintTarget.renderTexture;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {

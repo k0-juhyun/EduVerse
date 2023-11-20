@@ -10,6 +10,7 @@ public struct Quiz_
 {
     public string question;
     public string answer;
+    public string unit;
 }
 public class MyQuizStorage : MonoBehaviourPun
 {
@@ -26,6 +27,10 @@ public class MyQuizStorage : MonoBehaviourPun
     public Correctanswercheck incorrectCheck;
 
     bool isGroundCheck = false;
+
+    // quizSubmit_student에서 사용.
+    public string UnitCheck;
+    public string Commentary;
 
     private void Awake()
     {

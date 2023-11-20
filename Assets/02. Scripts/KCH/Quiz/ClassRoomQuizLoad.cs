@@ -8,7 +8,7 @@ using static MyQuizStorage;
 
 public class ClassRoomQuizLoad : MonoBehaviourPun
 {
-    public List<Quiz_> quizs = new List<Quiz_>();
+
 
     public GameObject AddQuizViewport;
     public GameObject QuizPrefab;
@@ -39,7 +39,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     // 문제와 답.
     string Question;
     string Answer;
-
+    string Commentary;
     public class AnotherClass
     {
         // 다른 클래스에서 델리게이트에 등록될 함수
@@ -58,7 +58,6 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
     private void Start()
     {
-        quizs = MyQuizStorage.Instance.quizList;
 
         for (int i = 0; i < MyQuizStorage.Instance.quizList.Count; i++)
         {

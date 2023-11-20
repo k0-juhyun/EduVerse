@@ -146,23 +146,25 @@ public class GifLoad : MonoBehaviour
 
         // 아이템 정보 저장
         Item item = new Item(Item.ItemType.GIF, Time.time.ToString(), sprite);
-        string json = "";
-        MyItems myItems = new MyItems();
 
-        if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
-        {
-            byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
-            json = Encoding.UTF8.GetString(jsonBytes);
-            myItems = JsonUtility.FromJson<MyItems>(json);
-        }
-        else
-        {
-            myItems.data = new List<Item>();
-        }
+        MyItemsManager.instance.AddItem(item);
+        //string json = "";
+        //MyItems myItems = new MyItems();
 
-        myItems.data.Add(item);
-        json = JsonUtility.ToJson(myItems);
-        File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
+        //if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
+        //{
+        //    byte[] jsonBytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
+        //    json = Encoding.UTF8.GetString(jsonBytes);
+        //    myItems = JsonUtility.FromJson<MyItems>(json);
+        //}
+        //else
+        //{
+        //    myItems.data = new List<Item>();
+        //}
+
+        //myItems.data.Add(item);
+        //json = JsonUtility.ToJson(myItems);
+        //File.WriteAllText(Application.persistentDataPath + "/MyItems.txt", json);
 
         action();
     }

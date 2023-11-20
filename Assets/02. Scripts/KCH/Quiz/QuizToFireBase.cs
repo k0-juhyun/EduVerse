@@ -232,6 +232,7 @@ public class QuizToFireBase : MonoBehaviour
 
         // 가져올 경로 설정
         string path = "Quiz_INFO/" + str;
+        print(str);
 
         // 해당 경로에서 데이터 가져오기
         StartCoroutine(FetchQuizData(path, obj));
