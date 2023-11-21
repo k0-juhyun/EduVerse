@@ -1,11 +1,13 @@
  using System.IO;
 using System.Text;
 using System.Linq;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 [System.Serializable]
 public class MyItems
@@ -27,6 +29,8 @@ public class PEA_ItemLoader : MonoBehaviour
     //private string myItemsJsonPath;
     private MyItems myItems;
 
+    private Thread itemLoadThread;
+
     private string[] gifItemsPath;
     private string[] videoItemsPath;
     private List<Item> inContentMyItems = new List<Item>();                 // 내 아이템 창에 띄워져 있는 내 아이템
@@ -42,7 +46,34 @@ public class PEA_ItemLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        LoadItems(0);
+        if(itemLoadThread == null)
+        {
+            itemLoadThread = new Thread(() => { LoadItems(0); });
+            if (isMarket)
+            {
+                foreach (Transform tr in content)
+                {
+                    Destroy(tr.gameObject);
+                }
+                itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+            }
+            itemLoadThread.Start();
+        }
+        else
+        {
+            if(!(itemLoadThread.ThreadState == ThreadState.Running))
+            {
+                if (isMarket)
+                {
+                    foreach (Transform tr in content)
+                    {
+                        Destroy(tr.gameObject);
+                    }
+                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                }
+                itemLoadThread.Start();
+            }
+        }
     }
 
     void Start()
@@ -56,15 +87,9 @@ public class PEA_ItemLoader : MonoBehaviour
     }
 
     // 아이템 불러오기
-    public void LoadItems(int loadItemType)
+    private void LoadItems(int loadItemType)
     {
-        if (isMarket)
-        {
-            foreach (Transform tr in content)
-            {
-                Destroy(tr.gameObject);
-            }
-        }
+        print("load items start");
 
         switch ((SearchType)loadItemType)
         {
@@ -77,7 +102,6 @@ public class PEA_ItemLoader : MonoBehaviour
 
                 if (isMarket)
                 {
-                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
 
                     if (Directory.Exists(Application.persistentDataPath + "/GIF/"))
                     {
@@ -228,6 +252,8 @@ public class PEA_ItemLoader : MonoBehaviour
             case SearchType.Object:
                 break;
         }
+
+        print("load item end");
     }
 
     public void DeleteAllMyItems()

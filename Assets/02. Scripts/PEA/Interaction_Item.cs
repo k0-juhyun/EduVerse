@@ -45,6 +45,7 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
                 image.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:
+                videoPlayer.targetTexture = new RenderTexture(videoPlayer.targetTexture);
                 rawImage.texture = videoPlayer.targetTexture;
                 videoPlayer.url = item.itemPath;
                 rawImage.gameObject.SetActive(true);

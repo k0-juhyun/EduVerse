@@ -79,7 +79,6 @@ public class MyItemsManager : MonoBehaviour
             }
 
             myItemsDictionary.Add(myItems.data[i].itemPath, myItems.data[i]);
-            print(myItems.data[i].itemName);
         }
 
     }

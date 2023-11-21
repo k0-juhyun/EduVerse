@@ -48,6 +48,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;
+                videoPlayer.targetTexture = new RenderTexture(videoPlayer.targetTexture);
                 GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }
