@@ -466,12 +466,12 @@ public class CharacterInteraction : MonoBehaviourPun
         Debug.Log("open");
         if (!isOpenUI)
         {
-            characterUI.DOAnchorPos(new Vector2(0, 0), 0.5f);
+            characterUI.DOAnchorPos(new Vector2(-150, 0), 0.5f);
             isOpenUI = !isOpenUI;
         }
         else
         {
-            characterUI.DOAnchorPos((new Vector2(400, 0)), 0.5f);
+            characterUI.DOAnchorPos((new Vector2(150, 0)), 0.5f);
             isOpenUI = !isOpenUI;
         }
     }
