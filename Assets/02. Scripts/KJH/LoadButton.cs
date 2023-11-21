@@ -30,12 +30,12 @@ public class ButtonSessions
 
 public class LoadButton : MonoBehaviourPun
 {
+    private bool isLesson = false;        // 수업중인지 확인 (교실에서 수업중이지 않을 떄 pdf를 넘겨도 인터렉션 버튼 만들지 않고 수업이 끝나면 만들어져 있던 인터렉션 버튼들 지움)
     private string json;                  // 인터렉션 버튼 정보 json RPC로 넘겨줄거임
     private string filePath;
     private ButtonSessions allSessions;
 
     [Space(10)]
-    public Button endClassBtn;
     public Button createBtn;
     public Button saveBtn;
 
@@ -54,6 +54,7 @@ public class LoadButton : MonoBehaviourPun
     public GifLoad gifLoad;
     public VideoPlayer videoPlayer;
     public Button closeBtn;
+    public Button lessonBtn;                          // 수업 집중모드 버튼
 
     [HideInInspector] public PhotonView myPhotonView;
 
@@ -70,10 +71,21 @@ public class LoadButton : MonoBehaviourPun
     {
         myPhotonView = photonView;
         closeBtn?.onClick.AddListener(CloseShowItem);
-        //endClassBtn?.onClick.AddListener(() => photonView.RPC( nameof(DestroyAllButtonsRPC), RpcTarget.All));
         createBtn?.onClick.AddListener(OnClickCreateButton);
         saveBtn?.onClick.AddListener(SaveCurrentSession);
+        lessonBtn?.onClick.AddListener(OnClickLessonBtn);
     }
+
+    private void OnClickLessonBtn()
+    {
+        isLesson = !isLesson;
+
+        if (!isLesson)
+        {
+            photonView.RPC( nameof(DestroyAllButtons), RpcTarget.Others);
+        }
+    }
+
     public void OnClickCreateButton()
     {
         //// 누른 버튼의 이름이 "Button"이 아니라면 새 버튼 생성
@@ -165,8 +177,14 @@ public class LoadButton : MonoBehaviourPun
     {
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // 교과서 제작페이지
-        if(buildIndex == 2)
+        // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
+        if(buildIndex == 4 && isLesson) 
+        {
+            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+        }
+
+        // 교실 - 수업X , 교과서 제작 페이지에서는 선생님만. (RPC 보내지 않음)
+        else 
         {
             // 이전페이지에 있던 버튼들 싹 지우고 로드하기
             DestroyAllButtons();
@@ -188,12 +206,6 @@ public class LoadButton : MonoBehaviourPun
                     }
                 }
             }
-        }
-
-        // 교실(수업)
-        else
-        {
-            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
         }
     }
 
@@ -229,16 +241,8 @@ public class LoadButton : MonoBehaviourPun
         }
     }
 
-    public void DestroyAllButtons()
-    {
-        foreach (Transform tr in teachingData.transform)
-        {
-            Destroy(tr.gameObject);
-        }
-    }
-
     [PunRPC]
-    public void DestroyAllButtonsRPC()
+    public void DestroyAllButtons()
     {
         foreach (Transform tr in teachingData.transform)
         {
