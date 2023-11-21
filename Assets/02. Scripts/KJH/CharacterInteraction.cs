@@ -521,6 +521,11 @@ public class CharacterInteraction : MonoBehaviourPun
                 rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 580);
                 childrectTransform.anchoredPosition = new Vector3(10, 200, 0);
                 break;
+
+            case 3:
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 460);
+                childrectTransform.anchoredPosition = new Vector3(10, 130, 0);
+                break;
         }
     }
 }

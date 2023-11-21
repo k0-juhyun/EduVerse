@@ -54,7 +54,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 spawnButton.gameObject.SetActive(true);
                 disableDeskButton.gameObject.SetActive(true);
             }
-            else if (SceneManager.GetActiveScene().name == "5.GroundScene")
+            else if (SceneManager.GetActiveScene().name == "5.GroundScene" && DataBase.instance.user.isTeacher)
             {
                 quizButton.gameObject.SetActive(true);
             }

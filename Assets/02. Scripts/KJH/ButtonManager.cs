@@ -49,4 +49,9 @@ public class ButtonManager : MonoBehaviourPun
     {
         PhotonNetwork.LoadLevel("MyPage_Student");
     }
+
+    public void OnClickBackToStartScene()
+    {
+        PhotonNetwork.LoadLevel(0);
+    }
 }
