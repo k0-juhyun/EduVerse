@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent (typeof(AudioSource))]
 public class CharacterSound : MonoBehaviour
 {
     private AudioSource audioSource;
 
-    public int curSceneBuildIndex;
+    private int curSceneBuildIndex;
 
     public AudioClip[] groundSceneWalkSounds;
 
@@ -21,8 +22,14 @@ public class CharacterSound : MonoBehaviour
         
     }
 
-    private void CharacterWalkSound(int walkSoundIndex) // 0 또는 1
+    public void OnChangeScene(int sceneBuildIndex)
     {
+        curSceneBuildIndex = sceneBuildIndex;
+    }
+
+    public void CharacterWalkSound(int walkSoundIndex) // 0 또는 1
+    {
+        print("CharacterWalkSound : " + curSceneBuildIndex + ", " + walkSoundIndex);
         switch (curSceneBuildIndex)
         {
             // 광장 
