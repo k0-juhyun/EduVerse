@@ -55,6 +55,7 @@ public class LoadButton : MonoBehaviourPun
     public VideoPlayer videoPlayer;
     public Button closeBtn;
     public Button lessonBtn;                          // 수업 집중모드 버튼
+    public GameObject trashCan;
 
     [HideInInspector] public PhotonView myPhotonView;
 
