@@ -61,7 +61,9 @@ public class TeacherInteraction : MonoBehaviourPun
         }
 
         characterInteraction = GetComponentInParent<CharacterInteraction>();
-        classRoomHandler = GameObject.Find("ClassRoom").GetComponent<ClassRoomHandler>();
+
+        if(SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+            classRoomHandler = GameObject.Find("ClassRoom").GetComponent<ClassRoomHandler>();
 
         scrollView.SetActive(false);
 
