@@ -10,14 +10,12 @@ public class semicircleUI : MonoBehaviour
     public Ease ease;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            DOTween.To(() => semicircle.fillAmount, x => semicircle.fillAmount = x, 0.5f, 2f).SetEase(ease);
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            semicircle.fillAmount = 0;
-        }
+
+    }
+
+    public void Reset_value()
+    {
+        semicircle.fillAmount = 0;
     }
 
     public void semicircleTween(float value)

@@ -89,10 +89,17 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
 
     // 종료되는 함수 
     public void OnExitQuizBtnClick()
+    {      
+        photonView.RPC(nameof(deletePanel), RpcTarget.All);
+        // 퀴즈 종료 버튼
+        if(Quiz.instance !=null)
+        Quiz.instance.EndQuiz();
+    }
+
+    [PunRPC]
+    public void deletePanel()
     {
         Destroy(gameObject);
-        // 퀴즈 종료 버튼
-        Quiz.instance.EndQuiz();
     }
 
     // 광장에서만 쓰는 버튼
