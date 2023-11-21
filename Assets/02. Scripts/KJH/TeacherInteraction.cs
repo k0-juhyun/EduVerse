@@ -102,8 +102,8 @@ public class TeacherInteraction : MonoBehaviourPun
 
     public void OnSpawnBtnClick()
     {
-        scrollView.SetActive(!scrollView.activeSelf);
-        isSpawnBtnClick = !isSpawnBtnClick;
+        scrollView.SetActive(true);
+        isSpawnBtnClick = true;
     }
 
     private void CreateButtonsForModels()
@@ -132,20 +132,23 @@ public class TeacherInteraction : MonoBehaviourPun
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
 
             print(modelToSpawn.name);
-            // Instantiate model and check for success.
+
+            // 포톤뷰를 가진 빈오브젝트를 불러와서
             objectToPlace = PhotonNetwork.Instantiate("3D_Models/mesh", player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
-            // Only proceed if objectToPlace has been successfully created.
+            scrollView.SetActive(!scrollView.activeSelf);
+            isSpawnBtnClick = false;
+
             if (objectToPlace != null)
             {
-                isObjectBeingPlaced = true; // Set state to placing object.
-                currentlyDragging = objectToPlace; // Set current dragging object.
+                isObjectBeingPlaced = true; 
+                currentlyDragging = objectToPlace;
 
-                // Call RPC to load and apply OBJ to the newly instantiated object.
-                // We pass objectToPlace's PhotonView ID to ensure the correct object is targeted.
+                // rpc 로 오브젝트 생성
                 photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name, objectToPlace.GetPhotonView().ViewID);
                 print(modelToSpawn.name);
             }
+
             else
             {
                 Debug.LogError("Failed to instantiate object on network.");
@@ -302,5 +305,11 @@ public class TeacherInteraction : MonoBehaviourPun
         classRoomHandler.FloorWithoutShadow.SetActive(!isDisableBtnClick);
 
         isDisableBtnClick = !isDisableBtnClick;
+    }
+
+    public void OnClickCloseButton()
+    {
+        scrollView.SetActive(false);
+        isSpawnBtnClick = false;
     }
 }
