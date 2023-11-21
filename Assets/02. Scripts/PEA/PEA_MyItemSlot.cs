@@ -82,6 +82,11 @@ public class PEA_MyItemSlot : MonoBehaviour
     public Transform canvas;
     public GameObject toggleIsOnBG;
 
+    public Item Item
+    {
+        get { return item; }
+    }
+
     private void OnEnable()
     {
         //if (SceneManager.GetActiveScene().buildIndex == 4 && item!= null)

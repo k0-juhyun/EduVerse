@@ -24,20 +24,12 @@ public class PEA_ItemLoader : MonoBehaviour
         Object
     }
 
-    public enum LoaderType
-    {
-        Market,
-        MyItem,
-        InteractionItemList
-    }
-
     //private string myItemsJsonPath;
     private MyItems myItems;
 
-    public LoaderType loaderType;
-
     private string[] gifItemsPath;
     private string[] videoItemsPath;
+    private List<Item> inContentMyItems = new List<Item>();                 // 내 아이템 창에 띄워져 있는 내 아이템
 
     private List<Texture2D> itemTextures = new List<Texture2D>();
 
@@ -66,9 +58,12 @@ public class PEA_ItemLoader : MonoBehaviour
     // 아이템 불러오기
     public void LoadItems(int loadItemType)
     {
-        foreach (Transform tr in content)
+        if (isMarket)
         {
-            Destroy(tr.gameObject);
+            foreach (Transform tr in content)
+            {
+                Destroy(tr.gameObject);
+            }
         }
 
         switch ((SearchType)loadItemType)
@@ -132,19 +127,27 @@ public class PEA_ItemLoader : MonoBehaviour
                     //}
                 }
 
-                for (int i = 0; i < (isMarket ? itemTextures.Count : myItems != null ? myItems.data.Count : 0); i++)
+                print(myItems.data.Count + ", " + inContentMyItems.Count);
+                print((isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) : myItems.data.Count)));
+                // 마켓은 항상 재로드, 내 아이템은 새로 추가된 것만 로드
+                for (int i = (isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) :  myItems.data.Count)); i < (isMarket ? itemTextures.Count : (myItems != null ? myItems.data.Count : 0)); i++)
                 {
+                    print(i);
                     GameObject slot = Instantiate(itemSlot, content);
+
+                    // 마켓
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
                         marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".jpg"));
                     }
+
+                    // 내 아이템
                     else
                     {
                         PEA_MyItemSlot myItemSlot = slot.GetComponent<PEA_MyItemSlot>();
                         myItemSlot.SetItemInfo(myItems.data[i]);
-                        myItemSlot.canvas = transform.parent;
+                        inContentMyItems.Add(myItems.data[i]);
                     }
                 }
 
