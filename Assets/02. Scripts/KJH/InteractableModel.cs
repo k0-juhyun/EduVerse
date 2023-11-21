@@ -1,50 +1,83 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
+using System.Collections;
 
 public class InteractableModel : MonoBehaviourPun
 {
+    private GameObject mesh;
     private Camera mainCamera;
     private bool isDragging;
     private float distanceToCamera;
+    private float dragTime;
 
-    // Start is called before the first frame update
+    public Image deleteAreaImage; // 삭제 영역 이미지
+
+    private const float activationTime = 3f; // 드래그 후 삭제 영역 활성화까지의 시간
+    private const float disableTime = 2f; // 활성화 후 자동으로 비활성화까지의 시간
+
     void Start()
     {
-        mainCamera = Camera.main; // 주 카메라를 캐시합니다.
+        mesh = this.gameObject;
+        mainCamera = Camera.main;
         distanceToCamera = Vector3.Distance(transform.position, mainCamera.transform.position);
+        deleteAreaImage.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // 마우스가 오브젝트 위에 있고 클릭하면 드래그를 시작합니다.
         if (Input.GetMouseButtonDown(0) && IsMouseOverObject())
         {
             isDragging = true;
+            dragTime = 0f;
+            StartCoroutine(ActivateDeleteAreaAfterDelay());
         }
 
         if (isDragging)
         {
-            // 드래그 중 마우스 이동에 따라 오브젝트 위치를 갱신합니다.
+            dragTime += Time.deltaTime;
+
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = distanceToCamera; // 설정한 카메라와의 거리를 이용합니다.
+            mousePosition.z = distanceToCamera;
             Vector3 objPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             transform.position = objPosition;
 
-            // 마우스를 놓으면 드래그를 멈춥니다.
             if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
+                StopCoroutine(ActivateDeleteAreaAfterDelay()); // 드래그가 끝나면 코루틴 중단
+
+                if (deleteAreaImage.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(
+                    deleteAreaImage.rectTransform, Input.mousePosition, null))
+                {
+                    PhotonNetwork.Destroy(mesh); // 오브젝트 삭제
+                }
             }
         }
 
-        // 휠 입력을 받아 카메라와의 거리를 조절합니다.
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        distanceToCamera -= scroll; // 스크롤 방향에 따라 거리를 조절합니다.
-        distanceToCamera = Mathf.Clamp(distanceToCamera, 1f, 10f); // 거리에 제한을 둡니다.
+        distanceToCamera -= scroll;
+        distanceToCamera = Mathf.Clamp(distanceToCamera, 1f, 10f);
     }
 
-    // 마우스가 오브젝트 위에 있는지 확인하는 메서드입니다.
+    private IEnumerator ActivateDeleteAreaAfterDelay()
+    {
+        yield return new WaitForSeconds(activationTime);
+
+        if (isDragging) // 3초 후 여전히 드래그 중이면 삭제 영역 활성화
+        {
+            deleteAreaImage.gameObject.SetActive(true);
+            StartCoroutine(DeactivateDeleteAreaAfterDelay());
+        }
+    }
+
+    private IEnumerator DeactivateDeleteAreaAfterDelay()
+    {
+        yield return new WaitForSeconds(disableTime);
+
+        deleteAreaImage.gameObject.SetActive(false); // 2초 후 자동으로 비활성화
+    }
+
     private bool IsMouseOverObject()
     {
         RaycastHit hit;

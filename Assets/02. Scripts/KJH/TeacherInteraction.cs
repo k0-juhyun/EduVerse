@@ -34,6 +34,7 @@ public class TeacherInteraction : MonoBehaviourPun
     public Transform buttonsParent;
 
     private CharacterInteraction characterInteraction;
+    private ClassRoomHandler classRoomHandler;
 
     private void Awake()
     {
@@ -46,6 +47,8 @@ public class TeacherInteraction : MonoBehaviourPun
         }
 
         characterInteraction = GetComponentInParent<CharacterInteraction>();
+        classRoomHandler = GameObject.Find("ClassRoom").GetComponent<ClassRoomHandler>();
+
         scrollView.SetActive(false);
 
     }
@@ -54,8 +57,8 @@ public class TeacherInteraction : MonoBehaviourPun
         player = characterInteraction.Character;
         CreateButtonsForModels();
 
-        Btn_Spawn = spawnButton?.GetComponentInChildren<Button>();
-        Btn_Disable = disableDeskButton?.GetComponentInChildren<Button>();
+        Btn_Spawn = spawnButton?.GetComponent<Button>();
+        Btn_Disable = disableDeskButton?.GetComponent<Button>();
 
         Btn_Spawn?.onClick.AddListener(() => OnSpawnBtnClick());
         Btn_Disable?.onClick.AddListener(() => OnClickDisableDesk());
@@ -165,6 +168,8 @@ public class TeacherInteraction : MonoBehaviourPun
 
                 // 재질 적용
                 ApplyMaterials(modelName, meshObj);
+
+                meshObj.gameObject.layer = 10;
             }
             //else
             //{
@@ -263,17 +268,14 @@ public class TeacherInteraction : MonoBehaviourPun
         }
     }
 
-    // 전부 일어서게 하기
-    public void OnStandUpBtnClick()
-    {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-        print("차렷");
-    }
-
+    // 책상 없애고 일어서게하기
     public void OnClickDisableDesk()
     {
         photonView.RPC("OnClickDisableDeskRPC", RpcTarget.All);
-        print("책상 엎애기");
+
+        characterInteraction.SetPlayerIdle();
+
+        print("책상 없애기");
     }
 
     // 책상 다없애기
@@ -281,9 +283,10 @@ public class TeacherInteraction : MonoBehaviourPun
     private void OnClickDisableDeskRPC()
     {
         // 바닥변경
+        classRoomHandler.StudentDesk.SetActive(isDisableBtnClick);
+        classRoomHandler.Floor.SetActive(isDisableBtnClick);
+        classRoomHandler.FloorWithoutShadow.SetActive(!isDisableBtnClick);
+
         isDisableBtnClick = !isDisableBtnClick;
-        characterInteraction.noShadowFloor.SetActive(!isDisableBtnClick);
-        characterInteraction.shadowFloor.SetActive(isDisableBtnClick);
-        characterInteraction.studentDesk.SetActive(isDisableBtnClick);
     }
 }

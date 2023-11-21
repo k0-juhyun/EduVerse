@@ -26,13 +26,13 @@ public class Interaction_InClassBtn : MonoBehaviour
         {
             case Item.ItemType.Image:
                 Texture2D texture = new Texture2D(2, 2);
-                texture.LoadImage(item.itemBytes);
+                texture.LoadImage(item.gifBytes);
                 texture.Apply();
                 item.itemTexture = texture; 
                 break;
 
             case Item.ItemType.GIF:
-                item.gifSprites = gifaLoad.GetSpritesByFrame(item.itemBytes).Item1;
+                item.gifSprites = gifaLoad.GetSpritesByFrame(item.gifBytes).Item1;
                 break;
 
             case Item.ItemType.Video:
@@ -40,7 +40,7 @@ public class Interaction_InClassBtn : MonoBehaviour
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(item.itemPath));
                 }
-                File.WriteAllBytes(item.itemPath, item.itemBytes);
+                File.WriteAllBytes(item.itemPath, item.gifBytes);
                 break;
 
             case Item.ItemType.Object:

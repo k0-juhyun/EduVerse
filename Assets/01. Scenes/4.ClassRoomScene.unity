@@ -17807,10 +17807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1280, y: 800}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -23117,8 +23117,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 749904952}
+  - component: {fileID: 749904953}
   m_Layer: 0
-  m_Name: aduverse class room
+  m_Name: ClassRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23160,6 +23161,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &749904953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749904951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95edccdded4c0a340af44391e6fd134f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StudentDesk: {fileID: 2044819341}
+  Floor: {fileID: 20351451}
+  FloorWithoutShadow: {fileID: 862799948}
 --- !u!1 &749976676
 GameObject:
   m_ObjectHideFlags: 0
@@ -24210,7 +24226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c20059328d71d45a8d722f6e216490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endCLassBtn: {fileID: 1916196292}
+  endClassBtn: {fileID: 0}
   createBtn: {fileID: 0}
   saveBtn: {fileID: 0}
   selectItemButtonPrefab: {fileID: 1201656526869029854, guid: 7ffc989d1d10f494495ed965773b802a, type: 3}
@@ -24222,6 +24238,7 @@ MonoBehaviour:
   gifLoad: {fileID: 223350962}
   videoPlayer: {fileID: 795396370}
   closeBtn: {fileID: 1808959110}
+  myPhotonView: {fileID: 0}
   pdfViewer: {fileID: 1559956615}
 --- !u!114 &770212401
 MonoBehaviour:
@@ -28923,7 +28940,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976498564}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.77, y: 1, z: -47.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -28931,7 +28948,7 @@ Transform:
   - {fileID: 1193261336}
   m_Father: {fileID: 464726205}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &989768858
 GameObject:
   m_ObjectHideFlags: 0
@@ -34578,7 +34595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1193261336
 Transform:
   m_ObjectHideFlags: 0
@@ -34586,14 +34603,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193261335}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.395, y: 0, z: -1.643}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0.395, y: 0, z: 1.643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 976498570}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!81 &1193261337
 AudioListener:
   m_ObjectHideFlags: 0
@@ -44226,7 +44243,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.00021394687, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1532016052
@@ -45603,7 +45620,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594695196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 77}
+  m_LocalPosition: {x: 0, y: 0, z: 123.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -45622,7 +45639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1594695198
@@ -52303,6 +52320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 680839765}
   teacherComputer: {fileID: 1816218349902635418}
+  loadButton: {fileID: 770212400}
 --- !u!20 &1855170296
 Camera:
   m_ObjectHideFlags: 0

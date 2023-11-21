@@ -91,6 +91,7 @@ public class PEA_ItemLoader : MonoBehaviour
                         foreach (string path in gifItemsPath)
                         {
                             Item item = new Item(Item.ItemType.GIF, Path.GetFileNameWithoutExtension(path), path);
+                            //item.itemBytes = File.ReadAllBytes(path);
                             gifItems.Add(item);
                         }
                     }
@@ -102,6 +103,7 @@ public class PEA_ItemLoader : MonoBehaviour
                         foreach (string path in videoItemsPath)
                         {
                             Item item = new Item(Item.ItemType.Video, Path.GetFileNameWithoutExtension(path), path);
+                            //item.itemBytes = File.ReadAllBytes(path);
                             videoItems.Add(item);
                         }
                     }

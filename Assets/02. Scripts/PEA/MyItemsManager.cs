@@ -44,7 +44,6 @@ public class MyItemsManager : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
         {
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
-            print(bytes.Length);
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
         }
