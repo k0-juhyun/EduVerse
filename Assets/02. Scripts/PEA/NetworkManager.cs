@@ -213,20 +213,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (scene.buildIndex == 4)
             {
                 spawnPos = (DataBase.instance.user.isTeacher ? teacherSpawnPos : studentSpawnPos);
-                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
+                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot).GetComponentInChildren<CharacterSound>().OnChangeScene(scene.buildIndex);
             }
             else if (scene.buildIndex == 5)
             {
                 spawnPos = (DataBase.instance.user.isTeacher ? new Vector3(14, 1.4f, 10) : new Vector3(12.5f, 0, 17.5f));
                 spawnRot = (DataBase.instance.user.isTeacher ? Quaternion.Euler(0, 0, 0) : spawnRot);
-                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot);
+                PhotonNetwork.Instantiate("Character", spawnPos, spawnRot).GetComponentInChildren<CharacterSound>().OnChangeScene(scene.buildIndex);
             }
 
             //Voice.instance.OnSceneLoaded(scene.buildIndex);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
-
 
     private void OnApplicationQuit()
     {

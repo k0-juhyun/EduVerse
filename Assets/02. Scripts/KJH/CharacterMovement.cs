@@ -26,6 +26,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public GameObject CameraButton;
     public GameObject CustomizeButton;
     public GameObject GreetButton;
+    private GameObject QuizButton;
 
     [Space][Header("캐릭터")] public GameObject Character;
 
@@ -128,6 +129,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     private void Awake()
     {
+        characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
+
         if (photonView.IsMine)
         {
             // 임시 주석
@@ -149,6 +152,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 CameraButton.SetActive(true);
                 CustomizeButton.SetActive(true);
                 GreetButton.SetActive(true);
+                QuizButton = characterTeacherInteraction.quizButton;
+                QuizButton.SetActive(true);
             }
         }
 
@@ -156,7 +161,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
-        characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
     }
 
     private void Update()
