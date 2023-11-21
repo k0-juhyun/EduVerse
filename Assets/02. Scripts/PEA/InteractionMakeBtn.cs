@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private Item item;
-    private Button btn;
+    [SerializeField] private GameObject deleteImage; // 삭제 이미지
+    [SerializeField] private GameObject rectImage;
     private bool isClick = false;
-
     private Vector3 pointerDownPos;
+    private float pointerDownTimer = 0f;
+    private const float requiredHoldTime = 3f; // 필요한 터치 시간
+    private bool isDragging = false;
+    private bool deleteImageActivated = false;
+    private LoadButton loadButton;
 
     public GameObject itemList;
     public GameObject itemPrefab;
     public Transform itemList_Content;
-    public Button deleteBtn;
 
     public Item Item
     {
@@ -30,14 +34,15 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         //btn = GetComponent<Button>();
         //btn.onClick.AddListener(ShowItemList);
-        deleteBtn.onClick.AddListener(Delete);
 
         SetItemLIst();
+        deleteImage = loadButton.trashCan;
+        rectImage = loadButton.trashCan.transform.GetChild(0).gameObject;
     }
 
-    void Update()
+    private void Awake()
     {
-        
+        loadButton = GetComponentInParent<LoadButton>();
     }
 
     private void SetItemLIst()
@@ -54,7 +59,6 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     public void ShowItemList(bool isShow)
     {
         itemList.SetActive(isShow);
-        deleteBtn.gameObject.SetActive(!isShow);
     }
 
     // 선택된 아이템 정보 저장
@@ -62,30 +66,65 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         this.item = item;
         itemList.SetActive(false);
-        deleteBtn.gameObject.SetActive(true);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isClick && transform.position == pointerDownPos)
+        isClick = false;
+        pointerDownTimer = 0f;
+        StopAllCoroutines(); // 터치 추적 중단
+
+        if (!isDragging && transform.position == pointerDownPos)
         {
             ShowItemList(!itemList.activeSelf);
         }
 
-        isClick = false;
+        if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(
+                deleteImage.GetComponent<RectTransform>(), eventData.position, null))
+        {
+            Delete(); // 오브젝트 삭제
+        }
+        deleteImageActivated = false;
+        deleteImage.SetActive(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(gameObject == eventData.pointerCurrentRaycast.gameObject)
+        if (gameObject == eventData.pointerCurrentRaycast.gameObject)
         {
-            pointerDownPos = transform.position;
             isClick = true;
+            pointerDownPos = transform.position;
+            StartCoroutine(TrackPointerDownTime());
         }
     }
 
     public void Delete()
     {
         Destroy(gameObject);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        isDragging = true;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        isDragging = false;
+    }
+
+    private IEnumerator TrackPointerDownTime()
+    {
+        while (isClick && pointerDownTimer < requiredHoldTime)
+        {
+            pointerDownTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (pointerDownTimer >= requiredHoldTime)
+        {
+            deleteImage.SetActive(true); // 삭제 이미지 활성화
+            deleteImageActivated = true;
+        }
     }
 }
