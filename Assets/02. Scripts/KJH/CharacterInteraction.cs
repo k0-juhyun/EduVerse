@@ -31,7 +31,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private CameraSetting cameraSetting;
     private Rigidbody rb;
 
-    public bool _isSit;
+    [HideInInspector] public bool _isSit;
     private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
@@ -42,9 +42,9 @@ public class CharacterInteraction : MonoBehaviourPun
     private string myNickName;
 
     public RectTransform characterUI;
+    public GameObject OpenUI;
 
     public Camera Cam;
-
     Camera subMainCam;
     Scene scene;
 
@@ -79,6 +79,8 @@ public class CharacterInteraction : MonoBehaviourPun
             Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
             Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
         }
+
+        AdjustUIHeight();
     }
 
     private void Update()
@@ -466,13 +468,59 @@ public class CharacterInteraction : MonoBehaviourPun
         Debug.Log("open");
         if (!isOpenUI)
         {
+            OpenUI.SetActive(false);
             characterUI.DOAnchorPos(new Vector2(-150, 0), 0.5f);
             isOpenUI = !isOpenUI;
+            StartCoroutine(ICloseUI(1.5f));
         }
-        else
+        //else
+        //{
+        //    characterUI.DOAnchorPos((new Vector2(150, 0)), 0.5f);
+        //    isOpenUI = !isOpenUI;
+        //}
+    }
+
+    private IEnumerator ICloseUI(float delayTime)
+    {
+        yield return new WaitForSecondsRealtime(delayTime);
+        characterUI.DOAnchorPos((new Vector2(150, 0)), 0.5f);
+        isOpenUI = !isOpenUI;
+        OpenUI.SetActive(true);
+    }
+
+    private int FindChilds(GameObject parent)
+    {
+        int count = 0;
+
+        foreach (Transform child in parent.transform)
         {
-            characterUI.DOAnchorPos((new Vector2(150, 0)), 0.5f);
-            isOpenUI = !isOpenUI;
+            if (child.gameObject.GetComponent<Button>() != null && child.gameObject.activeSelf)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private void AdjustUIHeight()
+    {
+        int buttonCount = FindChilds(characterUI.transform.GetChild(0).gameObject);
+        print("¸î°³" + buttonCount);
+        RectTransform rectTransform = characterUI.GetComponent<RectTransform>();
+        RectTransform childrectTransform = characterUI.transform.GetChild(0).GetComponent<RectTransform>();
+
+        switch(buttonCount)
+        {
+            case 6:
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 880);
+                childrectTransform.anchoredPosition = new Vector3(10, 340, 0);
+                break;
+
+            case 4:
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 580);
+                childrectTransform.anchoredPosition = new Vector3(10, 200, 0);
+                break;
         }
     }
 }
