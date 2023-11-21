@@ -20,6 +20,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     public GameObject itemList;
     public GameObject itemPrefab;
     public Transform itemList_Content;
+    public Button selectItemBtn;
 
     public Item Item
     {
@@ -30,19 +31,20 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         get { return item; }
     }
 
+    private void Awake()
+    {
+        loadButton = GetComponentInParent<LoadButton>();
+    }
+
     void Start()
     {
         //btn = GetComponent<Button>();
         //btn.onClick.AddListener(ShowItemList);
 
-        SetItemLIst();
         deleteImage = loadButton.trashCan;
         rectImage = loadButton.trashCan.transform.GetChild(0).gameObject;
-    }
-
-    private void Awake()
-    {
-        loadButton = GetComponentInParent<LoadButton>();
+        selectItemBtn.onClick.AddListener(() => ShowItemList(!itemList.activeSelf));
+        SetItemLIst();
     }
 
     private void SetItemLIst()
@@ -74,13 +76,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         pointerDownTimer = 0f;
         StopAllCoroutines(); // 터치 추적 중단
 
-        if (!isDragging && transform.position == pointerDownPos)
-        {
-            ShowItemList(!itemList.activeSelf);
-        }
-
-        if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(
-                deleteImage.GetComponent<RectTransform>(), eventData.position, null))
+        if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(deleteImage.GetComponent<RectTransform>(), eventData.position, null))
         {
             Delete(); // 오브젝트 삭제
         }
