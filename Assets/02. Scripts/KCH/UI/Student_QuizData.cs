@@ -41,10 +41,7 @@ public class Student_QuizData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            StudentUIDSaveBtnClick("27KHHFa2SWcs9Yo5L4A8zKOEls52");
-        }
+
     }
 
     // 이 함수를 실행시켜줘야지.
@@ -57,8 +54,7 @@ public class Student_QuizData : MonoBehaviour
     {
         // 임의로 1초 기다림
         // StudentQuizInfo 로드 시간을 위해.
-        StudentDB.instance.OffStudentDB();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
 
         // 씬에 있는 오브젝트들 값을 바꾸든지
         // 아님 생성해서 하든지. 어떻게 할까.
@@ -74,6 +70,22 @@ public class Student_QuizData : MonoBehaviour
         // 복제한 오브젝트 StudentQuizDB 스크립트 가져옴.
         StudentQuizDB QuizDB = quizCanvas.GetComponent<StudentQuizDB>();
         Debug.Log(QuizDB);
+
+        // 처음에 리셋을 해준다.
+        #region 리셋
+        //QuizDB.Unit_1.Reset_value();      QuizDB.Unit_2.Reset_value();       QuizDB.Unit_3.Reset_value();
+        //QuizDB.Unit_4.Reset_value();        QuizDB.Unit_5.Reset_value();
+
+        //QuizDB.Unit_1_Average.text = "0 / 0";
+        //QuizDB.Unit_2_Average.text = "0 / 0";
+        //QuizDB.Unit_3_Average.text = "0 / 0";
+        //QuizDB.Unit_4_Average.text = "0 / 0";
+        //QuizDB.Unit_5_Average.text = "0 / 0";
+
+        //QuizDB.CorrectCnt_AnswerCnt.text = "0 / 0";
+
+        //QuizDB.Average.text = "0";
+        #endregion
 
         // 단원별 반원 그래프.
         QuizDB.Unit_1.semicircleTween(
@@ -105,10 +117,6 @@ public class Student_QuizData : MonoBehaviour
             (StudentQuizInfo.Unit_5.CorrectAnswer.Count + StudentQuizInfo.Unit_5.IncorrectAnswer.Count).ToString();
 
 
-
-        List<titleinfo> a = StudentQuizInfo.Unit_1.CorrectAnswer;
-        
-
         // 총 푼 개수.
         QuizDB.CorrectCnt_AnswerCnt.text = StudentQuizInfo.QuizCorrectAnswerCnt.ToString() + "/" + StudentQuizInfo.QuizAnswerCnt.ToString();
 
@@ -128,8 +136,9 @@ public class Student_QuizData : MonoBehaviour
         // 그전에 오답 QuizDB 이 컴포넌트에 quizinfo에 관한 데이터 넘겨줌.
         QuizDB.studentQuizinfo = StudentQuizInfo;
 
+        yield return new WaitForSeconds(1f);
         // 계산하고 적용하고 이 오브젝트가 있는 패널 끄기.
-        StudentDB.instance.ShowPersonalDB();
+        //StudentDB.instance.ShowPersonalDB();
 
     }
 
@@ -142,7 +151,8 @@ public class Student_QuizData : MonoBehaviour
         // 내가보기엔 등록이 안됌.
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            Debug.Log("Listener added for GetQuizData");
+            StudentDB.instance.OffStudentDB();
+
             QuizToFireBase.instance.GetQuizData(uid, MygameObject);
         });
     }

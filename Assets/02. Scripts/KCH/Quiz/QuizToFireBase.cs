@@ -163,7 +163,6 @@ public class QuizToFireBase : MonoBehaviour
                     break;
                 case "2단원":
                     existingQuizInfo.Unit_2.CorrectAnswer.Add(newQuestion);
-                    Debug.Log("2단원에 추가");
                     break;
                 case "3단원":
                     existingQuizInfo.Unit_3.CorrectAnswer.Add(newQuestion);
@@ -246,6 +245,7 @@ public class QuizToFireBase : MonoBehaviour
     // Firebase에서 데이터 가져오기
     IEnumerator FetchQuizData(string path, GameObject obj)
     {
+        yield return new WaitForSeconds(0.1f);
         var task = database.GetReference(path).GetValueAsync();
         yield return new WaitUntil(() => task.IsCompleted);
 
@@ -266,6 +266,8 @@ public class QuizToFireBase : MonoBehaviour
         {
             yield return null;
         }
+        else
+        {
 
         // 데이터 저장.
         submitQuizCnt = LoadQuizInfo.QuizAnswerCnt;
@@ -278,5 +280,6 @@ public class QuizToFireBase : MonoBehaviour
         // 이 함수를 호출시킨 오브젝트의 student_QuizData를 가져와야함.
         obj.GetComponent<Student_QuizData>().StudentQuizInfo = LoadQuizInfo;
 
+        }
     }
 }
