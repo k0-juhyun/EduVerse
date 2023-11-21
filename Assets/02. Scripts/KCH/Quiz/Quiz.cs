@@ -26,12 +26,15 @@ public class Quiz : MonoBehaviourPun
     public bool isQuiz = false;
 
     // 퀴즈에 대한 문제와 정답
+    [HideInInspector] public string unit;
     [HideInInspector] public string question;
     [HideInInspector] public string answer;
+    [HideInInspector] public string commentary;
 
     GameObject quizPanel;
     public TextMeshProUGUI quizTime;
     public GameObject Quizplate;
+    public GameObject Logo;
 
     int time_;
 
@@ -80,16 +83,19 @@ public class Quiz : MonoBehaviourPun
                 quizTime.text = "시간 초과";
             }
         }
-        if(Input.GetKeyDown (KeyCode.S))
-        {
-            photonView.RPC(nameof(startquiz), RpcTarget.All);
-        }
+
     }
 
-    [PunRPC]
+
     public void startquiz()
     {
+        photonView.RPC(nameof(startquizRPC), RpcTarget.All);
+    }
+    [PunRPC]
+    public void startquizRPC()
+    {
         isQuiz = true;
+
     }
 
 
@@ -109,7 +115,7 @@ public class Quiz : MonoBehaviourPun
     {
         // OX 발판 띄워주기
         Quizplate.SetActive(true);
-
+        Logo.SetActive(false);
         GameObject[] quizPanels = GameObject.FindGameObjectsWithTag("QuizPanel");
 
         foreach (GameObject panel in quizPanels)
@@ -124,7 +130,14 @@ public class Quiz : MonoBehaviourPun
 
     public void EndQuiz()
     {
-        Quizplate.SetActive(false);
+        photonView.RPC(nameof(QuizPlateDestory), RpcTarget.All);
     }
 
+    [PunRPC]
+    public void QuizPlateDestory()
+    {
+        // 바닥 플레이트 꺼주기.
+        Quizplate.SetActive(false);
+        Logo.SetActive(true);
+    }
 }
