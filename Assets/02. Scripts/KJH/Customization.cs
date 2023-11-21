@@ -38,6 +38,7 @@ public class Customization : MonoBehaviour
     public Button clothButton;
     public Button pantButton;
     public Button shoeButton;
+    private GameObject lastActiveButtonParent;
 
     [Space(10)]
     [Header("스크롤뷰")]
@@ -86,17 +87,12 @@ public class Customization : MonoBehaviour
                 {
                     // Outline 컴포넌트 추가 및 초기화
                     GameObject parentObject = button.transform.parent.gameObject;
-                    Outline outline = parentObject.GetComponent<Outline>();
-                    if (outline == null)
-                    {
-                        outline = parentObject.AddComponent<Outline>();
-                    }
-                    outline.enabled = false; // 초기에 비활성화
+                    GameObject parentParentObject = parentObject.transform.parent.gameObject;
 
                     // 버튼 이벤트 할당
                     int meshIndex = System.Array.IndexOf(part.partButton, button);
                     button.onClick.AddListener(() => SetMesh(part, meshIndex));
-                    button.onClick.AddListener(() => ToggleButtonParentOutline(parentObject));
+                    button.onClick.AddListener(() => ToggleButtonParentOutline(parentParentObject));
                 }
             }
 
@@ -158,6 +154,31 @@ public class Customization : MonoBehaviour
         print(activeScrollView);
         // 현재 커스텀 부위 텍스트 업데이트
         UpdateCurrentCustomPartText(activeButton);
+
+        ChangeButtonParentColor(activeButton.gameObject);
+    }
+
+    private void ChangeButtonParentColor(GameObject currentButtonParent)
+    {
+        if (lastActiveButtonParent != null)
+        {
+            // 이전 버튼 부모 오브젝트 색상을 원래대로 변경
+            Image lastParentImage = lastActiveButtonParent.GetComponent<Image>();
+            if (lastParentImage != null)
+            {
+                lastParentImage.color = Color.white; // 원래 색상으로 변경
+            }
+        }
+
+        // 현재 버튼 부모 오브젝트 색상을 빨간색으로 변경
+        Image currentParentImage = currentButtonParent.GetComponent<Image>();
+        if (currentParentImage != null)
+        {
+            currentParentImage.color = Color.red;
+        }
+
+        // 마지막으로 활성화된 버튼 부모 오브젝트 업데이트
+        lastActiveButtonParent = currentButtonParent;
     }
 
     private void FindActivateScrollView(bool isActive)
@@ -172,22 +193,25 @@ public class Customization : MonoBehaviour
 
     private void ToggleButtonParentOutline(GameObject clickedButtonParent)
     {
+        // 현재 클릭된 버튼
+        Image currentOutline = clickedButtonParent.GetComponent<Image>();
+        Color originColor = currentOutline.color;
+
         if (lastClickedButtonParent != null)
         {
-            // 이전에 클릭된 버튼의 부모 Outline 비활성화
-            Outline lastOutline = lastClickedButtonParent.GetComponent<Outline>();
+            // 이전에 클릭된 버튼 색상변경
+            Image lastOutline = lastClickedButtonParent.GetComponent<Image>();
             if (lastOutline != null)
             {
-                lastOutline.enabled = false;
+                lastOutline.color = originColor;
             }
         }
 
-        // 현재 클릭된 버튼의 부모 Outline 활성화
-        Outline currentOutline = clickedButtonParent.GetComponent<Outline>();
         if (currentOutline != null)
         {
-            currentOutline.enabled = true;
-            lastClickedButtonParent = clickedButtonParent; // 현재 버튼의 부모를 마지막으로 클릭된 것으로 저장
+            currentOutline.color = Color.red;
+            // 현재 버튼의 부모를 마지막으로 클릭된 것으로 저장
+            lastClickedButtonParent = clickedButtonParent; 
         }
     }
 
