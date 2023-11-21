@@ -11,13 +11,19 @@ using UnityEngine.UI;
 using System.IO;
 using UnityEngine.SceneManagement;
 using System.Net.Security;
+using TMPro;
 
 public class TeacherInteraction : MonoBehaviourPun
 {
+    [Header("버튼")]
     public GameObject spawnButton;
     public GameObject disableDeskButton;
     private GameObject player;
+    public GameObject quizButton;
+
+    [Header("3D모델링 버튼")]
     public GameObject buttonPrefab;
+    [Header("3D모델링 스크롤뷰")]
     public GameObject scrollView;
 
     private GameObject objectToPlace;
@@ -27,10 +33,11 @@ public class TeacherInteraction : MonoBehaviourPun
     private Button Btn_Spawn;
     private Button Btn_Disable;
 
-    public bool isDisableBtnClick;
+    [HideInInspector] public bool isDisableBtnClick;
     private bool isObjectBeingPlaced = false;
-    public bool isSpawnBtnClick;
+    [HideInInspector] public bool isSpawnBtnClick;
 
+    [Header("3D모델링 버튼 스폰 부모")]
     public Transform buttonsParent;
 
     private CharacterInteraction characterInteraction;
@@ -42,8 +49,15 @@ public class TeacherInteraction : MonoBehaviourPun
             this.enabled = false;
         else
         {
-            spawnButton.gameObject.SetActive(true);
-            disableDeskButton.gameObject.SetActive(true);
+            if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+            {
+                spawnButton.gameObject.SetActive(true);
+                disableDeskButton.gameObject.SetActive(true);
+            }
+            else if (SceneManager.GetActiveScene().name == "5.GroundScene")
+            {
+                quizButton.gameObject.SetActive(true);
+            }
         }
 
         characterInteraction = GetComponentInParent<CharacterInteraction>();
@@ -88,8 +102,8 @@ public class TeacherInteraction : MonoBehaviourPun
 
     public void OnSpawnBtnClick()
     {
-        scrollView.SetActive(!scrollView.activeSelf);
-        isSpawnBtnClick = !isSpawnBtnClick;
+        scrollView.SetActive(true);
+        isSpawnBtnClick = true;
     }
 
     private void CreateButtonsForModels()
@@ -101,7 +115,7 @@ public class TeacherInteraction : MonoBehaviourPun
         {
             int index = i; // 클로저 문제 방지를 위한 로컬 변수
             GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
-            newButton.GetComponentInChildren<Text>().text = DataBase.instance.model.spawnPrefab[index].name; // 원래 프리팹의 이름으로 버튼 텍스트 할당
+            newButton.GetComponentInChildren<TMP_Text>().text = DataBase.instance.model.spawnPrefab[index].name; // 원래 프리팹의 이름으로 버튼 텍스트 할당
             newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
         }
     }
@@ -118,20 +132,23 @@ public class TeacherInteraction : MonoBehaviourPun
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
 
             print(modelToSpawn.name);
-            // Instantiate model and check for success.
+
+            // 포톤뷰를 가진 빈오브젝트를 불러와서
             objectToPlace = PhotonNetwork.Instantiate("3D_Models/mesh", player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
-            // Only proceed if objectToPlace has been successfully created.
+            scrollView.SetActive(!scrollView.activeSelf);
+            isSpawnBtnClick = false;
+
             if (objectToPlace != null)
             {
-                isObjectBeingPlaced = true; // Set state to placing object.
-                currentlyDragging = objectToPlace; // Set current dragging object.
+                isObjectBeingPlaced = true; 
+                currentlyDragging = objectToPlace;
 
-                // Call RPC to load and apply OBJ to the newly instantiated object.
-                // We pass objectToPlace's PhotonView ID to ensure the correct object is targeted.
+                // rpc 로 오브젝트 생성
                 photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name, objectToPlace.GetPhotonView().ViewID);
                 print(modelToSpawn.name);
             }
+
             else
             {
                 Debug.LogError("Failed to instantiate object on network.");
@@ -288,5 +305,11 @@ public class TeacherInteraction : MonoBehaviourPun
         classRoomHandler.FloorWithoutShadow.SetActive(!isDisableBtnClick);
 
         isDisableBtnClick = !isDisableBtnClick;
+    }
+
+    public void OnClickCloseButton()
+    {
+        scrollView.SetActive(false);
+        isSpawnBtnClick = false;
     }
 }
