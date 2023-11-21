@@ -65,10 +65,11 @@ public class MyItemsManager : MonoBehaviour
                     myItems.data[i].itemTexture = texture;
                     break;
                 case Item.ItemType.GIF:
-                    byte[] gifBytes = File.ReadAllBytes(myItems.data[i].itemPath);
-                    (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
-                    myItems.data[i].gifSprites = gifInfo.Item1;
-                    myItems.data[i].gifDelayTime = gifInfo.Item2;
+                    StartCoroutine(LoadGIFItemInfo(i));
+                    //byte[] gifBytes = File.ReadAllBytes(myItems.data[i].itemPath);
+                    //(Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
+                    //myItems.data[i].gifSprites = gifInfo.Item1;
+                    //myItems.data[i].gifDelayTime = gifInfo.Item2;
                     break;
                 case Item.ItemType.Video:
                     break;
@@ -79,7 +80,6 @@ public class MyItemsManager : MonoBehaviour
             }
 
             myItemsDictionary.Add(myItems.data[i].itemPath, myItems.data[i]);
-            print(myItems.data[i].itemName);
         }
 
     }
@@ -120,6 +120,12 @@ public class MyItemsManager : MonoBehaviour
                 (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
                 item.gifSprites = gifInfo.Item1;
                 item.gifDelayTime = gifInfo.Item2;
+
+                byte[] thumbNailBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNails/" + Path.GetFileNameWithoutExtension(item.itemPath) + ".png");
+                Texture2D thumbNailTexture = new Texture2D(2, 2);
+                thumbNailTexture.LoadImage(thumbNailBytes);
+                thumbNailTexture.Apply();
+                item.gifThumbNailTexture = thumbNailTexture;
                 break;
             case Item.ItemType.Video:
                 break;
@@ -132,6 +138,16 @@ public class MyItemsManager : MonoBehaviour
         myItems.data.Add(item);
         myItemsDictionary.Add(item.itemPath, item);
         SaveData();
+    }
+
+    private IEnumerator LoadGIFItemInfo(int dataIndex)
+    {
+        print(myItems.data[dataIndex].itemName);
+        byte[] gifBytes = File.ReadAllBytes(myItems.data[dataIndex].itemPath);
+        (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
+        myItems.data[dataIndex].gifSprites = gifInfo.Item1;
+        myItems.data[dataIndex].gifDelayTime = gifInfo.Item2;
+        yield return null;
     }
 
     public void DeleteItem(Item item)
@@ -169,8 +185,7 @@ public class MyItemsManager : MonoBehaviour
             return item;
         }
 
-        return null;
-        
+        return null;        
     }
 
     public void DeleteAll()

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 [System.Serializable]
 public class MyItems
@@ -56,8 +57,9 @@ public class PEA_ItemLoader : MonoBehaviour
     }
 
     // 아이템 불러오기
-    public void LoadItems(int loadItemType)
+    private void LoadItems(int loadItemType)
     {
+        print("load items start");
         if (isMarket)
         {
             foreach (Transform tr in content)
@@ -171,9 +173,8 @@ public class PEA_ItemLoader : MonoBehaviour
                         }
                     }
                 }
-
-
                 break;
+
             case SearchType.GIF:
                 itemTextures.Clear();
 
@@ -228,6 +229,8 @@ public class PEA_ItemLoader : MonoBehaviour
             case SearchType.Object:
                 break;
         }
+
+        print("load item end");
     }
 
     public void DeleteAllMyItems()

@@ -25,6 +25,7 @@ public class Item
     public bool isMine = false;
     public bool showInClassroom = false;
     public Texture2D itemTexture;
+    public Texture2D gifThumbNailTexture;
     public byte[] gifBytes;
     public Sprite[] gifSprites;
     public float gifDelayTime;
@@ -159,6 +160,7 @@ public class PEA_MyItemSlot : MonoBehaviour
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;
+                videoPlayer.targetTexture = new RenderTexture(videoPlayer.targetTexture);
                 GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }

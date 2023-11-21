@@ -40,19 +40,22 @@ public class QuizGroundPanel : MonoBehaviour
 
         // 광장에서의 퀴즈 시작
         Quiz.instance.startquiz();
-        
+
         // 문제와 정답 quiz 스크립트에 담는다
         Quiz.instance.question = question_;
         Quiz.instance.answer = answer_;
-
+        StartCoroutine(quizPaneldelete());
     }
+
+
+
 
     // 시간이 다 끝나면 패널에 정답 띄워줌.
     // 아니다 개인적으로 띄워주는걸로 해야겠다 그게 더 편하겠네.
 
     IEnumerator quizPaneldelete()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(13);
         Destroy(gameObject);
 
     }

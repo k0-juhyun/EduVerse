@@ -64,8 +64,8 @@ public class Market : MonoBehaviour
                 previewImage.preserveAspect = true;
                 break;
             case Item.ItemType.Video:
-                previewVideo_RawImaege.gameObject.SetActive(true);
                 videoPlayer.url = item.itemPath;
+                previewVideo_RawImaege.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Object:
                 break;

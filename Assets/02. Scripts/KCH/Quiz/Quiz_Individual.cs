@@ -13,73 +13,16 @@ public class Quiz_Individual : MonoBehaviourPun
     public GameObject Answer_O;
     public GameObject Answer_X;
 
+    [HideInInspector] public string Unit;
+    [HideInInspector] public string Question;
+    [HideInInspector] public string Answer;
+    [HideInInspector] public string Commentary;
+
+
     private void Awake()
     {
         instance = this;
     }
-
-    // Quiz 스크립트에서 이벤트 구독함.
-
-    //private void OnEnable()
-    //{
-    //    Quiz.instance.QuizEnded += OnQuizEnded; // 이벤트 구독
-    //}
-
-    //private void OnDisable()
-    //{
-    //    Quiz.instance.QuizEnded -= OnQuizEnded; // 이벤트 해지
-    //}
-
-
-    //public void CorrectBtnClick()
-    //{
-    //    // 이 아이디의 UID를 확인하여 DB에 저장해야함.
-
-    //    // 선생한테 제출할 데이터 
-    //    // 나의 이름과 문제, 정답
-    //    if (correctCheck)
-    //    {
-    //        // 정답
-    //        Debug.Log("정답입니당");
-
-    //        MyQuizStorage.Instance.sendUserQuizData(true);
-    //        correct.SetActive(true);
-
-    //        StartCoroutine(quizPaneldelete());
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("오답입니당");
-    //        MyQuizStorage.Instance.sendUserQuizData(false);
-    //        incorrect.SetActive(true);
-
-    //        StartCoroutine(quizPaneldelete());
-
-    //    }
-    //}
-
-    //// 오답 제출.
-    //public void IncorrectBtnClick()
-    //{
-    //    if (correctCheck)
-    //    {
-    //        MyQuizStorage.Instance.sendUserQuizData(false);
-    //        incorrect.SetActive(true);
-
-    //        Debug.Log("오답입니당");
-    //        StartCoroutine(quizPaneldelete());
-
-    //    }
-    //    else
-    //    {
-    //        MyQuizStorage.Instance.sendUserQuizData(true);
-    //        // 정답
-    //        correct.SetActive(true);
-    //        Debug.Log("정답입니당");
-    //        StartCoroutine(quizPaneldelete());
-
-    //    }
-    //}
 
 
     public void OnQuizEnded()
@@ -88,8 +31,12 @@ public class Quiz_Individual : MonoBehaviourPun
         OX_GroundCheck();
     }
   
+    // 퀴즈 시간이 끝났을 때
     public void OX_GroundCheck()
     {
+        // 문제의 정보를 가져온다.
+        LoadQuizData(Quiz.instance.question);
+
         Debug.Log("OX실행");
         RaycastHit hit;
         float rayLength = 1.0f; // 레이 길이
@@ -101,7 +48,7 @@ public class Quiz_Individual : MonoBehaviourPun
             Debug.Log("이 문제의 정답은 : " + Quiz.instance.answer);
             if (hit.collider.name == "O")
             {
-                Debug.Log("O");
+
                 // 정답인지 체크해서 서버에 보내주는 부분
 
                 // if 정답이면 
@@ -109,13 +56,19 @@ public class Quiz_Individual : MonoBehaviourPun
                 { 
                     MyQuizStorage.Instance.sendUserQuizData(true);
                     StartCoroutine(answer(Answer_O));
-                    Debug.Log("1");
+
+                    // 여기서 
+                    //QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
+                    // 해줘야함.
+
+                    QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", Commentary, true);
+
                 }
                 else
                 {
                     MyQuizStorage.Instance.sendUserQuizData(false);
                     StartCoroutine( answer(Answer_X));
-                    Debug.Log("2");
+                    QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
                 }
 
@@ -131,14 +84,14 @@ public class Quiz_Individual : MonoBehaviourPun
                 {
                     MyQuizStorage.Instance.sendUserQuizData(false);
                     StartCoroutine(answer(Answer_X));
-                    Debug.Log("3");
+                    QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
                 }
                 else
                 {
                     MyQuizStorage.Instance.sendUserQuizData(true);
                     StartCoroutine(answer(Answer_O));
-                    Debug.Log("4");
+                    QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", Commentary, true);
 
                 }
             }
@@ -151,7 +104,67 @@ public class Quiz_Individual : MonoBehaviourPun
         }
     }
 
-    
+    void LoadQuizData(string question_)
+    {
+        // 선생이 아니라면.
+        // 선생 로컬에 있는 MyQuizTitleData json 파일을 가져와 읽고
+        // 문제와 단원, 답을 뽑고 다른 학생들에게 전달해준다.
+
+
+        // 선생이 아니라면 리턴.
+
+
+        // 원래라면 이런식으로 하는게 아니고
+        // 선생이 MyQuizTitleData.json 이걸 읽고 학생들에게 rpc로 보내줘야 함.
+        List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
+
+        if (titles != null)
+        {
+            foreach (string title in titles)
+            {
+                SaveData saveData = SaveSystem.Load(title);
+
+                // 단원
+                string extracted = title.Substring(0, 3);
+                // 타이틀.
+                string titleSlice = title.Substring(4);
+
+                // 문제
+                string test1 = saveData.question;
+
+                // 답
+                string test2 = saveData.answer;
+                // 문제를 가지고 앞에 있는 단원 가져옴.
+                Debug.Log(test1 + " : " + question_);
+
+                //Debug....Log(test1 + " : " + test2);
+                // 문제와 타이틀 제목이 같다면
+                if (test1 == question_)
+                {
+                    Debug.Log("단원가져오기." + extracted);
+
+                    // 단원 정보 저장.
+                    // 학생들에게 단원과 코멘트 전달.
+                    Question = saveData.question;
+                    Unit = extracted;
+                    Commentary = saveData.Commentary;
+                    Debug.Log(Commentary + " : 코멘트");
+                }
+
+                // 단원 정보 담기
+                // 단원 정보 담는것도 rpc로 보내야함.
+
+
+
+                // 앞에 단원 삭제
+
+                // 정답인지 오답인지 체크하고 그 오브젝트 체크.
+                //photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
+            }
+        }
+    }
+
+
     IEnumerator answer(GameObject gameObject)
     {
         Debug.Log("실행");

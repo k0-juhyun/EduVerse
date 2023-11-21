@@ -44,10 +44,16 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 //GetComponentInChildren<RawImage>().texture = item.itemTexture;
                 break;
             case Item.ItemType.GIF:
-                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
+                byte[] gifBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNails/" + Path.GetFileNameWithoutExtension(item.itemPath) + ".png");
+                Texture2D thumbNailTexture = new Texture2D(2, 2);
+                thumbNailTexture.LoadImage(gifBytes);
+                thumbNailTexture.Apply();
+                GetComponentInChildren<RawImage>().texture = thumbNailTexture;
+                //GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;
+                videoPlayer.targetTexture = new RenderTexture(videoPlayer.targetTexture);
                 GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }

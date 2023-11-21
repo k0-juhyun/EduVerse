@@ -13,11 +13,14 @@ public class QuizSubmit_student : MonoBehaviourPun
     public GameObject QuizPrefab;
     public GameObject correct;
     public GameObject incorrect;
+    public GameObject CommentaryPrefab;
 
     bool correctCheck;
-
+    bool desoryPanelCheck =true;
     // 문제
     string Question;
+    // 답
+    string Answer;
     // 단원
     string Unit;
     // 해설
@@ -56,7 +59,7 @@ public class QuizSubmit_student : MonoBehaviourPun
             MyQuizStorage.Instance.sendUserQuizData(true);
             correct.SetActive(true);
 
-            StartCoroutine(quizPaneldelete());
+            StartCoroutine(quizPaneldelete(true));
 
             // 데이터 줘야할것들 
             // 단원. 문제 이름, 답, 해설 , 문제에 대해 맞았는지 틀렸는지.
@@ -66,9 +69,11 @@ public class QuizSubmit_student : MonoBehaviourPun
         {
             Debug.Log("오답입니당");
             MyQuizStorage.Instance.sendUserQuizData(false);
+            
+            // 오답 패널 띄우고 그 안에 답안이랑 commentary 넣어주기.
             incorrect.SetActive(true);
 
-            StartCoroutine(quizPaneldelete());
+            StartCoroutine(quizPaneldelete(false));
 
             QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
@@ -84,7 +89,7 @@ public class QuizSubmit_student : MonoBehaviourPun
             incorrect.SetActive(true);
 
             Debug.Log("오답입니당");
-            StartCoroutine(quizPaneldelete());
+            StartCoroutine(quizPaneldelete(false));
 
             QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "X", Commentary, false);
 
@@ -95,7 +100,7 @@ public class QuizSubmit_student : MonoBehaviourPun
             // 정답
             correct.SetActive(true);
             Debug.Log("정답입니당");
-            StartCoroutine(quizPaneldelete());
+            StartCoroutine(quizPaneldelete(true));
 
             QuizToFireBase.instance.QuizDataSaveFun(Unit, Question, "O", Commentary, true);
         }
@@ -108,6 +113,7 @@ public class QuizSubmit_student : MonoBehaviourPun
 
         questionText.text = question_;
         Question = question_;
+        Answer= answer_;
         // 정답인지 오답인지 체크
         if (answer_ == "O") correctCheck = true;
         else correctCheck = false;
@@ -136,10 +142,20 @@ public class QuizSubmit_student : MonoBehaviourPun
         //photonView.RPC(nameof(LoadQuizData),RpcTarget.All, Question);
 
     }
-    IEnumerator quizPaneldelete()
+    IEnumerator quizPaneldelete(bool result)
     {
-        yield return new WaitForSeconds(3);
-        Destroy(gameObject);
+        if (result)
+        {
+            yield return new WaitForSeconds(3);
+            Destroy(gameObject);
+        }
+        else
+        {
+            // 코멘트 패널이 띄워지면 안사라지게.
+            yield return new WaitForSeconds(3);
+            if(desoryPanelCheck)
+            Destroy(gameObject);
+        }
     }
 
     void LoadQuizData(string question_)
@@ -151,6 +167,9 @@ public class QuizSubmit_student : MonoBehaviourPun
 
         // 선생이 아니라면 리턴.
 
+
+        // 원래라면 이런식으로 하는게 아니고
+        // 선생이 MyQuizTitleData.json 이걸 읽고 학생들에게 rpc로 보내줘야 함.
         List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
 
         if (titles != null)
@@ -197,6 +216,17 @@ public class QuizSubmit_student : MonoBehaviourPun
                 //photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
             }
         }
+    }
+
+    // 해설 코멘트 패널 띄워줌.
+    public void OnCommentaryPanelBtnClick()
+    {
+        // 3초 뒤에 사라지는거 막아야함.
+
+        // 해설 패널 띄우고 그 안에 값 넣어줌.
+        GameObject panel = Instantiate(CommentaryPrefab, transform);
+        panel.GetComponent<ClassroomCommentary>().PutAnswer_Commentary(Answer,Commentary);
+        desoryPanelCheck = false;
     }
 
 
