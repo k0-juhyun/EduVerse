@@ -83,7 +83,7 @@ public class LoadButton : MonoBehaviourPun
 
         if (!isLesson)
         {
-            photonView.RPC( nameof(DestroyAllButtons), RpcTarget.Others);
+            photonView.RPC( nameof(DestroyAllButtons), RpcTarget.All);
         }
     }
 
