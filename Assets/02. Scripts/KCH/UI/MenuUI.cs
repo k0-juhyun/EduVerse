@@ -118,13 +118,14 @@ public class MenuUI : MonoBehaviourPun
                 // PDF 열기.
                 PDFViewer pdfViewer = FindObjectOfType<PDFViewer>();
                 pdfViewer.LoadDocumentFromFile(path);
+
+                // pdf 로드하면 총 페이지수 받아오기
+                pdfPage.GetCurDocumentPageCount();
             }
         }, new string[] { pdfFileType });
 
         Debug.Log("Permission result: " + permission);
 
-        // pdf 로드하면 총 페이지수 받아오기
-        pdfPage.GetCurDocumentPageCount();
     }
 
     // Example code doesn't use this function but it is here for reference. It's recommended to ask for permissions manually using the

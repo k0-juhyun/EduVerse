@@ -51,6 +51,7 @@ public class PEA_MarketItemSlot : MonoBehaviour
                 GetComponentInChildren<RawImage>().texture = videoPlayer.targetTexture;
                 break;
         }
+
     }
 
     public void ItemPreview()

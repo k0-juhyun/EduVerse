@@ -37,7 +37,6 @@ public class Deco : MonoBehaviour
         decoBtn.onClick.AddListener(OnClickDecoBtn);
         mainCam = Camera.main;
 
-        SetRanderTexture();
     }
 
     // 그림 그리기 버튼을 눌렀을때
@@ -50,6 +49,8 @@ public class Deco : MonoBehaviour
         mainCam.depth = -1;
         drawCam.gameObject.SetActive(true);
         mainCam.gameObject.SetActive(false);
+
+        SetRanderTexture();
     }
 
     private void OnClickDecoBtn()
@@ -85,6 +86,7 @@ public class Deco : MonoBehaviour
     // 그림 그리는 판 이미지에 큐브 렌더텍스쳐(그림 그려지는 텍스쳐) 넣기
     public void SetRanderTexture()
     {
+        print("set render texture");
         drawPaper.texture = paintTarget.renderTexture;
     }
 

@@ -20,7 +20,7 @@ public class QuizMarketManager : MonoBehaviour
     }
     
     // 퀴즈 데이터 가져옴
-    public void unitOnBtnClick(string unit)
+    public virtual void unitOnBtnClick(string unit)
     {
         Transform parentTransform = Units.transform; // 부모 오브젝트의 Transform을 가져옵니다.
 

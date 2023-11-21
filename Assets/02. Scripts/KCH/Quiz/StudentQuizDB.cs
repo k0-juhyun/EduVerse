@@ -21,38 +21,62 @@ public class StudentQuizDB : MonoBehaviour
     public TextMeshProUGUI Unit_4_Average;
     public TextMeshProUGUI Unit_5_Average;
 
+    public GameObject IncorrectNotePanel;
     // student_QuizData에서 참조.
+    // 여기서 문제 가져오면 된다 찬희야 
     public QuizInfo studentQuizinfo;
 
+    public GameObject IncorrectAnswerPrefab;
+    public GameObject IncorrectAnswerPanelPrefab;
+
+    public GameObject viewport;
+
     // 단원별 오답 정리.
-    private void Update()
+
+    public void LoadQuizData()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        // 2단원 틀린 개수만큼 로드
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_1.IncorrectAnswer)
         {
-
-            //오답의 리스트 개수만큼 titleinfo 리스트에 적용.
-            string a = studentQuizinfo.Unit_5.CorrectAnswer[0].Title;
-
-            // 단원별로 문제 정답 해설 적어두기.
-
-            foreach (titleinfo titleinfos in studentQuizinfo.Unit_2.CorrectAnswer)
-            {
-                Debug.Log("타이틀 : "+titleinfos.Title);
-                Debug.Log("답 : " + titleinfos.Answer);
-                Debug.Log("코멘트 : " + titleinfos.Commentary);
-
-            }
-
-            Unit_1.semicircleTween(0.4f);
-            Unit_2.semicircleTween(0.3f);
-
-            Unit_3.semicircleTween(0.5f);
-
-            Unit_4.semicircleTween(0.2f);
-
-            Debug.Log(a);
-
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab,viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("1단원",titleinfos.Title, titleinfos.Answer,titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_2.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("2단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_3.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("3단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_4.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("4단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
+        }
+        foreach (titleinfo titleinfos in studentQuizinfo.Unit_5.IncorrectAnswer)
+        {
+            // viewport 자식에 추가.
+            GameObject IncorrectPrefab = Instantiate(IncorrectAnswerPrefab, viewport.transform);
+            IncorrectPrefab.GetComponent<IncorrectNote>().PutData("5단원", titleinfos.Title, titleinfos.Answer, titleinfos.Commentary);
         }
     }
 
+    public void OnIncorrectNoteBtnClick()
+    {
+        IncorrectNotePanel.SetActive(true);
+        // 오답 추가.
+        if(viewport.transform.childCount == 0)
+        LoadQuizData();
+    }
+    public void OffIncorrectNoteBtnClick()
+    {
+        IncorrectNotePanel.SetActive(false);
+    }
 }
