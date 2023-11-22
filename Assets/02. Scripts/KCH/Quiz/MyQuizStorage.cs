@@ -11,6 +11,7 @@ public struct Quiz_
     public string question;
     public string answer;
     public string unit;
+    public string commentary;
 }
 public class MyQuizStorage : MonoBehaviourPun
 {
@@ -42,13 +43,13 @@ public class MyQuizStorage : MonoBehaviourPun
     }
 
 
-    public void SelectQuiz(string question_, string answer_)
+    public void SelectQuiz(string question_, string answer_,string unit_,string commentary_)
     {
-        photonView.RPC(nameof(Photon_SelectQuiz), RpcTarget.All, question_, answer_);
+        photonView.RPC(nameof(Photon_SelectQuiz), RpcTarget.All, question_, answer_, unit_, commentary_);
     }
 
     [PunRPC]
-    public void Photon_SelectQuiz(string question_, string answer_)
+    public void Photon_SelectQuiz(string question_, string answer_, string unit_, string commentary_)
     {
         // questionText 현재 문서로 바꿈.
         // 현재 들어온 총 인원 값 받는다.
@@ -62,7 +63,7 @@ public class MyQuizStorage : MonoBehaviourPun
             GameObject quizPanel = Instantiate(QuizPanel_student_Ground);
 
             quizPanel.GetComponent<RectTransform>().position = new Vector3(14, 4, 8);
-            quizPanel.GetComponent<QuizGroundPanel>().quizdata(question_, answer_);
+            quizPanel.GetComponent<QuizGroundPanel>().quizdata(question_, answer_, unit_ ,commentary_);
             //quizPanel의 문제와 정답을 등록해준다.
         }
         // 교실이라면
@@ -71,7 +72,7 @@ public class MyQuizStorage : MonoBehaviourPun
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student);
 
-            quizPanel.GetComponent<QuizSubmit_student>().quizdata(question_, answer_);
+            quizPanel.GetComponent<QuizSubmit_student>().quizdata(question_, answer_, unit_, commentary_);
             //quizPanel의 문제와 정답을 등록해준다.
         }
 

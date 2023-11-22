@@ -21,12 +21,13 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     // MyQuizStorage에 퀴즈 담기
     Quiz_ quiz = new Quiz_();
-    public void Question_Answer(string title, string answer)
+    public void Question_Answer(string title, string answer,string unit,string commentary)
     {
         // 퀴즈 담기
         quiz.question = title;
         quiz.answer = answer;
-
+        quiz.unit = unit;
+        quiz.commentary = commentary;
         question.text = title;
         if (answer=="O") O_object.SetActive(true);
         else X_object.SetActive(true);
@@ -39,7 +40,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
         {
             CheckOn.SetActive(true);
             CheckOff.SetActive(false);
-
+            Debug.Log(quiz.commentary);
             // 퀴즈 담기
             MyQuizStorage.Instance.quizList.Add(quiz);
         }
@@ -54,6 +55,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
         }
     }
 
+    // 광장에서의 퀴즈.
     public void SelectQuizBtnClick()
     {
 
@@ -65,7 +67,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
         parentobj.gameObject.GetComponent<ClassRoomQuizLoad>().SelectQuiz(quiz.question, quiz.answer);
 
         // quiz 저장소에서 가져다 씀
-        MyQuizStorage.Instance.SelectQuiz(quiz.question, quiz.answer);
+        MyQuizStorage.Instance.SelectQuiz(quiz.question, quiz.answer,quiz.unit,quiz.commentary);
         Debug.Log(quiz.question + " Load QuizPrefab " + quiz.answer);
 
     }

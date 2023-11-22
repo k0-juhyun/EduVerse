@@ -107,13 +107,15 @@ public class QuizSubmit_student : MonoBehaviourPun
     }
 
 
-    public void quizdata(string question_,string answer_)
+    public void quizdata(string question_, string answer_, string unit_, string commentary_)
     {
         // 선생이 퀴즈 패널을 띄워주고
 
         questionText.text = question_;
         Question = question_;
         Answer= answer_;
+        Unit = unit_;
+        Commentary = commentary_;
         // 정답인지 오답인지 체크
         if (answer_ == "O") correctCheck = true;
         else correctCheck = false;
@@ -137,10 +139,12 @@ public class QuizSubmit_student : MonoBehaviourPun
         // 
 
         // 문제 단원, 정답
-        LoadQuizData(Question);
+        //LoadQuizData(Question);
         // 학생들 제외 선생만 함수를 보낸다.
         //photonView.RPC(nameof(LoadQuizData),RpcTarget.All, Question);
 
+
+        Debug.Log(question_+ " : " + answer_+ " : " + unit_+ " : " + commentary_);
     }
     IEnumerator quizPaneldelete(bool result)
     {
@@ -170,6 +174,11 @@ public class QuizSubmit_student : MonoBehaviourPun
 
         // 원래라면 이런식으로 하는게 아니고
         // 선생이 MyQuizTitleData.json 이걸 읽고 학생들에게 rpc로 보내줘야 함.
+        // 자기 pc에는  json 파일이 없기 때문에 선생이 학생들에게 데이터를 보내줘야 하는 상황임.
+        // 그럼 학생은 선생에게 콜백을 하는 형식으로 하자.
+
+        // 선생은 낸 문제를  myQuizStorage에 담는다. (문제 단원 해설 코멘트 포함.)
+
         List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
 
         if (titles != null)
