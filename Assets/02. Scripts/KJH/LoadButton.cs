@@ -129,6 +129,7 @@ public class LoadButton : MonoBehaviourPun
 
     public void SaveCurrentSession()
     {
+        print("´©¸§");
         ButtonPositionData currentSession = new ButtonPositionData();
 
         foreach (Transform child in teachingData.transform)
