@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
-
+using DG.Tweening;
 public class InteractableModel : MonoBehaviourPun
 {
     private GameObject mesh;
@@ -50,7 +50,7 @@ public class InteractableModel : MonoBehaviourPun
                 if (deleteAreaImage.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(
                     deleteAreaImage.rectTransform, Input.mousePosition, null))
                 {
-                    PhotonNetwork.Destroy(mesh); // 오브젝트 삭제
+                    mesh.gameObject.transform.DOScale(0.1f,0.5f).SetEase(Ease.InQuart).OnComplete(() => PhotonNetwork.Destroy(mesh));
                 }
             }
         }

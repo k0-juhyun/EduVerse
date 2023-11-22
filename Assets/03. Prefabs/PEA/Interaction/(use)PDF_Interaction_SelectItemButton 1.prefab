@@ -260,6 +260,8 @@ GameObject:
   - component: {fileID: 641761028414031056}
   - component: {fileID: 8456899242278896811}
   - component: {fileID: 8957146287570272213}
+  - component: {fileID: 9099606790705255208}
+  - component: {fileID: -1081538432349530854}
   m_Layer: 5
   m_Name: (use)PDF_Interaction_SelectItemButton 1
   m_TagString: Untagged
@@ -411,6 +413,36 @@ MonoBehaviour:
   itemPrefab: {fileID: 840720201438882698, guid: 737f32d8aa355994e91144b2191324b9, type: 3}
   itemList_Content: {fileID: 1116803916719072376}
   selectItemBtn: {fileID: 0}
+--- !u!114 &9099606790705255208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4295732016407039712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 0.9
+  hoverScaleMultiplier: 1.2
+  animationDuration: 0.2
+--- !u!114 &-1081538432349530854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4295732016407039712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c350ab8d7a0544438c2b6d0a88ca18c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headTransform: {fileID: 3661521687362125433}
+  swingDuration: 0.5
+  swingAngle: 40
 --- !u!1 &6500581377071784358
 GameObject:
   m_ObjectHideFlags: 0
