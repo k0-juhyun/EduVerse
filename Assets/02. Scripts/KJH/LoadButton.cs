@@ -181,7 +181,21 @@ public class LoadButton : MonoBehaviourPun
         // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
         if(buildIndex == 4 && isLesson) 
         {
-            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+            foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
+            {
+                // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
+                // 알아서 다음 or 이전 페이지로 계산
+                if (curPage == buttonPositionData.page)
+                {
+                    foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                    //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
+                    {
+                        photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+                        //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
+                        //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
+                    }
+                }
+            }
         }
 
         // 교실 - 수업X , 교과서 제작 페이지에서는 선생님만. (RPC 보내지 않음)
@@ -240,6 +254,20 @@ public class LoadButton : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    [PunRPC]
+    // Item 정보를 보낼 수 없어서 string 타입으로 JSON 자체를 보내버림.
+    public void LoadInteractionRPC(int itemType, string itemName, byte[] itemBytes, string buttonName, float posX, float posY)
+    {
+        GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
+        newButton.name = buttonName;
+        RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(posX, posY);
+
+        // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
+        // 아이템들 경로/ 파일 이름까지 똑같아야 함
+        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemBytes)));
     }
 
     [PunRPC]
