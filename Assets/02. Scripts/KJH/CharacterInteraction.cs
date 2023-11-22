@@ -78,6 +78,7 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
             Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
+            Btn_Sit.gameObject.SetActive(false);
         }
 
         AdjustUIHeight();
