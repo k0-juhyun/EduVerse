@@ -11,8 +11,7 @@ public class Unzip : MonoBehaviour
     private void Start()
     {
         extractionPath = Application.persistentDataPath + "/3D_Models/ModelDatas/";
-
-        //RunZip(extractionPath + "5.95049.zip");
+        //RunZip(extractionPath + "*.zip");
 
         //if (!Directory.Exists(extractionPath))
         //{
@@ -21,12 +20,12 @@ public class Unzip : MonoBehaviour
         //}
 
 #if UNITY_EDITOR
-        // 에디터 환경에서는 StreamingAssets 폴더 내의 모든 zip 파일을 처리합니다.
-        //string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
-        //ExtractAllZipsInDirectory(streamingAssetsPath);
+        //에디터 환경에서는 StreamingAssets 폴더 내의 모든 zip 파일을 처리합니다.
+        string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
+        ExtractAllZipsInDirectory(streamingAssetsPath);
 #elif UNITY_ANDROID
         // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
-        //StartCoroutine(ExtractAllZipsInAndroid());
+        StartCoroutine(ExtractAllZipsInAndroid());
 #endif
     }
 
