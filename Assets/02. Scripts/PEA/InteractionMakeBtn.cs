@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler
+public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject deleteImage; // 삭제 이미지
@@ -41,8 +41,8 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         //btn = GetComponent<Button>();
         //btn.onClick.AddListener(ShowItemList);
 
-        deleteImage = loadButton.trashCan;
-        rectImage = loadButton.trashCan.transform.GetChild(0).gameObject;
+        deleteImage = loadButton?.trashCan;
+        rectImage = loadButton?.trashCan.transform.GetChild(0).gameObject;
         selectItemBtn.onClick.AddListener(() => ShowItemList(!itemList.activeSelf));
         SetItemLIst();
     }
@@ -89,6 +89,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         if (gameObject == eventData.pointerCurrentRaycast.gameObject)
         {
             isClick = true;
+            print("클릭함");
             pointerDownPos = transform.position;
             StartCoroutine(TrackPointerDownTime());
         }
@@ -99,26 +100,19 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         Destroy(gameObject);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        isDragging = true;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        isDragging = false;
-    }
 
     private IEnumerator TrackPointerDownTime()
     {
         while (isClick && pointerDownTimer < requiredHoldTime)
         {
+            print("드래그중");
             pointerDownTimer += Time.deltaTime;
             yield return null;
         }
 
         if (pointerDownTimer >= requiredHoldTime)
         {
+            print("삭제가능");
             deleteImage.SetActive(true); // 삭제 이미지 활성화
             deleteImageActivated = true;
         }
