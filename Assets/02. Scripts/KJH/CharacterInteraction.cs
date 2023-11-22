@@ -34,6 +34,10 @@ public class CharacterInteraction : MonoBehaviourPun
     private Rigidbody rb;
 
     [HideInInspector] public bool _isSit;
+
+    public delegate void SitStatusChanged(bool isSitting);
+    public event SitStatusChanged OnSitStatusChanged;
+
     private bool isOpenUI;
     [HideInInspector] public bool isTPSCam = true;
     [HideInInspector] public bool isDrawing = false;
@@ -123,6 +127,12 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             HandleTeacherComputerInteraction(other);
         }
+    }
+
+    public void SetSitStatus(bool sitStatus)
+    {
+        _isSit = sitStatus;
+        OnSitStatusChanged?.Invoke(_isSit);
     }
 
     public void HandleTriggerEnter(Collider other)
@@ -223,9 +233,13 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void SitDownTeacher(Collider chair)
     {
+        Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
+        Quaternion rotation = Quaternion.LookRotation(chair.transform.forward * -1);
+
         PlaySitAnimation();
         SetCharacterPosition(chair.transform.position);
         SetCharacterForwardDirection(Quaternion.Euler(0, -90, 0) * chair.transform.right);
+        photonView.RPC("SitDownRPC", RpcTarget.Others, position, rotation);
     }
 
     private void StandUp()
