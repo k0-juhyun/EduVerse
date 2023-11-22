@@ -17,6 +17,7 @@ public class TextSender : MonoBehaviour
     // HTTP 요청 보내는 함수
     IEnumerator SendTextToServer(string text, System.Action<DownloadHandler> callback)
     {
+        print("SsndTextToServer");
         WWWForm form = new WWWForm();
         form.AddField("text", text);
 
@@ -41,6 +42,7 @@ public class TextSender : MonoBehaviour
     // Unity에서 버튼 또는 이벤트에서 이 함수를 호출하여 텍스트를 서버로 보낼 수 있습니다.
     public void SendText(string text, System.Action<DownloadHandler> callback)
     {
+        print(text);
         StartCoroutine(SendTextToServer(text, callback));
     }
 }
