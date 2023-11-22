@@ -12,13 +12,12 @@ public class TextSender : MonoBehaviour
 
     private void Start()
     {
-        SendText("강차니 바보", null);
+        //SendText("강차니 바보", null);
     }
 
     // HTTP 요청 보내는 함수
     IEnumerator SendTextToServer(string text, System.Action<DownloadHandler> callback)
     {
-        print("SsndTextToServer");
         WWWForm form = new WWWForm();
         form.AddField("text", text);
 
@@ -28,7 +27,6 @@ public class TextSender : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                print(Encoding.UTF8.GetString( www.downloadHandler.data));
                 if(callback != null)
                 {
                     callback(www.downloadHandler);

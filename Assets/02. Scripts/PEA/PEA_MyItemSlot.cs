@@ -181,7 +181,8 @@ public class PEA_MyItemSlot : MonoBehaviour
                 GetComponentInChildren<RawImage>().texture = texture;
                 break;
             case Item.ItemType.GIF:
-                GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
+                //GetComponentInChildren<RawImage>().texture = GetComponent<GifLoad>().GetSpritesByFrame(item.itemPath).Item1[0].texture;
+                GetComponentInChildren<RawImage>().texture = item.gifThumbNailTexture;
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;

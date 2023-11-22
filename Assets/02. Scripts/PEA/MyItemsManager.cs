@@ -181,11 +181,19 @@ public class MyItemsManager : MonoBehaviour
         SaveData();
     }
 
-    public Item GetItemInfo(string itemPath)
+    public Item GetItemInfo(string itemPath, bool isShow = false)
     {
+        print("GetItemInfo");
         if(myItemsDictionary.TryGetValue(itemPath, out Item item))
         {
-            return item;
+            print(item.itemName);
+            if(isShow && item.itemType == Item.ItemType.GIF && item.gifSprites[0] == null)
+            {
+                myItemsDictionary[itemPath].gifSprites = gifload.GetSpritesByFrame(itemPath).Item1;
+                print(myItemsDictionary[itemPath].gifSprites[0].texture);
+            }
+
+            return myItemsDictionary[itemPath];
         }
 
         return null;        
