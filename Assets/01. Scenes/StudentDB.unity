@@ -1382,6 +1382,7 @@ GameObject:
   - component: {fileID: 57378753}
   - component: {fileID: 57378755}
   - component: {fileID: 57378754}
+  - component: {fileID: 57378756}
   m_Layer: 5
   m_Name: "\uC624\uB2F5\uD655\uC778\uD558\uAE30 \uD328\uB110"
   m_TagString: Untagged
@@ -1449,6 +1450,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57378752}
   m_CullTransparentMesh: 1
+--- !u!114 &57378756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57378752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f28ef51718209d4b89ba68c9c13c619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationDuration: 0.5
+  startScale: {x: 0.1, y: 0.1, z: 0.1}
+  endScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &63386152
 GameObject:
   m_ObjectHideFlags: 0
@@ -24038,6 +24054,7 @@ GameObject:
   - component: {fileID: 957019746}
   - component: {fileID: 957019745}
   - component: {fileID: 957019744}
+  - component: {fileID: 957019747}
   m_Layer: 5
   m_Name: Go Back Button (Legacy)
   m_TagString: Untagged
@@ -24148,6 +24165,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957019742}
   m_CullTransparentMesh: 1
+--- !u!114 &957019747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957019742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 1.1
+  animationDuration: 0.2
 --- !u!1 &966870550
 GameObject:
   m_ObjectHideFlags: 0
@@ -47566,6 +47598,7 @@ GameObject:
   - component: {fileID: 1727814614}
   - component: {fileID: 1727814616}
   - component: {fileID: 1727814615}
+  - component: {fileID: 1727814617}
   m_Layer: 5
   m_Name: "\uC624\uB2F5 \uD655\uC778\uD558\uAE30 \uBC84\uD2BC"
   m_TagString: Untagged
@@ -47632,6 +47665,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1727814613}
   m_CullTransparentMesh: 1
+--- !u!114 &1727814617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727814613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 1.1
+  animationDuration: 0.2
 --- !u!1 &1734229081
 GameObject:
   m_ObjectHideFlags: 0
