@@ -43,7 +43,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
 
         deleteImage = loadButton?.trashCan;
         rectImage = loadButton?.trashCan.transform.GetChild(0).gameObject;
-        selectItemBtn.onClick.AddListener(() => ShowItemList(!itemList.activeSelf));
+        //selectItemBtn.onClick.AddListener(() => ShowItemList(!itemList.activeSelf));
         SetItemLIst();
     }
 
@@ -75,6 +75,11 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         isClick = false;
         pointerDownTimer = 0f;
         StopAllCoroutines(); // 터치 추적 중단
+
+        if (gameObject == eventData.pointerCurrentRaycast.gameObject && transform.position == pointerDownPos)
+        {
+            ShowItemList(!itemList.activeSelf);
+        }
 
         if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(deleteImage.GetComponent<RectTransform>(), eventData.position, null))
         {
