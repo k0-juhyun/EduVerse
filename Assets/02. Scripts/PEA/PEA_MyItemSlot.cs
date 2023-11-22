@@ -66,15 +66,14 @@ public class Item
                 break;
 
             case ItemType.Video:
-                itemPath = Application.persistentDataPath + "/GIF/" + itemName + ".mp4";
-                if(!Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                itemPath = Application.persistentDataPath + "/Videos/" + itemName + ".mp4";
+                if(!Directory.Exists(Application.persistentDataPath + "/Videos/"))
                 {
-                    Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
+                    Directory.CreateDirectory(Application.persistentDataPath + "/Videos/");
                 }
                 File.WriteAllBytes(itemPath, itemBytes);
                 break;
         }
-
     }
 }
 

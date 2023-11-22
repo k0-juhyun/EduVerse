@@ -53,19 +53,21 @@ public class MyItemsManager : MonoBehaviour
             myItems.data = new List<Item>();
         }
 
+        // 아이템이 들어있는 경로에서 아이템 가져옴 (GIF는 썸네일만)
         for (int i = 0; i < myItems.data.Count; i++)
         {
             switch (myItems.data[i].itemType)
             {
                 case Item.ItemType.Image:
                     byte[] imageBytes = File.ReadAllBytes(myItems.data[i].itemPath);
-                    Texture2D texture = new Texture2D(2, 2);
-                    texture.LoadImage(imageBytes);
-                    texture.Apply();
-                    myItems.data[i].itemTexture = texture;
+                    myItems.data[i].itemTexture.LoadImage(imageBytes);
+                    myItems.data[i].itemTexture.Apply();
                     break;
                 case Item.ItemType.GIF:
-                    StartCoroutine(LoadGIFItemInfo(i));
+                    byte[] thumbNailBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNasils/" + Path.GetFileNameWithoutExtension(myItems.data[i].itemPath));
+                    myItems.data[i].gifThumbNailTexture.LoadImage(thumbNailBytes);
+                    myItems.data[i].gifThumbNailTexture.Apply();
+                    //StartCoroutine(LoadGIFItemInfo(i));
                     //byte[] gifBytes = File.ReadAllBytes(myItems.data[i].itemPath);
                     //(Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
                     //myItems.data[i].gifSprites = gifInfo.Item1;
@@ -142,7 +144,6 @@ public class MyItemsManager : MonoBehaviour
 
     private IEnumerator LoadGIFItemInfo(int dataIndex)
     {
-        print(myItems.data[dataIndex].itemName);
         byte[] gifBytes = File.ReadAllBytes(myItems.data[dataIndex].itemPath);
         (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(gifBytes);
         myItems.data[dataIndex].gifSprites = gifInfo.Item1;

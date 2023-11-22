@@ -37,7 +37,7 @@ public class VideoCreator : MonoBehaviour
 {
     private string serverURL_GIF = "http://221.163.19.218:5052/text_2_video/sendvideo";
 
-    private string serverURL_QUIZ = "http://221.163.19.218:5051/chat/quiz2";
+    private string serverURL_QUIZ = "http://221.163.19.218:5056/chat/quiz2";
 
     private string serverURL_Video = "http://221.163.19.218:5055/video_crafter/text_2_video";
 
