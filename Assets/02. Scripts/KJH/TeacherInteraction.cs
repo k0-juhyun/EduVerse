@@ -62,7 +62,7 @@ public class TeacherInteraction : MonoBehaviourPun
 
         characterInteraction = GetComponentInParent<CharacterInteraction>();
 
-        if(SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+        if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
             classRoomHandler = GameObject.Find("ClassRoom").GetComponent<ClassRoomHandler>();
 
         scrollView.SetActive(false);
@@ -145,7 +145,7 @@ public class TeacherInteraction : MonoBehaviourPun
 
             if (objectToPlace != null)
             {
-                isObjectBeingPlaced = true; 
+                isObjectBeingPlaced = true;
                 currentlyDragging = objectToPlace;
 
                 // rpc 로 오브젝트 생성
@@ -169,7 +169,7 @@ public class TeacherInteraction : MonoBehaviourPun
             objectToPlace = targetPhotonView.gameObject;
 #if UNITY_EDITOR
             print(modelName);
-            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath +"/3D_Models/ModelDatas/" + modelName + ".obj");
+            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 
 #elif UNITY_ANDROID
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
