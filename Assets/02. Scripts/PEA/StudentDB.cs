@@ -18,6 +18,7 @@ public class StudentDB : MonoBehaviour
     public GameObject studentDataItem;
     public GameObject studentsDB;
     public GameObject personalDB;
+    public GameObject AnalysisDB;
     public Button backStudentBtn;
     public Button backMyPageBtn;
 
@@ -95,7 +96,7 @@ public class StudentDB : MonoBehaviour
 
     public void OnClicGoBackStudentBtn()
     {
-        personalDB.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(() => personalDB.SetActive(false));
+        //personalDB.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(() => personalDB.SetActive(false));
         studentsDB.SetActive(true);
     }
 
@@ -108,6 +109,7 @@ public class StudentDB : MonoBehaviour
         }
         else if(personalDB.activeSelf)
         {
+            Debug.Log("d이거 실행");
             personalDB.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(() => personalDB.SetActive(false));
         }
     }

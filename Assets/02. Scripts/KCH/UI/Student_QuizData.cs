@@ -61,14 +61,8 @@ public class Student_QuizData : MonoBehaviour
         // 아님 생성해서 하든지. 어떻게 할까.
 
         // 오브젝트 이름으로 가져옴.
-        GameObject quizCanvas = GameObject.Find("영역별 점수");
-        if (quizCanvas == null)
-        {
-            Debug.Log("122");
-            StudentDB.instance.OffStudentDB();
-            StartCoroutine(QuizdataUpdate());
-            Debug.Log("11");
-        }
+        GameObject quizCanvas = StudentDB.instance.AnalysisDB;
+
         Debug.Log("quizCanvas" + quizCanvas);
         
 
