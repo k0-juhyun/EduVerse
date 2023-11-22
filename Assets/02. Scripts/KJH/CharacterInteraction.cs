@@ -24,6 +24,8 @@ public class CharacterInteraction : MonoBehaviourPun
     public Button Btn_Sit;
     public Button Btn_Camera, Btn_Custom, Btn_Greet;
     private Button Btn_Focus, Btn_ShareCam;
+    public Button Btn_Quiz;
+
 
     private Animator anim;
 
@@ -528,5 +530,9 @@ public class CharacterInteraction : MonoBehaviourPun
                 childrectTransform.anchoredPosition = new Vector3(10, 130, 0);
                 break;
         }
+    }
+    public void OnQuizBtnClick()
+    {
+        Quiz.instance.OnQuizBtnClick();
     }
 }

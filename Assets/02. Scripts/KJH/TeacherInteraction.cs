@@ -138,7 +138,9 @@ public class TeacherInteraction : MonoBehaviourPun
             // Æ÷Åæºä¸¦ °¡Áø ºó¿ÀºêÁ§Æ®¸¦ ºÒ·¯¿Í¼­
             objectToPlace = PhotonNetwork.Instantiate("3D_Models/mesh", player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
-            scrollView.SetActive(!scrollView.activeSelf);
+            scrollView.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack)
+            .OnComplete(() => scrollView.SetActive(false));
+
             isSpawnBtnClick = false;
 
             if (objectToPlace != null)
@@ -312,7 +314,8 @@ public class TeacherInteraction : MonoBehaviourPun
 
     public void OnClickCloseButton()
     {
-        scrollView.SetActive(false);
+        scrollView.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack)
+            .OnComplete(() => scrollView.SetActive(false));
         isSpawnBtnClick = false;
     }
 }
