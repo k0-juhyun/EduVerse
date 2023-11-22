@@ -19,6 +19,9 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     bool save = false;
 
+    [Space(20)]
+    public GameObject CommentaryPanel;
+
     // MyQuizStorage¿¡ ÄûÁî ´ã±â
     Quiz_ quiz = new Quiz_();
     public void Question_Answer(string title, string answer,string unit,string commentary)
@@ -53,6 +56,13 @@ public class LoadQuizPrefab : MonoBehaviourPun
             // ÄûÁî ´ã±â ÇØÁ¦
             MyQuizStorage.Instance.quizList.Remove(quiz);
         }
+    }
+
+    // ÄÚ¸àÆ® ¶ç¿öÁÜ.
+    public void OnCommentaryBtnClick()
+    {
+        GameObject panel = Instantiate(CommentaryPanel,transform.root);
+        panel.GetComponent<CommentaryPanel>().PutQuizData(quiz.question, quiz.answer, quiz.commentary);
     }
 
     // ±¤Àå¿¡¼­ÀÇ ÄûÁî.
