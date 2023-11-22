@@ -50,6 +50,32 @@ public class Item
         this.itemName = itemName;
         this.gifSprites = gifSprites;
     }
+
+    public Item(ItemType itemType, string itemName, byte[] itemBytes)
+    {
+        this.itemName = itemName;
+
+        switch (itemType) 
+        {
+            case ItemType.Image:
+                itemTexture.LoadImage(itemBytes);
+                itemTexture.Apply();
+                break;
+
+            case ItemType.GIF:
+                break;
+
+            case ItemType.Video:
+                itemPath = Application.persistentDataPath + "/GIF/" + itemName + ".mp4";
+                if(!Directory.Exists(Application.persistentDataPath + "/GIF/"))
+                {
+                    Directory.CreateDirectory(Application.persistentDataPath + "/GIF/");
+                }
+                File.WriteAllBytes(itemPath, itemBytes);
+                break;
+        }
+
+    }
 }
 
 public class PEA_MyItemSlot : MonoBehaviour
