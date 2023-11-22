@@ -19,6 +19,7 @@ namespace Rito.TexturePainter
 
         private Texture2D defaultTexture;
         public FlexibleColorPicker fcp;
+        public Button brushBtn;
         public Button eraseBtn;
         public Texture2D eraseTexture;
         public Scrollbar brushWidthScrollbar;
@@ -64,6 +65,7 @@ namespace Rito.TexturePainter
         private void Start()
         {
             fcp.onColorChange.AddListener(OnChangeColor);
+            brushBtn.onClick.AddListener(OnClickBrushBtn);
             eraseBtn.onClick.AddListener(OnClickEraseBtn);
             brushWidthScrollbar.onValueChanged.AddListener((f) => OnBrushWidthScollbarValueChanged(f));
         }
@@ -255,6 +257,15 @@ namespace Rito.TexturePainter
             }
             SetBrushColor(co);
         }
+
+
+        private void OnClickBrushBtn()
+        {
+            brushTexture = defaultTexture;
+            CopyBrushTexture();
+            SetBrushColor(fcp.GetColor());
+        }
+
 
         private void OnClickEraseBtn()
         {
