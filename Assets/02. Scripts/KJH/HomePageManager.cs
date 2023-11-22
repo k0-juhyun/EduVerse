@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using TMPro;
 
 public class HomePageManager : MonoBehaviour
 {
@@ -24,16 +25,20 @@ public class HomePageManager : MonoBehaviour
     [Header("교과자료")]
     public GameObject 교과자료;
 
+    public TMP_Text 홈페이지텍스트;
+
     public void OnTeachersRoomButtonClick()
     {
         기본.SetActive(false);
         교무실.SetActive(true);
+        홈페이지텍스트.text = "교 무 실";
     }
 
     public void OnBackButtonClick()
     {
         교무실.SetActive(false);
         기본.SetActive(true);
+        홈페이지텍스트.text = "HOME PAGE";
     }
 
     // 교과서 제작
