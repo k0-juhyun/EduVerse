@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
             if (Character != null)
                 customization = Character.GetComponent<Customization>();
         }
+        else
+        {
+            Destroy(gameObject);
+        }
 
     }
 
