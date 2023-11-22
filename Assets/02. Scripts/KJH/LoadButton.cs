@@ -112,15 +112,18 @@ public class LoadButton : MonoBehaviourPun
     // 인터렉션 버튼 하나 지우기
     public void OnClickDeleteInteractionBtn(string btnName)
     {
-        foreach(ButtonPositionData buttonPositionData in allSessions.sessions)
+        for(int i = 0; i < allSessions.sessions.Count; i++)
         {
-            if(buttonPositionData.page == pdfViewer.CurrentPageIndex)
+            // 세션들 중 현재 페이지의 인터렉션 버튼들에 대한 정보 담고 있는 거 찾기
+            if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
             {
-                foreach(ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                for(int j= 0; i< allSessions.sessions[i].buttonPositions.Count; j++)
                 {
-                    if(buttonPosition.buttonName == btnName)
+                    // 현재 페이지의 버튼들 중 내가 지울 버튼의 정보 찾기
+                    if(allSessions.sessions[i].buttonPositions[j].buttonName == btnName)
                     {
-                        //allSessions.sessions
+                        // 있으면 지우기
+                        allSessions.sessions[i].buttonPositions.RemoveAt(j);
                     }
                 }
             }
@@ -129,44 +132,42 @@ public class LoadButton : MonoBehaviourPun
 
     public void SaveCurrentSession()
     {
+        print("Save Current Session");
         ButtonPositionData currentSession = new ButtonPositionData();
 
         foreach (Transform child in teachingData.transform)
         {
-            if (child.GetComponent<Button>() != null)
+            RectTransform rectTransform = child.GetComponent<RectTransform>();
+            InteractionMakeBtn interactionBtn = child.GetComponent<InteractionMakeBtn>();
+
+            // 현재 보고 있는 페이지 저장 
+            currentSession.page = pdfViewer.CurrentPageIndex;
+
+            if (interactionBtn.Item == null)
             {
-                RectTransform rectTransform = child.GetComponent<RectTransform>();
-                InteractionMakeBtn interactionBtn = child.GetComponent<InteractionMakeBtn>();
-
-                // 현재 보고 있는 페이지 저장 
-                currentSession.page = pdfViewer.CurrentPageIndex;
-
-                if(interactionBtn.Item == null)
-                {
-                    continue;
-                }
-
-                currentSession.buttonPositions.Add(new ButtonPosition
-                {
-                    buttonName = child.name,
-                    posX = rectTransform.anchoredPosition.x,
-                    posY = rectTransform.anchoredPosition.y,
-
-                    // 선택된 아이템 정보 저장
-                    item = interactionBtn.Item
-                });
+                continue;
             }
+
+            currentSession.buttonPositions.Add(new ButtonPosition
+            {
+                buttonName = child.name,
+                posX = rectTransform.anchoredPosition.x,
+                posY = rectTransform.anchoredPosition.y,
+
+                // 선택된 아이템 정보 저장
+                item = interactionBtn.Item
+            });
         }
 
-        // 기존에 있던 현재 페이지 인터렉션 버튼들에 대한 정보 지우고 다시 저장할거임. 
-        for(int i = 0; i < allSessions?.sessions?.Count; i++)
-        {
-            if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
-            {
-                allSessions.sessions.RemoveAt(i);
-                break;
-            }
-        }
+        //// 기존에 있던 현재 페이지 인터렉션 버튼들에 대한 정보 지우고 다시 저장할거임. 
+        //for(int i = 0; i < allSessions?.sessions?.Count; i++)
+        //{
+        //    if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
+        //    {
+        //        allSessions.sessions.RemoveAt(i);
+        //        break;
+        //    }
+        //}
 
         allSessions.sessions.Add(currentSession);
         json = JsonUtility.ToJson(allSessions);

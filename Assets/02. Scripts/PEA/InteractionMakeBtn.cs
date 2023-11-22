@@ -20,7 +20,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     public GameObject itemList;
     public GameObject itemPrefab;
     public Transform itemList_Content;
-    public Button selectItemBtn;
+    //public Button selectItemBtn;
 
     public Item Item
     {
@@ -43,7 +43,12 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
 
         deleteImage = loadButton.trashCan;
         rectImage = loadButton.trashCan.transform.GetChild(0).gameObject;
-        selectItemBtn.onClick.AddListener(() => ShowItemList(!itemList.activeSelf));
+        //selectItemBtn.onClick.AddListener(() =>
+        //{
+        //    if (transform.position == pointerDownPos)
+        //        ShowItemList(!itemList.activeSelf);
+        //});
+
         SetItemLIst();
     }
 
@@ -76,6 +81,13 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         pointerDownTimer = 0f;
         StopAllCoroutines(); // 터치 추적 중단
 
+
+        // 드래그 없이 클릭만 했을 때
+        if (eventData.pointerCurrentRaycast.gameObject == gameObject && transform.position == pointerDownPos)
+        {
+            ShowItemList(!itemList.activeSelf);
+        }
+
         if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(deleteImage.GetComponent<RectTransform>(), eventData.position, null))
         {
             Delete(); // 오브젝트 삭제
@@ -97,6 +109,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     public void Delete()
     {
         Destroy(gameObject);
+        loadButton.OnClickDeleteInteractionBtn(gameObject.name);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
