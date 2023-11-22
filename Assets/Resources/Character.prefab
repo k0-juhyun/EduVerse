@@ -6658,8 +6658,8 @@ GameObject:
   - component: {fileID: 6400393575671159142}
   - component: {fileID: 1914481358462442443}
   - component: {fileID: 8881004482179196957}
-  - component: {fileID: 5099426812242236122}
-  - component: {fileID: 8078235753849655045}
+  - component: {fileID: 6442644414556850244}
+  - component: {fileID: 8939397880186053861}
   m_Layer: 8
   m_Name: Base-Idle_1
   m_TagString: Player
@@ -6873,7 +6873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b524d638aa9a1424187fd44d767230ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &5099426812242236122
+--- !u!82 &6442644414556850244
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6969,7 +6969,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8078235753849655045
+--- !u!114 &8939397880186053861
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6982,8 +6982,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundSceneWalkSounds:
-  - {fileID: 8300000, guid: 7a9d6134f4cbfbd40a095fc99a392c79, type: 3}
   - {fileID: 8300000, guid: 0a8b6ded387ac8a4680c0a4ad81877e4, type: 3}
+  - {fileID: 8300000, guid: 7a9d6134f4cbfbd40a095fc99a392c79, type: 3}
 --- !u!1 &1218324696468958394
 GameObject:
   m_ObjectHideFlags: 0
@@ -7600,6 +7600,7 @@ MonoBehaviour:
   scrollSpeed: 1
   dragSpeed: 1
   teacherInteraction: {fileID: 6400393575671159142}
+  lerpCameraSpeed: 0.2
 --- !u!1 &1218324696641374126
 GameObject:
   m_ObjectHideFlags: 0

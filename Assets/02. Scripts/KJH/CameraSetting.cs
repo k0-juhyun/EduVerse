@@ -38,6 +38,8 @@ public class CameraSetting : MonoBehaviourPun
     public TeacherInteraction teacherInteraction;
     private Customization customization;
 
+    public float lerpCameraSpeed=0.2f;
+
     private void Awake()
     {
         originTransform = transform;
@@ -67,7 +69,8 @@ public class CameraSetting : MonoBehaviourPun
     {
         if (characterInteraction.isTPSCam)
         {
-            Vector3 targetPos = Vector3.Lerp(originTransform.position, targetTransform.position, Time.deltaTime / 0.2f);
+            
+            Vector3 targetPos = Vector3.Lerp(originTransform.position, targetTransform.position, Time.deltaTime / lerpCameraSpeed);
             originTransform.position = targetPos;
         }
     }
