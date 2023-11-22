@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using System.Text;
 
 public class TextSender : MonoBehaviour
 {
@@ -11,13 +12,12 @@ public class TextSender : MonoBehaviour
 
     private void Start()
     {
-        //SendText();
+        //SendText("강차니 바보", null);
     }
 
     // HTTP 요청 보내는 함수
     IEnumerator SendTextToServer(string text, System.Action<DownloadHandler> callback)
     {
-        print("SsndTextToServer");
         WWWForm form = new WWWForm();
         form.AddField("text", text);
 

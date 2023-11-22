@@ -202,7 +202,7 @@ public class LoadButton : MonoBehaviourPun
                             newButton.name = buttonPosition.buttonName;
                             RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                             rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
                         }
                         //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
                         //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
@@ -260,7 +260,7 @@ public class LoadButton : MonoBehaviourPun
 
                     // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
                     // 아이템들 경로/ 파일 이름까지 똑같아야 함
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
 
                     //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
                     //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));

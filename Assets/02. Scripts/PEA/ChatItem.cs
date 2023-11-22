@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChatItem : MonoBehaviour
 {
-    public Text chatText;
+    public TMP_Text chatText;
 
     public void SetText(string text)
     {

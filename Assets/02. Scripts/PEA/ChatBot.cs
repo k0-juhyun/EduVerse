@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChatBot : MonoBehaviour
 {
     private Color answerChatColor = new Color(1f, 1f, 0.8f, 0.5f);
 
-    public InputField questionInput;
+    public TMP_InputField questionInput;
     public GameObject answerChatItem;
     public GameObject questionChatItem;
     public Button sendBtn;
@@ -39,11 +40,10 @@ public class ChatBot : MonoBehaviour
         AddChatText(true, text);
         questionInput.text = "";
 
-        textSender.SendText(text, (DownloadHandler downloadHandler) =>
-            {
-                AddChatText(false, downloadHandler.text);
-            }
-        );
+        textSender?.SendText(text, (DownloadHandler downloadHandler) =>
+        {
+            AddChatText(false, downloadHandler.text);
+        });
 
         //HttpInfo httpInfo = new HttpInfo();
         //httpInfo.Set(RequestType.POST, "", (DownloadHandler downloadHandler) =>
