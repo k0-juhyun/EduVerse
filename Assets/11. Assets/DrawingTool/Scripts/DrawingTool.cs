@@ -119,11 +119,9 @@ public class DrawingTool : MonoBehaviour
 #if UNITY_EDITOR
 		if (EventSystem.current.IsPointerOverGameObject())
 		{
-			print("d");
 			return;
 		}
 
-		print("D");
 #else
 		Touch touch = Input.GetTouch(0);
 		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId)) return;

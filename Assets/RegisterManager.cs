@@ -80,6 +80,9 @@ public class RegisterManager : MonoBehaviour
     [Header("6. 회원가입 실패 알림")]
     public GameObject failedSingUp;
 
+
+    private StartSceneHandler startSceneHandler;
+
     public bool IsTeacher
     {
         get { return _isTeacher; }
@@ -87,6 +90,7 @@ public class RegisterManager : MonoBehaviour
 
     void Start()
     {
+        startSceneHandler = GetComponentInParent<StartSceneHandler>();
         // 드롭다운으로 이메일 뒷주소 선택하면 텍스트 바뀌게
         선생emailDropDown.onValueChanged.AddListener((i) =>
         {
@@ -185,14 +189,8 @@ public class RegisterManager : MonoBehaviour
 
     public void OnNextBtnClick()
     {
-        //print(선생이름.text + "+" + _isTeacher);
-        //DataBase.instance.SetMyInfo(new User(_isTeacher? 선생이름.text : 학생이름.text, _isTeacher));
-        //if (PhotonNetwork.IsConnectedAndReady)
-        //{
-        //    PhotonNetwork.NickName = _isTeacher ? 선생이름.text : 학생이름.text;
-        //    PhotonNetwork.LoadLevel(1);
-        //}
-        PhotonNetwork.LoadLevel(0);
+        startSceneHandler.시작.SetActive(true);
+        startSceneHandler.회원가입.SetActive(false);
     }
 
     public void OnNextContentBtnClick()
