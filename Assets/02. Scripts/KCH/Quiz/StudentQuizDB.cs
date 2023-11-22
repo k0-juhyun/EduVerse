@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -83,7 +84,8 @@ public class StudentQuizDB : MonoBehaviour
     }
     public void OffIncorrectNoteBtnClick()
     {
-        IncorrectNotePanel.SetActive(false);
+        IncorrectNotePanel.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack)
+            .OnComplete(() => IncorrectNotePanel.SetActive(false));
     }
 
 
