@@ -91,19 +91,6 @@ public class Deco : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<PhotonView>(out PhotonView photonView))
-        {
-            if (photonView.IsMine)
-            {
-                drawBtn.gameObject.SetActive(true);
-                decoBtn.gameObject.SetActive(true);
-                StartCoroutine(ICheckClickDrawButton(other));
-                StartCoroutine(ICheckClickBackButton(other));
-            }
-        }
-    }
 
     private void OnTriggerExit(Collider other)
     {
@@ -117,6 +104,19 @@ public class Deco : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<PhotonView>(out PhotonView photonView))
+        {
+            if (photonView.IsMine)
+            {
+                drawBtn.gameObject.SetActive(true);
+                decoBtn.gameObject.SetActive(true);
+                StartCoroutine(ICheckClickDrawButton(other));
+                StartCoroutine(ICheckClickBackButton(other));
+            }
+        }
+    }
     private IEnumerator ICheckClickDrawButton(Collider other)
     {
         CharacterMovement characterMovement = other.GetComponentInParent<CharacterMovement>();
@@ -136,6 +136,6 @@ public class Deco : MonoBehaviour
         yield return new WaitUntil(() => isBackButtonPressed);
 
         characterMovement.CharacterCanvas.SetActive(true);
-        isDrawButtonPressed = false;
+        isBackButtonPressed = false;
     }
 }

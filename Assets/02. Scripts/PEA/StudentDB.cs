@@ -6,6 +6,7 @@ using Photon.Pun;
 using Firebase.Database;
 using Firebase.Extensions;
 using Firebase.Auth;
+using DG.Tweening;
 
 public class StudentDB : MonoBehaviour
 {
@@ -94,7 +95,7 @@ public class StudentDB : MonoBehaviour
 
     public void OnClicGoBackStudentBtn()
     {
-        personalDB.SetActive(false);
+        personalDB.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(() => personalDB.SetActive(false));
         studentsDB.SetActive(true);
     }
 
@@ -107,7 +108,7 @@ public class StudentDB : MonoBehaviour
         }
         else if(personalDB.activeSelf)
         {
-            personalDB.SetActive(false);
+            personalDB.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(() => personalDB.SetActive(false));
         }
     }
 }
