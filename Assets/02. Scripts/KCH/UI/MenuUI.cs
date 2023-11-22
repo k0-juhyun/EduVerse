@@ -53,7 +53,7 @@ public class MenuUI : MonoBehaviourPun
         }
         else
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -40, 0.4f);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -50, 0.4f);
             DrawingToolmenu.DOAnchorPosX(40, 0.4f);
             isOpen_menu = !isOpen_menu;
         }
