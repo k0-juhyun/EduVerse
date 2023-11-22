@@ -167,14 +167,14 @@ public class TeacherInteraction : MonoBehaviourPun
         if (targetPhotonView != null)
         {
             objectToPlace = targetPhotonView.gameObject;
-#if UNITY_EDITOR
             print(modelName);
-            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 
-#elif UNITY_ANDROID
+#if UNITY_ANDROID
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
+#else
+            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 #endif
             if (importedObj != null)
             {
