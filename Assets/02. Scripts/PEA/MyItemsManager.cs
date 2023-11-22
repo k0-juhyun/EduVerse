@@ -65,7 +65,7 @@ public class MyItemsManager : MonoBehaviour
                     myItems.data[i].itemTexture.Apply();
                     break;
                 case Item.ItemType.GIF:
-                    byte[] thumbNailBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNails/" + Path.GetFileNameWithoutExtension(myItems.data[i].itemPath) + ".jpg");
+                    byte[] thumbNailBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNails/" + Path.GetFileNameWithoutExtension(myItems.data[i].itemPath) + ".png");
                     myItems.data[i].gifThumbNailTexture = new Texture2D(2, 2);
                     myItems.data[i].gifThumbNailTexture.LoadImage(thumbNailBytes);
                     myItems.data[i].gifThumbNailTexture.Apply();
