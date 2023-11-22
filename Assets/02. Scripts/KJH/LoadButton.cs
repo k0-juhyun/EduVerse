@@ -179,7 +179,7 @@ public class LoadButton : MonoBehaviourPun
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
 
         // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
-        if(buildIndex == 4 && isLesson) 
+        if(buildIndex == 4 ) 
         {
             foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
             {
@@ -190,7 +190,19 @@ public class LoadButton : MonoBehaviourPun
                     foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
                     //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                     {
-                        photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+                        // 수업중에는 학생들한테도 인터렉션 버튼 보임
+                        if (isLesson)
+                        {
+                            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+                        }
+                        else
+                        {
+                            GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
+                            newButton.name = buttonPosition.buttonName;
+                            RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+                            rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
+                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                        }
                         //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
                         //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
                     }
