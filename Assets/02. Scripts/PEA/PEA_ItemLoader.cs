@@ -28,6 +28,7 @@ public class PEA_ItemLoader : MonoBehaviour
     //private string myItemsJsonPath;
     private MyItems myItems;
 
+    private string[] imageItemPath;
     private string[] gifItemsPath;
     private string[] videoItemsPath;
     private List<Item> inContentMyItems = new List<Item>();                 // 내 아이템 창에 띄워져 있는 내 아이템
@@ -73,13 +74,25 @@ public class PEA_ItemLoader : MonoBehaviour
             case SearchType.Image:
                 itemTextures.Clear();
 
+                List<Item> imageItems = new List<Item>();
                 List<Item> gifItems = new List<Item>();
                 List<Item> videoItems = new List<Item>();
                 MyItems myItems = MyItemsManager.instance.GetMyItems();
 
                 if (isMarket)
                 {
-                    itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                    
+                    //itemTextures = Resources.LoadAll<Texture2D>("Market_Item_Sprites").ToList();
+                    if(Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
+                    {
+                        imageItemPath = Directory.GetFiles(Application.persistentDataPath + "/MarketItems/");
+
+                        foreach(string path in imageItemPath)
+                        {
+                            Item item = new Item(Item.ItemType.Image, Path.GetFileNameWithoutExtension(path), path);
+                            imageItems.Add(item);
+                        }
+                    }
 
                     if (Directory.Exists(Application.persistentDataPath + "/GIF/"))
                     {
@@ -132,7 +145,7 @@ public class PEA_ItemLoader : MonoBehaviour
                 print(myItems.data.Count + ", " + inContentMyItems.Count);
                 print((isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) : myItems.data.Count)));
                 // 마켓은 항상 재로드, 내 아이템은 새로 추가된 것만 로드
-                for (int i = (isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) :  myItems.data.Count)); i < (isMarket ? itemTextures.Count : (myItems != null ? myItems.data.Count : 0)); i++)
+                for (int i = (isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) :  myItems.data.Count)); i < (isMarket ? imageItems.Count : (myItems != null ? myItems.data.Count : 0)); i++)
                 {
                     print(i);
                     GameObject slot = Instantiate(itemSlot, content);
@@ -141,7 +154,8 @@ public class PEA_ItemLoader : MonoBehaviour
                     if (isMarket)
                     {
                         PEA_MarketItemSlot marketItemSlot = slot.GetComponent<PEA_MarketItemSlot>();
-                        marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".jpg"));
+                        marketItemSlot.SetItemInfo(imageItems[i]);
+                        //marketItemSlot.SetItemInfo(new Item(Item.ItemType.Image, itemTextures[i].name, Application.dataPath + "/Resources/Market_Item_Sprites/" + itemTextures[i].name + ".jpg"));
                     }
 
                     // 내 아이템

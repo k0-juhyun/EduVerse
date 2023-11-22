@@ -234,7 +234,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private void SitDownTeacher(Collider chair)
     {
         Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
-        Quaternion rotation = Quaternion.LookRotation(chair.transform.forward * -1);
+        Quaternion rotation = Quaternion.LookRotation(Quaternion.Euler(0, -90, 0) * chair.transform.right);
 
         PlaySitAnimation();
         SetCharacterPosition(chair.transform.position);
