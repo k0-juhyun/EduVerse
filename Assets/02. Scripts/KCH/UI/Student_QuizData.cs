@@ -54,14 +54,23 @@ public class Student_QuizData : MonoBehaviour
     {
         // 임의로 1초 기다림
         // StudentQuizInfo 로드 시간을 위해.
-        yield return new WaitForSeconds(0.3f);
+        StudentDB.instance.OffStudentDB();
+        yield return new WaitForSeconds(0.5f);
 
         // 씬에 있는 오브젝트들 값을 바꾸든지
         // 아님 생성해서 하든지. 어떻게 할까.
 
         // 오브젝트 이름으로 가져옴.
         GameObject quizCanvas = GameObject.Find("영역별 점수");
-
+        if (quizCanvas == null)
+        {
+            Debug.Log("122");
+            StudentDB.instance.OffStudentDB();
+            StartCoroutine(QuizdataUpdate());
+            Debug.Log("11");
+        }
+        Debug.Log("quizCanvas" + quizCanvas);
+        
 
         // string 값이 null이 되면 NaN으로 뜸.
         // 퀴즈를 안푼 단원들은 다 널값으로 해줘야 함..
@@ -69,7 +78,7 @@ public class Student_QuizData : MonoBehaviour
 
         // 복제한 오브젝트 StudentQuizDB 스크립트 가져옴.
         StudentQuizDB QuizDB = quizCanvas.GetComponent<StudentQuizDB>();
-        Debug.Log(QuizDB);
+        Debug.Log("quizdb"+QuizDB);
 
         // 처음에 리셋을 해준다.
         #region 리셋
