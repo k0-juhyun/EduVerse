@@ -213,6 +213,7 @@ public class LoadButton : MonoBehaviourPun
 
     [PunRPC]
     // Item 정보를 보낼 수 없어서 string 타입으로 JSON 자체를 보내버림.
+    // 경로와 item 정보 보냄.
     public void LoadInteractionRPC(string json, int curPage)
     {
         DestroyAllButtons();
@@ -234,14 +235,14 @@ public class LoadButton : MonoBehaviourPun
 
                     // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
                     // 아이템들 경로/ 파일 이름까지 똑같아야 함
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    newButton.GetComponentInChildren<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
 
                     //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
                     //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
                 }
             }
         }
-    }
+    }                           
 
     [PunRPC]
     public void DestroyAllButtons()
