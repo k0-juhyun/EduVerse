@@ -19,24 +19,6 @@ public class StartSetting : MonoBehaviour
         
     }
 
-    //public void OnCllickStartBtn()
-    //{
-    //    if(nameInput.text.Length > 0)
-    //    {
-    //        DataBase.instance.SetMyInfo(new User(nameInput.text, DataBase.instance.user.isTeacher));
-    //        if(PhotonNetwork.IsConnectedAndReady)
-    //        {
-    //            PhotonNetwork.NickName = nameInput.text;
-    //            PhotonNetwork.LoadLevel(1);
-    //        }
-    //    }
-    //}
-
-    public void OnClickRegisterBtn()
-    {
-        PhotonNetwork.LoadLevel("RegisterScene");
-    }
-
     public void OnClickVerifyButton()
     {
         DataBase.instance.user.isTeacher = true;
