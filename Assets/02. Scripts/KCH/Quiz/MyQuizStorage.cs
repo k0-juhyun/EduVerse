@@ -40,6 +40,10 @@ public class MyQuizStorage : MonoBehaviourPun
             Instance = this;
             DontDestroyOnLoad(Instance);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
 
