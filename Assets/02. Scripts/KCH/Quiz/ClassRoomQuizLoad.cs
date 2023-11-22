@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using static MyQuizStorage;
+using DG.Tweening;
 
 public class ClassRoomQuizLoad : MonoBehaviourPun
 {
@@ -21,6 +22,9 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     public GameObject 정답인원;
     public GameObject 오답인원;
     public GameObject 못푼인원;
+
+    public GameObject 문제은행;
+    public GameObject QuizIcon;
 
 
     // 진행중
@@ -65,7 +69,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
             GameObject quiz_obj = Instantiate(QuizPrefab);
             quiz_obj.transform.parent = AddQuizViewport.transform;
             quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
-            MyQuizStorage.Instance.quizList[i].answer);
+            MyQuizStorage.Instance.quizList[i].answer, MyQuizStorage.Instance.quizList[i].unit, MyQuizStorage.Instance.quizList[i].commentary);
         }
         // 여기서 저장한 리스트 뽑아서 써야함.
 
@@ -106,7 +110,19 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     public void OndisappearCanvasBtnClick()
     {
         // 다시 키게 만드는것도 만들어야함.
-        transform.GetComponent<Canvas>().enabled = false;
+        문제은행.transform.DOScale(0,0.5f).SetEase(Ease.OutCubic).OnComplete(() =>
+        {
+            QuizIcon.transform.DOScale(1, 0.5f).SetEase(Ease.OutCubic);
+        });
+    }
+
+    public void OnappearCanvasBtnClick()
+    {
+        Debug.Log("실행");
+        QuizIcon.transform.DOScale(0, 0.2f).SetEase(Ease.OutCubic).OnComplete(() =>
+        {
+            문제은행.transform.DOScale(1, 0.5f).SetEase(Ease.OutCubic);
+        });
     }
 
 
@@ -202,4 +218,5 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         }
 
     }
+    
 }
