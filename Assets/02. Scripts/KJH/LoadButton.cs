@@ -182,30 +182,32 @@ public class LoadButton : MonoBehaviourPun
         // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
         if(buildIndex == 4 ) 
         {
-            foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
+            if (isLesson)
             {
-                // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
-                // 알아서 다음 or 이전 페이지로 계산
-                if (curPage == buttonPositionData.page)
+                photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+            }
+            else
+            {
+                DestroyAllButtons();
+
+                foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
                 {
-                    foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
-                    //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
+                    // 페이지 이동 함수가 동시에 호출되기 때문에 이동 전의 페이지가 넘어옴.
+                    // 알아서 다음 or 이전 페이지로 계산
+                    if (curPage == buttonPositionData.page)
                     {
-                        // 수업중에는 학생들한테도 인터렉션 버튼 보임
-                        if (isLesson)
+                        foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                        //foreach (ButtonPosition buttonPosition in selectedSession.buttonPositions)
                         {
-                            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
-                        }
-                        else
-                        {
+                            // 수업중에는 학생들한테도 인터렉션 버튼 보임
                             GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
                             newButton.name = buttonPosition.buttonName;
                             RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                             rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
+                            //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
+                            //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
                         }
-                        //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
-                        //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
                     }
                 }
             }
@@ -260,7 +262,7 @@ public class LoadButton : MonoBehaviourPun
 
                     // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
                     // 아이템들 경로/ 파일 이름까지 똑같아야 함
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath)));
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
 
                     //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
                     //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
