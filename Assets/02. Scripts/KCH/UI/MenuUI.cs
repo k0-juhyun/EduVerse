@@ -47,13 +47,13 @@ public class MenuUI : MonoBehaviourPun
         // ´ÝÇôÀÖÀ¸¸é
         if (!isOpen_menu)
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 90, 0.4f).SetEase(Ease.OutBack);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, 110, 0.4f).SetEase(Ease.OutCubic);
             DrawingToolmenu.DOAnchorPosX(125, 0.4f).SetEase(Ease.OutBack);
             isOpen_menu = !isOpen_menu;
         }
         else
         {
-            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -50, 0.4f);
+            DOTween.To(() => horizontalgroup.spacing, x => horizontalgroup.spacing = x, -40, 0.4f);
             DrawingToolmenu.DOAnchorPosX(40, 0.4f);
             isOpen_menu = !isOpen_menu;
         }
