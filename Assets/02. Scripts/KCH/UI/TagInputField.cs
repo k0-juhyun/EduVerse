@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TagInputField : MonoBehaviour
 {
     public GameObject TagText;
-    public InputField playerNameInput;
+    public TMP_InputField playerNameInput;
+
+    private void Start()
+    {
+        playerNameInput.onSubmit.AddListener((s) => EnterTxtBtn(s));
+    }
 
     public void SendBtn()
     {
@@ -24,9 +30,8 @@ public class TagInputField : MonoBehaviour
             }
         }
     }
-    public void EnterTxtBtn()
+    public void EnterTxtBtn(string s)
     {
-
         // 부모 오브젝트를 찾습니다.
         Transform parentTransform = transform; // 예시로 현재 스크립트가 붙은 오브젝트를 부모로 설정합니다.
 
