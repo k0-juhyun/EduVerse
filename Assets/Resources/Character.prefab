@@ -5038,6 +5038,7 @@ MonoBehaviour:
   Btn_Camera: {fileID: 3162519702366734087}
   Btn_Custom: {fileID: 8988448263504207491}
   Btn_Greet: {fileID: 985686895155066227}
+  Btn_Quiz: {fileID: 0}
   _isSit: 0
   isTPSCam: 1
   isDrawing: 0
@@ -10574,7 +10575,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4936632851289725203}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1218324696208131445}
+        m_TargetAssemblyTypeName: CharacterInteraction, Assembly-CSharp
+        m_MethodName: OnQuizBtnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1975365031952703123
 MonoBehaviour:
   m_ObjectHideFlags: 0

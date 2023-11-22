@@ -19,7 +19,7 @@ public class QuizGroundPanel : MonoBehaviour
 
     // 버튼을 눌렀을 때 correctCheck 변수를 사용해서 정답 오답 체크한다.
 
-    public void quizdata(string question_, string answer_)
+    public void quizdata(string question_, string answer_,string unit_, string commentary_)
     {
         // 선생이 퀴즈 패널을 띄워주고
 
