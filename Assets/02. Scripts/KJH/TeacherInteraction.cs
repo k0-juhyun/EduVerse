@@ -175,6 +175,9 @@ public class TeacherInteraction : MonoBehaviourPun
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
+#else
+            string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
+            GameObject importedObj = new OBJLoader().Load(objFilePath);
 #endif
             if (importedObj != null)
             {

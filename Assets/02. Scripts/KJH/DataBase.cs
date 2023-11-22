@@ -110,6 +110,8 @@ public class DataBase : MonoBehaviour
 
 #elif UNITY_ANDROID
         string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+#else
+        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
 #endif
 
         try

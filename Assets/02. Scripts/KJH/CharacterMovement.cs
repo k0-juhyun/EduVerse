@@ -42,6 +42,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private float maxSpeed = 2f;
 #elif UNITY_ANDROID
     private float maxSpeed = 2f;
+#else
+    private float maxSpeed = 2f;
 #endif
 
     private bool isTouch = false;

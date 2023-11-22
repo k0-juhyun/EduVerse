@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
         string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
 #elif UNITY_ANDROID
         string path = Application.persistentDataPath +"/"+ PhotonNetwork.NickName + ".txt";
+#else
+        string path = Application.persistentDataPath + "/" + PhotonNetwork.NickName + ".txt";
 #endif
         using (FileStream file = new FileStream(path, FileMode.Create))
         {
