@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            Screen.SetResolution(1280, 800, true);
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
             Character = GameObject.Find("Character");
