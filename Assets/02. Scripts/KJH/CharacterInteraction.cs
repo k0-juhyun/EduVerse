@@ -549,4 +549,11 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         Quiz.instance.OnQuizBtnClick();
     }
+
+    [PunRPC]
+    public void SendMyPosition(Vector3 position,Quaternion rotation)
+    {
+        Character.transform.position = position;
+        Character.transform.rotation = rotation;
+    }
 }

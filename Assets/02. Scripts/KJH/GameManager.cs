@@ -52,14 +52,20 @@ public class GameManager : MonoBehaviour
     {
         string jsonData = JsonUtility.ToJson(obj, true);
         byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
-
+        string path = "";
 #if UNITY_ANDROID
         string path = Application.persistentDataPath +"/"+ PhotonNetwork.NickName + ".txt";
 #elif UNITY_EDITOR
-        string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
+        path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
 #else
-        string path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
+        path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
 #endif
+        string directoryPath = Path.GetDirectoryName(path);
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+
         using (FileStream file = new FileStream(path, FileMode.Create))
         {
             file.Write(byteData, 0, byteData.Length);

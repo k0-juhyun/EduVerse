@@ -191,10 +191,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object sceneName))
         {
-            print("111111");
             if (!string.IsNullOrEmpty((string)sceneName))
             {
-                print("22222");
                 PhotonNetwork.LoadLevel((string)sceneName);
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
@@ -202,6 +200,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else
         {
             print("33333333");
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("새 플레이어가 방에 들어왔습니다: " + newPlayer.NickName);
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player != newPlayer)
+            {
+
+            }
         }
     }
 
