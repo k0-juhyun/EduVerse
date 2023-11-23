@@ -146,6 +146,10 @@ public class FireDatabase : MonoBehaviour
         {
             print("유저 정보 저장 성공");
             if (onComplete != null) onComplete();
+
+            // 회원가입 후 바로 로그인 X  -> 로그인씬으로 감
+            FirebaseAuth.DefaultInstance.SignOut();
+            NetworkManager.instance.LoadScene(0);
         }
         else
         {
