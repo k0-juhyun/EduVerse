@@ -92,35 +92,71 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         {
             Vector2 value = eventData.position - (Vector2)rectBackground.position;
             value = Vector2.ClampMagnitude(value, radius);
-            rectJoyStick.localPosition = value;
+            TTT(value);
 
-            value = value.normalized;
+           // rectJoyStick.localPosition = value;
 
-            float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+           //value = value.normalized;
 
-            // 조이스틱 방향으로 움직임
-            Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+            
 
-            moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+            //float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
-            movePos = cameraPivotTransform.TransformDirection(moveDirection);
+            //// 조이스틱 방향으로 움직임
+            //Vector3 moveDirection = new Vector3(value.x, 0, value.y);
 
-            movePos.Normalize();
+            //moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
-            movePos *= (moveSpeed * Time.deltaTime);
-            movePos.y = 0f;
-            Character.transform.forward = movePos;
+            //movePos = cameraPivotTransform.TransformDirection(moveDirection);
 
-            // 조이스틱 입력에 따른 블렌드 값 계산
-            float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
-            animParameters = distance / radius; // 0부터 1 사이의 값
+            //movePos.Normalize();
 
-            // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
-            animator.SetFloat("moveSpeed", animParameters);
+            //movePos *= (moveSpeed * Time.deltaTime);
+            //movePos.y = 0f;
+            //Character.transform.forward = movePos;
 
-            photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+            //// 조이스틱 입력에 따른 블렌드 값 계산
+            //float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+            //animParameters = distance / radius; // 0부터 1 사이의 값
+
+            //// 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+            //animator.SetFloat("moveSpeed", animParameters);
+
+            //photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
         }
     }
+
+    void TTT(Vector2 value)
+    {
+        rectJoyStick.localPosition = value;
+        value = value.normalized;
+
+        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+
+        // 조이스틱 방향으로 움직임
+        Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+        print(value);
+
+        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+
+        movePos = cameraPivotTransform.TransformDirection(moveDirection);
+
+        movePos.Normalize();
+
+        movePos *= (moveSpeed * Time.deltaTime);
+        movePos.y = 0f;
+        Character.transform.forward = movePos;
+
+        // 조이스틱 입력에 따른 블렌드 값 계산
+        float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+        animParameters = distance / radius; // 0부터 1 사이의 값
+
+        // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+        animator.SetFloat("moveSpeed", animParameters);
+
+        photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+    }
+
     #endregion
 
     private void Awake()
@@ -161,12 +197,30 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine) 
         {
             // 터치할때만 움직이도록
             if (isTouch)
             {
-                Character.transform.position += movePos;
+                //Character.transform.position += movePos;
+                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+            }
+            else
+            {
+                Vector2 value = new Vector2();
+                value.x = Input.GetAxisRaw("Horizontal");
+                value.y = Input.GetAxisRaw("Vertical");
+                if(value.sqrMagnitude <= 0)
+                {
+                    GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+                }
+                else
+                {
+                    TTT(value);
+                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                }
+
+
             }
         }
 
