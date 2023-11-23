@@ -174,7 +174,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         print("pea babo2");
         if (isCustom)
+        {
             LoadScene(1);
+            isCustom = false;
+        }
     }
 
 
