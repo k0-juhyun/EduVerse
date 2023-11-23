@@ -41,6 +41,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private float maxSpeed = 2f;
 
     private bool isTouch = false;
+    private bool isRequest = false;
 
     private Vector3 movePos;
 
@@ -132,8 +133,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         rectJoyStick.localPosition = value;
         value = value.normalized;
 
-        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
-
         // 조이스틱 방향으로 움직임
         Vector3 moveDirection = new Vector3(value.x, 0, value.y);
         print(value);
@@ -200,12 +199,20 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     {
         if (photonView.IsMine)
         {
+            if(isRequest == false)
+            {
+                isRequest = true;
+                Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
+                Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            }
+
             // 터치할때만 움직이도록
             if (isTouch)
             {
                 //Character.transform.position += movePos;
-                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
             }
+
             else
             {
                 Vector2 value = new Vector2();
@@ -214,14 +221,13 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 if (value.sqrMagnitude <= 0)
                 {
                     GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+                    moveSpeed = 0;
                 }
                 else
                 {
                     TTT(value);
-                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
                 }
-
-
             }
         }
 

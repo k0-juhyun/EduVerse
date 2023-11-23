@@ -47,6 +47,7 @@ public class TeacherInteraction : MonoBehaviourPun
     {
         if (DataBase.instance.user.isTeacher == false && photonView.IsMine)
             this.enabled = false;
+
         else
         {
             if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
@@ -54,7 +55,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 spawnButton.gameObject.SetActive(true);
                 disableDeskButton.gameObject.SetActive(true);
             }
-            else if (SceneManager.GetActiveScene().name == "5.GroundScene" && DataBase.instance.user.isTeacher)
+            if (SceneManager.GetActiveScene().name == "5.GroundScene" && DataBase.instance.user.isTeacher)
             {
                 quizButton.gameObject.SetActive(true);
             }
