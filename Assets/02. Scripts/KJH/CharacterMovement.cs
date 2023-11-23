@@ -41,12 +41,15 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private float maxSpeed = 2f;
 
     private bool isTouch = false;
+    private bool isRequest = false;
 
     private Vector3 movePos;
 
     private Animator animator;
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
+
+    private bool gotFirstPos = false;
 
     #region 포톤 값
     [HideInInspector]
@@ -132,8 +135,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         rectJoyStick.localPosition = value;
         value = value.normalized;
 
-        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
-
         // 조이스틱 방향으로 움직임
         Vector3 moveDirection = new Vector3(value.x, 0, value.y);
         print(value);
@@ -194,18 +195,32 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
+
+        if(SceneManager.GetActiveScene().name == "5.GroundScene")
+        {
+            moveSpeed = 4;
+            maxSpeed = 4;
+        }
     }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
+            if(isRequest == false)
+            {
+                isRequest = true;
+                Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
+                Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            }
+
             // 터치할때만 움직이도록
             if (isTouch)
             {
                 //Character.transform.position += movePos;
-                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
             }
+
             else
             {
                 Vector2 value = new Vector2();
@@ -214,21 +229,21 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 if (value.sqrMagnitude <= 0)
                 {
                     GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+                    moveSpeed = 0;
                 }
                 else
                 {
                     TTT(value);
-                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
                 }
-
-
             }
         }
 
-        else if (receiveSpeed != 0)
+        else if (!gotFirstPos || (receiveSpeed != 0))
         {
             Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
             Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            gotFirstPos = true;
         }
     }
 

@@ -31,6 +31,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private CharacterMovement characterMovement;
     private CameraSetting cameraSetting;
+    private TeacherInteraction teacherInteraction;
     private Rigidbody rb;
 
     [HideInInspector] public bool _isSit;
@@ -53,6 +54,8 @@ public class CharacterInteraction : MonoBehaviourPun
     public Camera Cam;
     Camera subMainCam;
     Scene scene;
+
+    private GameObject currentChair = null;
 
     private void Awake()
     {
@@ -87,6 +90,10 @@ public class CharacterInteraction : MonoBehaviourPun
             Btn_Sit.gameObject.SetActive(false);
         }
 
+        teacherInteraction = GetComponentInChildren<TeacherInteraction>();
+        if(DataBase.instance.userInfo.isteacher == false)
+            teacherInteraction.quizButton.SetActive(false);
+
         AdjustUIHeight();
     }
 
@@ -96,22 +103,6 @@ public class CharacterInteraction : MonoBehaviourPun
             myNickNameTxt.transform.LookAt(myNickNameTxt.transform.position + Cam.transform.rotation * Vector3.forward,
                 Cam.transform.rotation * Vector3.up);
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Chair"))
-    //    {
-    //        HandleChairInteraction(other);
-    //    }
-    //    else if (other.gameObject.name == "Teacher Chair" && DataBase.instance.user.isTeacher)
-    //    {
-    //        HandleTeacherChairInteraction(other);
-    //    }
-    //    else if (other.gameObject.name == "Teacher Computer")
-    //    {
-    //        HandleTeacherComputerInteraction(other);
-    //    }
-    //}
 
     public void HandleTriggerStay(Collider other)
     {
@@ -200,13 +191,6 @@ public class CharacterInteraction : MonoBehaviourPun
         }
     }
 
-    //private void SitDown(Collider chair)
-    //{
-    //    PlaySitAnimation();
-    //    SetCharacterPosition(chair.transform.position);
-    //    SetCharacterForwardDirection(chair.transform.forward * -1);
-    //}
-
     public void SitDown(Collider chair)
     {
         Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
@@ -221,6 +205,7 @@ public class CharacterInteraction : MonoBehaviourPun
         photonView.RPC("SitDownRPC", RpcTarget.Others, position, rotation);
         PlaySitAnimation(); // 로컬 플레이어의 애니메이션 실행
         print("몇번");
+        currentChair = chair.gameObject;
     }
 
     [PunRPC]
@@ -246,10 +231,25 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (characterMovement.moveSpeed != 0)
         {
-            SetCharacterYPosition(0);
+            if (currentChair != null)
+            {
+                // 의자 옆에 위치를 설정하는 로직
+                Vector3 chairPosition = currentChair.transform.position;
+                Vector3 chairForward = currentChair.transform.forward;
+
+                // 의자 옆으로 조금 이동한 위치를 계산 (예: 의자 뒤쪽으로 1 유닛)
+                Vector3 standUpPosition = chairPosition - chairForward * -1.0f;
+
+                // 캐릭터의 Y 위치를 조정 (의자 높이와 맞추거나 적절하게 조정)
+                standUpPosition.y = 0; // 또는 적절한 높이 설정
+
+                SetCharacterPosition(standUpPosition);
+            }
+
             rb.useGravity = true;
             rb.isKinematic = false;
             _isSit = false;
+            currentChair = null; // 의자에서 일어났으므로 참조 제거
         }
     }
 
@@ -274,31 +274,6 @@ public class CharacterInteraction : MonoBehaviourPun
         Character.transform.position = new Vector3(position.x, y, position.z);
     }
 
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (photonView.IsMine && other.gameObject.name == "GotoTeachersRoom" 
-    //        && DataBase.instance.user.isTeacher)
-    //    {
-    //        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Leaving)
-    //            return;
-
-    //        PhotonNetwork.LeaveRoom();
-    //        PhotonNetwork.LoadLevel("3.TeacherMyPage");
-    //    }
-
-    //    if (other.gameObject.name == "BackToClass")
-    //    {
-    //        NetworkManager.instance.ChangeRoom("4.ClassRoomScene");
-    //    }
-
-    //    if (photonView.IsMine && other.gameObject.name == "GotoGround")
-    //    {
-    //        NetworkManager.instance.ChangeRoom("5.GroundScene");
-    //    }
-    //}
-
-
     [PunRPC]
     public void animPlayRPC(string animation)
     {
@@ -319,14 +294,10 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void SetPlayerIdle()
     {
-        SetPlayerIdleRPC();
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
+        print("서기");
     }
 
-    [PunRPC]
-    private void SetPlayerIdleRPC()
-    {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-    }
 
     // TPS랑 FPS 카메라 전환
     public void OnCameraButtonClick()
@@ -490,11 +461,6 @@ public class CharacterInteraction : MonoBehaviourPun
             isOpenUI = !isOpenUI;
             StartCoroutine(ICloseUI(1.5f));
         }
-        //else
-        //{
-        //    characterUI.DOAnchorPos((new Vector2(150, 0)), 0.5f);
-        //    isOpenUI = !isOpenUI;
-        //}
     }
 
     private IEnumerator ICloseUI(float delayTime)
