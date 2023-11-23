@@ -117,7 +117,7 @@ public class LoadButton : MonoBehaviourPun
             // 세션들 중 현재 페이지의 인터렉션 버튼들에 대한 정보 담고 있는 거 찾기
             if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
             {
-                for(int j= 0; i< allSessions.sessions[i].buttonPositions.Count; j++)
+                for(int j= 0; j < allSessions.sessions[i].buttonPositions.Count; j++)
                 {
                     // 현재 페이지의 버튼들 중 내가 지울 버튼의 정보 찾기
                     if(allSessions.sessions[i].buttonPositions[j].buttonName == btnName)
@@ -143,6 +143,7 @@ public class LoadButton : MonoBehaviourPun
             // 현재 보고 있는 페이지 저장 
             currentSession.page = pdfViewer.CurrentPageIndex;
 
+            // 아이템 정보가 할당
             if (interactionBtn.Item == null)
             {
                 continue;
