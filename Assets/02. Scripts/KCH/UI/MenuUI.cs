@@ -106,6 +106,7 @@ public class MenuUI : MonoBehaviourPun
     {
         // NativeFilePicker 플러그인을 통해 파일 경로 가져옴.
 
+        #region 안드로이드 빌드
         // 안드로이드 빌드로 할때.
         //if (NativeFilePicker.IsFilePickerBusy())
         //    return;
@@ -128,9 +129,10 @@ public class MenuUI : MonoBehaviourPun
 
         //Debug.Log("Permission result: " + permission);
 
+        #endregion
+
         // 윈도우 빌드
         // PDF 열기.
-
         string path = "C:\\Users\\user\\Desktop\\최종플젝\\교과서.pdf";
         PDFViewer pdfViewer = FindObjectOfType<PDFViewer>();
         pdfViewer.LoadDocumentFromFile(path);
