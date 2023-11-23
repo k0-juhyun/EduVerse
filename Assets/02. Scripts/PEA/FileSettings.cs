@@ -16,7 +16,7 @@ public class FileSettings : MonoBehaviour
 
     private string myItemJsonPath;
 
-    void Start()
+    void Awake()
     {
         unzip = GetComponent<Unzip>();
 
@@ -44,5 +44,18 @@ public class FileSettings : MonoBehaviour
         unzip.RunZip(videoZipPath, zipExtractionPath);
 
         File.WriteAllBytes(Application.persistentDataPath + "/MyItems.txt", File.ReadAllBytes(myItemJsonPath));
+
+        Texture2D[] marketImageItems = Resources.LoadAll<Texture2D>("Market_Item_Sprites");
+
+        if (Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/MarketItems/");
+        }
+
+        foreach(Texture2D texture in marketImageItems)
+        {
+            print("¾Æ¾Æ : " + texture.name);
+            File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + texture.name + ".png", texture.EncodeToPNG());
+        }
     }
 }
