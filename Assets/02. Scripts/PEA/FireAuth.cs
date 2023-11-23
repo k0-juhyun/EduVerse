@@ -72,11 +72,11 @@ public class FireAuth : MonoBehaviour
             print("로그인 상태");
 
             // 회원가입 후 바로 로그인X
-            if (SceneManager.GetActiveScene().buildIndex == 7)
-            {
-                auth.SignOut();
-                return;
-            }
+            //if (SceneManager.GetActiveScene().buildIndex == 7)
+            //{
+            //    auth.SignOut();
+            //    return;
+            //}
 
             //FirebaseDatabase.DefaultInstance.GetReference("Leaders").GetValueAsync().ContinueWithOnMainThread(task =>
             //{
