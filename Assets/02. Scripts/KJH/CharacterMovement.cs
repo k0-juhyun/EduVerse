@@ -48,6 +48,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
+    private Rigidbody rb;
+
     #region 포톤 값
     [HideInInspector]
     public Vector3 receivePos;
@@ -126,6 +128,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private void Awake()
     {
         characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
+        rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
         {
@@ -166,8 +169,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             // 터치할때만 움직이도록
             if (isTouch)
             {
-                Character.transform.position += movePos;
+                //Character.transform.position += movePos;
+                rb.velocity = Character.transform.forward * 2;
             }
+            else
+                rb.velocity = Vector3.zero;
         }
 
         else if(receiveSpeed != 0)

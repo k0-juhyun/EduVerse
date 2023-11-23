@@ -333,7 +333,6 @@ public class TeacherInteraction : MonoBehaviourPun
     [PunRPC]
     private void OnClickDisableDeskRPC()
     {
-        // ¹Ù´Úº¯°æ
         classRoomHandler.StudentDesk.SetActive(isDisableBtnClick);
         classRoomHandler.Floor.SetActive(isDisableBtnClick);
         classRoomHandler.FloorWithoutShadow.SetActive(!isDisableBtnClick);
