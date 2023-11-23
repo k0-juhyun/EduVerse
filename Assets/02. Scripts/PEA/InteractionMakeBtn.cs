@@ -83,6 +83,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
 
         if (deleteImageActivated && RectTransformUtility.RectangleContainsScreenPoint(deleteImage.GetComponent<RectTransform>(), eventData.position, null))
         {
+            loadButton.OnClickDeleteInteractionBtn(gameObject.name);
             Delete(); // 오브젝트 삭제
         }
         deleteImageActivated = false;
