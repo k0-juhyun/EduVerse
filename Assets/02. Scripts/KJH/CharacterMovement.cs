@@ -195,6 +195,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 애니메이터 컴포넌트 가져오기
         animator = Character.GetComponent<Animator>();
+
+        if(SceneManager.GetActiveScene().name == "5.GroundScene")
+        {
+            moveSpeed = 4;
+            maxSpeed = 4;
+        }
     }
 
     private void Update()

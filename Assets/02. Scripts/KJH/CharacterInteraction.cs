@@ -294,14 +294,10 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void SetPlayerIdle()
     {
-        SetPlayerIdleRPC();
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
+        print("서기");
     }
 
-    [PunRPC]
-    private void SetPlayerIdleRPC()
-    {
-        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-    }
 
     // TPS랑 FPS 카메라 전환
     public void OnCameraButtonClick()
