@@ -16,7 +16,7 @@ public class FileSettings : MonoBehaviour
 
     private string myItemJsonPath;
 
-    void Start()
+    void Awake()
     {
         unzip = GetComponent<Unzip>();
 
