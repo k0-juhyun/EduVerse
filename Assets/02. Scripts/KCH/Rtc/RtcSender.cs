@@ -28,7 +28,7 @@ public class RtcSender : MonoBehaviourPun
     private void Awake()
     {
         // WebRtc 초기화 
-        WebRTC.Initialize(false);   
+        WebRTC.Initialize(false);
     }
 
     void Start()
@@ -88,7 +88,7 @@ public class RtcSender : MonoBehaviourPun
     public void Setup()
     {
         shareCam = GameObject.Find("ShareCamera").GetComponent<Camera>(); //Camera.main;
-        
+
         mediaStream = new MediaStream();
 
         // WebCam 사용시..
@@ -151,7 +151,7 @@ public class RtcSender : MonoBehaviourPun
                 rTCRtpSenders.Add(s);
             }
         }
-        
+
 
         //나와 연결되는 유저들의 peer 를 Dictionary 에 가지고 있자.
         peerList[receiverId] = peer;
@@ -220,7 +220,7 @@ public class RtcSender : MonoBehaviourPun
 
     public void AddIceCandidate(int receiverId, string strCandidate)
     {
-        print("sender");   
+        print("sender");
         RTCIceCandidateInit candidateInit = JsonUtility.FromJson<RTCIceCandidateInit>(strCandidate);
         if (peerList.ContainsKey(receiverId))
         {

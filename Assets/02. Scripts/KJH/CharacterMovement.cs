@@ -36,13 +36,9 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     [Space]
     private float minSpeed = 0;
-#if UNITY_EDITOR
     [Header("이동속도")]
     [SerializeField]
     private float maxSpeed = 2f;
-#elif UNITY_ANDROID
-    private float maxSpeed = 2f;
-#endif
 
     private bool isTouch = false;
 

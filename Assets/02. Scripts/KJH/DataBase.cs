@@ -105,13 +105,15 @@ public class DataBase : MonoBehaviour
     private void LoadModelsFromResources()
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
-#if UNITY_EDITOR
-        string path = Application.streamingAssetsPath+"/";
-
-#elif UNITY_ANDROID
+#if UNITY_ANDROID
         string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+#elif UNITY_EDITOR
+        string path = Application.streamingAssetsPath+"/";
+#elif UNITY_STANDALONE
+        string path = Application.streamingAssetsPath+"/";
 #endif
 
+        print("알집 경로: "+ path);
         try
         {
             string[] zipFiles = Directory.GetFiles(path, "*.zip");
