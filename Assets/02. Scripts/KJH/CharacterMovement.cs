@@ -48,6 +48,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
+    private bool gotFirstPos = false;
+
     #region Æ÷Åæ °ª
     [HideInInspector]
     public Vector3 receivePos;
@@ -225,10 +227,11 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             }
         }
 
-        else if (receiveSpeed != 0)
+        else if (!gotFirstPos || (receiveSpeed != 0))
         {
             Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
             Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            gotFirstPos = true;
         }
     }
 
