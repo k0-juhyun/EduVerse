@@ -47,7 +47,7 @@ public class FileSettings : MonoBehaviour
 
         Texture2D[] marketImageItems = Resources.LoadAll<Texture2D>("Market_Item_Sprites");
 
-        if (Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
+        if (!Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/MarketItems/");
         }
