@@ -119,6 +119,21 @@ public class TeacherInteraction : MonoBehaviourPun
             GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
             newButton.GetComponentInChildren<TMP_Text>().text = DataBase.instance.model.spawnPrefab[index].name; // 원래 프리팹의 이름으로 버튼 텍스트 할당
             newButton.GetComponent<Button>().onClick.AddListener(() => SpawnModel(index)); // 리스너 추가
+
+            // rawImage 컴포넌트
+            RawImage thumbNailImage = newButton.transform.GetChild(1).GetComponent<RawImage>();
+            print(thumbNailImage.gameObject);
+
+            // 리소스 로드 (경로 수정)
+            string texturePath = "Thumbnail/" + DataBase.instance.model.spawnPrefab[index].name;
+            Texture2D thumbNailTexture = Resources.Load<Texture2D>(texturePath);
+
+            // 텍스처 할당
+            if (thumbNailTexture != null)
+            {
+                thumbNailImage.texture = thumbNailTexture;
+                print(thumbNailImage.texture.name + " : " + thumbNailTexture);
+            }
         }
     }
 
@@ -318,7 +333,6 @@ public class TeacherInteraction : MonoBehaviourPun
     [PunRPC]
     private void OnClickDisableDeskRPC()
     {
-        // 바닥변경
         classRoomHandler.StudentDesk.SetActive(isDisableBtnClick);
         classRoomHandler.Floor.SetActive(isDisableBtnClick);
         classRoomHandler.FloorWithoutShadow.SetActive(!isDisableBtnClick);
