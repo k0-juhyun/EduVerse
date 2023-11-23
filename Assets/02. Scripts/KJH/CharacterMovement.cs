@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 // 캐릭터 움직임
 // 조이스틱 값 받아서 캐릭터가 움직임
-public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler,IPunObservable
+public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPunObservable
 {
     public GameObject Camera;
     public GameObject CharacterCanvas;
@@ -48,8 +48,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
-    private Rigidbody rb;
-
     #region 포톤 값
     [HideInInspector]
     public Vector3 receivePos;
@@ -86,6 +84,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         photonView.RPC("UpdateAnimation", RpcTarget.All, 0f);
     }
 
+    // 주석
     // 드래그중
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
@@ -94,41 +93,76 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         {
             Vector2 value = eventData.position - (Vector2)rectBackground.position;
             value = Vector2.ClampMagnitude(value, radius);
-            rectJoyStick.localPosition = value;
+            TTT(value);
 
-            value = value.normalized;
+            // rectJoyStick.localPosition = value;
 
-            float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+            //value = value.normalized;
 
-            // 조이스틱 방향으로 움직임
-            Vector3 moveDirection = new Vector3(value.x, 0, value.y);
 
-            moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
-            movePos = cameraPivotTransform.TransformDirection(moveDirection);
+            //float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
-            movePos.Normalize();
+            //// 조이스틱 방향으로 움직임
+            //Vector3 moveDirection = new Vector3(value.x, 0, value.y);
 
-            movePos *= (moveSpeed * Time.deltaTime);
-            movePos.y = 0f;
-            Character.transform.forward = movePos;
+            //moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
-            // 조이스틱 입력에 따른 블렌드 값 계산
-            float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
-            animParameters = distance / radius; // 0부터 1 사이의 값
+            //movePos = cameraPivotTransform.TransformDirection(moveDirection);
 
-            // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
-            animator.SetFloat("moveSpeed", animParameters);
+            //movePos.Normalize();
 
-            photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+            //movePos *= (moveSpeed * Time.deltaTime);
+            //movePos.y = 0f;
+            //Character.transform.forward = movePos;
+
+            //// 조이스틱 입력에 따른 블렌드 값 계산
+            //float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+            //animParameters = distance / radius; // 0부터 1 사이의 값
+
+            //// 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+            //animator.SetFloat("moveSpeed", animParameters);
+
+            //photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
         }
     }
+
+    void TTT(Vector2 value)
+    {
+        rectJoyStick.localPosition = value;
+        value = value.normalized;
+
+        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+
+        // 조이스틱 방향으로 움직임
+        Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+        print(value);
+
+        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+
+        movePos = cameraPivotTransform.TransformDirection(moveDirection);
+
+        movePos.Normalize();
+
+        movePos *= (moveSpeed * Time.deltaTime);
+        movePos.y = 0f;
+        Character.transform.forward = movePos;
+
+        // 조이스틱 입력에 따른 블렌드 값 계산
+        float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+        animParameters = distance / radius; // 0부터 1 사이의 값
+
+        // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+        animator.SetFloat("moveSpeed", animParameters);
+
+        photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+    }
+
     #endregion
 
     private void Awake()
     {
         characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
-        rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
         {
@@ -137,7 +171,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             CharacterCanvas.gameObject.SetActive(true);
             SpareCanvas.gameObject.SetActive(false);
 
-            if(SceneManager.GetActiveScene().name == "4.ClassRoomScene")
+            if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
             {
                 print("왜안돼??");
                 SitButton.SetActive(true);
@@ -145,7 +179,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 CustomizeButton.SetActive(true);
                 GreetButton.SetActive(true);
             }
-            else if(SceneManager.GetActiveScene().name == "5.GroundScene")
+            else if (SceneManager.GetActiveScene().name == "5.GroundScene")
             {
                 print("왜안돼????");
                 CameraButton.SetActive(true);
@@ -170,13 +204,28 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             if (isTouch)
             {
                 //Character.transform.position += movePos;
-                rb.velocity = Character.transform.forward * 2;
+                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
             }
             else
-                rb.velocity = Vector3.zero;
+            {
+                Vector2 value = new Vector2();
+                value.x = Input.GetAxisRaw("Horizontal");
+                value.y = Input.GetAxisRaw("Vertical");
+                if (value.sqrMagnitude <= 0)
+                {
+                    GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+                }
+                else
+                {
+                    TTT(value);
+                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                }
+
+
+            }
         }
 
-        else if(receiveSpeed != 0)
+        else if (receiveSpeed != 0)
         {
             Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
             Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
