@@ -109,10 +109,11 @@ public class DataBase : MonoBehaviour
         string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
 #elif UNITY_EDITOR
         string path = Application.streamingAssetsPath+"/";
-#else
+#elif UNITY_STANDALONE
         string path = Application.streamingAssetsPath+"/";
 #endif
 
+        print("알집 경로: "+ path);
         try
         {
             string[] zipFiles = Directory.GetFiles(path, "*.zip");

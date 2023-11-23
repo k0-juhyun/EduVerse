@@ -28,7 +28,7 @@ public class RtcSender : MonoBehaviourPun
     private void Awake()
     {
         // WebRtc 초기화 
-        WebRTC.Initialize(false);   
+        WebRTC.Initialize(false);
     }
 
     void Start()
@@ -38,6 +38,12 @@ public class RtcSender : MonoBehaviourPun
     }
     private void OnDestroy()
     {
+        foreach (var peer in peerList.Values)
+        {
+            peer.Close();
+        }
+        peerList.Clear();
+
         // WebRtc 해제 
         WebRTC.Dispose();
     }
@@ -45,12 +51,25 @@ public class RtcSender : MonoBehaviourPun
     void Update()
     {
         // 만약에 공유가 시작되었으면 
+        //if (mediaStream != null && receiverList.Count > 0)
+        //{
+        //    // 사람들과 연결을 시작하자 (한번씩 만)
+        //    for(int i = 0; i < receiverList.Count; i++)
+        //    {
+        //        CreatePeer(receiverList[i]);
+        //    }
+
+        //    receiverList.Clear();
+        //}
+
         if (mediaStream != null && receiverList.Count > 0)
         {
-            // 사람들과 연결을 시작하자 (한번씩 만)
-            for(int i = 0; i < receiverList.Count; i++)
+            foreach (int receiverId in new List<int>(receiverList))
             {
-                CreatePeer(receiverList[i]);
+                if (!peerList.ContainsKey(receiverId))
+                {
+                    CreatePeer(receiverId);
+                }
             }
 
             receiverList.Clear();
@@ -59,14 +78,17 @@ public class RtcSender : MonoBehaviourPun
 
     public void AddReceiverList(int receiverId)
     {
-        receiverList.Add(receiverId);
+        if (!receiverList.Contains(receiverId))
+        {
+            receiverList.Add(receiverId);
+        }
     }
 
     public Camera shareCam;
     public void Setup()
     {
         shareCam = GameObject.Find("ShareCamera").GetComponent<Camera>(); //Camera.main;
-        
+
         mediaStream = new MediaStream();
 
         // WebCam 사용시..
@@ -81,7 +103,7 @@ public class RtcSender : MonoBehaviourPun
         //VideoStreamTrack trackCam = new VideoStreamTrack(webCamTexture);
 
         // 카메라가 보고있는 화면을 mediaStream 에 등록할 track 으로 만들기
-        VideoStreamTrack track = shareCam.CaptureStreamTrack(1920, 1080);
+        VideoStreamTrack track = shareCam.CaptureStreamTrack(1280, 800);
 
         // track 을 mediaStream 에 추가한다.
         //mediaStream.AddTrack(trackCam);
@@ -129,7 +151,7 @@ public class RtcSender : MonoBehaviourPun
                 rTCRtpSenders.Add(s);
             }
         }
-        
+
 
         //나와 연결되는 유저들의 peer 를 Dictionary 에 가지고 있자.
         peerList[receiverId] = peer;
@@ -198,7 +220,7 @@ public class RtcSender : MonoBehaviourPun
 
     public void AddIceCandidate(int receiverId, string strCandidate)
     {
-        print("sender");   
+        print("sender");
         RTCIceCandidateInit candidateInit = JsonUtility.FromJson<RTCIceCandidateInit>(strCandidate);
         if (peerList.ContainsKey(receiverId))
         {

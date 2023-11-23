@@ -26,6 +26,9 @@ public class Unzip : MonoBehaviour
 #elif UNITY_ANDROID
         // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
         StartCoroutine(ExtractAllZipsInAndroid());
+#elif UNITY_STANDALONE
+        string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
+        ExtractAllZipsInDirectorys(streamingAssetsPath);
 #endif
     }
 
@@ -57,6 +60,17 @@ public class Unzip : MonoBehaviour
         File.WriteAllBytes(filePath, www.bytes);
 
         ExtractZip(filePath, extractionPath);
+    }
+#endif
+
+#if UNITY_STANDALONE
+    private void ExtractAllZipsInDirectorys(string directoryPath)
+    {
+        string[] zipFiles = Directory.GetFiles(directoryPath, "*.zip");
+        foreach (string zipFile in zipFiles)
+        {
+            RunZip(zipFile);
+        }
     }
 #endif
 
