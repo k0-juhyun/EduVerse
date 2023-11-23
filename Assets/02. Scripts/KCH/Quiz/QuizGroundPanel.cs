@@ -11,6 +11,12 @@ public class QuizGroundPanel : MonoBehaviour
 
     bool correctCheck;
 
+    public string Question;
+    public string Answer;
+    public string Unit;
+    public string Commentary;
+
+
     private void Update()
     {
 
@@ -24,6 +30,11 @@ public class QuizGroundPanel : MonoBehaviour
         // 선생이 퀴즈 패널을 띄워주고
 
         questionText.text = question_;
+
+        Question = question_;
+        Answer = answer_;
+        Unit = unit_;
+        Commentary = commentary_;
 
         // 정답인지 오답인지 체크
         if (answer_ == "O") correctCheck = true;
@@ -42,8 +53,11 @@ public class QuizGroundPanel : MonoBehaviour
         Quiz.instance.startquiz();
 
         // 문제와 정답 quiz 스크립트에 담는다
+        Quiz.instance.unit = unit_;
         Quiz.instance.question = question_;
         Quiz.instance.answer = answer_;
+        Quiz.instance.commentary = commentary_;
+        // Quiz 스크립트에 해설부분 다 가져감.
         StartCoroutine(quizPaneldelete());
     }
 
