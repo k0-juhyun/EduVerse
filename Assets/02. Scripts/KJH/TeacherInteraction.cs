@@ -167,14 +167,14 @@ public class TeacherInteraction : MonoBehaviourPun
         if (targetPhotonView != null)
         {
             objectToPlace = targetPhotonView.gameObject;
-#if UNITY_EDITOR
             print(modelName);
-            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 
-#elif UNITY_ANDROID
+#if UNITY_ANDROID
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
+#else
+            GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 #endif
             if (importedObj != null)
             {
@@ -245,7 +245,21 @@ public class TeacherInteraction : MonoBehaviourPun
             // 읽은 바이트 데이터로 텍스처를 로드합니다.
             albedoTexture.LoadImage(fileData); // 텍스처의 크기가 자동으로 설정됩니다.
         }
+#elif UNITY_STANDALONE
+        //albedoTexture = Resources.Load<Texture2D>("3D_Models/ModelDatas/" + modelName);
+        string path = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas/" + modelName + ".png");
 
+        if (File.Exists(path))
+        {
+            // 파일에서 바이트 배열을 읽습니다.
+            byte[] fileData = File.ReadAllBytes(path);
+
+            // 새 Texture2D 인스턴스를 생성합니다.
+            albedoTexture = new Texture2D(2, 2);
+
+            // 읽은 바이트 데이터로 텍스처를 로드합니다.
+            albedoTexture.LoadImage(fileData); // 텍스처의 크기가 자동으로 설정됩니다.
+        }
 #elif UNITY_ANDROID
     // 안드로이드에서는 persistentDataPath에서 텍스처를 로드합니다.
     string textureFilePath = Path.Combine(Application.persistentDataPath, "3D_Models/ModelDatas", modelName + ".png"); // 확장자가 필요합니다.
