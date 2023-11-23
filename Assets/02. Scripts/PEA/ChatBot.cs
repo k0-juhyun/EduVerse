@@ -39,8 +39,15 @@ public class ChatBot : MonoBehaviour
 
         AddChatText(true, text);
         questionInput.text = "";
+        questionInput.placeholder.GetComponent<TMP_Text>().text = "잠시만 기다려주세요!";
+        questionInput.interactable = false;
 
-        textSender?.SendText(text, (DownloadHandler downloadHandler) =>
+        textSender?.SendText(text, () => 
+        {
+            questionInput.placeholder.GetComponent<TMP_Text>().text = "내용을 입력해주세요...";
+            questionInput.interactable = true;
+        },
+        (DownloadHandler downloadHandler) =>
         {
             AddChatText(false, downloadHandler.text);
         });

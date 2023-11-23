@@ -9,6 +9,8 @@ public class TextSender : MonoBehaviour
     // FastAPI 서버 엔드포인트 URL
     private string serverUrl = "http://221.163.19.218:5056/chat/send_student"; // 서버 주소 및 엔드포인트를 적절히 변경하세요.
 
+    private Coroutine coroutine = null;
+
 
     private void Start()
     {
@@ -16,7 +18,7 @@ public class TextSender : MonoBehaviour
     }
 
     // HTTP 요청 보내는 함수
-    IEnumerator SendTextToServer(string text, System.Action<DownloadHandler> callback)
+    IEnumerator SendTextToServer(string text, System.Action callback, System.Action<DownloadHandler> onSuccessCallback)
     {
         WWWForm form = new WWWForm();
         form.AddField("text", text);
@@ -27,22 +29,33 @@ public class TextSender : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                if(callback != null)
+                if(onSuccessCallback != null)
                 {
-                    callback(www.downloadHandler);
+                    onSuccessCallback(www.downloadHandler);
                 }
             }
             else
             {
                 Debug.LogError(www.error);
             }
+
+            if(callback != null)
+            {
+                callback();
+            }
         }
+
+        coroutine = null;
     }
 
     // Unity에서 버튼 또는 이벤트에서 이 함수를 호출하여 텍스트를 서버로 보낼 수 있습니다.
-    public void SendText(string text, System.Action<DownloadHandler> callback)
+    public void SendText(string text, System.Action callBack, System.Action<DownloadHandler> onSuccessCallback)
     {
         print(text);
-        StartCoroutine(SendTextToServer(text, callback));
+
+        if(coroutine == null)
+        {
+            coroutine = StartCoroutine(SendTextToServer(text, callBack, onSuccessCallback));
+        }
     }
 }
