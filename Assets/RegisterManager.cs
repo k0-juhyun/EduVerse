@@ -172,6 +172,13 @@ public class RegisterManager : MonoBehaviour
             FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text, () =>
             {
                 학생가입완료.SetActive(true);
+                print(학생이름.text);
+                print(studentBirth);
+                print(학생학교.text);
+                print(grade);
+                print(classNum);
+                print(email);
+                print(학생비밀번호.text);
                 FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, studentBirth, 학생학교.text, grade, classNum, studentNum, email, 학생비밀번호.text));
             });
         }
