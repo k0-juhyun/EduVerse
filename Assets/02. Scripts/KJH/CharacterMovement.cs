@@ -48,6 +48,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
+    private Rigidbody rb;
+
     #region 포톤 값
     [HideInInspector]
     public Vector3 receivePos;
@@ -92,76 +94,41 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         {
             Vector2 value = eventData.position - (Vector2)rectBackground.position;
             value = Vector2.ClampMagnitude(value, radius);
-            TTT(value);
+            rectJoyStick.localPosition = value;
 
-           // rectJoyStick.localPosition = value;
+            value = value.normalized;
 
-           //value = value.normalized;
+            float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
 
-            
+            // 조이스틱 방향으로 움직임
+            Vector3 moveDirection = new Vector3(value.x, 0, value.y);
 
-            //float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
+            moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
-            //// 조이스틱 방향으로 움직임
-            //Vector3 moveDirection = new Vector3(value.x, 0, value.y);
+            movePos = cameraPivotTransform.TransformDirection(moveDirection);
 
-            //moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
+            movePos.Normalize();
 
-            //movePos = cameraPivotTransform.TransformDirection(moveDirection);
+            movePos *= (moveSpeed * Time.deltaTime);
+            movePos.y = 0f;
+            Character.transform.forward = movePos;
 
-            //movePos.Normalize();
+            // 조이스틱 입력에 따른 블렌드 값 계산
+            float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
+            animParameters = distance / radius; // 0부터 1 사이의 값
 
-            //movePos *= (moveSpeed * Time.deltaTime);
-            //movePos.y = 0f;
-            //Character.transform.forward = movePos;
+            // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
+            animator.SetFloat("moveSpeed", animParameters);
 
-            //// 조이스틱 입력에 따른 블렌드 값 계산
-            //float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
-            //animParameters = distance / radius; // 0부터 1 사이의 값
-
-            //// 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
-            //animator.SetFloat("moveSpeed", animParameters);
-
-            //photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
+            photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
         }
     }
-
-    void TTT(Vector2 value)
-    {
-        rectJoyStick.localPosition = value;
-        value = value.normalized;
-
-        float dis = Vector2.Distance(rectBackground.position, rectJoyStick.position) / radius;
-
-        // 조이스틱 방향으로 움직임
-        Vector3 moveDirection = new Vector3(value.x, 0, value.y);
-        print(value);
-
-        moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
-
-        movePos = cameraPivotTransform.TransformDirection(moveDirection);
-
-        movePos.Normalize();
-
-        movePos *= (moveSpeed * Time.deltaTime);
-        movePos.y = 0f;
-        Character.transform.forward = movePos;
-
-        // 조이스틱 입력에 따른 블렌드 값 계산
-        float distance = Vector3.Distance(rectJoyStick.localPosition, Vector3.zero);
-        animParameters = distance / radius; // 0부터 1 사이의 값
-
-        // 블렌드 트리의 Weight 값을 조정하여 애니메이션 설정
-        animator.SetFloat("moveSpeed", animParameters);
-
-        photonView.RPC("UpdateAnimation", RpcTarget.All, animParameters);
-    }
-
     #endregion
 
     private void Awake()
     {
         characterTeacherInteraction = GetComponentInChildren<TeacherInteraction>();
+        rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
         {
@@ -197,31 +164,16 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
     private void Update()
     {
-        if (photonView.IsMine) 
+        if (photonView.IsMine)
         {
             // 터치할때만 움직이도록
             if (isTouch)
             {
                 //Character.transform.position += movePos;
-                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
+                rb.velocity = Character.transform.forward * 2;
             }
             else
-            {
-                Vector2 value = new Vector2();
-                value.x = Input.GetAxisRaw("Horizontal");
-                value.y = Input.GetAxisRaw("Vertical");
-                if(value.sqrMagnitude <= 0)
-                {
-                    GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
-                }
-                else
-                {
-                    TTT(value);
-                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 5;
-                }
-
-
-            }
+                rb.velocity = Vector3.zero;
         }
 
         else if(receiveSpeed != 0)

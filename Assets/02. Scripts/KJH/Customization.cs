@@ -41,6 +41,10 @@ public class Customization : MonoBehaviour
     private GameObject lastActiveButtonParent;
 
     [Space(10)]
+    [Header("버튼 효과음")]
+    public AudioClip buttonSfx;
+
+    [Space(10)]
     [Header("스크롤뷰")]
     public GameObject hairScrollView;
     public GameObject eyeScrollView;
@@ -93,6 +97,7 @@ public class Customization : MonoBehaviour
                     int meshIndex = System.Array.IndexOf(part.partButton, button);
                     button.onClick.AddListener(() => SetMesh(part, meshIndex));
                     button.onClick.AddListener(() => ToggleButtonParentOutline(parentParentObject));
+                    button.gameObject.AddComponent<ButtonClickSoundHandler>().ButtonClickSound = buttonSfx;
                 }
             }
 
