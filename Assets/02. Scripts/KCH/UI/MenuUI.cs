@@ -105,26 +105,40 @@ public class MenuUI : MonoBehaviourPun
     public void PickFile()
     {
         // NativeFilePicker 플러그인을 통해 파일 경로 가져옴.
-        if (NativeFilePicker.IsFilePickerBusy())
-            return;
 
-        // Pick a PDF file
-        NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
-        {
-            if (path == null)
-                Debug.Log("Operation cancelled");
-            else
-            {
-                // PDF 열기.
-                PDFViewer pdfViewer = FindObjectOfType<PDFViewer>();
-                pdfViewer.LoadDocumentFromFile(path);
+        #region 안드로이드 빌드
+        // 안드로이드 빌드로 할때.
+        //if (NativeFilePicker.IsFilePickerBusy())
+        //    return;
 
-                // pdf 로드하면 총 페이지수 받아오기
-                pdfPage.GetCurDocumentPageCount();
-            }
-        }, new string[] { pdfFileType });
+        //// Pick a PDF file
+        //NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+        //{
+        //    if (path == null)
+        //        Debug.Log("Operation cancelled");
+        //    else
+        //    {
+        //        // PDF 열기.
+        //        PDFViewer pdfViewer = FindObjectOfType<PDFViewer>();
+        //        pdfViewer.LoadDocumentFromFile(path);
 
-        Debug.Log("Permission result: " + permission);
+        //        // pdf 로드하면 총 페이지수 받아오기
+        //        pdfPage.GetCurDocumentPageCount();
+        //    }
+        //}, new string[] { pdfFileType });
+
+        //Debug.Log("Permission result: " + permission);
+
+        #endregion
+
+        // 윈도우 빌드
+        // PDF 열기.
+        string path = "C:\\Users\\user\\Desktop\\최종플젝\\교과서.pdf";
+        PDFViewer pdfViewer = FindObjectOfType<PDFViewer>();
+        pdfViewer.LoadDocumentFromFile(path);
+
+        // pdf 로드하면 총 페이지수 받아오기
+        pdfPage.GetCurDocumentPageCount();
 
     }
 
