@@ -84,6 +84,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
         photonView.RPC("UpdateAnimation", RpcTarget.All, 0f);
     }
 
+    // 주석
     // 드래그중
     // 드래그 하는 곳으로 포인터 이동
     public void OnDrag(PointerEventData eventData)
