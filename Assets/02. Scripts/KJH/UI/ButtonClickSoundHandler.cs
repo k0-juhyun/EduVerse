@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI; // UI 관련 네임스페이스 추가
 
+[RequireComponent(typeof(AudioSource))]
 public class ButtonClickSoundHandler : MonoBehaviour
 {
     public AudioClip ButtonClickSound;
@@ -14,7 +15,8 @@ public class ButtonClickSoundHandler : MonoBehaviour
         sfxChild.transform.SetParent(this.transform);
 
         // AudioSource 컴포넌트 추가
-        sfxSource = sfxChild.AddComponent<AudioSource>();
+        //sfxSource = sfxChild.AddComponent<AudioSource>();
+        sfxSource = GetComponent<AudioSource>();
         sfxSource.clip = ButtonClickSound;
         sfxSource.playOnAwake = false;
 
@@ -28,6 +30,7 @@ public class ButtonClickSoundHandler : MonoBehaviour
 
     private void PlaySound()
     {
-        sfxSource.Play();
+        print("audio play");
+        sfxSource.PlayOneShot(ButtonClickSound);
     }
 }
