@@ -27,8 +27,8 @@ public class ScreenTransition : MonoBehaviourPun
         if (DataBase.instance.user.isTeacher == false)
         {
             Debug.Log("½ÇÇà");
-            ShareCam.orthographicSize = 1.9f;
-            subMainCam.transform.position = new Vector3(-6, 2.525f, -0.0f);
+            ShareCam.orthographicSize = 2.16f;
+            subMainCam.transform.position = new Vector3(-6, 2.525f, -0.02f);
             subMainCam.transform.rotation = Quaternion.Euler(0, -90, 0);
         }
     }
