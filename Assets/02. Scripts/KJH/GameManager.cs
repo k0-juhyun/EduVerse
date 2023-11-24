@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
         string path = "";
 #if UNITY_ANDROID
-        string path = Application.persistentDataPath +"/"+ PhotonNetwork.NickName + ".txt";
+        path = Application.persistentDataPath +"/"+ PhotonNetwork.NickName + ".txt";
 #elif UNITY_EDITOR
         path = "C:\\CharacterData\\" + PhotonNetwork.NickName + ".txt";
 #else
