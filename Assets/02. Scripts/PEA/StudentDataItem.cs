@@ -13,8 +13,8 @@ public class StudentDataItem : MonoBehaviour
     public string uid;
 
     private void Start()
-    {   
-
+    {
+        GetComponent<Button>().onClick.AddListener(() => SoundManager.instance.PlaySFX(SoundManager.SFXClip.Button));
     }
 
     public void SetStdentData(string name, string studentNum)

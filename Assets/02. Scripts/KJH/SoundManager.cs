@@ -21,6 +21,8 @@ public class SFX
     public AudioSource SFXSource;
 }
 
+[RequireComponent(typeof(AudioSource))]
+
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
@@ -28,6 +30,24 @@ public class SoundManager : MonoBehaviour
     [Space(10)]
     public SFX[] sfx;
 
+    public enum BGMClip
+    {
+        Login,
+        Customize,
+        Class,
+        Ground
+    }
+
+    // 다른 효과음도 쉽게 추가하기 위해 enum으로 함
+    public enum SFXClip
+    {
+        Button
+    }
+
+    public AudioClip[] bgmClips;
+    public AudioClip[] sfxClips;
+
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -36,6 +56,7 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this.gameObject);
             InitializeSoundComponents();
+            audioSource = GetComponent<AudioSource>();
         }
         else if (instance != this)
         {
@@ -47,7 +68,6 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        
     }
 
     private void OnDestroy()
@@ -58,17 +78,41 @@ public class SoundManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // "GroundScene" 씬으로 전환되었을 때
-        if (scene.name == "5.GroundScene")
+        switch (scene.name)
         {
-            PlayBGM(1); // 1번 BGM 재생
+            case "1.StartScene":
+                PlayBGM(BGMClip.Login);
+                break;
+            case "2.CustomizeScene":
+                PlayBGM(BGMClip.Customize);
+                break;
+            case "4.ClassRoomScene":
+                //PlayBGM(BGMClip.Class);
+                break;
+            case "5.GroundScene":
+                //PlayBGM(BGMClip.Ground);
+                break;
+            default:
+                break;
         }
-        else
-        {
-            PlayBGM(0); // 그 외의 경우에는 0번 BGM 재생
-        }
+
+        //// "GroundScene" 씬으로 전환되었을 때
+        //if (scene.name == "5.GroundScene")
+        //{
+        //    PlayBGM(1); // 1번 BGM 재생
+        //}
+        //else
+        //{
+        //    PlayBGM(0); // 그 외의 경우에는 0번 BGM 재생
+        //}
     }
 
+    private void PlayBGM(BGMClip bgmClip)
+    {
+        audioSource.clip = bgmClips[(int)bgmClip];
+        audioSource.Play();
+        audioSource.loop = true;
+    }
 
     private void PlayBGM(int index)
     {
@@ -105,5 +149,11 @@ public class SoundManager : MonoBehaviour
             sfxItem.SFXSource = sfxChild.AddComponent<AudioSource>();
             sfxItem.SFXSource.clip = sfxItem.SFXClip;
         }
+    }
+
+    public void PlaySFX(SFXClip sfxClip)
+    {
+        print("play sfx : " + (int)sfxClip);
+        audioSource.PlayOneShot(sfxClips[(int)sfxClip]);
     }
 }
