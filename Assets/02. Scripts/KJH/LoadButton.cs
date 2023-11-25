@@ -48,6 +48,7 @@ public class LoadButton : MonoBehaviourPun
     public GameObject teachingData;
 
     [Space(10)]
+    public GameObject blurPanel;
     public GameObject showItemPanel;
     public Image showItemImage;
     public RawImage showItemRawImage;
@@ -297,34 +298,45 @@ public class LoadButton : MonoBehaviourPun
 
     public void ShowItem(Item item)
     {
+        Vector2 sizeDelta = Vector2.zero;
+
         switch (item.itemType)
         {
             case Item.ItemType.Image:
                 showItemRawImage.texture = item.itemTexture;
                 showItemImage.preserveAspect = true;
                 showItemRawImage.gameObject.SetActive(true);
+                sizeDelta = new Vector2(item.itemTexture.width + 30f, item.itemTexture.height + 40f);
                 break;
             case Item.ItemType.GIF:
                 gifLoad.Show(showItemImage, item.gifSprites, item.gifDelayTime);
                 showItemImage.gameObject.SetActive(true);
+                showItemImage.preserveAspect = true;
+                sizeDelta = new Vector2(700f, item.gifSprites[0].texture.height + 40f);
                 break;
             case Item.ItemType.Video:
                 videoPlayer.url = item.itemPath;
                 showItemRawImage.texture = videoPlayer.targetTexture;
                 videoPlayer.Play();
                 showItemRawImage.gameObject.SetActive(true);
+                sizeDelta = new Vector2(700f, 450f);
                 break;
             case Item.ItemType.Object:
                 break;
             default:
                 break;
         }
+
+        blurPanel.SetActive(true);
         showItemPanel.SetActive(true);
+        showItemPanel.GetComponent<RectTransform>().sizeDelta = sizeDelta;
     }
 
     // 실행중인 아이템(이미지, GIF, 영상) 닫기
     public void CloseShowItem()
     {
+        print("close");
+        blurPanel.SetActive(false);
         showItemPanel.SetActive(false);
         showItemImage.gameObject.SetActive(false);
         showItemRawImage.gameObject.SetActive(false);
