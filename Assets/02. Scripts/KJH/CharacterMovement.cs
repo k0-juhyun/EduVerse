@@ -207,12 +207,12 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     {
         if (photonView.IsMine)
         {
-            if(isRequest == false)
-            {
-                isRequest = true;
-                Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
-                Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
-            }
+            //if(isRequest == false)
+            //{
+            //    isRequest = true;
+            //    Character.transform.position = Vector3.Lerp(Character.transform.position, receivePos, lerpSpeed * Time.deltaTime);
+            //    Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            //}
 
             // 터치할때만 움직이도록
             if (isTouch)
