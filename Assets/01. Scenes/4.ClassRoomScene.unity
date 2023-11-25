@@ -11318,8 +11318,6 @@ GameObject:
   - component: {fileID: 322153130}
   - component: {fileID: 322153129}
   - component: {fileID: 322153128}
-  - component: {fileID: 322153127}
-  - component: {fileID: 322153126}
   m_Layer: 5
   m_Name: CapturePreview_Panel
   m_TagString: Untagged
@@ -11350,42 +11348,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &322153126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322153124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3347b02decf9ae741b18014418288d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idx: 0
-  sprite: []
---- !u!114 &322153127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322153124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 177c99224e8317d46a7a29a8e66e97ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  multimedio_: {fileID: 0}
-  multimedioButton:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  multimedioTitle: {fileID: 0}
-  mulitmedioexplain: {fileID: 0}
-  QuizButton: {fileID: 0}
-  QuizTitle: {fileID: 0}
-  Quizexplain: {fileID: 0}
 --- !u!114 &322153128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16007,6 +15969,7 @@ GameObject:
   - component: {fileID: 454861497}
   - component: {fileID: 454861496}
   - component: {fileID: 454861495}
+  - component: {fileID: 454861498}
   m_Layer: 0
   m_Name: LoadButton
   m_TagString: Untagged
@@ -16058,7 +16021,7 @@ MonoBehaviour:
   showItemPanel: {fileID: 322153124}
   showItemImage: {fileID: 461385252}
   showItemRawImage: {fileID: 1913664441}
-  gifLoad: {fileID: 322153126}
+  gifLoad: {fileID: 454861498}
   videoPlayer: {fileID: 795396370}
   closeBtn: {fileID: 1808959110}
   lessonBtn: {fileID: 1345362639}
@@ -16080,6 +16043,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &454861498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454861494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3347b02decf9ae741b18014418288d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idx: 0
+  sprite: []
 --- !u!1 &456063347
 GameObject:
   m_ObjectHideFlags: 0
@@ -55017,7 +54994,7 @@ MonoBehaviour:
   pdfViewer: {fileID: 1559956615}
   nextPageBtn: {fileID: 1099065563}
   prevPageBtn: {fileID: 2106663420}
-  loadButton: {fileID: 0}
+  loadButton: {fileID: 454861496}
 --- !u!1 &1493057146
 GameObject:
   m_ObjectHideFlags: 0

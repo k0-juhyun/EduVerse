@@ -200,7 +200,18 @@ public class LoadButton : MonoBehaviourPun
         {
             if (isLesson)
             {
-                photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+                //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
+
+                foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
+                {
+                    if (curPage == buttonPositionData.page)
+                    {
+                        foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
+                        {
+                            photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, (int)buttonPosition.item.itemType, buttonPosition.item.itemName, buttonPosition.item.itemPath, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
+                        }
+                    }
+                }
             }
             else
             {
@@ -289,7 +300,7 @@ public class LoadButton : MonoBehaviourPun
 
     [PunRPC]
     // Item 정보를 보낼 수 없어서 string 타입으로 JSON 자체를 보내버림.
-    public void LoadInteractionRPC(int itemType, string itemName, byte[] itemBytes, string buttonName, float posX, float posY)
+    public void LoadInteractionRPC(int itemType, string itemName, string itemPath, string buttonName, float posX, float posY)
     {
         GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
         newButton.name = buttonName;
@@ -298,7 +309,7 @@ public class LoadButton : MonoBehaviourPun
 
         // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
         // 아이템들 경로/ 파일 이름까지 똑같아야 함
-        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemBytes)));
+        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemPath)));
     }
 
     [PunRPC]
