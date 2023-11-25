@@ -15,6 +15,7 @@ public class StudentQuizDB : MonoBehaviour
 
     public TextMeshProUGUI CorrectCnt_AnswerCnt;
     public TextMeshProUGUI Average;
+    public TextMeshProUGUI lowestUnit;
 
     public TextMeshProUGUI Unit_1_Average;
     public TextMeshProUGUI Unit_2_Average;
@@ -79,8 +80,9 @@ public class StudentQuizDB : MonoBehaviour
     {
         IncorrectNotePanel.SetActive(true);
         // 오답 추가.
+        // 값 한번만 추가.
         if(viewport.transform.childCount == 0)
-        LoadQuizData();
+            LoadQuizData();
     }
     public void OffIncorrectNoteBtnClick()
     {

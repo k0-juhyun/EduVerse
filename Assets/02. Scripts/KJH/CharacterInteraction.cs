@@ -315,6 +315,15 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         isTPSCam = !isTPSCam;
         isDrawing = !isDrawing;
+
+        if(!isTPSCam && _isSit)
+        {
+            LoadButton.instance.Interaction(true);
+        }
+        else
+        {
+            LoadButton.instance.Interaction(false);
+        }
     }
 
     private void UpdateCameraSettings()
