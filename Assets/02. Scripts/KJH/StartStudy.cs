@@ -52,7 +52,7 @@ public class StartStudy : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(DataBase.instance.user.isTeacher)
+        if (DataBase.instance.user.isTeacher)
         {
             Btn_study.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(()
             => Btn_study.gameObject.SetActive(_isTeacherSit));
@@ -79,13 +79,13 @@ public class StartStudy : MonoBehaviour
         isClick = false;
     }
 
-    private IEnumerator ICheckSit(Collider other) 
+    private IEnumerator ICheckSit(Collider other)
     {
         characterInteraction = other.gameObject.GetComponentInParent<CharacterInteraction>();
-        
+
         yield return new WaitUntil(() => characterInteraction._isSit == false);
 
-        if(characterInteraction._isSit == false)
+        if (characterInteraction._isSit == false)
         {
             Btn_study.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack).OnComplete(()
             => Btn_study.gameObject.SetActive(_isTeacherSit));
@@ -93,4 +93,3 @@ public class StartStudy : MonoBehaviour
     }
 
 }
-
