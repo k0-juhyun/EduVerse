@@ -26,6 +26,9 @@ public class GameMgr : MonoBehaviour
     // 공유되고 있는지 체크
     public bool viewOn = false;
 
+    public bool isPlayerTPSCamOn = true;
+
+
     private void Awake()
     {
         instance = this;
@@ -39,10 +42,10 @@ public class GameMgr : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            OnClickShare();
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    OnClickShare();
+        //}
     }
 
     public void OnClickShare()

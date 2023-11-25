@@ -30,6 +30,8 @@ public class ButtonSessions
 
 public class LoadButton : MonoBehaviourPun
 {
+    public static LoadButton instance = null;
+
     private bool isLesson = false;        // 수업중인지 확인 (교실에서 수업중이지 않을 떄 pdf를 넘겨도 인터렉션 버튼 만들지 않고 수업이 끝나면 만들어져 있던 인터렉션 버튼들 지움)
     private string json;                  // 인터렉션 버튼 정보 json RPC로 넘겨줄거임
     private string filePath;
@@ -48,6 +50,7 @@ public class LoadButton : MonoBehaviourPun
     public GameObject teachingData;
 
     [Space(10)]
+    public GameObject interactionCanvas;
     public GameObject blurPanel;
     public GameObject showItemPanel;
     public Image showItemImage;
@@ -65,6 +68,11 @@ public class LoadButton : MonoBehaviourPun
 
     void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+
         filePath = Path.Combine(Application.persistentDataPath, "buttonSessions.json");
         LoadAllSessions();
     }
@@ -76,6 +84,11 @@ public class LoadButton : MonoBehaviourPun
         createBtn?.onClick.AddListener(OnClickCreateButton);
         saveBtn?.onClick.AddListener(SaveCurrentSession);
         lessonBtn?.onClick.AddListener(OnClickLessonBtn);
+    }
+
+    public void Interaction(bool isInteraction)
+    {
+        interactionCanvas.SetActive(isInteraction);
     }
 
     private void OnClickLessonBtn()
@@ -179,6 +192,7 @@ public class LoadButton : MonoBehaviourPun
 
     public void LoadSelectedSession(int curPage)
     {
+        print("load selected session");
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
 
         // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
@@ -344,6 +358,7 @@ public class LoadButton : MonoBehaviourPun
 
     private void LoadAllSessions()
     {
+        print("Load All Sessions");
         if (File.Exists(filePath))
         {
             json = File.ReadAllText(filePath);
