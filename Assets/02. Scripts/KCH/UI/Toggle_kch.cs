@@ -26,7 +26,6 @@ public class Toggle_kch : MonoBehaviour
 
     public void ToggleClick(bool isOn)
     {
-        Debug.Log(isOn);
         if (isOn)
         {
             for (int i = 0; i < multimedioButton.Length; i++)
