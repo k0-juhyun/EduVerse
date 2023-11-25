@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TeacherChairSitHandler : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class TeacherChairSitHandler : MonoBehaviour
             characterInteraction = other.GetComponentInParent<CharacterInteraction>();
             if (characterInteraction != null)
             {
+                StartCoroutine(ICheckSit());
+
                 sitButton.onClick.AddListener(() => characterInteraction.SitDownAtThisChair(gameObject));
                 sitButton.gameObject.transform.localScale = Vector3.zero;
 
@@ -66,6 +69,17 @@ public class TeacherChairSitHandler : MonoBehaviour
         if (!isSitting)
         {
             sitButton.gameObject.SetActive(true);
+        }
+    }
+
+    private IEnumerator ICheckSit()
+    {
+        yield return new WaitUntil(() => characterInteraction._isSit);
+
+        if (characterInteraction._isSit)
+        {
+            sitButton.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InOutExpo)
+                  .OnComplete(() => sitButton.gameObject.SetActive(false));
         }
     }
 }
