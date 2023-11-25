@@ -35,7 +35,7 @@ public class Quiz_Individual : MonoBehaviourPun
     public void OX_GroundCheck()
     {
         // 문제의 정보를 가져온다.
-        LoadQuizData(Quiz.instance.question);
+        LoadQuizData();
 
         Debug.Log("OX실행");
         RaycastHit hit;
@@ -104,64 +104,12 @@ public class Quiz_Individual : MonoBehaviourPun
         }
     }
 
-    void LoadQuizData(string question_)
+    void LoadQuizData()
     {
-        // 선생이 아니라면.
-        // 선생 로컬에 있는 MyQuizTitleData json 파일을 가져와 읽고
-        // 문제와 단원, 답을 뽑고 다른 학생들에게 전달해준다.
-
-
-        // 선생이 아니라면 리턴.
-
-
-        // 원래라면 이런식으로 하는게 아니고
-        // 선생이 MyQuizTitleData.json 이걸 읽고 학생들에게 rpc로 보내줘야 함.
-        List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
-
-        if (titles != null)
-        {
-            foreach (string title in titles)
-            {
-                SaveData saveData = SaveSystem.Load(title);
-
-                // 단원
-                string extracted = title.Substring(0, 3);
-                // 타이틀.
-                string titleSlice = title.Substring(4);
-
-                // 문제
-                string test1 = saveData.question;
-
-                // 답
-                string test2 = saveData.answer;
-                // 문제를 가지고 앞에 있는 단원 가져옴.
-                Debug.Log(test1 + " : " + question_);
-
-                //Debug....Log(test1 + " : " + test2);
-                // 문제와 타이틀 제목이 같다면
-                if (test1 == question_)
-                {
-                    Debug.Log("단원가져오기." + extracted);
-
-                    // 단원 정보 저장.
-                    // 학생들에게 단원과 코멘트 전달.
-                    Question = saveData.question;
-                    Unit = extracted;
-                    Commentary = saveData.Commentary;
-                    Debug.Log(Commentary + " : 코멘트");
-                }
-
-                // 단원 정보 담기
-                // 단원 정보 담는것도 rpc로 보내야함.
-
-
-
-                // 앞에 단원 삭제
-
-                // 정답인지 오답인지 체크하고 그 오브젝트 체크.
-                //photonView.RPC(nameof(SendUnit_Commentary), RpcTarget.All, Question);
-            }
-        }
+        Unit = Quiz.instance.unit; 
+        Question = Quiz.instance.question;
+        Answer = Quiz.instance.answer;
+        Commentary = Quiz.instance.commentary;
     }
 
 
