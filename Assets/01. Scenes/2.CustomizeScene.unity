@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.35752022, g: 0.69739085, b: 0.72364134, a: 1}
+  m_IndirectSpecularColor: {r: 0.35752052, g: 0.697391, b: 0.72364134, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1558,6 +1558,77 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &60706703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 60706705}
+  - component: {fileID: 60706704}
+  m_Layer: 0
+  m_Name: ButtonsSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &60706704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60706703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b73600cbef43b43b8b8aaebd5b3b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 2114376871}
+  - {fileID: 1814348301}
+  - {fileID: 1744801876}
+  - {fileID: 2002254313}
+  - {fileID: 1559909411}
+  - {fileID: 242525901}
+  - {fileID: 807936460}
+  - {fileID: 513600718}
+  - {fileID: 851999022}
+  - {fileID: 1514680633}
+  - {fileID: 1376066595}
+  - {fileID: 72957731}
+  - {fileID: 261827407}
+  - {fileID: 315270643}
+  - {fileID: 1077423144}
+  - {fileID: 671548712}
+  - {fileID: 389447947}
+  - {fileID: 650315122}
+  - {fileID: 127135952}
+  - {fileID: 2109355770}
+  - {fileID: 1608225032}
+  - {fileID: 1455476753}
+  - {fileID: 710940264}
+  - {fileID: 1993601807}
+  - {fileID: 1531796716}
+  - {fileID: 1692566223}
+--- !u!4 &60706705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60706703}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &66502044
 GameObject:
   m_ObjectHideFlags: 0

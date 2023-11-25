@@ -76,24 +76,19 @@ public class Unzip : MonoBehaviour
 
     public void RunZip(string zip, string extractionPath = "")
     {
-        print("RunZip, " + zip);
         ExtractZip(zip, extractionPath.Equals("") ? this.extractionPath : extractionPath);
         // File.Delete(zip); // 필요에 따라 압축 파일 삭제
     }
 
     void ExtractZip(string zipPath, string extractionPath)
     {
-        print("Enter ExtractZip");
         try
         {
-            print("Try");
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
-                print("using");
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
                     string completeFilePath = Path.Combine(extractionPath, entry.FullName);
-                    print(completeFilePath);
 
                     if (File.Exists(completeFilePath))
                     {
@@ -101,7 +96,6 @@ public class Unzip : MonoBehaviour
                     }
 
                     string directory = Path.GetDirectoryName(completeFilePath);
-                    print(directory);
 
                     if (!Directory.Exists(directory))
                     {

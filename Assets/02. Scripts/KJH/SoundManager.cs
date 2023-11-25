@@ -56,6 +56,7 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this.gameObject);
             InitializeSoundComponents();
+            audioSource = GetComponent<AudioSource>();
         }
         else if (instance != this)
         {
@@ -67,7 +68,6 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnDestroy()
@@ -87,10 +87,10 @@ public class SoundManager : MonoBehaviour
                 PlayBGM(BGMClip.Customize);
                 break;
             case "4.ClassRoomScene":
-                PlayBGM(BGMClip.Class);
+                //PlayBGM(BGMClip.Class);
                 break;
             case "5.GroundScene":
-                PlayBGM(BGMClip.Ground);
+                //PlayBGM(BGMClip.Ground);
                 break;
             default:
                 break;
@@ -153,6 +153,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(SFXClip sfxClip)
     {
+        print("play sfx : " + (int)sfxClip);
         audioSource.PlayOneShot(sfxClips[(int)sfxClip]);
     }
 }
