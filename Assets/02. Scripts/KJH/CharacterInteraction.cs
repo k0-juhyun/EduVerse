@@ -75,8 +75,8 @@ public class CharacterInteraction : MonoBehaviourPun
     private void Start()
     {
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
-        Btn_Focus?.onClick.AddListener(() => OnShareButtonClick());
-        //Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
+        //Btn_Focus?.onClick.AddListener(() => OnShareButtonClick());
+        Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
         rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
