@@ -25,6 +25,7 @@ public class GameMgr : MonoBehaviour
 
     bool isClick = false;
 
+    public bool viewOn;
     private void Awake()
     {
         instance = this;
