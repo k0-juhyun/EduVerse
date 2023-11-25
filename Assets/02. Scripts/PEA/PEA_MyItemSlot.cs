@@ -49,6 +49,13 @@ public class Item
         this.itemType = itemType;
         this.itemName = itemName;
         this.gifSprites = gifSprites;
+    } 
+    public Item(ItemType itemType, string itemName, Sprite[] gifSprites, string itemPath)
+    {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.gifSprites = gifSprites;
+        this.itemPath = itemPath;
     }
 
     public Item(ItemType itemType, string itemName, byte[] itemBytes)
