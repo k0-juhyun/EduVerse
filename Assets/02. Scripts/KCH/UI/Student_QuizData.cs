@@ -64,7 +64,7 @@ public class Student_QuizData : MonoBehaviour
         GameObject quizCanvas = StudentDB.instance.AnalysisDB;
 
         Debug.Log("quizCanvas" + quizCanvas);
-        
+
 
         // string 값이 null이 되면 NaN으로 뜸.
         // 퀴즈를 안푼 단원들은 다 널값으로 해줘야 함..
@@ -72,7 +72,7 @@ public class Student_QuizData : MonoBehaviour
 
         // 복제한 오브젝트 StudentQuizDB 스크립트 가져옴.
         StudentQuizDB QuizDB = quizCanvas.GetComponent<StudentQuizDB>();
-        Debug.Log("quizdb"+QuizDB);
+        Debug.Log("quizdb" + QuizDB);
 
         // 처음에 리셋을 해준다.
         #region 리셋
@@ -125,16 +125,52 @@ public class Student_QuizData : MonoBehaviour
 
         // 전체 평균
         // 0으로 못 나누기 때문에
-        if((float)StudentQuizInfo.QuizAnswerCnt == 0)
+        if ((float)StudentQuizInfo.QuizAnswerCnt == 0)
         {
             QuizDB.Average.text = "0";
         }
         else
         {
-        QuizDB.Average.text =
-            ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString("F2");
+            // 소수점 둘째 자리.
+            QuizDB.Average.text =
+                ((float)StudentQuizInfo.QuizCorrectAnswerCnt / ((float)StudentQuizInfo.QuizAnswerCnt) * 100).ToString("F2");
         }
 
+        // 단원 평가.
+        // 일단 문제를 안푼 단원은 체크를 안함.
+        // 푼 단원끼리만 체크하게 짜줘야 함.
+        // 
+        // 일단 문제를 안푼 단원 제외 -1로 체크하자 
+        // StudentQuizInfo.Unit_1.CorrectAnswer.Count 이거와 StudentQuizInfo.Unit_5.IncorrectAnswer.Count 이게 0이라면 -1로 체크 아니면 평균값을 낸다.
+
+        float[] evaluation = new float[5];
+
+        evaluation[0] =
+            (StudentQuizInfo.Unit_1.CorrectAnswer.Count == 0 && StudentQuizInfo.Unit_1.IncorrectAnswer.Count == 0) ? -1 : average(StudentQuizInfo.Unit_1);
+        evaluation[1] =                                                                                            
+            (StudentQuizInfo.Unit_2.CorrectAnswer.Count == 0 && StudentQuizInfo.Unit_2.IncorrectAnswer.Count == 0) ? -1 : average(StudentQuizInfo.Unit_2);
+        evaluation[2] =                                                                                            
+            (StudentQuizInfo.Unit_3.CorrectAnswer.Count == 0 && StudentQuizInfo.Unit_3.IncorrectAnswer.Count == 0) ? -1 : average(StudentQuizInfo.Unit_3);
+        evaluation[3] =                                                                                            
+            (StudentQuizInfo.Unit_4.CorrectAnswer.Count == 0 && StudentQuizInfo.Unit_4.IncorrectAnswer.Count == 0) ? -1 : average(StudentQuizInfo.Unit_4);
+        evaluation[4] =                                                                                            
+            (StudentQuizInfo.Unit_5.CorrectAnswer.Count == 0 && StudentQuizInfo.Unit_5.IncorrectAnswer.Count == 0) ? -1 : average(StudentQuizInfo.Unit_5);
+
+        float evaluation_ = 999;
+        string result="";
+        for (int i = 0; i < evaluation.Length; i++)
+        {
+            if (evaluation[i] == -1) continue;
+            if (evaluation[i] < evaluation_)
+            {                
+                evaluation_ = evaluation[i];
+                result = (i+1).ToString()+"단원";
+            }
+        }
+
+        // 가장 평균이 낮은 단원 대입
+        QuizDB.lowestUnit.text = result;
+        Debug.Log(result);
 
         // 그전에 오답 QuizDB 이 컴포넌트에 quizinfo에 관한 데이터 넘겨줌.
         QuizDB.studentQuizinfo = StudentQuizInfo;
