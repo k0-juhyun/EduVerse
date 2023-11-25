@@ -51,6 +51,10 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     public GameObject Test;
 
+    [Space(20)]
+    public GameObject[] multimedioButton;
+    public GameObject QuizButton;
+
 
     private void Start()
     {
@@ -268,6 +272,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             // (게임오브젝트명이 다 다르다고 가정했을 때 통하는 코드)
             child.raycastTarget = true;
         }
+
+
     }
 
     public void MakeObject()
