@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class StudentChairSitHandler : MonoBehaviour
 {

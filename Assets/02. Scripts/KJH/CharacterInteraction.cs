@@ -75,7 +75,8 @@ public class CharacterInteraction : MonoBehaviourPun
     private void Start()
     {
         Btn_Focus?.onClick.AddListener(() => OnFocusBtnClick());
-        Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
+        Btn_Focus?.onClick.AddListener(() => OnShareButtonClick());
+        //Btn_ShareCam?.onClick.AddListener(() => OnShareButtonClick());
         rb = GetComponentInChildren<Rigidbody>();
 
         if (photonView.IsMine)
@@ -291,7 +292,6 @@ public class CharacterInteraction : MonoBehaviourPun
             photonView.RPC("SetIsSitRPC", RpcTarget.Others);
             print("°­Á¦Âø¼®");
 
-            OnShareButtonClick();
             print("¾É±â");
         }
     }
