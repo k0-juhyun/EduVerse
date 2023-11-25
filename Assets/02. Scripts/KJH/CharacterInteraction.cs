@@ -206,6 +206,7 @@ public class CharacterInteraction : MonoBehaviourPun
         PlaySitAnimation(); // 로컬 플레이어의 애니메이션 실행
         print("몇번");
         currentChair = chair.gameObject;
+        SetSitStatus(true);
     }
 
     [PunRPC]
@@ -216,7 +217,7 @@ public class CharacterInteraction : MonoBehaviourPun
         PlaySitAnimation();
     }
 
-    private void SitDownTeacher(Collider chair)
+    public void SitDownTeacher(Collider chair)
     {
         Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
         Quaternion rotation = Quaternion.LookRotation(Quaternion.Euler(0, -90, 0) * chair.transform.right);
@@ -250,6 +251,7 @@ public class CharacterInteraction : MonoBehaviourPun
             rb.isKinematic = false;
             _isSit = false;
             currentChair = null; // 의자에서 일어났으므로 참조 제거
+            SetSitStatus(false);
         }
     }
 
@@ -287,7 +289,9 @@ public class CharacterInteraction : MonoBehaviourPun
             photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
             photonView.RPC("TrySitDownRPC", RpcTarget.Others);
             photonView.RPC("SetIsSitRPC", RpcTarget.Others);
+            print("강제착석");
 
+            OnShareButtonClick();
             print("앉기");
         }
     }
@@ -295,7 +299,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void SetPlayerIdle()
     {
         photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
-        print("서기");
+        print("학생들 서게하기");
     }
 
 
@@ -383,6 +387,7 @@ public class CharacterInteraction : MonoBehaviourPun
     public void OnShareButtonClick()
     {
         photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
+        print("학생들 화면전환");
     }
 
 
@@ -466,9 +471,9 @@ public class CharacterInteraction : MonoBehaviourPun
         if (!isOpenUI)
         {
             OpenUI.SetActive(false);
-            characterUI.DOAnchorPos(new Vector2(-150, 0), 0.5f);
+            characterUI.DOAnchorPos(new Vector2(-150, 0), 0.7f).SetEase(Ease.InQuart);
             isOpenUI = !isOpenUI;
-            StartCoroutine(ICloseUI(1.5f));
+            StartCoroutine(ICloseUI(2.5f));
         }
     }
 
@@ -509,6 +514,11 @@ public class CharacterInteraction : MonoBehaviourPun
                 childrectTransform.anchoredPosition = new Vector3(10, 340, 0);
                 break;
 
+            case 5:
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 720);
+                childrectTransform.anchoredPosition = new Vector3(10, 340, 0);
+                break;
+
             case 4:
                 rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 580);
                 childrectTransform.anchoredPosition = new Vector3(10, 200, 0);
@@ -524,11 +534,34 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         Quiz.instance.OnQuizBtnClick();
     }
-
+    
     [PunRPC]
     public void SendMyPosition(Vector3 position,Quaternion rotation)
     {
         Character.transform.position = position;
         Character.transform.rotation = rotation;
     }
+
+    public void SitDownAtThisChair(GameObject chairObject)
+    {
+        if (chairObject != null && !_isSit && DataBase.instance.userInfo.isteacher == false)
+        {
+            Collider chairCollider = chairObject.GetComponent<Collider>();
+            if (chairCollider != null)
+            {
+                SitDown(chairCollider);
+                _isSit = true;
+            }
+        }
+        else if (chairObject != null && !_isSit && DataBase.instance.userInfo.isteacher)
+        {
+            Collider chairCollider = chairObject.GetComponent<Collider>();
+            if (chairCollider != null)
+            {
+                SitDownTeacher(chairCollider);
+                _isSit = true;
+            }
+        }
+    }
+
 }
