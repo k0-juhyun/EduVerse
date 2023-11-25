@@ -84,11 +84,12 @@ public class StudentQuizDB : MonoBehaviour
 
 
         // 값 초기화해야됌
-        //int childCount = viewport.transform.childCount;
-        //for (int i = childCount - 1; i >= 0; i--)
-        //{
-        //    Destroy(viewport.transform.GetChild(i).gameObject);
-        //}
+        int childCount = viewport.transform.childCount;
+        for (int i = childCount - 1; i >= 0; i--)
+        {
+            Destroy(viewport.transform.GetChild(i).gameObject);
+        }
+
         //if(viewport.transform.childCount == 0)
         LoadQuizData();
     }
