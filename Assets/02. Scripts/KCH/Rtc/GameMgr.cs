@@ -23,6 +23,9 @@ public class GameMgr : MonoBehaviour
     //공유 하는 사람들의 WebCam 화면
     List<RawImage> senderWebCamView = new List<RawImage>();
 
+    // 공유되고 있는지 체크
+    public bool viewOn = false;
+
     private void Awake()
     {
         instance = this;
@@ -47,6 +50,8 @@ public class GameMgr : MonoBehaviour
         Debug.Log(myPlayerPv);
         //나의 RtcSender 로 공유를 시작하게 한다
         myPlayerPv.GetComponent<RtcSender>().Setup();
+        // 화면 공유 시작중.
+        viewOn= true;
     }
 
     public void AddPlayer(PhotonView pv)

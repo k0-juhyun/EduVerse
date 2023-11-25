@@ -28,6 +28,12 @@ public class RtcPlayer : MonoBehaviourPun
         {
             rtcSender = gameObject.AddComponent<RtcSender>();
             rtcReceiver = gameObject.AddComponent<RtcReceiver>();
+
+            // rtcSender가 있는 경우
+            if (GameMgr.instance.viewOn)
+            {
+                rtcSender.Setup();
+            }
         }
 
         //플레이어의 photonView 를 GameMgr 에 알려주자

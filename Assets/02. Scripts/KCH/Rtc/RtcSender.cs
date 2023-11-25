@@ -33,6 +33,7 @@ public class RtcSender : MonoBehaviourPun
 
     void Start()
     {
+
         // WebRtc 업데이트 
         StartCoroutine(WebRTC.Update());
     }
