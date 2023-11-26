@@ -41,7 +41,8 @@ public class SoundManager : MonoBehaviour
     // 다른 효과음도 쉽게 추가하기 위해 enum으로 함
     public enum SFXClip
     {
-        Button
+        Button1,
+        Button2
     }
 
     public AudioClip[] bgmClips;
