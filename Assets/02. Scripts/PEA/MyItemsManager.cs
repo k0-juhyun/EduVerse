@@ -29,8 +29,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
-        print(gifload);
-        LoadData();
+        //LoadData();
     }
 
     void Update()
@@ -59,12 +58,14 @@ public class MyItemsManager : MonoBehaviour
             switch (myItems.data[i].itemType)
             {
                 case Item.ItemType.Image:
+                    myItems.data[i].itemPath = Application.persistentDataPath + "/MarketItems/" + Path.GetFileName(myItems.data[i].itemPath);
                     byte[] imageBytes = File.ReadAllBytes(myItems.data[i].itemPath);
                     myItems.data[i].itemTexture = new Texture2D(2, 2);
                     myItems.data[i].itemTexture.LoadImage(imageBytes);
                     myItems.data[i].itemTexture.Apply();
                     break;
                 case Item.ItemType.GIF:
+                    myItems.data[i].itemPath = Application.persistentDataPath + "/GIF/" + Path.GetFileName(myItems.data[i].itemPath);
                     byte[] thumbNailBytes = File.ReadAllBytes(Application.persistentDataPath + "/GIFThumbNails/" + Path.GetFileNameWithoutExtension(myItems.data[i].itemPath) + ".png");
                     myItems.data[i].gifThumbNailTexture = new Texture2D(2, 2);
                     myItems.data[i].gifThumbNailTexture.LoadImage(thumbNailBytes);
@@ -76,6 +77,7 @@ public class MyItemsManager : MonoBehaviour
                     //myItems.data[i].gifDelayTime = gifInfo.Item2;
                     break;
                 case Item.ItemType.Video:
+                    myItems.data[i].itemPath = Application.persistentDataPath + "/Videos/" + Path.GetFileName(myItems.data[i].itemPath);
                     break;
                 case Item.ItemType.Object:
                     break;

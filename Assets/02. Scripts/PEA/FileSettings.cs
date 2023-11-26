@@ -12,6 +12,7 @@ public class FileSettings : MonoBehaviour
     private string gifZipPath;
     private string gifThumbNailZipPath;
     private string videoZipPath;
+    private string modelZipPath;
     private string zipExtractionPath;
 
     private string myItemJsonPath;
@@ -20,11 +21,10 @@ public class FileSettings : MonoBehaviour
     {
         unzip = GetComponent<Unzip>();
 
-
 #if UNITY_ANDROID
         print("streaming assets : " + Directory.Exists("jar:file://" + Application.dataPath + "!/assets/"));
         print("File_Settings : " + Directory.Exists("jar:file://" + Application.dataPath + "!/assets/File_Settings/"));
-        zipPath = "jar:file://" + Application.dataPath + "!/assets";
+        zipPath = "jar:file://" + Application.dataPath + "!/assets/File_Settings/";
         myItemJsonPath = "jar:file://" + Application.dataPath + "!/assets/File_Settings/MyItems.txt";
 #elif UNITY_EDITOR
         zipPath = Application.streamingAssetsPath + "/File_Settings/";
@@ -35,6 +35,7 @@ public class FileSettings : MonoBehaviour
         gifZipPath = zipPath + "GIF.zip";
         gifThumbNailZipPath = zipPath + "GIFThumbNails.zip";
         videoZipPath = zipPath + "Videos.zip";
+        modelZipPath = zipPath + "3DModels.zip";
 
         zipExtractionPath = Application.persistentDataPath + "/";
 
@@ -53,6 +54,9 @@ public class FileSettings : MonoBehaviour
         unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
         unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
         unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
+
+        Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
+        unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/ModelDatas/");
 #elif UNITY_EDITOR
         print("setting, editor");
         unzip.RunZip(gifZipPath, zipExtractionPath);

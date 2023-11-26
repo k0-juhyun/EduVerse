@@ -129,7 +129,6 @@ public class QuizToFireBase : MonoBehaviour
         // 만약 기존 데이터가 없으면, 경로를 생성한 후 데이터를 추가합니다.
         if (existingQuizInfo == null)
         {
-            Debug.Log("이게 널이 떠야되는데 안뜨면 진짜 시1발련아");
             existingQuizInfo = new QuizInfo(0, 0, new answerinfo(), new answerinfo(), new answerinfo(), new answerinfo(), new answerinfo());
             var createTask = database.GetReference(path).SetRawJsonValueAsync(JsonUtility.ToJson(existingQuizInfo));
 
