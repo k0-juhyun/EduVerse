@@ -109,8 +109,8 @@ public class SoundManager : MonoBehaviour
 
     private void PlayBGM(BGMClip bgmClip)
     {
-        audioSource.clip = bgmClips[(int)bgmClip];
-        audioSource.Play();
+        audioSource.clip = bgmClips?[(int)bgmClip];
+        audioSource?.Play();
         audioSource.loop = true;
     }
 
