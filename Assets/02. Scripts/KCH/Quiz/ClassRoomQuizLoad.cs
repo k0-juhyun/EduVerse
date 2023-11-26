@@ -23,6 +23,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     public GameObject 오답인원;
     public GameObject 못푼인원;
 
+    [Space(20)]
     public GameObject 문제은행;
     public GameObject QuizIcon;
 
@@ -44,21 +45,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
     string Question;
     string Answer;
     string Commentary;
-    public class AnotherClass
-    {
-        // 다른 클래스에서 델리게이트에 등록될 함수
-        public void CheckAnswer(string answer)
-        {
-            if (answer == "42")
-            {
-                Debug.Log("정답입니다!");
-            }
-            else
-            {
-                Debug.Log("틀렸습니다.");
-            }
-        }
-    }
+
 
     private void Start()
     {
@@ -68,6 +55,7 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
             Debug.Log(MyQuizStorage.Instance.quizList[i].question);
             GameObject quiz_obj = Instantiate(QuizPrefab);
             quiz_obj.transform.parent = AddQuizViewport.transform;
+            quiz_obj.transform.localScale = new Vector3(1, 1, 1);
             quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(MyQuizStorage.Instance.quizList[i].question,
             MyQuizStorage.Instance.quizList[i].answer, MyQuizStorage.Instance.quizList[i].unit, MyQuizStorage.Instance.quizList[i].commentary);
         }
@@ -87,7 +75,8 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         // 퀴즈 다시 생성
         if (Input.GetKeyDown(KeyCode.M))
         {
-            transform.GetComponent<Canvas>().enabled = true;
+
+            transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.5f).SetEase(Ease.InBack);
         }
     }
 
@@ -97,13 +86,18 @@ public class ClassRoomQuizLoad : MonoBehaviourPun
         photonView.RPC(nameof(deletePanel), RpcTarget.All);
         // 퀴즈 종료 버튼
         if(Quiz.instance !=null)
-        Quiz.instance.EndQuiz();
+            Quiz.instance.EndQuiz();
     }
 
     [PunRPC]
     public void deletePanel()
     {
-        Destroy(gameObject);
+        문제은행.transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.5f).SetEase(Ease.InBack).OnComplete(() => {
+
+            Debug.Log("이거실행됌?");
+
+            Destroy(gameObject);
+        });
     }
 
     // 광장에서만 쓰는 버튼
