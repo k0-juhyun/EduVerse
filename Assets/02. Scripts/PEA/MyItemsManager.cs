@@ -29,7 +29,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
-        LoadData();
+        //LoadData();
     }
 
     void Update()

@@ -67,7 +67,7 @@ public class DataBase : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            //LoadModelsFromResources();
+            LoadModelsFromResources();
         }
         else
         {
@@ -106,17 +106,19 @@ public class DataBase : MonoBehaviour
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
 #if UNITY_ANDROID
-        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+        //string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+        string path = Application.streamingAssetsPath + "/";
 #elif UNITY_EDITOR
         string path = Application.streamingAssetsPath+"/";
 #elif UNITY_STANDALONE
         string path = Application.streamingAssetsPath+"/";
 #endif
 
-        print("알집 경로: "+ path);
+        print("알집 경로: " + path);
         try
         {
-            string[] zipFiles = Directory.GetFiles(path, "*.zip");
+            //string[] zipFiles = Directory.GetFiles(path, "*.zip");
+            string[] zipFiles = Directory.GetFiles(path, "*.obj");
 
             model.spawnPrefab = new List<GameObject>(zipFiles.Length);
 

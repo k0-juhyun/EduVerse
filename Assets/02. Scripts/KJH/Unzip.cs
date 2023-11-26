@@ -22,13 +22,13 @@ public class Unzip : MonoBehaviour
 #if UNITY_EDITOR
         //에디터 환경에서는 StreamingAssets 폴더 내의 모든 zip 파일을 처리합니다.
         //string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
-        ExtractAllZipsInDirectory(Application.streamingAssetsPath + "/");
+        //ExtractAllZipsInDirectory(Application.streamingAssetsPath + "/");
 #elif UNITY_ANDROID
         // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
-        StartCoroutine(ExtractAllZipsInAndroid());
+        //StartCoroutine(ExtractAllZipsInAndroid());
 #elif UNITY_STANDALONE
         string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
-        ExtractAllZipsInDirectorys(streamingAssetsPath);
+        //ExtractAllZipsInDirectorys(streamingAssetsPath);
 #endif
     }
 
