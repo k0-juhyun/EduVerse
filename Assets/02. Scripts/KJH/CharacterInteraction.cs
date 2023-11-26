@@ -435,6 +435,7 @@ public class CharacterInteraction : MonoBehaviourPun
             characterMovement.CharacterCanvas.gameObject.SetActive(true);
         }
         characterMovement.SpareCanvas.gameObject.SetActive(!characterMovement.CharacterCanvas.gameObject.activeSelf);
+        LoadButton.instance.Interaction(characterMovement.SpareCanvas.activeSelf);
     }
 
     public void OnXButtonClick()

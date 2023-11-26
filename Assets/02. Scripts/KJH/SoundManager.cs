@@ -87,10 +87,10 @@ public class SoundManager : MonoBehaviour
                 PlayBGM(BGMClip.Customize);
                 break;
             case "4.ClassRoomScene":
-                //PlayBGM(BGMClip.Class);
+                PlayBGM(BGMClip.Class);
                 break;
             case "5.GroundScene":
-                //PlayBGM(BGMClip.Ground);
+                PlayBGM(BGMClip.Ground);
                 break;
             default:
                 break;

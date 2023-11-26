@@ -25,7 +25,7 @@ public class Unzip : MonoBehaviour
         //ExtractAllZipsInDirectory(Application.streamingAssetsPath + "/");
 #elif UNITY_ANDROID
         // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
-        //StartCoroutine(ExtractAllZipsInAndroid());
+        StartCoroutine(ExtractAllZipsInAndroid());
 #elif UNITY_STANDALONE
         string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
         //ExtractAllZipsInDirectorys(streamingAssetsPath);
