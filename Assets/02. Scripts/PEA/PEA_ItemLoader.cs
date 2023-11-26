@@ -142,12 +142,9 @@ public class PEA_ItemLoader : MonoBehaviour
                     //}
                 }
 
-                print(myItems.data.Count + ", " + inContentMyItems.Count);
-                print((isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) : myItems.data.Count)));
                 // 마켓은 항상 재로드, 내 아이템은 새로 추가된 것만 로드
                 for (int i = (isMarket ? 0 : (inContentMyItems.Count < myItems.data.Count ? myItems.data.Count - (myItems.data.Count - inContentMyItems.Count) :  myItems.data.Count)); i < (isMarket ? imageItems.Count : (myItems != null ? myItems.data.Count : 0)); i++)
                 {
-                    print(i);
                     GameObject slot = Instantiate(itemSlot, content);
 
                     // 마켓
