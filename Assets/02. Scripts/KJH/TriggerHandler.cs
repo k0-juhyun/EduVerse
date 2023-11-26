@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TriggerHandler : MonoBehaviour
 {
     private CharacterInteraction parentScript;
+    public Button sitBtn;
 
     void Start()
     {
@@ -16,6 +18,11 @@ public class TriggerHandler : MonoBehaviour
     {
         // 부모 스크립트의 HandleTriggerEnter 메소드 호출
         parentScript?.HandleTriggerEnter(other);
+
+        if(other.gameObject.tag == "Chair")
+            sitBtn = other.GetComponent<StudentChairSitHandler>().sitButton;
+        else if(other.gameObject.name == "Teacher Chair")
+            sitBtn = other.GetComponent<TeacherChairSitHandler>().sitButton;
     }
 
     void OnTriggerStay(Collider other)

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Photon.Pun;
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
@@ -33,6 +34,7 @@ public class CharacterInteraction : MonoBehaviourPun
     private CameraSetting cameraSetting;
     private TeacherInteraction teacherInteraction;
     private Rigidbody rb;
+    private TriggerHandler triggerHandler;
 
     [HideInInspector] public bool _isSit;
 
@@ -56,12 +58,14 @@ public class CharacterInteraction : MonoBehaviourPun
     Scene scene;
 
     private GameObject currentChair = null;
+    public event Action OnSitDown;
 
     private void Awake()
     {
         anim = Character.GetComponent<Animator>();
         characterMovement = GetComponent<CharacterMovement>();
         cameraSetting = GetComponentInChildren<CameraSetting>();
+        triggerHandler = GetComponentInChildren<TriggerHandler>();
 
         Btn_Camera.onClick.AddListener(() => OnCameraButtonClick());
         Btn_Custom.onClick.AddListener(() => OnCustomButtonClick());
@@ -88,7 +92,6 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             Cam.gameObject.transform.localPosition = new Vector3(0, 16, -16);
             Cam.gameObject.transform.localRotation = Quaternion.Euler(30, 0, 0);
-            Btn_Sit.gameObject.SetActive(false);
         }
 
         teacherInteraction = GetComponentInChildren<TeacherInteraction>();
@@ -115,7 +118,7 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             HandleTeacherChairInteraction(other);
         }
-        else if (other.gameObject.name == "Teacher Computer")
+        if (other.gameObject.name == "Teacher Computer")
         {
             HandleTeacherComputerInteraction(other);
         }
@@ -125,6 +128,11 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         _isSit = sitStatus;
         OnSitStatusChanged?.Invoke(_isSit);
+
+        if (_isSit)
+        {
+            OnSitDown?.Invoke(); // 착석 상태가 되면 이벤트 발생
+        }
     }
 
     public void HandleTriggerEnter(Collider other)
@@ -148,10 +156,29 @@ public class CharacterInteraction : MonoBehaviourPun
         {
             NetworkManager.instance.ChangeRoom("5.GroundScene");
         }
+
+    }
+
+    private IEnumerator WaitAndHandleChairInteraction(Collider chair)
+    {
+        // Btn_Sit 버튼이 눌릴 때까지 대기
+        yield return new WaitUntil(() => EventSystem.current.currentSelectedGameObject == Btn_Sit?.gameObject);
+
+        // 버튼이 눌리면 해당 로직 실행
+        if (!_isSit)
+        {
+            SitDown(chair);
+            _isSit = true;
+        }
+        else
+        {
+            StandUp();
+        }
     }
 
     private void HandleChairInteraction(Collider chair)
     {
+        Btn_Sit = triggerHandler.sitBtn;
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
             if (!_isSit)
@@ -168,6 +195,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     private void HandleTeacherChairInteraction(Collider chair)
     {
+        Btn_Sit = triggerHandler.sitBtn;
         if (EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject)
         {
             if (!_isSit)
@@ -194,6 +222,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void SitDown(Collider chair)
     {
+        _isSit = true;
         Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
         Quaternion rotation = Quaternion.LookRotation(chair.transform.forward * -1);
 
@@ -220,6 +249,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void SitDownTeacher(Collider chair)
     {
+        _isSit = true;
         Vector3 position = new Vector3(chair.transform.position.x, 0.4f, chair.transform.position.z);
         Quaternion rotation = Quaternion.LookRotation(Quaternion.Euler(0, -90, 0) * chair.transform.right);
 
@@ -292,8 +322,9 @@ public class CharacterInteraction : MonoBehaviourPun
             photonView.RPC("SetIsSitRPC", RpcTarget.Others);
             print("강제착석");
 
-            print("앉기");
+            print("화면전환 준비 완료");
         }
+        photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
     }
 
     public void SetPlayerIdle()
@@ -302,6 +333,13 @@ public class CharacterInteraction : MonoBehaviourPun
         print("학생들 서게하기");
     }
 
+    public void SetToIdleState()
+    {
+        if (_isSit)
+        {
+            StandUp();
+        }
+    }
 
     // TPS랑 FPS 카메라 전환
     public void OnCameraButtonClick()
@@ -516,7 +554,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
             case 5:
                 rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 720);
-                childrectTransform.anchoredPosition = new Vector3(10, 340, 0);
+                childrectTransform.anchoredPosition = new Vector3(10, 270, 0);
                 break;
 
             case 4:

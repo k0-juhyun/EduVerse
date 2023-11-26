@@ -22,7 +22,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     [Space] public Transform cameraPivotTransform;
 
     [Space]
-    public GameObject SitButton;
     public GameObject CameraButton;
     public GameObject CustomizeButton;
     public GameObject GreetButton;
@@ -175,7 +174,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
             {
                 print("¿Ö¾ÈµÅ??");
-                SitButton.SetActive(true);
                 CameraButton.SetActive(true);
                 CustomizeButton.SetActive(true);
                 GreetButton.SetActive(true);

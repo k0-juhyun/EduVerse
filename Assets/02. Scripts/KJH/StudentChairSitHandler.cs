@@ -21,6 +21,7 @@ public class StudentChairSitHandler : MonoBehaviour
     {
         if (characterInteraction != null)
         {
+            characterInteraction.SetToIdleState();
             characterInteraction.OnSitStatusChanged -= UpdateButtonStatus;
         }
     }
@@ -30,7 +31,7 @@ public class StudentChairSitHandler : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             characterInteraction = other.GetComponentInParent<CharacterInteraction>();
-            if (characterInteraction != null)
+            if (characterInteraction != null && characterInteraction.photonView.IsMine)
             {
                 StartCoroutine(ICheckSit());
                 sitButton.onClick.AddListener(() => characterInteraction.SitDownAtThisChair(gameObject));
@@ -55,12 +56,12 @@ public class StudentChairSitHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            sitButton.onClick.RemoveAllListeners();
-            sitButton.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InOutExpo)
-                .OnComplete(() => sitButton.gameObject.SetActive(false));
-            print("²¨Áü");
-            if (characterInteraction != null)
+            if (characterInteraction != null && characterInteraction.photonView.IsMine)
             {
+                sitButton.onClick.RemoveAllListeners();
+                sitButton.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InOutExpo)
+                    .OnComplete(() => sitButton.gameObject.SetActive(false));
+                print("²¨Áü");
                 characterInteraction.OnSitStatusChanged -= UpdateButtonStatus;
             }
         }
