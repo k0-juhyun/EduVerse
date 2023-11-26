@@ -187,6 +187,7 @@ public class TeacherInteraction : MonoBehaviourPun
 
 #if UNITY_ANDROID
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
+            WWW www = new WWW(objFilePath);
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
 #else

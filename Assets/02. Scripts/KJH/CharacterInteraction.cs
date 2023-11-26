@@ -237,6 +237,39 @@ public class CharacterInteraction : MonoBehaviourPun
         print("몇번");
         currentChair = chair.gameObject;
         SetSitStatus(true);
+        StudentChairSitHandler chairHandler = currentChair.GetComponent<StudentChairSitHandler>();
+        if (chairHandler != null)
+        {
+            photonView.RPC("MarkChairAsOccupied", RpcTarget.All, currentChair.name);
+        }
+    }
+
+    [PunRPC]
+    public void MarkChairAsOccupied(string chairName)
+    {
+        GameObject chairObject = GameObject.Find(chairName);
+        if (chairObject != null)
+        {
+            StudentChairSitHandler chairHandler = chairObject.GetComponent<StudentChairSitHandler>();
+            if (chairHandler != null)
+            {
+                chairHandler.isOccupied = true;
+            }
+        }
+    }
+
+    [PunRPC]
+    public void MarkChairAsUnoccupied(string chairName)
+    {
+        GameObject chairObject = GameObject.Find(chairName);
+        if (chairObject != null)
+        {
+            StudentChairSitHandler chairHandler = chairObject.GetComponent<StudentChairSitHandler>();
+            if (chairHandler != null)
+            {
+                chairHandler.isOccupied = false;
+            }
+        }
     }
 
     [PunRPC]
@@ -276,6 +309,13 @@ public class CharacterInteraction : MonoBehaviourPun
                 standUpPosition.y = 0; // 또는 적절한 높이 설정
 
                 SetCharacterPosition(standUpPosition);
+
+                StudentChairSitHandler chairHandler = currentChair.GetComponent<StudentChairSitHandler>();
+                if (chairHandler != null)
+                {
+                    photonView.RPC("MarkChairAsUnoccupied", RpcTarget.All, currentChair.name);
+                }
+                currentChair = null;
             }
 
             rb.useGravity = true;
@@ -580,18 +620,26 @@ public class CharacterInteraction : MonoBehaviourPun
         Character.transform.rotation = rotation;
     }
 
-    public void SitDownAtThisChair(GameObject chairObject)
+    public void SitDownAtThisChair(GameObject chairObject, StudentChairSitHandler chairHandler)
     {
         if (chairObject != null && !_isSit && DataBase.instance.userInfo.isteacher == false)
         {
-            Collider chairCollider = chairObject.GetComponent<Collider>();
-            if (chairCollider != null)
+            if (!chairHandler.isOccupied)  // 의자가 이미 사용 중인지 확인
             {
-                SitDown(chairCollider);
-                _isSit = true;
+                Collider chairCollider = chairObject.GetComponent<Collider>();
+                if (chairCollider != null)
+                {
+                    SitDown(chairCollider);
+                    _isSit = true;
+                    chairHandler.isOccupied = true;
+                }
             }
         }
-        else if (chairObject != null && !_isSit && DataBase.instance.userInfo.isteacher)
+    }
+
+    public void SitDownTeacherChair(GameObject chairObject)
+    {
+        if (chairObject != null && !_isSit && DataBase.instance.userInfo.isteacher)
         {
             Collider chairCollider = chairObject.GetComponent<Collider>();
             if (chairCollider != null)

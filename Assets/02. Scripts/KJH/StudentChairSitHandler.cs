@@ -9,6 +9,8 @@ public class StudentChairSitHandler : MonoBehaviour
     public Button sitButton;
     private CharacterInteraction characterInteraction;
 
+    [HideInInspector] public bool isOccupied = false;
+
     private void OnEnable()
     {
         if (characterInteraction != null)
@@ -34,7 +36,7 @@ public class StudentChairSitHandler : MonoBehaviour
             if (characterInteraction != null && characterInteraction.photonView.IsMine)
             {
                 StartCoroutine(ICheckSit());
-                sitButton.onClick.AddListener(() => characterInteraction.SitDownAtThisChair(gameObject));
+                sitButton.onClick.AddListener(() => characterInteraction.SitDownAtThisChair(gameObject,this));
                 sitButton.gameObject.transform.localScale = Vector3.zero;
 
                 if (!characterInteraction._isSit)

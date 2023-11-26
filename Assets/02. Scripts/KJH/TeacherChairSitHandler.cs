@@ -33,7 +33,7 @@ public class TeacherChairSitHandler : MonoBehaviour
             {
                 StartCoroutine(ICheckSit());
 
-                sitButton.onClick.AddListener(() => characterInteraction.SitDownAtThisChair(gameObject));
+                sitButton.onClick.AddListener(() => characterInteraction.SitDownTeacherChair(gameObject));
                 sitButton.gameObject.transform.localScale = Vector3.zero;
 
                 if (!characterInteraction._isSit)

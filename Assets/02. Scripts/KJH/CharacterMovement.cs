@@ -136,7 +136,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         // 조이스틱 방향으로 움직임
         Vector3 moveDirection = new Vector3(value.x, 0, value.y);
-        print(value);
+        //print(value);
 
         moveSpeed = Mathf.Lerp(minSpeed, maxSpeed, animParameters);
 
