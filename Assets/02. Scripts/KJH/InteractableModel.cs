@@ -51,6 +51,7 @@ public class InteractableModel : MonoBehaviourPun
                     deleteAreaImage.rectTransform, Input.mousePosition, null))
                 {
                     mesh.gameObject.transform.DOScale(0.1f,0.5f).SetEase(Ease.InQuart).OnComplete(() => PhotonNetwork.Destroy(mesh));
+                    SoundManager.instance?.PlaySFX(SoundManager.SFXClip.Button2);
                 }
             }
         }

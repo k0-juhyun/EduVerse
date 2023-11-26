@@ -22,6 +22,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     [Space(20)]
     public GameObject CommentaryPanel;
+ 
 
     // MyQuizStorage에 퀴즈 담기
     Quiz_ quiz = new Quiz_();
@@ -95,6 +96,8 @@ public class LoadQuizPrefab : MonoBehaviourPun
         }
         return parent;
     }
+
+    
 }
 
 

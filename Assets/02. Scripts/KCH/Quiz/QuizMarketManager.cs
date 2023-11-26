@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuizMarketManager : MonoBehaviour
 {
@@ -10,15 +11,19 @@ public class QuizMarketManager : MonoBehaviour
     GameObject Unit_quiz;
 
     public GameObject QuizPrefab;
-    // L 키를 누르면 단원별로 Prefab이 들어가게 설정.
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
 
+    private GameObject lastClickedButton;
+
+    public Button[] sectionButtons;
+
+    private void Start()
+    {
+        foreach (var button in sectionButtons) 
+        {
+            button.onClick.AddListener(() => ToggleButtonColor(button.gameObject));
         }
     }
-    
+
     // 퀴즈 데이터 가져옴
     public virtual void unitOnBtnClick(string unit)
     {
@@ -86,5 +91,29 @@ public class QuizMarketManager : MonoBehaviour
 
         }
 
+    }
+
+    private void ToggleButtonColor(GameObject clickedButton)
+    {
+        // 현재 클릭된 버튼
+        Image currentColor = clickedButton.GetComponent<Image>();
+        Color originColor = currentColor.color;
+
+        if (lastClickedButton != null)
+        {
+            // 이전에 클릭된 버튼 색상변경
+            Image lastOutline = lastClickedButton.GetComponent<Image>();
+            if (lastOutline != null)
+            {
+                lastOutline.color = originColor;
+            }
+        }
+
+        if (currentColor != null)
+        {
+            // 사용자 지정 색상 설정
+            currentColor.color = new Color(245f / 255f, 189f / 255f, 27f / 255f);
+            lastClickedButton = clickedButton;
+        }
     }
 }
