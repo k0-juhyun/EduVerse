@@ -115,6 +115,8 @@ public class PEA_MyItemSlot : MonoBehaviour
     public Transform canvas;
     public GameObject toggleIsOnBG;
 
+    private bool isShowInClassroom;
+
     public Item Item
     {
         get { return item; }
@@ -135,7 +137,7 @@ public class PEA_MyItemSlot : MonoBehaviour
         myItemsJsonPath = Application.persistentDataPath + "/MyItems.txt";
 
         //selectToggle = GetComponentInChildren<Toggle>();
-        selectToggle.onValueChanged.AddListener((b) => OnSelectToggleValueChanged(b));
+        //selectToggle.onValueChanged.AddListener((b) => OnSelectToggleValueChanged(b));
         selectToggle.isOn = item.showInClassroom;
         toggleIsOnBG.SetActive(selectToggle.isOn);
 
@@ -144,6 +146,8 @@ public class PEA_MyItemSlot : MonoBehaviour
             selectToggle.gameObject.SetActive(false);
             toggleIsOnBG.SetActive(false);
         }
+
+        GetComponentInChildren<Button>().onClick.AddListener(OnClickBtn);
     }
 
     void Update()
@@ -200,10 +204,21 @@ public class PEA_MyItemSlot : MonoBehaviour
 
         if(SceneManager.GetActiveScene().buildIndex == 4)
         {
-            gameObject.SetActive(item.showInClassroom);
+            isShowInClassroom = item.showInClassroom;
+            gameObject.SetActive(isShowInClassroom);
             selectToggle.gameObject.SetActive(false);
             toggleIsOnBG.SetActive(false);
         }
+    }
+
+    public void OnClickBtn()
+    {
+        isShowInClassroom = !isShowInClassroom;
+        selectToggle.isOn = isShowInClassroom;
+        toggleIsOnBG.SetActive(isShowInClassroom);
+
+        item.showInClassroom = isShowInClassroom;
+        MyItemsManager.instance.EditItemData(item);
     }
 
     public void OnSelectToggleValueChanged(bool isSelected)
