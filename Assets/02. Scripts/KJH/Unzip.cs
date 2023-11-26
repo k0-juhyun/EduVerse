@@ -140,6 +140,7 @@ public class Unzip : MonoBehaviour
                         Directory.CreateDirectory(directory);
                     }
 
+                    print(completeFilePath);
                     entry.ExtractToFile(completeFilePath);
                 }
             }
