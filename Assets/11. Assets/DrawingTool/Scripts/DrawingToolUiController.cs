@@ -31,6 +31,12 @@ public class DrawingToolUiController : MonoBehaviour
             newButton.GetComponent<Image>().color = drawingTool.brushColours[i]; //Set the colour of the button to be the colour it represents
             newButton.name = "Button_Colour_" + i; //Give it the naming convention that allows its index to be split in the ColourButtonController.cs file
         }
+
+        // 학생만 UI 안보이게
+        if (!DataBase.instance.userInfo.isteacher)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void UpdateWidth() {
