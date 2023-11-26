@@ -21,6 +21,7 @@ public class StudentChairSitHandler : MonoBehaviour
     {
         if (characterInteraction != null)
         {
+            characterInteraction.SetToIdleState();
             characterInteraction.OnSitStatusChanged -= UpdateButtonStatus;
         }
     }

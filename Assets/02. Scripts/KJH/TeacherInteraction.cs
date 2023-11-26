@@ -325,6 +325,7 @@ public class TeacherInteraction : MonoBehaviourPun
     {
         photonView.RPC("OnClickDisableDeskRPC", RpcTarget.All);
 
+        photonView.RPC("animPlayRPC", RpcTarget.Others, "Idle");
         characterInteraction.SetPlayerIdle();
 
         print("책상 없애기");

@@ -292,7 +292,8 @@ public class CharacterInteraction : MonoBehaviourPun
             photonView.RPC("SetIsSitRPC", RpcTarget.Others);
             print("강제착석");
 
-            print("앉기");
+            photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
+            print("화면전환");
         }
     }
 
@@ -302,6 +303,13 @@ public class CharacterInteraction : MonoBehaviourPun
         print("학생들 서게하기");
     }
 
+    public void SetToIdleState()
+    {
+        if (_isSit)
+        {
+            StandUp();
+        }
+    }
 
     // TPS랑 FPS 카메라 전환
     public void OnCameraButtonClick()
