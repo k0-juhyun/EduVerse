@@ -2500,7 +2500,7 @@ namespace Paroxe.PdfRenderer
 
             PDFPageTextureHolder holder_ = m_PageTextureHolders[0];
 
-            Color customColor = new Color(0.71f, 0.71f, 0.71f, 1.0f); // 0.71은 B7B7B7을 0에서 1 사이의 값으로 변환한 것입니다.
+            Color customColor = new Color(111f / 255f, 198f / 255f, 243f / 255f, 1.0f); // 0.71은 B7B7B7을 0에서 1 사이의 값으로 변환한 것입니다.
 
             RawImage rawImage = holder_.Page.GetComponent<RawImage>();
             if (rawImage != null)

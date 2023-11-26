@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,8 @@ public class CommentaryPanel : MonoBehaviour
     }
     public void OffPanelBtnClick()
     {
-        Destroy(gameObject);
+        transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.5f).SetEase(Ease.InBack).OnComplete(() => Destroy(gameObject));
+
+
     }
 }
