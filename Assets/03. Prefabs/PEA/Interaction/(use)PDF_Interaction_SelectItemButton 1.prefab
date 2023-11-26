@@ -277,8 +277,8 @@ RectTransform:
   m_GameObject: {fileID: 4295732016407039712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6296451043955176339}
   m_Father: {fileID: 0}
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4295732016407039712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
   m_Name: 
@@ -427,6 +427,7 @@ MonoBehaviour:
   scaleMultiplier: 0.9
   hoverScaleMultiplier: 1.2
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &6500581377071784358
 GameObject:
   m_ObjectHideFlags: 0
