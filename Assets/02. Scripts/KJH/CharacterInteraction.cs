@@ -18,6 +18,8 @@ using UnityEngine.UI;
 
 public class CharacterInteraction : MonoBehaviourPun
 {
+    private bool isLesson = false;
+
     [Header("캐릭터")]
     public GameObject Character;
     [Space]
@@ -355,6 +357,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
     public void OnFocusBtnClick()
     {
+        isLeaving = !isLeaving;
         if (!_isSit)
         {
             photonView.RPC("animPlayRPC", RpcTarget.Others, "Sit");
@@ -365,6 +368,7 @@ public class CharacterInteraction : MonoBehaviourPun
             print("화면전환 준비 완료");
         }
         photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
+        SoundManager.instance.BGMPlayOrStop(!isLeaving);
     }
 
     public void SetPlayerIdle()
@@ -436,6 +440,7 @@ public class CharacterInteraction : MonoBehaviourPun
         }
         characterMovement.SpareCanvas.gameObject.SetActive(!characterMovement.CharacterCanvas.gameObject.activeSelf);
         LoadButton.instance.Interaction(characterMovement.SpareCanvas.activeSelf);
+        SoundManager.instance.BGMPlayOrStop(!characterMovement.SpareCanvas.activeInHierarchy);
     }
 
     public void OnXButtonClick()

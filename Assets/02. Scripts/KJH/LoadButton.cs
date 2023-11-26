@@ -203,6 +203,7 @@ public class LoadButton : MonoBehaviourPun
             {
                 //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
 
+                photonView.RPC(nameof(DestroyAllButtons), RpcTarget.All);
                 foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
                 {
                     if (curPage == buttonPositionData.page)
