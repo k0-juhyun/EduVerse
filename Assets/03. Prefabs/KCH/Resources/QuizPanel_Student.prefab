@@ -217,7 +217,6 @@ GameObject:
   - component: {fileID: 827719507373272355}
   - component: {fileID: 3981244693181591189}
   - component: {fileID: 5963163070034379780}
-  - component: {fileID: 3140756669540642081}
   m_Layer: 5
   m_Name: QuizPanel_Student
   m_TagString: Untagged
@@ -326,6 +325,7 @@ MonoBehaviour:
   correct: {fileID: 8026497821216873325}
   incorrect: {fileID: 2964724087977439994}
   CommentaryPrefab: {fileID: 984857928978853956, guid: 069732415dcb89846ba614688a74a293, type: 3}
+  Panel: {fileID: 1934725010981026920}
 --- !u!114 &5963163070034379780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,21 +348,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3140756669540642081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620511501210244931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f28ef51718209d4b89ba68c9c13c619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationDuration: 0.5
-  startScale: {x: 0.1, y: 0.1, z: 0.1}
-  endScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &1897492460146059172
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,6 +439,7 @@ GameObject:
   - component: {fileID: 3433836620818888849}
   - component: {fileID: 8547104277737385353}
   - component: {fileID: 5255912867557678808}
+  - component: {fileID: 4274438004916669990}
   m_Layer: 5
   m_Name: QuizPanel_Student
   m_TagString: Untagged
@@ -524,6 +510,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4274438004916669990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934725010981026920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f28ef51718209d4b89ba68c9c13c619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationDuration: 0.5
+  startScale: {x: 0.1, y: 0.1, z: 0.1}
+  endScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &2964724087977439994
 GameObject:
   m_ObjectHideFlags: 0
