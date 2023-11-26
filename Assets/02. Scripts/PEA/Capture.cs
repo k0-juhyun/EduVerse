@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
-
+using DG.Tweening;
 
 public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -222,7 +222,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     // TagText(Clone)
     public void OnClickBackBtn()
     {
-        captureResult.SetActive(false);
+        captureResult.transform.DOScale(new Vector3(0.1f,0.1f,0.1f), 0.5f).SetEase(Ease.InBack).OnComplete(() => captureResult.SetActive(false));
         Blur(false);
 
         rtCaptureArea.sizeDelta = Vector2.zero;

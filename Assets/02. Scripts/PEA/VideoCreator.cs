@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections;
 using System;
 using UnityEngine.Video;
+using DG.Tweening;
 
 [System.Serializable]
 public struct ServerToJson
@@ -348,7 +349,8 @@ public class VideoCreator : MonoBehaviour
     public void OnQuizPanelCancelBtnClick()
     {
         Question.text = "»ý¼ºÁß....";
-        QuizPanel.SetActive(false);
+        QuizPanel.transform.DOScale(new Vector3(0.1f,0.1f,0.1f), 0.5f).SetEase(Ease.InBack).OnComplete(() => QuizPanel.SetActive(false));
+
         incorrect.SetActive(false);
         wrong.SetActive(false);
         Blur(false);
