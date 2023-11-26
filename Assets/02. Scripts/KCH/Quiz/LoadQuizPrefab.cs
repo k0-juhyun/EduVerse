@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+
 public class LoadQuizPrefab : MonoBehaviourPun
 {
   
@@ -24,6 +25,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     // MyQuizStorage에 퀴즈 담기
     Quiz_ quiz = new Quiz_();
+
     public void Question_Answer(string title, string answer,string unit,string commentary)
     {
         // 퀴즈 담기
@@ -38,6 +40,7 @@ public class LoadQuizPrefab : MonoBehaviourPun
 
     public void SaveQuestion()
     {
+        SoundManager.instance?.PlaySFX(SoundManager.SFXClip.Button2);
         // 문제 담기.
         if (CheckOff.activeSelf)
         {

@@ -97,7 +97,7 @@ public class Customization : MonoBehaviour
                     int meshIndex = System.Array.IndexOf(part.partButton, button);
                     button.onClick.AddListener(() => SetMesh(part, meshIndex));
                     button.onClick.AddListener(() => ToggleButtonParentOutline(parentParentObject));
-                    button.onClick.AddListener(() => SoundManager.instance.PlaySFX(SoundManager.SFXClip.Button));
+                    button.onClick.AddListener(() => SoundManager.instance.PlaySFX(SoundManager.SFXClip.Button1));
                     //button.gameObject.AddComponent<ButtonClickSoundHandler>().ButtonClickSound = buttonSfx;
                 }
             }
