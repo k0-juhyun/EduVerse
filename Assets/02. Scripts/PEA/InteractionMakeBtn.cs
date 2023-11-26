@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
-public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject deleteImage; // 삭제 이미지
@@ -38,6 +39,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
 
     void Start()
     {
+        gameObject.transform.DOScale(1.0f, 0.5f).SetEase(Ease.OutBack);
         //btn = GetComponent<Button>();
         //btn.onClick.AddListener(ShowItemList);
 
@@ -121,6 +123,22 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
             print("삭제가능");
             deleteImage.SetActive(true); // 삭제 이미지 활성화
             deleteImageActivated = true;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (gameObject == eventData.pointerCurrentRaycast.gameObject)
+        {
+            transform.DOScale(Vector3.one * 1.2f, 0.5f).SetEase(Ease.OutBack);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!itemList.activeSelf)
+        {
+            transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
         }
     }
 }
