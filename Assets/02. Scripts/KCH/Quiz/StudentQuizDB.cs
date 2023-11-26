@@ -43,7 +43,7 @@ public class StudentQuizDB : MonoBehaviour
 
     public void LoadQuizData()
     {
-        // 2단원 틀린 개수만큼 로드
+        // 단원 틀린 개수만큼 로드
         foreach (titleinfo titleinfos in studentQuizinfo.Unit_1.IncorrectAnswer)
         {
             // viewport 자식에 추가.
@@ -93,11 +93,10 @@ public class StudentQuizDB : MonoBehaviour
         //if(viewport.transform.childCount == 0)
         LoadQuizData();
     }
+
     public void OffIncorrectNoteBtnClick()
     {
         IncorrectNotePanel.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InBack)
             .OnComplete(() => IncorrectNotePanel.SetActive(false));
     }
-
-
 }

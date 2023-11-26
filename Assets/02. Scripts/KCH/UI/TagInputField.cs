@@ -8,6 +8,7 @@ public class TagInputField : MonoBehaviour
 {
     public GameObject TagText;
     public TMP_InputField playerNameInput;
+    public Text tagText;
 
     private void Start()
     {
@@ -24,12 +25,13 @@ public class TagInputField : MonoBehaviour
         foreach (Transform childTransform in parentTransform)
         {
             // 각 자식 객체의 이름을 출력합니다.
-            if(childTransform.gameObject.name == "TagText(Clone)")
+            if (childTransform.gameObject.name == "TagText(Clone)")
             {
                 Destroy(childTransform.gameObject);
             }
         }
     }
+
     public void EnterTxtBtn(string s)
     {
         // 부모 오브젝트를 찾습니다.
@@ -47,11 +49,29 @@ public class TagInputField : MonoBehaviour
 
         // 만약 이 자식이 첫 번째 자식이어야 한다면,
         // 다른 형제들을 뒤로 밀어내야 합니다.
-        
+
         // inputField 가장 뒤로 밀기.
         playerNameInput.transform.SetAsLastSibling();
 
         playerNameInput.text = string.Empty;
+
+        // 자식 카운트로 tag 변경
+        switch (parentTransform.childCount)
+        {
+            case 1:
+                tagText.text = "문제";
+                break;
+            case 2:
+                tagText.text = "과목";
+                break;
+            case 3:
+                tagText.text = "단원";
+                break;
+            case 4:
+                tagText.text = "제목";
+                break;
+        }
+
 
     }
     public void BackBtn()
@@ -61,6 +81,7 @@ public class TagInputField : MonoBehaviour
 
         // 부모 객체에 있는 모든 자식객체 가져옴
 
+
         foreach (Transform childTransform in parentTransform)
         {
             // 각 자식 객체의 이름을 출력합니다.
@@ -69,5 +90,31 @@ public class TagInputField : MonoBehaviour
                 Destroy(childTransform.gameObject);
             }
         }
+
+    }
+
+    public void tagchage()
+    {
+        Transform parentTransform = transform;
+
+        Debug.Log(parentTransform.childCount);
+
+        // 이걸 먼저 실행하고 오브젝트를 지우기 때문에 +1을 해준다.
+        switch (parentTransform.childCount)
+        {
+            case 2:
+                tagText.text = "문제";
+                break;
+            case 3:
+                tagText.text = "과목";
+                break;
+            case 4:
+                tagText.text = "단원";
+                break;
+            case 5:
+                tagText.text = "제목";
+                break;
+        }
+
     }
 }

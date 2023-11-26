@@ -82,8 +82,8 @@ public class Quiz : MonoBehaviourPun
             quizTime2.text = time_.ToString();
             if (0.1f >= Quiz.instance.setTime)
             {
-                quizTime.text = "¶¯!";
-                quizTime2.text = "¶¯!";
+                quizTime.text = "½Ã°£Á¾·á";
+                quizTime2.text = "½Ã°£Á¾·á";
             }
         }
 
