@@ -33,6 +33,7 @@ public class Quiz : MonoBehaviourPun
 
     GameObject quizPanel;
     public TextMeshProUGUI quizTime;
+    public TextMeshProUGUI quizTime2;
     public GameObject Quizplate;
     public GameObject Logo;
 
@@ -78,9 +79,11 @@ public class Quiz : MonoBehaviourPun
         {
             time_ = Mathf.FloorToInt(Quiz.instance.setTime);
             quizTime.text = time_.ToString();
+            quizTime2.text = time_.ToString();
             if (0.1f >= Quiz.instance.setTime)
             {
-                quizTime.text = "獣娃 段引";
+                quizTime.text = "強!";
+                quizTime2.text = "強!";
             }
         }
 
