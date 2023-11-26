@@ -95,9 +95,9 @@ public class MyItemsManager : MonoBehaviour
                     break;
             }
 
+            print(myItems.data[i].itemName + " : " + myItems.data[i].itemPath);
             myItemsDictionary.Add(myItems.data[i].itemPath, myItems.data[i]);
         }
-
     }
 
     public MyItems GetMyItems()
