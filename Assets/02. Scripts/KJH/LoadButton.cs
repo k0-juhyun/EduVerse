@@ -208,6 +208,7 @@ public class LoadButton : MonoBehaviourPun
                     {
                         foreach (ButtonPosition buttonPosition in buttonPositionData.buttonPositions)
                         {
+                            print(buttonPosition.buttonName);
                             photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, (int)buttonPosition.item.itemType, buttonPosition.item.itemName, buttonPosition.item.itemPath, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
                         }
                     }
@@ -309,7 +310,8 @@ public class LoadButton : MonoBehaviourPun
 
         // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
         // 아이템들 경로/ 파일 이름까지 똑같아야 함
-        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemPath)));
+        //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemPath)));
+        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
     }
 
     [PunRPC]

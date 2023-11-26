@@ -44,6 +44,14 @@ public class Unzip : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
+    public void UnZipAndroid(string zipPath, string extractPath)
+    {
+        print("UnzipAndroid, " + zipPath);
+        StartCoroutine(IUnlZipAndroid(zipPath, extractPath));
+    }
+#endif
+
+#if UNITY_ANDROID
     private IEnumerator ExtractAllZipsInAndroid()
     {
         string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, "*.zip");
@@ -61,6 +69,23 @@ public class Unzip : MonoBehaviour
 
         ExtractZip(filePath, extractionPath);
     }
+
+    private IEnumerator IUnlZipAndroid(string zipPath, string extractPath)
+    {
+        WWW www = new WWW(zipPath);
+        yield return www;
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogError("Error loading zip: " + www.error);
+            yield break;
+        }
+
+        string filePath = Path.Combine(extractPath, "*.zip");
+        File.WriteAllBytes(filePath, www.bytes);
+
+        ExtractZip(filePath, extractPath);
+    }
 #endif
 
 #if UNITY_STANDALONE
@@ -76,18 +101,23 @@ public class Unzip : MonoBehaviour
 
     public void RunZip(string zip, string extractionPath = "")
     {
+        print("RunZip");
         ExtractZip(zip, extractionPath.Equals("") ? this.extractionPath : extractionPath);
         // File.Delete(zip); // 필요에 따라 압축 파일 삭제
     }
 
     void ExtractZip(string zipPath, string extractionPath)
     {
+        print("ExtractZip");
         try
         {
+            print("try");
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
+                print("using");
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
+                    print("foreach");
                     string completeFilePath = Path.Combine(extractionPath, entry.FullName);
 
                     if (File.Exists(completeFilePath))
