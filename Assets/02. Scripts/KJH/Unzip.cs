@@ -43,11 +43,13 @@ public class Unzip : MonoBehaviour
     }
 #endif
 
+#if UNITY_ANDROID
     public void UnZipAndroid(string zipPath, string extractPath)
     {
         print("UnzipAndroid, " + zipPath);
         StartCoroutine(IUnlZipAndroid(zipPath, extractPath));
     }
+#endif
 
 #if UNITY_ANDROID
     private IEnumerator ExtractAllZipsInAndroid()

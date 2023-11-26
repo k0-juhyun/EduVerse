@@ -77,10 +77,24 @@ public class FileSettings : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + "/MarketItems/");
         }
 
-        foreach(Texture2D texture in marketImageItems)
+        //foreach(Texture2D texture in marketImageItems)
+        //{
+        //    print("아아 : " + texture.name);
+        //    File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + texture.name + ".png", texture.EncodeToPNG());
+        //}
+
+        foreach (Texture2D compressedTexture in marketImageItems)
         {
-            print("아아 : " + texture.name);
-            File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + texture.name + ".png", texture.EncodeToPNG());
+            // 압축 해제를 위한 새로운 Texture2D 생성
+            Texture2D uncompressedTexture = new Texture2D(compressedTexture.width, compressedTexture.height);
+            uncompressedTexture.SetPixels(compressedTexture.GetPixels());
+            uncompressedTexture.Apply();
+
+            // 파일로 저장
+            File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + compressedTexture.name + ".png", uncompressedTexture.EncodeToPNG());
+
+            // 메모리 해제
+            //Destroy(uncompressedTexture);
         }
     }
 }
