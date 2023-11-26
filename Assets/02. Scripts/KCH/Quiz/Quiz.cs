@@ -78,8 +78,13 @@ public class Quiz : MonoBehaviourPun
         if (isQuiz)
         {
             time_ = Mathf.FloorToInt(Quiz.instance.setTime);
-            quizTime.text = time_.ToString();
-            quizTime2.text = time_.ToString();
+
+            if(quizTime.transform.gameObject.activeSelf)
+                quizTime.text = time_.ToString();
+
+            if (quizTime2.transform.gameObject.activeSelf)
+                quizTime2.text = time_.ToString();
+
             if (0.1f >= Quiz.instance.setTime)
             {
                 quizTime.text = "시간종료";
@@ -116,8 +121,13 @@ public class Quiz : MonoBehaviourPun
     [PunRPC]
     private void DestroyOtherQuizPanels()
     {
-        // OX 발판 띄워주기
-        Quizplate.SetActive(true);
+
+        if(DataBase.instance.userInfo.isteacher)
+            quizTime2.gameObject.SetActive(true);
+        else quizTime.gameObject.SetActive(true);
+
+                // OX 발판 띄워주기
+                Quizplate.SetActive(true);
         Logo.SetActive(false);
         GameObject[] quizPanels = GameObject.FindGameObjectsWithTag("QuizPanel");
 
