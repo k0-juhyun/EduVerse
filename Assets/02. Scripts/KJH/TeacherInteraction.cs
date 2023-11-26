@@ -198,6 +198,7 @@ public class TeacherInteraction : MonoBehaviourPun
                 importedObj.transform.SetParent(objectToPlace.transform); // Set parent.
                 importedObj.transform.localPosition = Vector3.zero;
                 importedObj.transform.localRotation = Quaternion.identity;
+                importedObj.transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
 
                 // 메시의 노말을 뒤집습니다.
                 Mesh mesh = importedObj.GetComponentInChildren<MeshFilter>().mesh;
