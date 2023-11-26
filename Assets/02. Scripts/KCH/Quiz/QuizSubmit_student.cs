@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Photon.Pun;
+using DG.Tweening;
+
 public class QuizSubmit_student : MonoBehaviourPun
 {
 
@@ -14,6 +16,8 @@ public class QuizSubmit_student : MonoBehaviourPun
     public GameObject correct;
     public GameObject incorrect;
     public GameObject CommentaryPrefab;
+
+    public GameObject Panel;
 
     bool correctCheck;
     bool desoryPanelCheck =true;
@@ -151,14 +155,17 @@ public class QuizSubmit_student : MonoBehaviourPun
         if (result)
         {
             yield return new WaitForSeconds(3);
-            Destroy(gameObject);
+            Panel.transform.DOScale(new Vector3(0.1f,0.1f,0.1f),0.5f).SetEase(Ease.InBack).OnComplete(() => Destroy(gameObject));
+
         }
         else
         {
             // 코멘트 패널이 띄워지면 안사라지게.
             yield return new WaitForSeconds(3);
             if(desoryPanelCheck)
-            Destroy(gameObject);
+
+            Panel.transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.5f).SetEase(Ease.InBack).OnComplete(() => Destroy(gameObject));
+
         }
     }
 
