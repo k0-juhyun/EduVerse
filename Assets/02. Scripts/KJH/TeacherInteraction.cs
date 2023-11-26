@@ -149,8 +149,6 @@ public class TeacherInteraction : MonoBehaviourPun
         {
             GameObject modelToSpawn = DataBase.instance.model.spawnPrefab[modelIndex];
 
-            print(modelToSpawn.name);
-
             // 포톤뷰를 가진 빈오브젝트를 불러와서
             objectToPlace = PhotonNetwork.Instantiate("3D_Models/mesh", player.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
@@ -166,7 +164,6 @@ public class TeacherInteraction : MonoBehaviourPun
 
                 // rpc 로 오브젝트 생성
                 photonView.RPC("LoadAndApplyOBJ", RpcTarget.AllBuffered, modelToSpawn.name, objectToPlace.GetPhotonView().ViewID);
-                print(modelToSpawn.name);
             }
 
             else
@@ -182,14 +179,17 @@ public class TeacherInteraction : MonoBehaviourPun
         PhotonView targetPhotonView = PhotonView.Find(viewID);
         if (targetPhotonView != null)
         {
+            print("loadA");
             objectToPlace = targetPhotonView.gameObject;
-            print(modelName);
 
 #if UNITY_ANDROID
             string objFilePath = Application.persistentDataPath + "/3D_Models/ModelDatas/"+ modelName + ".obj";
             WWW www = new WWW(objFilePath);
+
+            print("filePath: "+ objFilePath);
             // OBJ 파일 로드
             GameObject importedObj = new OBJLoader().Load(objFilePath);
+            print(importedObj);
 #else
             GameObject importedObj = new OBJLoader().Load(Application.persistentDataPath + "/3D_Models/ModelDatas/" + modelName + ".obj");
 #endif

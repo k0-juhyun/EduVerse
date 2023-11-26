@@ -106,10 +106,11 @@ public class DataBase : MonoBehaviour
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
 #if UNITY_ANDROID
-        //string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
-        string path = Application.streamingAssetsPath + "/";
+        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+        //string path = Application.streamingAssetsPath + "/";
 #elif UNITY_EDITOR
-        string path = Application.streamingAssetsPath+"/";
+        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+        //string path = Application.streamingAssetsPath+"/";
 #elif UNITY_STANDALONE
         string path = Application.streamingAssetsPath+"/";
 #endif
@@ -117,22 +118,20 @@ public class DataBase : MonoBehaviour
         print("알집 경로: " + path);
         try
         {
-            //string[] zipFiles = Directory.GetFiles(path, "*.zip");
-            string[] zipFiles = Directory.GetFiles(path, "*.obj");
+            string[] objFiles = Directory.GetFiles(path, "*.obj");
 
-            model.spawnPrefab = new List<GameObject>(zipFiles.Length);
+            model.spawnPrefab = new List<GameObject>(objFiles.Length);
 
-            foreach (string zipFile in zipFiles)
+            foreach (string objFile in objFiles)
             {
-                string fileName = Path.GetFileNameWithoutExtension(zipFile);
+                string fileName = Path.GetFileNameWithoutExtension(objFile);
                 GameObject tempObject = new GameObject(fileName);
                 model.spawnPrefab.Add(tempObject);
-                //print("데베: "+ tempObject.name);
+                print("오브젝트파일: "+ tempObject.name);
 
                 // 씬에 추가하는 방법
                 tempObject.transform.SetParent(this.transform);
             }
-
         }
         catch (System.Exception ex)
         {

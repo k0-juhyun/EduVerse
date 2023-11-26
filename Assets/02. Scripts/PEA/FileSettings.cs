@@ -51,9 +51,9 @@ public class FileSettings : MonoBehaviour
     {
 #if UNITY_ANDROID
         print("setting, Android");
-        unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
-        unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
-        unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
+        //unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
+        //unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
+        //unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
 
         Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
         unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/ModelDatas/");
