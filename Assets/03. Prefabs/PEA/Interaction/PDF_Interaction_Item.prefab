@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4984990201024714200}
   - component: {fileID: -7224590114725668066}
+  - component: {fileID: 4988635803940006530}
   m_Layer: 5
   m_Name: PDF_Interaction_Item
   m_TagString: Untagged
@@ -51,9 +52,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eaf587960a14ba41a962835cab11349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item:
+    itemType: 0
+    itemName: 
+    itemPath: 
+    isMine: 0
+    showInClassroom: 0
+    itemTexture: {fileID: 0}
+    gifThumbNailTexture: {fileID: 0}
+    gifBytes: 
+    gifSprites: []
+    gifDelayTime: 0
   image: {fileID: 2975992739145199623}
   rawImage: {fileID: 5366332931164701290}
   videoPlayer: {fileID: 380395784272184345}
+--- !u!114 &4988635803940006530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840720201438882698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff085e1061a4384bab8034608ef1a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDistance: 5
+  animationDuration: 0.2
 --- !u!1 &2960697891046138793
 GameObject:
   m_ObjectHideFlags: 0
