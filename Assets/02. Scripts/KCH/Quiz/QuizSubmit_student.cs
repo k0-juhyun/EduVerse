@@ -242,6 +242,7 @@ public class QuizSubmit_student : MonoBehaviourPun
         // 해설 패널 띄우고 그 안에 값 넣어줌.
         GameObject panel = Instantiate(CommentaryPrefab, transform);
         panel.GetComponent<ClassroomCommentary>().PutAnswer_Commentary(Answer,Commentary);
+        panel.transform.parent = Panel.transform;
         desoryPanelCheck = false;
     }
 
