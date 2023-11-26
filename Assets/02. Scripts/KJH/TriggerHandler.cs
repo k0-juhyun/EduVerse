@@ -18,9 +18,9 @@ public class TriggerHandler : MonoBehaviour
         parentScript?.HandleTriggerEnter(other);
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        // 부모 스크립트의 HandleTriggerStay 메소드 호출
-        parentScript?.HandleTriggerStay(other);
-    }
+    //void OnTriggerStay(Collider other)
+    //{
+    //    // 부모 스크립트의 HandleTriggerStay 메소드 호출
+    //    parentScript?.HandleTriggerStay(other);
+    //}
 }

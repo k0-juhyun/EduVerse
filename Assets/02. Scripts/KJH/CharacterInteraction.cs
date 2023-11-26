@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Photon.Pun;
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
@@ -56,6 +57,7 @@ public class CharacterInteraction : MonoBehaviourPun
     Scene scene;
 
     private GameObject currentChair = null;
+    public event Action OnSitDown;
 
     private void Awake()
     {
@@ -125,6 +127,11 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         _isSit = sitStatus;
         OnSitStatusChanged?.Invoke(_isSit);
+
+        if (_isSit)
+        {
+            OnSitDown?.Invoke(); // 착석 상태가 되면 이벤트 발생
+        }
     }
 
     public void HandleTriggerEnter(Collider other)
@@ -147,6 +154,24 @@ public class CharacterInteraction : MonoBehaviourPun
         if (photonView.IsMine && other.gameObject.name == "GotoGround")
         {
             NetworkManager.instance.ChangeRoom("5.GroundScene");
+        }
+
+    }
+
+    private IEnumerator WaitAndHandleChairInteraction(Collider chair)
+    {
+        // Btn_Sit 버튼이 눌릴 때까지 대기
+        yield return new WaitUntil(() => EventSystem.current.currentSelectedGameObject == Btn_Sit.gameObject);
+
+        // 버튼이 눌리면 해당 로직 실행
+        if (!_isSit)
+        {
+            SitDown(chair);
+            _isSit = true;
+        }
+        else
+        {
+            StandUp();
         }
     }
 
@@ -292,9 +317,9 @@ public class CharacterInteraction : MonoBehaviourPun
             photonView.RPC("SetIsSitRPC", RpcTarget.Others);
             print("강제착석");
 
-            photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
-            print("화면전환");
+            print("화면전환 준비 완료");
         }
+        photonView.RPC("SwitchAllStudentsCam", RpcTarget.Others);
     }
 
     public void SetPlayerIdle()
@@ -524,7 +549,7 @@ public class CharacterInteraction : MonoBehaviourPun
 
             case 5:
                 rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 720);
-                childrectTransform.anchoredPosition = new Vector3(10, 340, 0);
+                childrectTransform.anchoredPosition = new Vector3(10, 270, 0);
                 break;
 
             case 4:
