@@ -20,11 +20,10 @@ public class FileSettings : MonoBehaviour
     {
         unzip = GetComponent<Unzip>();
 
-
 #if UNITY_ANDROID
         print("streaming assets : " + Directory.Exists("jar:file://" + Application.dataPath + "!/assets/"));
         print("File_Settings : " + Directory.Exists("jar:file://" + Application.dataPath + "!/assets/File_Settings/"));
-        zipPath = "jar:file://" + Application.dataPath + "!/assets";
+        zipPath = "jar:file://" + Application.dataPath + "!/assets/File_Settings/";
         myItemJsonPath = "jar:file://" + Application.dataPath + "!/assets/File_Settings/MyItems.txt";
 #elif UNITY_EDITOR
         zipPath = Application.streamingAssetsPath + "/File_Settings/";

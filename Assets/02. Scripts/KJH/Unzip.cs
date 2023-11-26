@@ -21,8 +21,8 @@ public class Unzip : MonoBehaviour
 
 #if UNITY_EDITOR
         //에디터 환경에서는 StreamingAssets 폴더 내의 모든 zip 파일을 처리합니다.
-        string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
-        ExtractAllZipsInDirectory(streamingAssetsPath);
+        //string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
+        ExtractAllZipsInDirectory(Application.streamingAssetsPath + "/");
 #elif UNITY_ANDROID
         // 모바일 환경에서는 Android의 특성상 다른 접근 방식이 필요합니다.
         StartCoroutine(ExtractAllZipsInAndroid());
@@ -54,16 +54,23 @@ public class Unzip : MonoBehaviour
 #if UNITY_ANDROID
     private IEnumerator ExtractAllZipsInAndroid()
     {
+        print("ExtractAllZipInAndroid");
         string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, "*.zip");
+
+        print("ExtractAllInAndroid : 111111");
+
         WWW www = new WWW(streamingAssetsPath);
         yield return www;
 
+        print("ExtractAllZipInAndroid : 2222222");
         if (!string.IsNullOrEmpty(www.error))
         {
+            print("ExtractAllZipInAndroid Error");
             Debug.LogError("Error loading zip: " + www.error);
             yield break;
         }
 
+        print("ExtractAllZipInAndroid : 33333333");
         string filePath = Path.Combine(extractionPath, "*.zip");
         File.WriteAllBytes(filePath, www.bytes);
 
@@ -72,6 +79,7 @@ public class Unzip : MonoBehaviour
 
     private IEnumerator IUnlZipAndroid(string zipPath, string extractPath)
     {
+        print("start coroutine");
         WWW www = new WWW(zipPath);
         yield return www;
 

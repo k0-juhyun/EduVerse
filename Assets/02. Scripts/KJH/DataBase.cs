@@ -67,7 +67,7 @@ public class DataBase : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadModelsFromResources();
+            //LoadModelsFromResources();
         }
         else
         {
