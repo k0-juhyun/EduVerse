@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Firebase.Auth;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +18,10 @@ public class GameManager : MonoBehaviour
 
     public Queue<string> makeObjectTags = new Queue<string>();
 
+    public FirebaseAuth auth;
+
+    PhotonView Mypv;
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,9 +29,19 @@ public class GameManager : MonoBehaviour
             Screen.SetResolution(1280, 800, true);
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+
+            GameManager[] gameManagers = FindObjectsOfType<GameManager>();
+            if (gameManagers.Length > 1)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Character = GameObject.Find("Character");
             if (Character != null)
                 customization = Character.GetComponent<Customization>();
+
+            Mypv = GetComponent<PhotonView>();
         }
         else
         {
@@ -37,6 +53,10 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //print("현재 연결 상태: "+PhotonNetwork.NetworkClientState);
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            SingOut();
+        }
     }
     public void SaveCharacterInfo()
     {
@@ -81,5 +101,16 @@ public class GameManager : MonoBehaviour
     public string GetMakeObejctTag()
     {
         return makeObjectTags.Dequeue();
+    }
+
+    // 로그아웃 photonview가 달려있는 오브젝트들은 씬으로 
+    public void SingOut()
+    {
+        Debug.Log(auth.CurrentUser);
+        auth.SignOut();
+        Debug.Log(auth.CurrentUser);
+        PhotonNetwork.LoadLevel(0);
+        Destroy(gameObject);
+        Destroy(MyQuizStorage.Instance.gameObject);
     }
 }
