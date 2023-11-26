@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public GameObject Camera;
     public GameObject CharacterCanvas;
     public GameObject SpareCanvas;
+    public GameObject Character;
 
     [Header("조이스틱")]
     public RectTransform rectBackground;
@@ -27,20 +28,17 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     public GameObject GreetButton;
     private GameObject QuizButton;
 
-    [Space][Header("캐릭터")] public GameObject Character;
-
-    [HideInInspector] public float moveSpeed = 2;
     private float radius;
     private float animParameters;
 
     [Space]
+    public float moveSpeed = 3;
     private float minSpeed = 0;
-    [Header("이동속도")]
-    [SerializeField]
-    private float maxSpeed = 2f;
+    private float maxSpeed = 3;
 
     private bool isTouch = false;
     private bool isRequest = false;
+    private bool gotFirstPos = false;
 
     private Vector3 movePos;
 
@@ -48,7 +46,6 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
-    private bool gotFirstPos = false;
 
     #region 포톤 값
     [HideInInspector]
@@ -196,8 +193,8 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
 
         if(SceneManager.GetActiveScene().name == "5.GroundScene")
         {
-            moveSpeed = 4;
-            maxSpeed = 4;
+            moveSpeed = 6;
+            maxSpeed = 6;
         }
     }
 
