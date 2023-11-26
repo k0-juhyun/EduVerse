@@ -1,39 +1,19 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class EnableEffectHandler : MonoBehaviour
+public class EnableEffectHandler : MonoBehaviour, IPointerEnterHandler
 {
     private Sequence mySequence;
+    private Vector3 originPos;
 
-    private void OnEnable()
+    private void Awake()
     {
-        StartBounceEffect();
+        originPos = this.transform.position;
     }
 
-    private void OnDisable()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (mySequence != null)
-        {
-            mySequence.Kill();
-        }
-    }
-
-    private void StartBounceEffect()
-    {
-        float bounceHeight = 0.5f; // Æ¢´Â ³ôÀÌ
-        float duration = 1f; // °¢ Æ¢´Â µ¿ÀÛÀÇ Áö¼Ó ½Ã°£
-        int bounces = 5; // Æ¢´Â È½¼ö
-
-        mySequence = DOTween.Sequence();
-
-        for (int i = 0; i < bounces; i++)
-        {
-            // ÅëÅë Æ¢´Â È¿°ú
-            mySequence.Append(transform.DOLocalMoveY(bounceHeight, duration).SetEase(Ease.OutQuad))
-                      .Append(transform.DOLocalMoveY(0, duration).SetEase(Ease.InQuad));
-
-        }
-
-        mySequence.Play();
+        transform.DOMove(originPos, 0.5f, true);
     }
 }

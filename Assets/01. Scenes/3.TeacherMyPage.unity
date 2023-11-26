@@ -2548,6 +2548,7 @@ GameObject:
   - component: {fileID: 93521765}
   - component: {fileID: 93521764}
   - component: {fileID: 93521763}
+  - component: {fileID: 93521766}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -2682,6 +2683,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93521761}
   m_CullTransparentMesh: 1
+--- !u!114 &93521766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93521761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &100600970
 GameObject:
   m_ObjectHideFlags: 0
@@ -6268,6 +6285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 211829999}
   - component: {fileID: 211830000}
+  - component: {fileID: 211830001}
   m_Layer: 5
   m_Name: "\uBA40\uD2F0\uBBF8\uB514\uC5B4"
   m_TagString: Untagged
@@ -6321,7 +6339,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 1, g: 0.8509804, b: 0.41568628, a: 1}
+    m_SelectedColor: {r: 1, g: 0.7490196, b: 0.023529412, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6357,6 +6375,22 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   m_IsOn: 1
+--- !u!114 &211830001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211829998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &213596300
 GameObject:
   m_ObjectHideFlags: 0
@@ -7588,6 +7622,7 @@ GameObject:
   - component: {fileID: 250667692}
   - component: {fileID: 250667691}
   - component: {fileID: 250667690}
+  - component: {fileID: 250667693}
   m_Layer: 5
   m_Name: Send Button(Object)
   m_TagString: Untagged
@@ -7722,6 +7757,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250667688}
   m_CullTransparentMesh: 1
+--- !u!114 &250667693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250667688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &252419516
 GameObject:
   m_ObjectHideFlags: 0
@@ -8807,6 +8858,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &271590909
 GameObject:
   m_ObjectHideFlags: 0
@@ -10186,6 +10238,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &293737904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10872,6 +10925,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &299933362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13427,6 +13481,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &350017275
 GameObject:
   m_ObjectHideFlags: 0
@@ -19168,6 +19223,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &473933822
 GameObject:
   m_ObjectHideFlags: 0
@@ -19843,7 +19899,6 @@ GameObject:
   - component: {fileID: 490321954}
   - component: {fileID: 490321953}
   - component: {fileID: 490321952}
-  - component: {fileID: 490321955}
   m_Layer: 5
   m_Name: "\uB4A4\uB85C\uAC00\uAE30"
   m_TagString: Untagged
@@ -19966,21 +20021,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 490321950}
   m_CullTransparentMesh: 1
---- !u!114 &490321955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490321950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleMultiplier: 1.1
-  hoverScaleMultiplier: 0.9
-  animationDuration: 0.2
 --- !u!1 &505025821
 GameObject:
   m_ObjectHideFlags: 0
@@ -22339,8 +22379,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d2c5013f72f5b274cb08072d4d7d5aa2, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -26769,6 +26809,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &695002152
 GameObject:
   m_ObjectHideFlags: 0
@@ -27596,6 +27637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 713900598}
   - component: {fileID: 713900599}
+  - component: {fileID: 713900600}
   m_Layer: 5
   m_Name: "\uD034\uC988"
   m_TagString: Untagged
@@ -27649,7 +27691,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 1, g: 0.8509804, b: 0.41568628, a: 1}
+    m_SelectedColor: {r: 1, g: 0.75074077, b: 0.02264148, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -27685,6 +27727,22 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!114 &713900600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713900597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &717192896
 GameObject:
   m_ObjectHideFlags: 0
@@ -29472,7 +29530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &766038715
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30374,6 +30432,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &776734994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31029,6 +31088,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &788360597
 GameObject:
   m_ObjectHideFlags: 0
@@ -42258,6 +42318,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1076238656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43617,6 +43678,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1122041571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45443,6 +45505,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1175366076
 GameObject:
   m_ObjectHideFlags: 0
@@ -45971,7 +46034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1187034835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47110,6 +47173,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1220495401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47327,6 +47391,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1226621608
 GameObject:
   m_ObjectHideFlags: 0
@@ -54063,6 +54128,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1431589010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55194,6 +55260,7 @@ GameObject:
   - component: {fileID: 1466463859}
   - component: {fileID: 1466463858}
   - component: {fileID: 1466463857}
+  - component: {fileID: 1466463861}
   m_Layer: 5
   m_Name: Send Button(GIF)
   m_TagString: Untagged
@@ -55328,6 +55395,22 @@ RectTransform:
   m_AnchoredPosition: {x: 154, y: -30}
   m_SizeDelta: {x: 108, y: 30}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1466463861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466463856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1467479850
 GameObject:
   m_ObjectHideFlags: 0
@@ -60747,6 +60830,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1630717405
 GameObject:
   m_ObjectHideFlags: 0
@@ -61828,8 +61912,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d2c5013f72f5b274cb08072d4d7d5aa2, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -62651,6 +62735,7 @@ GameObject:
   - component: {fileID: 1664524771}
   - component: {fileID: 1664524770}
   - component: {fileID: 1664524769}
+  - component: {fileID: 1664524772}
   m_Layer: 5
   m_Name: Send Button(Video)
   m_TagString: Untagged
@@ -62785,6 +62870,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664524767}
   m_CullTransparentMesh: 1
+--- !u!114 &1664524772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664524767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bea8cfc30ec11542b5669b59b2fb6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMultiplier: 1.1
+  hoverScaleMultiplier: 0.9
+  animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1667668046
 GameObject:
   m_ObjectHideFlags: 0
@@ -65162,6 +65263,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1711945433
 GameObject:
   m_ObjectHideFlags: 0
@@ -66099,6 +66201,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.3
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1736723256
 GameObject:
   m_ObjectHideFlags: 0
@@ -70898,6 +71001,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1880963841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72942,6 +73046,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 1.1
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1921624188
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -120,6 +120,8 @@ public class DataBase : MonoBehaviour
         {
             string[] objFiles = Directory.GetFiles(path, "*.obj");
 
+            print(objFiles.Length);
+
             model.spawnPrefab = new List<GameObject>(objFiles.Length);
 
             foreach (string objFile in objFiles)

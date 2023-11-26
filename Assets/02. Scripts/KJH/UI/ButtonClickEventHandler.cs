@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
@@ -12,10 +13,19 @@ public class ButtonClickEventHandler : MonoBehaviour, IPointerEnterHandler, IPoi
 
     private PopUpClickHandler popUpClickHandler;
 
-    void Start()
+    public Button thisButton;
+
+    void Awake()
     {
         originalScale = transform.localScale;
         popUpClickHandler = GetComponent<PopUpClickHandler>();
+        thisButton = GetComponent<Button?>();
+    }
+
+    void OnEnable()
+    {
+        // 오브젝트가 활성화될 때 원래 스케일로 복귀
+        transform.localScale = originalScale;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -32,11 +42,18 @@ public class ButtonClickEventHandler : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         // 클릭 시 스케일 확대
         transform.DOScale(originalScale * scaleMultiplier, animationDuration);
+        if (thisButton != null)
+            thisButton.onClick.AddListener(() => OnClickDisable());
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         // 클릭 끝날 때 원래 스케일로 복귀
+        transform.DOScale(originalScale, animationDuration);
+    }
+
+    private void OnClickDisable()
+    {
         transform.DOScale(originalScale, animationDuration);
     }
 }

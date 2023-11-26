@@ -10,7 +10,6 @@ public class ScreenTransition : MonoBehaviourPun
     GameObject subMainCam;
     public GameObject canvas;
     public GameObject teacherComputer;
-    public LoadButton loadButton;
 
     private StartStudy startStudy;
     bool camera;
@@ -62,6 +61,7 @@ public class ScreenTransition : MonoBehaviourPun
             //Voice.instance.ActiveToggleCanvas(false);
             // 오디오 리스너 에러
             transform.GetComponent<AudioListener>().enabled = true;
+            LoadButton.instance.DestroyAllButtons();
         }
 
         else
@@ -82,7 +82,7 @@ public class ScreenTransition : MonoBehaviourPun
             // 오디오 리스너 에러
 
             transform.GetComponent<AudioListener>().enabled = false;
-            loadButton.DestroyAllButtons();
+            LoadButton.instance.DestroyAllButtons();
         }
     }
 }
