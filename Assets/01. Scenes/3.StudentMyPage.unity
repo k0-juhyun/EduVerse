@@ -1047,7 +1047,6 @@ GameObject:
   - component: {fileID: 492450236}
   - component: {fileID: 492450235}
   - component: {fileID: 492450234}
-  - component: {fileID: 492450233}
   - component: {fileID: 492450232}
   m_Layer: 5
   m_Name: "\uB098\uAC00\uAE30"
@@ -1173,19 +1172,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &492450233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 492450230}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12db937b5ce4a9c4a9d0696d5eaf1c32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonClickSound: {fileID: 8300000, guid: d0b8ed5b772a9c24fa4a884e8fed5f60, type: 3}
 --- !u!114 &492450234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,6 +1187,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &492450235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2404,6 +2391,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &813566894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2669,6 +2657,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &848548925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3862,6 +3851,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!1 &1228458107
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,6 +5691,7 @@ MonoBehaviour:
   scaleMultiplier: 1.1
   hoverScaleMultiplier: 0.9
   animationDuration: 0.2
+  thisButton: {fileID: 0}
 --- !u!114 &1592597651
 MonoBehaviour:
   m_ObjectHideFlags: 0
