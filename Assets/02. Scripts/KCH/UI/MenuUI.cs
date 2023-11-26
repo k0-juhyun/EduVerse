@@ -141,7 +141,7 @@ public class MenuUI : MonoBehaviourPun
         #endregion
 
         // pdf 로드하면 총 페이지수 받아오기
-        pdfPage.GetCurDocumentPageCount();
+        //pdfPage.GetCurDocumentPageCount();
 
     }
 

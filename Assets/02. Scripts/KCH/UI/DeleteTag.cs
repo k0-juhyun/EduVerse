@@ -9,6 +9,8 @@ public class DeleteTag : MonoBehaviour
     const int adjustrect = 50;
     public void Deletetag()
     {
+        Transform parentTransform = transform.parent;
+        parentTransform.GetComponent<TagInputField>().tagchage();
         Destroy(gameObject);
     }
     private void Start()

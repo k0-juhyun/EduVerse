@@ -8,7 +8,7 @@ public class MyItemsManager : MonoBehaviour
 {
     public static MyItemsManager instance = null;
 
-    private MyItems myItems;
+    [SerializeField]private MyItems myItems;
     private GifLoad gifload;
 
     private Dictionary<string, Item> myItemsDictionary = new Dictionary<string, Item>();
@@ -42,6 +42,7 @@ public class MyItemsManager : MonoBehaviour
         print("LoadData");
         if (File.Exists(Application.persistentDataPath + "/MyItems.txt"))
         {
+            print("LoadData Persistent");
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
@@ -166,7 +167,7 @@ public class MyItemsManager : MonoBehaviour
 
     public void DeleteItem(Item item)
     {
-        foreach(Item myItem in myItems.data)
+        foreach (Item myItem in myItems.data)
         {
             if (myItem.itemPath.Equals(item.itemPath))
             {

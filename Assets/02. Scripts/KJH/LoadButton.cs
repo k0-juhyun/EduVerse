@@ -36,6 +36,7 @@ public class LoadButton : MonoBehaviourPun
     private string json;                  // 인터렉션 버튼 정보 json RPC로 넘겨줄거임
     private string filePath;
     private ButtonSessions allSessions;
+    [HideInInspector]public ScreenTransition screenTransition;
 
     [Space(10)]
     public Button createBtn;
@@ -198,10 +199,11 @@ public class LoadButton : MonoBehaviourPun
         // 교실 - 수업 중에는 RPC로 학생들한테도 인터렉션 버튼 보내기
         if(buildIndex == 4 ) 
         {
-            if (isLesson)
+            if (interactionCanvas.activeSelf)
             {
                 //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, json, curPage);
 
+                photonView.RPC(nameof(DestroyAllButtons), RpcTarget.All);
                 foreach (ButtonPositionData buttonPositionData in allSessions.sessions)
                 {
                     if (curPage == buttonPositionData.page)
@@ -306,7 +308,7 @@ public class LoadButton : MonoBehaviourPun
         GameObject newButton = Instantiate(inClassButtonPrefab, teachingData.transform);
         newButton.name = buttonName;
         RectTransform rectTransform = newButton.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(posX, posY);
+        rectTransform.anchoredPosition = new Vector2(posX, DataBase.instance.userInfo.isteacher ? posY : posY * (800f / 642f));
 
         // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
         // 아이템들 경로/ 파일 이름까지 똑같아야 함

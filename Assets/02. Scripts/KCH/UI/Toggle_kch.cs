@@ -17,6 +17,7 @@ public class Toggle_kch : MonoBehaviour
     public GameObject QuizTitle;
     public GameObject Quizexplain;
 
+    public Text tagText;
     private void OnEnable()
     {
         ToggleClick(true);
@@ -38,6 +39,9 @@ public class Toggle_kch : MonoBehaviour
 
             multimedioTitle.SetActive(true);
             mulitmedioexplain.SetActive(true);
+
+            // 태그 부분 수정.
+            tagText.text = "태그";
         }
         else
         {
@@ -53,7 +57,13 @@ public class Toggle_kch : MonoBehaviour
             multimedioTitle.SetActive(false);
             mulitmedioexplain.SetActive(false);
 
+            tagText.text = "문제";
         }
     }
+
+    // 퀴즈 버튼이고
+    // 자식 오브젝트의 개수만큼 값을 바꾸는 형식으로 가자.
+
+    
 
 }

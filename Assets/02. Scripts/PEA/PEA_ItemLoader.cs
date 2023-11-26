@@ -246,6 +246,7 @@ public class PEA_ItemLoader : MonoBehaviour
 
     public void DeleteAllMyItems()
     {
+        print("DeleteAllMyItems");
         if(File.Exists(Application.persistentDataPath + "/MyItems.txt"))
         {
             print("file exists");

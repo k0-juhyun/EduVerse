@@ -66,7 +66,7 @@ public class MyQuizStorage : MonoBehaviourPun
             Debug.Log("실행");
             GameObject quizPanel = Instantiate(QuizPanel_student_Ground);
 
-            quizPanel.GetComponent<RectTransform>().position = new Vector3(14, 4, 8);
+            quizPanel.GetComponent<RectTransform>().position = new Vector3(14, 5.6f, 8);
             quizPanel.GetComponent<QuizGroundPanel>().quizdata(question_, answer_, unit_ ,commentary_);
             //quizPanel의 문제와 정답을 등록해준다.
         }
