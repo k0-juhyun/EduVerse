@@ -11,7 +11,7 @@ public class ButtonsSound : MonoBehaviour
     {
         foreach(Button btn in buttons)
         {
-            btn.onClick.AddListener(() => SoundManager.instance.PlaySFX(SoundManager.SFXClip.Button));
+            btn.onClick.AddListener(() => SoundManager.instance?.PlaySFX(SoundManager.SFXClip.Button));
         }
     }
 }
