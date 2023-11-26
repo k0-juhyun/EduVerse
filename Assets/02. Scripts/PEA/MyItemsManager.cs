@@ -29,7 +29,7 @@ public class MyItemsManager : MonoBehaviour
     void Start()
     {
         gifload = GetComponent<GifLoad>();
-        //LoadData();
+        LoadData();
     }
 
     void Update()
@@ -45,6 +45,15 @@ public class MyItemsManager : MonoBehaviour
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/MyItems.txt");
             string json = Encoding.UTF8.GetString(bytes);
             myItems = JsonUtility.FromJson<MyItems>(json);
+            if(myItems == null)
+            {
+                myItems = new MyItems();
+                myItems.data = new List<Item>();
+            }
+            else if(myItems.data == null)
+            {
+                myItems.data = new List<Item>();
+            }
         }
         else
         {

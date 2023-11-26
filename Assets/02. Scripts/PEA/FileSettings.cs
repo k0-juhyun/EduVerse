@@ -35,7 +35,7 @@ public class FileSettings : MonoBehaviour
         gifZipPath = zipPath + "GIF.zip";
         gifThumbNailZipPath = zipPath + "GIFThumbNails.zip";
         videoZipPath = zipPath + "Videos.zip";
-        modelZipPath = zipPath + "3DModels.zip";
+        modelZipPath = zipPath + "ModelDatas.zip";
 
         zipExtractionPath = Application.persistentDataPath + "/";
 
@@ -56,7 +56,7 @@ public class FileSettings : MonoBehaviour
         //unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
 
         Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
-        unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/ModelDatas/");
+        unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/");
 #elif UNITY_EDITOR
         print("setting, editor");
         unzip.RunZip(gifZipPath, zipExtractionPath);
