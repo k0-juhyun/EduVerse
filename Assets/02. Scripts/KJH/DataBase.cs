@@ -106,8 +106,8 @@ public class DataBase : MonoBehaviour
     {
         // "Resources/3D_Models" 폴더 내의 모든 GameObject 프리팹을 불러옵니다.
 #if UNITY_ANDROID
-        //string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
-        string path = Application.streamingAssetsPath + "/";
+        string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
+        //string path = Application.streamingAssetsPath + "/";
 #elif UNITY_EDITOR
         string path = Application.streamingAssetsPath+"/";
 #elif UNITY_STANDALONE
