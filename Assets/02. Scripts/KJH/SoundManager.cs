@@ -107,6 +107,14 @@ public class SoundManager : MonoBehaviour
         //}
     }
 
+    public void BGMPlayOrStop(bool play)
+    {
+        if (play)
+            audioSource.Play();
+        else
+            audioSource.Stop();
+    }
+
     private void PlayBGM(BGMClip bgmClip)
     {
         audioSource.clip = bgmClips?[(int)bgmClip];
