@@ -50,13 +50,19 @@ public class GameMgr : MonoBehaviour
 
     public void OnClickShare()
     {
+        StartCoroutine(IOnClickShare(1));
+    }
+
+    private IEnumerator IOnClickShare(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         Debug.Log(myPlayerPv);
         //나의 RtcSender 로 공유를 시작하게 한다
-        if(!viewOn)
-        myPlayerPv.GetComponent<RtcSender>().Setup();
+        if (!viewOn)
+            myPlayerPv.GetComponent<RtcSender>().Setup();
 
         // 화면 공유 시작중.
-        viewOn= true;
+        viewOn = true;
     }
 
     public void AddPlayer(PhotonView pv)
