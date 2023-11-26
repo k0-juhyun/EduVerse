@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f22f125c01f534aafddc19de1e6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  videoPlayer: {fileID: 0}
   item:
     itemType: 1
     itemName: 24.56843
@@ -345,8 +346,10 @@ MonoBehaviour:
     isMine: 1
     showInClassroom: 0
     itemTexture: {fileID: 0}
-    gifItemBytes: 
+    gifThumbNailTexture: {fileID: 0}
+    gifBytes: 
     gifSprites: []
+    gifDelayTime: 0
 --- !u!114 &6831213888999790213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,10 +372,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 1, g: 0.88417834, b: 0.4943396, a: 1}
+    m_PressedColor: {r: 1, g: 0.8534362, b: 0.390566, a: 1}
+    m_SelectedColor: {r: 0.9056604, g: 0.8031554, b: 0.25119257, a: 1}
+    m_DisabledColor: {r: 1, g: 0.85652035, b: 0.12641507, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
