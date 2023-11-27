@@ -83,6 +83,19 @@ public class Deco : MonoBehaviour
 
     }
 
+    public void OnClickEraseAllBtn()
+    {
+        //SetRanderTexture();
+        StartCoroutine(IResetDrawPaper());
+    }
+
+    IEnumerator IResetDrawPaper()
+    {
+        yield return new WaitForEndOfFrame();
+
+        SetRanderTexture();
+    }
+
     // 그림 그리는 판 이미지에 큐브 렌더텍스쳐(그림 그려지는 텍스쳐) 넣기
     public void SetRanderTexture()
     {
