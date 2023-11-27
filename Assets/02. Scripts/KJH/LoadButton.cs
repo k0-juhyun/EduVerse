@@ -292,6 +292,22 @@ public class LoadButton : MonoBehaviourPun
 
                     // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
                     // 아이템들 경로/ 파일 이름까지 똑같아야 함
+#if UNITY_ANDROID
+                    switch (buttonPosition.item.itemType)
+                    {
+                        case Item.ItemType.Image:
+                            buttonPosition.item.itemPath = Application.persistentDataPath + "/MarketItems/" + Path.GetFileName(buttonPosition.item.itemPath);
+                            break;
+                        case Item.ItemType.GIF:
+                            buttonPosition.item.itemPath = Application.persistentDataPath + "/GIF/" + Path.GetFileName(buttonPosition.item.itemPath);
+                            break;
+                        case Item.ItemType.Video:
+                            buttonPosition.item.itemPath = Application.persistentDataPath + "/Videos/" + Path.GetFileName(buttonPosition.item.itemPath);
+                            break;
+                    }
+#endif
+
+                    print(buttonPosition.item.itemPath);
                     newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
 
                     //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
@@ -313,6 +329,22 @@ public class LoadButton : MonoBehaviourPun
         // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
         // 아이템들 경로/ 파일 이름까지 똑같아야 함
         //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemPath)));
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
+        switch ((Item.ItemType)itemType) 
+        {
+            case Item.ItemType.Image:
+                itemPath = Application.persistentDataPath + "/MarketItems/" + Path.GetFileName(itemPath);
+                break;
+            case Item.ItemType.GIF:
+                itemPath = Application.persistentDataPath + "/GIF/" + Path.GetFileName(itemPath);
+                break;
+            case Item.ItemType.Video:
+                itemPath = Application.persistentDataPath + "/Videos/" + Path.GetFileName(itemPath);
+                break;
+        }
+#endif
+
         newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
     }
 
@@ -327,6 +359,9 @@ public class LoadButton : MonoBehaviourPun
 
     public void ShowItem(Item item)
     {
+        print(item == null);
+        print(item?.itemName);
+
         Vector2 sizeDelta = Vector2.zero;
 
         switch (item.itemType)
@@ -338,6 +373,7 @@ public class LoadButton : MonoBehaviourPun
                 sizeDelta = new Vector2(item.itemTexture.width + 30f, item.itemTexture.height + 40f);
                 break;
             case Item.ItemType.GIF:
+                print("switch");
                 gifLoad.Show(showItemImage, item.gifSprites, item.gifDelayTime);
                 showItemImage.gameObject.SetActive(true);
                 showItemImage.preserveAspect = true;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ButtonsSound : MonoBehaviour
 {
     public Button[] buttons;
-    public Button[] buttons2;
+    //public Button[] buttons2;
 
     void Start()
     {

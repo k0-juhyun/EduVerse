@@ -200,7 +200,8 @@ using Firebase.Extensions;
             {
                 print("회원가입 성공");
                 action();
-                //NetworkManager.instance.LoadScene(0);
+            //NetworkManager.instance.LoadScene(0);
+                OnClickLogOut();
             }
             else
             {
@@ -262,5 +263,9 @@ using Firebase.Extensions;
         {
             //로그아웃
             auth.SignOut();
+            Destroy(GameManager.Instance.gameObject);
+            Destroy(MyQuizStorage.Instance.gameObject);
+            PhotonNetwork.LoadLevel(0);
+
         }
-    }
+}
