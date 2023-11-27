@@ -10,6 +10,8 @@ using DG.Tweening;
 
 public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    private Coroutine coroutine;
+
     private Vector2 startMousePosition;
     private Vector2 endMousePosition;
     private bool isCapturing = false;
@@ -33,8 +35,14 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public Image captureResultImage;
     public InputField tagInput;
     public RectTransform rtCanvas;
+    public Button[] buttons;
 
     public VideoCreator videoCreator;
+
+    public GameObject creatingText;
+    public GameObject snedGIFResultPanel;
+    public GameObject sendVideoResultPanel;
+    public GameObject sendObjectResult;
 
     // page raycast target 설정.
     public GameObject pagecontainer;
@@ -64,6 +72,17 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
         captureAreaImage.transform.SetParent(null);
         rtCaptureArea = captureAreaImage.GetComponent<RectTransform>();
 
+
+        foreach(Button button in buttons)
+        {
+            button.onClick.AddListener(() =>
+            {
+                snedGIFResultPanel.SetActive(false);
+                sendVideoResultPanel.SetActive(false);
+                backBlur.SetActive(false);
+                captureResult.SetActive(false);
+            });
+        }
         //captureAreaImage.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = rtCanvas.sizeDelta * 2;
     }
 
@@ -81,6 +100,55 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
         //    }
         //}
+    }
+
+    // 영상찍기용
+    public void OnClickSendGIF()
+    {
+        if(coroutine == null)
+        {
+            StartCoroutine(ClickSendBtn(0));
+        }
+    }
+    
+    public void OnClickSendVideo()
+    {
+        if(coroutine == null)
+        {
+            StartCoroutine(ClickSendBtn(1));
+        }
+    }
+    
+    public void OnClickSendObject()
+    {
+        if(coroutine == null)
+        {
+            StartCoroutine(ClickSendBtn(2));
+        }
+    }
+
+    private IEnumerator ClickSendBtn(int i)
+    {
+        creatingText.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        switch (i)
+        {
+            case 0:
+                snedGIFResultPanel.SetActive(true);
+                GifLoad gifLoad = snedGIFResultPanel.GetComponentInChildren<GifLoad>();
+                (Sprite[], float) gifInfo = gifLoad.GetSpritesByFrame("C:/Users/user/AppData/LocalLow/EduWiseCreator/EduVerse/GIF/text_2_video12.gif");
+                gifLoad.Show(snedGIFResultPanel. transform.GetChild(0).GetComponent<Image>(), gifInfo.Item1, gifInfo.Item2);
+                snedGIFResultPanel.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+                break;
+            case 1:
+                sendVideoResultPanel.SetActive(true);
+                break;
+            case 2:
+                sendObjectResult.SetActive(true);
+                break;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -119,6 +187,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
             col.enabled = false;
             captureAreaImage.SetActive(false);
             captureAreaImage.transform.SetParent(null);
+            captureAreaImage.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
         }
     }
 
