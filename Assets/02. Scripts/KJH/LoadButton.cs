@@ -345,7 +345,11 @@ public class LoadButton : MonoBehaviourPun
         }
 #endif
 
+        print(itemPath);
+        Item item = MyItemsManager.instance.GetItemInfo(itemPath, true);
+        print(item.itemPath);
         newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
+        //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
     }
 
     [PunRPC]

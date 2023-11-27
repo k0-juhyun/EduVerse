@@ -51,12 +51,12 @@ public class FileSettings : MonoBehaviour
     {
 #if UNITY_ANDROID
         print("setting, Android");
-        //unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
-        //unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
-        //unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
+        unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
+        unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
+        unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
 
-        //Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
-        //unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/");
+        Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
+        unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/");
 #elif UNITY_EDITOR
         print("setting, editor");
         unzip.RunZip(gifZipPath, zipExtractionPath);
@@ -64,41 +64,41 @@ public class FileSettings : MonoBehaviour
         unzip.RunZip(videoZipPath, zipExtractionPath);
 #endif
         print("setting, 11111");
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        //File.WriteAllBytes(Application.persistentDataPath + "/MyItems.txt", File.ReadAllBytes(myItemJsonPath));
+#elif UNITY_ANDROID
         WWW wwwfile = new WWW(myItemJsonPath);
         while (!wwwfile.isDone) { }
         string filePath = Application.persistentDataPath + "/" + Path.GetFileName(myItemJsonPath);
         File.WriteAllBytes(filePath, wwwfile.bytes);
-#elif UNITY_EDITOR
-        File.WriteAllBytes(Application.persistentDataPath + "/MyItems.txt", File.ReadAllBytes(myItemJsonPath));
 #endif
 
         print("setting, 22222");
-        //Texture2D[] marketImageItems = Resources.LoadAll<Texture2D>("Market_Item_Sprites");
+        Texture2D[] marketImageItems = Resources.LoadAll<Texture2D>("Market_Item_Sprites");
 
-        //if (!Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
+        if (!Directory.Exists(Application.persistentDataPath + "/MarketItems/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/MarketItems/");
+        }
+
+        //foreach(Texture2D texture in marketImageItems)
         //{
-        //    Directory.CreateDirectory(Application.persistentDataPath + "/MarketItems/");
+        //    print("아아 : " + texture.name);
+        //    File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + texture.name + ".png", texture.EncodeToPNG());
         //}
 
-        ////foreach(Texture2D texture in marketImageItems)
-        ////{
-        ////    print("아아 : " + texture.name);
-        ////    File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + texture.name + ".png", texture.EncodeToPNG());
-        ////}
+        foreach (Texture2D compressedTexture in marketImageItems)
+        {
+            // 압축 해제를 위한 새로운 Texture2D 생성
+            Texture2D uncompressedTexture = new Texture2D(compressedTexture.width, compressedTexture.height);
+            uncompressedTexture.SetPixels(compressedTexture.GetPixels());
+            uncompressedTexture.Apply();
 
-        //foreach (Texture2D compressedTexture in marketImageItems)
-        //{
-        //    // 압축 해제를 위한 새로운 Texture2D 생성
-        //    Texture2D uncompressedTexture = new Texture2D(compressedTexture.width, compressedTexture.height);
-        //    uncompressedTexture.SetPixels(compressedTexture.GetPixels());
-        //    uncompressedTexture.Apply();
+            // 파일로 저장
+            File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + compressedTexture.name + ".png", uncompressedTexture.EncodeToPNG());
 
-        //    // 파일로 저장
-        //    File.WriteAllBytes(Application.persistentDataPath + "/MarketItems/" + compressedTexture.name + ".png", uncompressedTexture.EncodeToPNG());
-
-        //    // 메모리 해제
-        //    //Destroy(uncompressedTexture);
-        //}
+            // 메모리 해제
+            //Destroy(uncompressedTexture);
+        }
     }
 }
