@@ -273,6 +273,8 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnClickSendCapture_Quiz()
     {
         rtCaptureArea.sizeDelta = Vector2.zero;
+
+
         videoCreator.UploadImageAndDownloadQuiz();
     }
 

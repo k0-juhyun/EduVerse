@@ -135,7 +135,22 @@ public class VideoCreator : MonoBehaviour
         string json = JsonUtility.ToJson(wrapper);
 
         Debug.Log(json);
-        StartCoroutine(UploadAndDownloadCoroutine_Quiz(json));
+
+        // 원래 버젼
+        //StartCoroutine(UploadAndDownloadCoroutine_Quiz(json));
+
+        // 시연 버젼
+        StartCoroutine(example());
+    }
+
+    IEnumerator example()
+    {
+        yield return new WaitForSeconds(3);
+
+        QuestionText.text = "생태계를 구성하는 먹이사슬은 모든 생물이 서로에게 영양을 공급하며 유지되는 관계이다.";
+
+        incorrect.SetActive(true);
+
     }
 
     public void UploadImageAndDownload_Video(byte[] imageBytes, System.Action action = null)
