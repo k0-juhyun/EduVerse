@@ -4,6 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine.TextCore.Text;
+using System.Runtime.CompilerServices;
 
 public class InteractableModel : MonoBehaviourPun, IPunObservable
 {
@@ -12,14 +13,19 @@ public class InteractableModel : MonoBehaviourPun, IPunObservable
     private bool isDragging;
     private float distanceToCamera;
     private float dragTime;
+    private float calltime;
 
     public Image deleteAreaImage; // 삭제 영역 이미지
 
     private const float activationTime = 3f; // 드래그 후 삭제 영역 활성화까지의 시간
     private const float disableTime = 2f; // 활성화 후 자동으로 비활성화까지의 시간
 
+    public float lerpmodel = 100;
+
     Vector3 objPosition;
     Vector3 objPosition_receivePos;
+
+    float testa;
     void Start()
     {
         mesh = this.gameObject;
@@ -43,11 +49,17 @@ public class InteractableModel : MonoBehaviourPun, IPunObservable
         if (isDragging)
         {
             dragTime += Time.deltaTime;
+            calltime += Time.deltaTime;
 
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = distanceToCamera;
             objPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             transform.position = objPosition;
+
+
+                photonView.RPC(nameof(testMove), RpcTarget.All, transform.position);
+                calltime = 0;
+
             Debug.Log(objPosition + " : ");
 
             if (Input.GetMouseButtonUp(0))
@@ -71,8 +83,9 @@ public class InteractableModel : MonoBehaviourPun, IPunObservable
         // 포톤뷰 마스터가 아니면
         if (!photonView.IsMine)
         {
-            transform.position = objPosition_receivePos;
+            //transform.position = objPosition_receivePos;
             Debug.Log(objPosition_receivePos);
+            Debug.Log(testa);
         }
     }
 
@@ -111,6 +124,11 @@ public class InteractableModel : MonoBehaviourPun, IPunObservable
     }
 
 
+    [PunRPC]
+    void testMove(Vector3 pos)
+    {
+        transform.position = Vector3.Lerp(transform.position, pos, 0.8f);
+    }
 
 
     // 3d 모델 움직이는 것을 보여줌.
@@ -118,11 +136,15 @@ public class InteractableModel : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(objPosition);
+            stream.SendNext(transform.position);
+            stream.SendNext(testa);
+
         }
         else
         {
             objPosition_receivePos = (Vector3)stream.ReceiveNext();
+            testa = (float)stream.ReceiveNext();
+
         }
     }
 
