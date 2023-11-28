@@ -3,7 +3,9 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
 using DG.Tweening;
-public class InteractableModel : MonoBehaviourPun
+using UnityEngine.TextCore.Text;
+
+public class InteractableModel : MonoBehaviourPun, IPunObservable
 {
     private GameObject mesh;
     private Camera mainCamera;
@@ -16,6 +18,8 @@ public class InteractableModel : MonoBehaviourPun
     private const float activationTime = 3f; // 드래그 후 삭제 영역 활성화까지의 시간
     private const float disableTime = 2f; // 활성화 후 자동으로 비활성화까지의 시간
 
+    Vector3 objPosition;
+    Vector3 objPosition_receivePos;
     void Start()
     {
         mesh = this.gameObject;
@@ -26,6 +30,9 @@ public class InteractableModel : MonoBehaviourPun
 
     void Update()
     {
+
+        // 마스터가 움직이지게 하는것만 보인다.
+        // 
         if (Input.GetMouseButtonDown(0) && IsMouseOverObject())
         {
             isDragging = true;
@@ -39,8 +46,9 @@ public class InteractableModel : MonoBehaviourPun
 
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = distanceToCamera;
-            Vector3 objPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+            objPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             transform.position = objPosition;
+            Debug.Log(objPosition + " : ");
 
             if (Input.GetMouseButtonUp(0))
             {
@@ -50,7 +58,7 @@ public class InteractableModel : MonoBehaviourPun
                 if (deleteAreaImage.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(
                     deleteAreaImage.rectTransform, Input.mousePosition, null))
                 {
-                    mesh.gameObject.transform.DOScale(0.1f,0.5f).SetEase(Ease.InQuart).OnComplete(() => PhotonNetwork.Destroy(mesh));
+                    mesh.gameObject.transform.DOScale(0.1f, 0.5f).SetEase(Ease.InQuart).OnComplete(() => PhotonNetwork.Destroy(mesh));
                     SoundManager.instance?.PlaySFX(SoundManager.SFXClip.Button2);
                 }
             }
@@ -59,6 +67,13 @@ public class InteractableModel : MonoBehaviourPun
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         distanceToCamera -= scroll;
         distanceToCamera = Mathf.Clamp(distanceToCamera, 1f, 10f);
+
+        // 포톤뷰 마스터가 아니면
+        if (!photonView.IsMine)
+        {
+            transform.position = objPosition_receivePos;
+            Debug.Log(objPosition_receivePos);
+        }
     }
 
     private IEnumerator ActivateDeleteAreaAfterDelay()
@@ -94,4 +109,21 @@ public class InteractableModel : MonoBehaviourPun
     {
         return isDragging;
     }
+
+
+
+
+    // 3d 모델 움직이는 것을 보여줌.
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(objPosition);
+        }
+        else
+        {
+            objPosition_receivePos = (Vector3)stream.ReceiveNext();
+        }
+    }
+
 }
