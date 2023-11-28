@@ -129,7 +129,7 @@ public class Capture : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
 
     private IEnumerator ClickSendBtn(int i)
     {
-        creatingText.SetActive(true);
+        //creatingText.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
