@@ -124,7 +124,7 @@ public class FireAuth : MonoBehaviour
             //    }
             //});
 
-            StartCoroutine(OnLogIn());
+            
         }
         //그렇지 않으면
         else
@@ -257,6 +257,7 @@ public class FireAuth : MonoBehaviour
         if (task.Exception == null)
         {
             print("로그인 성공");
+            StartCoroutine(OnLogIn());
         }
         else
         {
