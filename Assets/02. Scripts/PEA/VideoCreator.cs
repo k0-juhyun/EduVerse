@@ -147,7 +147,7 @@ public class VideoCreator : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        QuestionText.text = "생태계를 구성하는 먹이사슬은 모든 생물이 서로에게 영양을 공급하며 유지되는 관계이다.";
+        QuestionText.text = "생태계에서의 분해자는 생물체의 유기물을 분해하여 영양분을 만들어내는 역할을 하는데, 이는 생태계의 순환을 돕는 중요한 역할을 한다.";
 
         incorrect.SetActive(true);
 
