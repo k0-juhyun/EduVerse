@@ -26,12 +26,16 @@ public class HomePageManager : MonoBehaviour
     public GameObject 교과자료;
 
     public TMP_Text 홈페이지텍스트;
+    public TMP_Text 홈페이지텍스트2;
+
 
     public void OnTeachersRoomButtonClick()
     {
         기본.SetActive(false);
         교무실.SetActive(true);
         홈페이지텍스트.text = "교 무 실";
+        홈페이지텍스트2.text = "교 무 실";
+
     }
 
     public void OnBackButtonClick()
@@ -39,6 +43,8 @@ public class HomePageManager : MonoBehaviour
         교무실.SetActive(false);
         기본.SetActive(true);
         홈페이지텍스트.text = "HOME PAGE";
+        홈페이지텍스트2.text = "HOME PAGE";
+
     }
 
     // 교과서 제작

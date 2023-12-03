@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            //Screen.SetResolution(1280, 800, true);
+            Screen.SetResolution(1280, 800, false);
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
 

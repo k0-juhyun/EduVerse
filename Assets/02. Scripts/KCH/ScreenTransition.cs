@@ -39,6 +39,7 @@ public class ScreenTransition : MonoBehaviourPun
             maincam.depth = -1;
             maincam.gameObject.tag = "Untagged";
             ShareCam.gameObject.tag = "MainCamera";
+            Debug.Log(ShareCam.gameObject.tag);
         }
 
         if (Input.GetKey(KeyCode.Alpha3))
@@ -46,6 +47,7 @@ public class ScreenTransition : MonoBehaviourPun
             maincam.depth = 1;
             maincam.gameObject.tag = "MainCamera";
             ShareCam.gameObject.tag = "Untagged";
+            Debug.Log(maincam.gameObject.tag);
         }
     }
 

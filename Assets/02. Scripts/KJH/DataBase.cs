@@ -112,7 +112,8 @@ public class DataBase : MonoBehaviour
         string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
         //string path = Application.streamingAssetsPath+"/";
 #elif UNITY_STANDALONE
-        string path = Application.streamingAssetsPath+"/";
+        //string path = Application.streamingAssetsPath+"/";
+         string path = Application.persistentDataPath + "/3D_Models/ModelDatas/";
 #endif
 
         print("알집 경로: " + path);
