@@ -117,8 +117,20 @@ public class Quiz_Individual : MonoBehaviourPun
     {
         Debug.Log("실행");
         GameObject answercanvas = Instantiate(gameObject);
+
+        // 광장에 있는 해설패널에 정보 대입.
+        Ground_commentary G_c = answercanvas.GetComponent<Ground_commentary>();
+
+        G_c.Question_ = Question;
+        G_c.Answer_ = Answer;
+        G_c.Commentary_ = Commentary;
+        G_c.CommentatyPanelCheck = false;
+
         yield return new WaitForSeconds(3);
-        Destroy(answercanvas );
+
+        // 해설 패널을 안켰다면
+        if(!G_c.CommentatyPanelCheck)
+            Destroy(answercanvas );
 
     }
 }
