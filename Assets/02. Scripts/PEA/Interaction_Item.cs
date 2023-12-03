@@ -42,6 +42,7 @@ public class Interaction_Item : MonoBehaviour, IPointerClickHandler
                 break;
             case Item.ItemType.GIF:
                 image.sprite = Sprite.Create(item.gifThumbNailTexture, new Rect(0, 0, item.gifThumbNailTexture.width, item.gifThumbNailTexture.height), new Vector2(0.5f, 0.5f));
+                image.preserveAspect = true;
                 image.gameObject.SetActive(true);
                 break;
             case Item.ItemType.Video:
