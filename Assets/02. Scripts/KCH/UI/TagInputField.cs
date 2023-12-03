@@ -62,6 +62,7 @@ public class TagInputField : MonoBehaviour
                 tagText.text = "巩力";
                 break;
             case 2:
+                if(!transform.parent.GetComponent<Toggle_kch>().multimedio_.isOn)
                 tagText.text = "苞格";
                 break;
             case 3:
@@ -103,7 +104,8 @@ public class TagInputField : MonoBehaviour
         switch (parentTransform.childCount)
         {
             case 2:
-                tagText.text = "巩力";
+                if (!transform.parent.GetComponent<Toggle_kch>().multimedio_.isOn)
+                    tagText.text = "巩力";
                 break;
             case 3:
                 tagText.text = "苞格";
