@@ -155,8 +155,8 @@ public class FireDatabase : MonoBehaviour
             if (onFail != null) onFail(task.Exception.Message);
         }
 
-        FirebaseAuth.DefaultInstance.SignOut();
-        NetworkManager.instance.LoadScene(0);
+        //FireAuth.instance.LogOut();
+        //NetworkManager.instance.LoadScene(0);
     }
 
     public void LoadUserInfo(System.Action callback = null)
