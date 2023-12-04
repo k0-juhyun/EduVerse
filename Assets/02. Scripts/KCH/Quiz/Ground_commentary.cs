@@ -15,7 +15,7 @@ public class Ground_commentary : MonoBehaviour
     public string Commentary_ { get; set; }
 
     [HideInInspector]
-    public bool CommentatyPanelCheck;
+    public bool CommentatyPanelCheck=false;
 
     public void OnCommentaryBtnClick()
     {
