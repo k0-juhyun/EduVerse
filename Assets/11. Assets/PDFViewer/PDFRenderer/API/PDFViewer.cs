@@ -1667,7 +1667,7 @@ namespace Paroxe.PdfRenderer
         }
 
         // 현재 로드된 문서 정리 및 청소
-        private void CleanUp()
+        public void CleanUp()
         {
             if (m_Document != null)
                 NotifyDocumentUnloaded(m_Document);
@@ -3378,7 +3378,7 @@ namespace Paroxe.PdfRenderer
         }
 
         // 캔버스 캐시
-        private void CacheCanvas()
+        public void CacheCanvas()
         {
             if (gameObject == null)
                 return;

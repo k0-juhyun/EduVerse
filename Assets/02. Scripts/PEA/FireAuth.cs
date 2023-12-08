@@ -155,14 +155,7 @@ public class FireAuth : MonoBehaviour
         if (dataTask.IsCompletedSuccessfully)
         {
             DataSnapshot userInfo = dataTask.Result;
-
-            if (userInfo == null)
-            {
-                print("데이터 안들어옴");
-                yield return new WaitForSeconds(2f);
-                yield return OnLogIn();
-            }
-
+                
             print("유저 정보 가져오기 성공 : " + dataTask.Result.ChildrenCount);
 
             // 정보를 제대로 불러오지 못하면 다시 로그인 시도 
