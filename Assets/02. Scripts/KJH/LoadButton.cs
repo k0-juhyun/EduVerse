@@ -175,15 +175,14 @@ public class LoadButton : MonoBehaviourPun
             });
         }
 
-        //// 기존에 있던 현재 페이지 인터렉션 버튼들에 대한 정보 지우고 다시 저장할거임. 
-        //for(int i = 0; i < allSessions?.sessions?.Count; i++)
-        //{
-        //    if(allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
-        //    {
-        //        allSessions.sessions.RemoveAt(i);
-        //        break;
-        //    }
-        //}
+        // 기존에 있던 현재 페이지 인터렉션 버튼들에 대한 정보 지우고 다시 저장할거임. 
+        for (int i = 0; i < allSessions?.sessions?.Count; i++)
+        {
+            if (allSessions.sessions[i].page == pdfViewer.CurrentPageIndex)
+            {
+                allSessions.sessions.RemoveAt(i);
+            }
+        }
 
         allSessions.sessions.Add(currentSession);
         json = JsonUtility.ToJson(allSessions);
