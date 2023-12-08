@@ -28,6 +28,7 @@ public class PDF_Page : MonoBehaviourPun
     public void GetCurDocumentPageCount()
     {
         curDocumentPageCount = pdfViewer.Document.GetPageCount() - 1;
+        page = 0;
     }
 
     public void NextPage()
