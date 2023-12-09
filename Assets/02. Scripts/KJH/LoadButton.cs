@@ -41,7 +41,7 @@ public class LoadButton : MonoBehaviourPun
     [Space(10)]
     public Button createBtn;
     public Button saveBtn;
-
+    public Button backButton;                           // 교과서제작 페이지에서 뒤로가기버튼
 
     [Space (10)]
     public GameObject selectItemButtonPrefab;           // 인터렉션할 아이템 선택하는 버튼
@@ -85,6 +85,7 @@ public class LoadButton : MonoBehaviourPun
         createBtn?.onClick.AddListener(OnClickCreateButton);
         saveBtn?.onClick.AddListener(SaveCurrentSession);
         lessonBtn?.onClick.AddListener(OnClickLessonBtn);
+        backButton?.onClick.AddListener(DestroyAllButtons);
     }
 
     public void Interaction(bool isInteraction)
