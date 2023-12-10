@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
 
     PhotonView Mypv;
 
+    // 만약 교실이나 광장에서 커스텀씬으로 이동했을때
+    public bool iscustomScene_classroom = false;
+    public bool iscustomScene_ground = false;
+
+
     private void Awake()
     {
         if (Instance == null)
