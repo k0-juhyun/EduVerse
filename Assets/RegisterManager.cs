@@ -31,20 +31,20 @@ public class RegisterManager : MonoBehaviour
     [Space(10)]
     [Header("2. 선생 회원정보 입력")]
     public GameObject 선생회원정보입력;
-    public TMP_InputField 선생이름;
-    public TMP_InputField 선생아이디;
-    public TMP_InputField 선생비밀번호;
-    public TMP_InputField 선생비밀번호확인;
-    public TMP_InputField 선생이메일앞자리;
-    public TMP_InputField 선생이메일뒷자리;
-    public TMP_InputField 선생담당학년;
-    public TMP_InputField 선생담당반;
+    public TMP_InputField teacherName;
+    public TMP_InputField teacherID;
+    public TMP_InputField teacherPassword;
+    public TMP_InputField teacherPasswordCheck;
+    public TMP_InputField teacherEmailFront;
+    public TMP_InputField teacherEmailBack;
+    public TMP_InputField teacherGrade;
+    public TMP_InputField teacherClass;
     public TMP_Dropdown 선생emailDropDown;
 
     [Space(10)]
     [Header("3. 가입완료")]
-    public GameObject 선생가입완료;
-    public GameObject 학생가입완료;
+    public GameObject teacherComplete;
+    public GameObject studentComplete;
 
     [Space(10)]
     [Header("4. 만 14세 미만")]
@@ -63,17 +63,17 @@ public class RegisterManager : MonoBehaviour
     [Space(10)]
     [Header("5. 학생 회원정보 입력")]
     public GameObject 학생회원정보입력;
-    public TMP_InputField 학생이름;
-    public TMP_InputField 학생아이디;
-    public TMP_InputField 학생비밀번호;
-    public TMP_InputField 학생비밀번호확인;
-    public TMP_InputField 학생이메일앞자리;
-    public TMP_InputField 학생이메일뒷자리;
-    public TMP_InputField 학생학교;
-    public TMP_InputField 학생생년월일;
-    public TMP_InputField 학생학년;
-    public TMP_InputField 학생반;
-    public TMP_InputField 학생번호;
+    public TMP_InputField studentName;
+    public TMP_InputField studentID;
+    public TMP_InputField studentPassword;
+    public TMP_InputField studentPasswordCheck;
+    public TMP_InputField studentEmailFront;
+    public TMP_InputField studentEmailBack;
+    public TMP_InputField studentSchool;
+    public TMP_InputField studentBirthInput;
+    public TMP_InputField studentGrade;
+    public TMP_InputField studentClass;
+    public TMP_InputField studentNumber;
     public TMP_Dropdown 학생emailDropDown;
 
     [Space(10)]
@@ -94,12 +94,12 @@ public class RegisterManager : MonoBehaviour
         // 드롭다운으로 이메일 뒷주소 선택하면 텍스트 바뀌게
         선생emailDropDown.onValueChanged.AddListener((i) =>
         {
-            선생이메일뒷자리.text = 선생emailDropDown.options[i].text;
+            teacherEmailBack.text = 선생emailDropDown.options[i].text;
         });
 
         학생emailDropDown.onValueChanged.AddListener((i) =>
         {
-            학생이메일뒷자리.text = 학생emailDropDown.options[i].text;
+            studentEmailBack.text = 학생emailDropDown.options[i].text;
         });
     }
 
@@ -156,42 +156,44 @@ public class RegisterManager : MonoBehaviour
     {
         string email;
         int grade, classNum, studentNum, studentBirth;
-        if (선생이름.text.Length > 0 && int.TryParse(선생담당학년.text, out grade) && int.TryParse(선생담당반.text, out classNum))
+
+        // 선생님 회원 가입
+        if (teacherName.text.Length > 0 && int.TryParse(teacherGrade.text, out grade) && int.TryParse(teacherClass.text, out classNum))
         {
-            email = 선생이메일앞자리.text + "@" + 선생이메일뒷자리.text;
-            FireAuth.instance.OnClickSingIn(email, 선생비밀번호.text, () =>
+            email = teacherEmailFront.text + "@" + teacherEmailBack.text;
+            FireAuth.instance.OnClickSingIn(email, teacherPassword.text, () =>
                 {
-                    선생가입완료.SetActive(true);
-                    FireDatabase.instance.SaveUserInfo(new UserInfo(선생이름.text, true, grade, classNum, email, 선생비밀번호.text));
+                    teacherComplete.SetActive(true);
+                    FireDatabase.instance.SaveUserInfo(new UserInfo(teacherName.text, true, grade, classNum, email, teacherPassword.text));
                 });
         }
 
-        else if (학생이름.text.Length > 0 && int.TryParse(학생학년.text, out grade) && int.TryParse(학생반.text, out classNum) && int.TryParse(학생번호.text, out studentNum) && int.TryParse(학생생년월일.text, out studentBirth))
+        // 학생 회원 가입
+        else if (studentName.text.Length > 0 && int.TryParse(studentGrade.text, out grade) && int.TryParse(studentClass.text, out classNum) && int.TryParse(studentNumber.text, out studentNum) && int.TryParse(studentBirthInput.text, out studentBirth))
         {
-            email = 학생이메일앞자리.text + "@" + 학생이메일뒷자리.text;
-            FireAuth.instance.OnClickSingIn(email, 학생비밀번호.text, () =>
+            email = studentEmailFront.text + "@" + studentEmailBack.text;
+            FireAuth.instance.OnClickSingIn(email, studentPassword.text, () =>
             {
-                학생가입완료.SetActive(true);
-                print(학생이름.text);
-                print(studentBirth);
-                print(학생학교.text);
-                print(grade);
-                print(classNum);
-                print(email);
-                print(학생비밀번호.text);
-                FireDatabase.instance.SaveUserInfo(new UserInfo(학생이름.text, false, studentBirth, 학생학교.text, grade, classNum, studentNum, email, 학생비밀번호.text));
+                studentComplete.SetActive(true);
+                FireDatabase.instance.SaveUserInfo(new UserInfo(studentName.text, false, studentBirth, studentSchool.text, grade, classNum, studentNum, email, studentPassword.text));
             });
+        }
+
+        // 정보를 제대로 입력하지 않았을 경우 
+        else
+        {
+            OnSignInFailed();
         }
     }
 
     public void OnTXButtonClick()
     {
-        선생가입완료.SetActive(!선생가입완료.gameObject.activeSelf);
+        teacherComplete.SetActive(!teacherComplete.gameObject.activeSelf);
     }
 
     public void OnSTXButtonClick()
     {
-        학생가입완료.SetActive(!학생가입완료.gameObject.activeSelf);
+        studentComplete.SetActive(!studentComplete.gameObject.activeSelf);
     }
 
     public void OnNextBtnClick()
@@ -246,26 +248,26 @@ public class RegisterManager : MonoBehaviour
     {
         if (_isTeacher)
         {
-            선생이름.text = "";
-            선생아이디.text = "";
-            선생비밀번호.text = "";
-            선생비밀번호확인.text = "";
-            선생이메일앞자리.text = "";
-            선생이메일뒷자리.text = "";
-            선생담당학년.text = "";
-            선생담당반.text = "";
+            teacherName.text = "";
+            teacherID.text = "";
+            teacherPassword.text = "";
+            teacherPasswordCheck.text = "";
+            teacherEmailFront.text = "";
+            teacherEmailBack.text = "";
+            teacherGrade.text = "";
+            teacherClass.text = "";
         }
         else
         {
-            학생이름.text = "";
-            학생아이디.text = "";
-            학생비밀번호.text = "";
-            학생비밀번호확인.text = "";
-            학생이메일앞자리.text = "";
-            학생이메일뒷자리.text = "";
-            학생학년.text = "";
-            학생반.text = "";
-            학생번호.text = "";
+            studentName.text = "";
+            studentID.text = "";
+            studentPassword.text = "";
+            studentPasswordCheck.text = "";
+            studentEmailFront.text = "";
+            studentEmailBack.text = "";
+            studentGrade.text = "";
+            studentClass.text = "";
+            studentNumber.text = "";
         }
 
         failedSingUp.SetActive(true);
