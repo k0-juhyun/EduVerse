@@ -49,6 +49,7 @@ public class Deco : MonoBehaviour
         drawCam.gameObject.SetActive(true);
         mainCam.gameObject.SetActive(false);
 
+        // ÇÃ·¹ÀÌ¾î Äµ¹ö½º ²ô±â
         playerCanvas?.SetActive(false);
 
         SetRanderTexture();
@@ -60,6 +61,9 @@ public class Deco : MonoBehaviour
         drawBtn.gameObject.SetActive(false);
         decoBtn.gameObject.SetActive(false);
         myDraws.SetActive(true);
+
+        // ÇÃ·¹ÀÌ¾î Äµ¹ö½º ²ô±â
+        playerCanvas?.SetActive(false);
     }
 
     private void OnClickBackBtn()

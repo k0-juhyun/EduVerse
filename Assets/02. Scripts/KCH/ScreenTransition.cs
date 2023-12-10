@@ -63,7 +63,8 @@ public class ScreenTransition : MonoBehaviourPun
             //Voice.instance.ActiveToggleCanvas(false);
             // 오디오 리스너 에러
             transform.GetComponent<AudioListener>().enabled = true;
-            LoadButton.instance.DestroyAllButtons();
+            //LoadButton.instance.DestroyAllButtons();
+            LoadButton.instance.Interaction(true);
         }
 
         else
@@ -84,7 +85,8 @@ public class ScreenTransition : MonoBehaviourPun
             // 오디오 리스너 에러
 
             transform.GetComponent<AudioListener>().enabled = false;
-            LoadButton.instance.DestroyAllButtons();
+            //LoadButton.instance.DestroyAllButtons();
+            LoadButton.instance.Interaction(false);
         }
     }
 }
