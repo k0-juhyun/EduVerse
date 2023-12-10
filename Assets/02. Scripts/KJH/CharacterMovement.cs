@@ -46,6 +46,13 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
     private CharacterInteraction characterInteraction;
     private TeacherInteraction characterTeacherInteraction;
 
+    private Rigidbody characterRigidbody;
+
+    private void Start()
+    {
+        characterRigidbody = GetComponentInChildren<Rigidbody>();
+    }
+
 
     #region 포톤 값
     [HideInInspector]
@@ -209,11 +216,13 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             //    Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
             //}
 
+            Vector3 characterVelocity = Character.transform.forward * 2;
+
             // 터치할때만 움직이도록
             if (isTouch)
             {
                 //Character.transform.position += movePos;
-                GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
+                characterRigidbody.velocity = new Vector3(characterVelocity.x, characterRigidbody.velocity.y, characterVelocity.z);
             }
 
             else
@@ -223,13 +232,13 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
                 value.y = Input.GetAxisRaw("Vertical");
                 if (value.sqrMagnitude <= 0)
                 {
-                    GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+                    characterRigidbody.velocity = new Vector3(0, characterRigidbody.velocity.y, 0);
                     moveSpeed = 0;
                 }
                 else
                 {
                     TTT(value);
-                    GetComponentInChildren<Rigidbody>().velocity = Character.transform.forward * 2;
+                    characterRigidbody.velocity = new Vector3(characterVelocity.x, characterRigidbody.velocity.y, characterVelocity.z);
                 }
             }
         }
