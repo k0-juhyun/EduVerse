@@ -169,7 +169,6 @@ public class VideoCreator : MonoBehaviour
             yield return imageUploadRequest.SendWebRequest();
             if (imageUploadRequest.result == UnityWebRequest.Result.Success)
             {
-                print("성공");
                 byte[] videoData = imageUploadRequest.downloadHandler.data;
                 (Sprite[], float) gifInfo = gifLoad.GetSpritesByFrame(videoData);
                 gifLoad.Show(gifPreviewImage, gifInfo.Item1, gifInfo.Item2);
@@ -179,8 +178,6 @@ public class VideoCreator : MonoBehaviour
             }
             else
             {
-                Debug.Log(imageUploadRequest.error);
-
                 captureResultTextObject.SetActive(true);
                 captureResultText.text = "GIF 생성에 실패했습니다.";
             }

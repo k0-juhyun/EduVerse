@@ -15,9 +15,10 @@ public class Deco : MonoBehaviour
     public GameObject myDraws;
     public Button[] backBtn;
     public Camera drawCam;
-    public RawImage drawPaper;     // 그림 그리는 판 이미지(그려지는 그림을 보여줌, 실제 그림은 큐브애 그려짐)
+    public RawImage drawPaper;     // 그림 그리는 판 이미지(그려지는 그림을 보여줌, 실제 그림은 큐브에 그려짐)
     public Rito.TexturePainter.TexturePaintTarget paintTarget;
 
+    private GameObject playerCanvas;
     private bool isDrawButtonPressed = false;
     private bool isBackButtonPressed = false;
 
@@ -36,7 +37,6 @@ public class Deco : MonoBehaviour
 
         decoBtn.onClick.AddListener(OnClickDecoBtn);
         mainCam = Camera.main;
-
     }
 
     // 그림 그리기 버튼을 눌렀을때
@@ -46,9 +46,10 @@ public class Deco : MonoBehaviour
         decoBtn.gameObject.SetActive(false);
         draw.SetActive(true);
 
-        mainCam.depth = -1;
         drawCam.gameObject.SetActive(true);
         mainCam.gameObject.SetActive(false);
+
+        playerCanvas?.SetActive(false);
 
         SetRanderTexture();
     }
@@ -72,15 +73,12 @@ public class Deco : MonoBehaviour
 
         DecorateClassRoom.instance.curSelectedDraw = null;
 
-        if (mainCam.depth != 1)
-        {
-            mainCam.depth = 1;
-            drawCam.gameObject.SetActive(false);
-            mainCam.gameObject.SetActive(true);
-            paintTarget.InitRenderTexture();
-            SetRanderTexture();
-        }
+        drawCam.gameObject.SetActive(false);
+        mainCam.gameObject.SetActive(true);
+        paintTarget.InitRenderTexture();
+        SetRanderTexture();
 
+        playerCanvas?.SetActive(true);
     }
 
     public void OnClickEraseAllBtn()
@@ -125,8 +123,10 @@ public class Deco : MonoBehaviour
             {
                 drawBtn.gameObject.SetActive(true);
                 decoBtn.gameObject.SetActive(true);
-                StartCoroutine(ICheckClickDrawButton(other));
-                StartCoroutine(ICheckClickBackButton(other));
+                //StartCoroutine(ICheckClickDrawButton(other));
+                //StartCoroutine(ICheckClickBackButton(other));
+                playerCanvas = photonView.transform.parent.GetChild(2).gameObject;
+                print(playerCanvas.name);
             }
         }
     }

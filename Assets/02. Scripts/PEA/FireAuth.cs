@@ -148,8 +148,9 @@ public class FireAuth : MonoBehaviour
     private IEnumerator OnLogIn()
     {
         // 로그인한 유저의 정보 가져오기
-        var dataTask = database.GetReference("USER_INFO").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
-        print(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        string uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+        print(uid);
+        var dataTask = database.GetReference("USER_INFO").Child(uid).GetValueAsync();
         yield return new WaitUntil(() => dataTask.IsCompleted);
         if (dataTask.IsCompletedSuccessfully)
         {
@@ -160,7 +161,7 @@ public class FireAuth : MonoBehaviour
             // 정보를 제대로 불러오지 못하면 다시 로그인 시도 
             if (dataTask.Result.ChildrenCount == 0)
             {
-                print("회원정보 로드 실패 : " + dataTask.Result.Value);
+                //print("회원정보 로드 실패 : " + dataTask.Result.Value);
                 auth.SignOut();
                 retryGetUserInfoText.SetActive(true);
             }
@@ -181,7 +182,7 @@ public class FireAuth : MonoBehaviour
         }
         else
         {
-            print("회원정보 로드 실패 : " + dataTask.Result.Value);
+            //print("회원정보 로드 실패 : " + dataTask.Result);
             auth.SignOut();
             retryGetUserInfoText.SetActive(true);
         }
