@@ -460,6 +460,15 @@ public class CharacterInteraction : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            // ƒøΩ∫≈“æ¿ ¿Ãµø √º≈©
+            // ±≥Ω«
+            if (SceneManager.GetActiveScene().buildIndex == 4)
+                GameManager.Instance.iscustomScene_classroom = true;
+            // ±§¿Â
+            if (SceneManager.GetActiveScene().buildIndex == 5)
+                GameManager.Instance.iscustomScene_ground = true;
+
+
             NetworkManager.instance.isCustom = true;
             NetworkManager.instance.enableChoose = true;
             PhotonNetwork.LeaveRoom();

@@ -15,11 +15,32 @@ public class ButtonManager : MonoBehaviourPun
 
     public void OnLoadNextBtnClick()
     {
-        if (DataBase.instance.user.isTeacher)
-            PhotonNetwork.LoadLevel(2);
+        if(!GameManager.Instance.iscustomScene_classroom && !GameManager.Instance.iscustomScene_ground)
+        {
+            if (DataBase.instance.user.isTeacher)
+                PhotonNetwork.LoadLevel(2);
 
-        if (DataBase.instance.user.isTeacher == false)
-            PhotonNetwork.LoadLevel(3);
+            if (DataBase.instance.user.isTeacher == false)
+                PhotonNetwork.LoadLevel(3);
+        }
+
+        // ±≥Ω«
+        if (GameManager.Instance.iscustomScene_classroom)
+        {
+            PhotonNetwork.LoadLevel("LoadingScene");
+            NetworkManager.instance.JoinRoom("4.ClassRoomScene");
+            NetworkManager.instance.enableChoose = false;
+            GameManager.Instance.iscustomScene_classroom=false;
+        }
+
+        // ±§¿Â
+        if (GameManager.Instance.iscustomScene_ground)
+        {
+            PhotonNetwork.LoadLevel("LoadingScene");
+            NetworkManager.instance.JoinRoom("5.GroundScene");
+            NetworkManager.instance.enableChoose = false;
+            GameManager.Instance.iscustomScene_ground = false;
+        }
 
         NetworkManager.instance.isCustom = false;
     }
