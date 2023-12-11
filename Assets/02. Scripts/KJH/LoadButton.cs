@@ -234,7 +234,7 @@ public class LoadButton : MonoBehaviourPun
                             newButton.name = buttonPosition.buttonName;
                             RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                             rectTransform.anchoredPosition = new Vector2(buttonPosition.posX, buttonPosition.posY);
-                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
+                            newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, buttonPosition.item.itemType, true)));
                             //byte[] itemBytes = File.ReadAllBytes(buttonPosition.item.itemPath);
                             //photonView.RPC(nameof(LoadInteractionRPC), RpcTarget.All, ((int)buttonPosition.item.itemType), buttonPosition.item.itemName, itemBytes, buttonPosition.buttonName, buttonPosition.posX, buttonPosition.posY);
                         }
@@ -308,7 +308,7 @@ public class LoadButton : MonoBehaviourPun
 #endif
 
                     print(buttonPosition.item.itemPath);
-                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, true)));
+                    newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(buttonPosition.item.itemPath, buttonPosition.item.itemType, true)));
 
                     //newButton.GetComponent<Interaction_InClassBtn>().SetItem(buttonPosition.item);
                     //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(newButton.GetComponent<Interaction_InClassBtn>().item));
@@ -329,8 +329,7 @@ public class LoadButton : MonoBehaviourPun
         // 아이템들이 로컬에 들어있어서 다른 디바이스에서 보낸 아이템 정보 가져오기가 안됨....
         // 아이템들 경로/ 파일 이름까지 똑같아야 함
         //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(new Item((Item.ItemType)itemType, itemName, itemPath)));
-#if UNITY_EDITOR
-#elif UNITY_ANDROID
+
         switch ((Item.ItemType)itemType) 
         {
             case Item.ItemType.Image:
@@ -343,12 +342,13 @@ public class LoadButton : MonoBehaviourPun
                 itemPath = Application.persistentDataPath + "/Videos/" + Path.GetFileName(itemPath);
                 break;
         }
-#endif
 
         print(itemPath);
-        Item item = MyItemsManager.instance.GetItemInfo(itemPath, true);
+        Item item = MyItemsManager.instance.GetItemInfo(itemPath, (Item.ItemType)itemType, true);
+        item.itemPath = itemPath;
         print(item.itemPath);
-        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
+        newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(item));
+        //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, (Item.ItemType)itemType, true)));
         //newButton.GetComponent<Button>().onClick.AddListener(() => ShowItem(MyItemsManager.instance.GetItemInfo(itemPath, true)));
     }
 
@@ -377,13 +377,14 @@ public class LoadButton : MonoBehaviourPun
                 sizeDelta = new Vector2(item.itemTexture.width + 30f, item.itemTexture.height + 40f);
                 break;
             case Item.ItemType.GIF:
-                print("switch");
+                print("gif");
                 gifLoad.Show(showItemImage, item.gifSprites, item.gifDelayTime);
                 showItemImage.gameObject.SetActive(true);
                 showItemImage.preserveAspect = true;
                 sizeDelta = new Vector2(700f, item.gifSprites[0].texture.height + 40f);
                 break;
             case Item.ItemType.Video:
+                print("video : " + item.itemPath);
                 videoPlayer.url = item.itemPath;
                 showItemRawImage.texture = videoPlayer.targetTexture;
                 videoPlayer.Play();

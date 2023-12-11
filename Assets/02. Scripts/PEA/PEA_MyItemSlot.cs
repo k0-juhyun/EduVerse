@@ -37,11 +37,15 @@ public class Item
         this.itemPath = itemPath;
     }
 
-    public Item(ItemType itemType, string itemName, Texture2D itemTexture)
+    public Item(ItemType itemType, string itemName, Texture2D itemTexture, string itemPath = "")
     {
         this.itemType = itemType;
         this.itemName = itemName;
         this.itemTexture = itemTexture;
+        if (itemPath.Length > 0)
+        {
+            this.itemPath = itemPath;
+        }
     }
 
     public Item(ItemType itemType, string itemName, Sprite[] gifSprites)
@@ -49,7 +53,20 @@ public class Item
         this.itemType = itemType;
         this.itemName = itemName;
         this.gifSprites = gifSprites;
-    } 
+    }
+
+    public Item(ItemType itemType, string itemName, Sprite[] gifSprites, float gifDelayTime, string itemPath = "")
+    {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.gifSprites = gifSprites;
+        this.gifDelayTime = gifDelayTime;
+        if(itemPath.Length > 0)
+        {
+            this.itemPath = itemPath;
+        }
+    }
+
     public Item(ItemType itemType, string itemName, Sprite[] gifSprites, string itemPath)
     {
         this.itemType = itemType;

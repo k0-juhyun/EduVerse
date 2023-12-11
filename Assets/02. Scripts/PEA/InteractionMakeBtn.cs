@@ -27,7 +27,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         set 
         {
-            item = MyItemsManager.instance.GetItemInfo(value.itemPath); 
+            item = MyItemsManager.instance.GetItemInfo(value.itemPath, value.itemType); 
         }
         get { return item; }
     }
@@ -55,7 +55,7 @@ public class InteractionMakeBtn : MonoBehaviour, IPointerDownHandler, IPointerUp
         for (int i = 0; i < myItems.data.Count; i++)
         {
             GameObject item = Instantiate(itemPrefab, itemList_Content);
-            item.GetComponent<Interaction_Item>().SetItem(MyItemsManager.instance.GetItemInfo( myItems.data[i].itemPath));
+            item.GetComponent<Interaction_Item>().SetItem(MyItemsManager.instance.GetItemInfo( myItems.data[i].itemPath, myItems.data[i].itemType));
         }
     }
 

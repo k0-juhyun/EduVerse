@@ -135,6 +135,10 @@ public class TeacherInteraction : MonoBehaviourPun
                 thumbNailImage.texture = thumbNailTexture;
                 print(thumbNailImage.texture.name + " : " + thumbNailTexture);
             }
+            else
+            {
+                newButton.SetActive(false);
+            }
         }
     }
 

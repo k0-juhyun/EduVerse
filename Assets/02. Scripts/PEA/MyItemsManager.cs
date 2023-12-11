@@ -193,9 +193,11 @@ public class MyItemsManager : MonoBehaviour
         SaveData();
     }
 
-    public Item GetItemInfo(string itemPath, bool isShow = false)
+    public Item GetItemInfo(string itemPath, Item.ItemType itemType, bool isShow = false)
     {
         print("GetItemInfo");
+
+        // 내 아이템에 있는 아이템이면 내 아이템에서 불러옴
         if(myItemsDictionary.TryGetValue(itemPath, out Item item))
         {
             print(item.itemName);
@@ -208,7 +210,33 @@ public class MyItemsManager : MonoBehaviour
             return myItemsDictionary[itemPath];
         }
 
-        return null;        
+        // 내 아이템에 없으면 경로에서 가져옴
+        else
+        {
+            switch (itemType)
+            {
+                case Item.ItemType.Image:
+                    Texture2D texture = new Texture2D(2, 2);
+                    texture.LoadImage(File.ReadAllBytes(itemPath));
+                    texture.Apply();
+                    return new Item(itemType, itemPath, texture);
+                    break;
+
+                case Item.ItemType.GIF:
+                    (Sprite[], float) gifInfo = gifload.GetSpritesByFrame(itemPath);
+                    return new Item(itemType, itemPath, gifInfo.Item1, gifInfo.Item2);
+                    break;
+
+                case Item.ItemType.Video:
+                    return new Item(itemType, itemPath);
+                    break;
+
+                default:
+                    return null;
+                    break;
+            }
+        }
+        //return null;        
     }
 
     public void DeleteAll()
