@@ -71,7 +71,7 @@ public static class SaveSystem
             Debug.LogError("No such saveFile exists");
             return null;
         }
-
+        Debug.Log("¹¹³Ä ÁøÂ¥ ¹«½¼ ¿À·ù³Ä");
         string saveFile = File.ReadAllText(saveFilePath);
         Debug.Log(saveFile);
         SaveData saveData = JsonUtility.FromJson<SaveData>(saveFile);

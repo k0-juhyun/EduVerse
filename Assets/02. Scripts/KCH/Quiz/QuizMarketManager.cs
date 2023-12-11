@@ -52,15 +52,12 @@ public class QuizMarketManager : MonoBehaviour
         // viewport 밑에 오브젝트가 있으면 로드 안하는걸로 하자 
         if(Unit_quiz.transform.GetChild(0).GetChild(0).childCount==0)
         {
-            Debug.Log("실행");
             List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
-            Debug.Log("json 오류");
 
             if (titles != null)
             {
                 foreach (string title in titles)
                 {
-                    print("title : " + title);
                     SaveData saveData = SaveSystem.Load(title);
 
                     // 앞에 단원 글자만 추출
@@ -77,7 +74,6 @@ public class QuizMarketManager : MonoBehaviour
 
                         Debug.Log("여기에 문제 "+Unit_quiz.transform.GetChild(0).GetChild(0));
 
-                        Debug.Log( saveData == null);
                         Debug.Log("Commentary" + saveData.Commentary);
                         // 안에 이름을 넣음.
                         quiz_obj.GetComponent<LoadQuizPrefab>().Question_Answer(saveData.question, saveData.answer, unit, saveData.Commentary);
