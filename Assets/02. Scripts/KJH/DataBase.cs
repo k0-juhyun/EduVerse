@@ -129,6 +129,7 @@ public class DataBase : MonoBehaviour
             {
                 string fileName = Path.GetFileNameWithoutExtension(objFile);
                 GameObject tempObject = new GameObject(fileName);
+
                 model.spawnPrefab.Add(tempObject);
                 print("오브젝트파일: "+ tempObject.name);
 
