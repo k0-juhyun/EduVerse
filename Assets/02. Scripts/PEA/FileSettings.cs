@@ -13,6 +13,7 @@ public class FileSettings : MonoBehaviour
     private string gifThumbNailZipPath;
     private string videoZipPath;
     private string modelZipPath;
+    private string quizZipPath;
     private string zipExtractionPath;
 
     private string myItemJsonPath;
@@ -36,6 +37,7 @@ public class FileSettings : MonoBehaviour
         gifThumbNailZipPath = zipPath + "GIFThumbNails.zip";
         videoZipPath = zipPath + "Videos.zip";
         modelZipPath = zipPath + "ModelDatas.zip";
+        quizZipPath = zipPath + "Quiz.zip";
 
         zipExtractionPath = Application.persistentDataPath + "/";
 
@@ -54,6 +56,7 @@ public class FileSettings : MonoBehaviour
         unzip.UnZipAndroid(gifZipPath, zipExtractionPath);
         unzip.UnZipAndroid(gifThumbNailZipPath, zipExtractionPath);
         unzip.UnZipAndroid(videoZipPath, zipExtractionPath);
+        unzip.UnZipAndroid(quizZipPath, zipExtractionPath);
 
         Directory.CreateDirectory(Application.persistentDataPath + "/3D_Models/ModelDatas/");
         unzip.UnZipAndroid(modelZipPath, zipExtractionPath + "3D_Models/");

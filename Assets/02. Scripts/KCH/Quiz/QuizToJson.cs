@@ -65,6 +65,7 @@ public static class SaveSystem
     {
         string saveFilePath = SavePath + saveFileName + ".json";
         string saveFileTitlePath = SavePath + "MyQuizTitleData" + ".json";
+
         if (!File.Exists(saveFilePath))
         {
             Debug.LogError("No such saveFile exists");
@@ -72,6 +73,7 @@ public static class SaveSystem
         }
 
         string saveFile = File.ReadAllText(saveFilePath);
+        Debug.Log(saveFile);
         SaveData saveData = JsonUtility.FromJson<SaveData>(saveFile);
         return saveData;
     }
