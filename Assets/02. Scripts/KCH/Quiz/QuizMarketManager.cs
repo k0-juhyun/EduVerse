@@ -52,7 +52,6 @@ public class QuizMarketManager : MonoBehaviour
         // viewport 밑에 오브젝트가 있으면 로드 안하는걸로 하자 
         if(Unit_quiz.transform.GetChild(0).GetChild(0).childCount==0)
         {
-
             List<string> titles = SaveSystem.GetTitlesFromJson("MyQuizTitleData.json");
 
             if (titles != null)
