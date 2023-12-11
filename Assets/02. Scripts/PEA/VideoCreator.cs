@@ -301,7 +301,7 @@ public class VideoCreator : MonoBehaviour
         Blur(false);
 
         // 영상은 받자마자 저장 -> 저장한 영상 파일 삭제
-        File.Delete(videoPlayer.url);
+        //File.Delete(videoPlayer.url);
     }
 
     public void VideoSave()
@@ -372,4 +372,9 @@ public class VideoCreator : MonoBehaviour
     {
         backBlur.SetActive(isBlur);
     }
+
+
+
+
+
 }

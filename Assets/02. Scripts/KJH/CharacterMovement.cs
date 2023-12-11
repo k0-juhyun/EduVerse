@@ -178,14 +178,20 @@ public class CharacterMovement : MonoBehaviourPun, IPointerDownHandler, IPointer
             if (SceneManager.GetActiveScene().name == "4.ClassRoomScene")
             {
                 print("왜안돼??");
-                CameraButton.SetActive(true);
+
+                // 임시 주석 처리
+                //CameraButton.SetActive(true);
+
                 CustomizeButton.SetActive(true);
                 GreetButton.SetActive(true);
             }
             else if (SceneManager.GetActiveScene().name == "5.GroundScene")
             {
                 print("왜안돼????");
-                CameraButton.SetActive(true);
+
+                // 임시 주석 처리
+                //CameraButton.SetActive(true);
+
                 CustomizeButton.SetActive(true);
                 GreetButton.SetActive(true);
                 QuizButton = characterTeacherInteraction.quizButton;
